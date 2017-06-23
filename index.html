@@ -278,6 +278,1221 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:53:52+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。</p>
+<blockquote>
+<p>首先建一个实体类Dog</p>
+</blockquote>
+<pre><code>import java.io.Serializable;
+
+public class Dog implements Serializable{
+
+private static final long serialVersionUID = 8108340856807454651L;
+
+
+private int age;
+private String name;
+public int getAge() {
+    return age;
+}
+public void setAge(int age) {
+    this.age = age;
+}
+public String getName() {
+    return name;
+}
+public void setName(String name) {
+    this.name = name;
+}
+
+}
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/利用hibernate进行多表查询问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:52:13+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
+<blockquote>
+<p>实体类</p>
+</blockquote>
+<pre><code>@Entity
+@Table(name = &quot;ps_trends&quot;)
+public class Trends implements Serializable{
+
+
+private static final long serialVersionUID = -2228382525594394975L;
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private int id;
+
+@Column(name = &quot;item_title&quot;)
+private String itemTitle;
+
+@Column(name = &quot;item_content&quot;)
+private String itemContent;
+
+@Column(name = &quot;type_id&quot;)
+private int  typeId;
+
+@Column(name = &quot;add_time&quot;)
+private String addTime;
+
+@Column(name = &quot;view_count&quot;)
+private int viewCount;
+
+@Column(name = &quot;is_image&quot;)
+private int isImage;
+
+@Column(name = &quot;is_publish&quot;)
+private int isPublish;
+
+//临时属性
+@Transient
+private String itemTypeFlag;
+
+@Transient
+private String itemTypeName;
+
+public Trends(){}
+
+public Trends(int id, String itemTitle, String itemContent, String addTime, int viewCount,
+          String itemTypeName,String itemTypeFlag) {
+    super();
+    this.id = id;
+    this.itemTitle = itemTitle;
+    this.itemContent = itemContent;
+    this.addTime = addTime;
+    this.viewCount = viewCount;
+    this.itemTypeName = itemTypeName;
+    this.itemTypeFlag = itemTypeFlag;
+
+}
+setter ，getter方法
+}
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/23/利用hibernate进行多表查询问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:51:23+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
+<pre><code>$(&quot;#uploadify&quot;).uploadify({
+        debug            : false,
+        swf             :  CTPPATH+&apos;/admin/static/uploadify/js/uploadify.swf&apos;,    //swf文件路径
+        method            : &apos;get&apos;,    // 提交方式
+        uploader        :  CTPPATH+&apos;/processUpload.ado;jsessionid=${pageContext.session.id}&apos;, // 服务器端处理该上传请求的程序(servlet, struts2-Action)   )};
+</code></pre><p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/javaweb下载文件时IE浏览器下报错问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/javaweb下载文件时IE浏览器下报错问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:50:10+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近做的网站的一个下载功能出现了问题，在firefox浏览器以及360浏览器下下载均正常，也能将中文正常转换，但在IE浏览器下却出现了问题，当点击下载链接的时候，后台直接报错：<br><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/1999726111.png" alt="2017-03-17_113722.png"><br>后台我怎么兼容也不能解决问题，我下载的部分java代码：</p>
+<p><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/95431087.png" alt="QQ图片20170317113901.png"></p>
+<p>进过我仔细查找，发现我前台通过get方式提交的文件名包含一下字符，导致浏览器解析url不一致，所以需要将url通过javascript进行转码，即用encodeURIComponent函数进行编码，代码如下</p>
+<pre><code>&lt;a href=&quot;javascript:location.href=&apos;${pageContext.request.contextPath}/download.do?realname=&apos;+encodeURIComponent(&apos;${file_list.real_name}&apos;)+&apos;&amp;filename=&apos;+encodeURIComponent(&apos;${file_list.file_name}&apos;);&quot; class=&quot;file-name&quot;&gt;${file_list.file_name}&lt;/a&gt;
+</code></pre><p>通过将文件名编码之后就能解决问题了</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/网站消息推送之long polling（长轮询）初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/网站消息推送之long polling（长轮询）初探/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:47:58+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>网站的消息推送功能应用很广泛，比如论坛，问答网站等等都需要推送消息，那么采用什么样的推送方式更加便捷，更加节省服务器资源呢，这个需要根据网站的流量和规模来决定，因为long polling是我最先接触到的，我就来谈谈它吧。</p>
+<p>长轮询初看像是轮流查询的意思，其实不是，它是客户端通过ajax发出请求，然后客户端挂起，等待服务器端响应，服务器端会检测有无新消息，如果有消息，服务器端会将新消息推送给客户端，结束本次请求，如果在有效请求期内没有新消息出现，那么会一直检测有无新消息出现。连接会保持一段时间周期直到数据或状态改变或者时间过期，通过这种机制来减少无效的客户端和服务器间的交互。</p>
+<p>虽然长轮循比传统的轮询性能会有些提高，但在服务器端数据变化非常频繁的情况下，两者的性能并不能差多少，因为都是客户端先请求，服务器再响应，只是两者服务器端响应的机制不同。<br>下面来说说代码，服务器端我用的是php，客户端用的是jQuery</p>
+<p>服务器端代码：</p>
+<pre><code>/**
+ * @desc ajax长轮询 来获取通知消息信息
+ * @return 通知信息数量&gt;o
+ */
+public function longPolling(){
+
+
+    if(!$_GET[&apos;timed&apos;]) exit();
+    date_default_timezone_set(&quot;PRC&quot;);
+    session_write_close(); //防止session访问互斥问题
+    set_time_limit(0);//无限请求超时时间
+    $timed = $_GET[&apos;timed&apos;];
+    while (true) {
+        sleep(3); // 休眠3秒
+        //判断有无新通知出现
+         $no_count=D(&apos;Notifications&apos;)-&gt;getNotificationsCount($this-&gt;uid);
+         if ($no_count&gt;0) {
+            $responseTime = time();
+            // 返回数据信息，请求时间、返回数据时间、耗时
+            $content=array(
+                &apos;result&apos;         =&gt;$no_count,
+                &apos;reponse_time&apos;   =&gt;$responseTime,
+                &apos;request_time&apos;   =&gt;$timed,
+                &apos;use_time&apos;       =&gt;($responseTime - $timed)
+            );
+            echo $this-&gt;ajaxReturn($content);
+            exit();
+        } else { // 模拟没有数据变化，将休眠 hold住连接
+            sleep(13);
+            exit();
+        }
+    }
+
+
+}
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/23/网站消息推送之long polling（长轮询）初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/java多态学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/java多态学习/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:46:18+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在java多态中，引用与对象可以是不同的类型，如:</p>
+<pre><code>A b=new B();
+</code></pre><p>运用多态时，引用类型可以是实际对象类型的父类，即实际对象类型已经是一个比较具体的类，而引用类型则是一个比较抽象的类，任何extends过声明引用类型的对象都可以赋值给这个引用变量，这样就可以做出类似动态数组的东西，如下:</p>
+<pre><code>Animal[] a=new Animal[2];
+a[0]=new Dog();
+a[1]=new Cat();
+for(int i=0;i&lt;a.length;i++){
+    a[i].eat();
+}
+</code></pre><p>a数组里面可以放任何Animal的子类对象，调用的时候可以把子类都当作Animal来操作，实际上调用的是子类的方法，是不是很好玩呢→_→</p>
+<p>当然，多态的应用很广泛呢，参数和返回类型也可以多态，如下:</p>
+<pre><code>class Vet{
+   public void giveShot(Anmial a){
+
+      a.makeNoise();
+   }
+}
+
+class Pet{
+   public void a(){
+      Vet v=new Vet();
+      Dog dog=new Dog();
+      Cat cat=new Cat();
+      v.giveShot(dog);
+      v.giveShot(cat);
+   }
+
+}
+</code></pre><p>giveShot会接受任何Animal的子类的对象实例，根据传入的参数不同，会调用不同对象的方法。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:43:01+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
+<blockquote>
+<p>org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot get a connection, pool error Timeout waiting for idle objec</p>
+</blockquote>
+<p>这个异常产生的原因是在使用完数据库连接后没有及时关闭，导致数据库连接池的连接没有可供使用的连接，进而报异常。<br>解决的方法是检查代码，将数据库连接及时关闭，并且在context.xml文件中加上</p>
+<blockquote>
+<p>removeAbandoned=”true” removeAbandonedTimeout=”60”<br>logAbandoned=”true”</p>
+</blockquote>
+<p>这样就解决问题了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/javaee 配置Tomcat数据源问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/javaee 配置Tomcat数据源问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:42:10+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近用javaee写网站配置数据源时遇到了这个错误:</p>
+<blockquote>
+<p>java.lang.ClassCastException: org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper cannot be cast to com.mysql.jdbc.Connection</p>
+</blockquote>
+<p>经过我查看代码发现有些类中包导错了，涉及到数据库的包应该导入java.sql.*这个相关的，而我用ide自动导入为jdbc那个了，发生了类型不匹配问题，改掉就不会报这个错了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/php  json_encode函数使用遇到的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/php  json_encode函数使用遇到的问题/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:35:53+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：</p>
+<pre><code>//关联二位数组
+$a2=array(    
+  &apos;1&apos;=&gt;array(&apos;name&apos;=&gt;&apos;john&apos;,&apos;age&apos;=&gt;&apos;32&apos;),
+  &apos;2&apos;=&gt;array(&apos;name&apos;=&gt;&apos;tom&apos;,&apos;age&apos;=&gt;&apos;22&apos;)
+);
+$json2=json_encode($a2);
+echo $json2.&quot;&lt;br&gt;&quot;; //{&quot;1&quot;:{&quot;name&quot;:&quot;john&quot;,&quot;age&quot;:&quot;32&quot;},&quot;2&quot;:{&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:&quot;22&quot;}}
+//索引二维数组
+$a3=array(
+   array(&apos;name&apos;=&gt;&apos;zz&apos;,&apos;age&apos;=&gt;&apos;31&apos;),
+   array(&apos;name&apos;=&gt;&apos;we&apos;,&apos;AGE&apos;=&gt;&apos;12&apos;)
+  );
+ $json3=json_encode($a3);
+ echo $json3.&quot;&lt;br&gt;&quot;;//[{&quot;name&quot;:&quot;zz&quot;,&quot;age&quot;:&quot;31&quot;},{&quot;name&quot;:&quot;we&quot;,&quot;AGE&quot;:&quot;12&quot;}]
+</code></pre><p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
+<ul>
+<li>对于关联数组生成的json数据格式 ，在前台直接用js的eval()将其转化为json对象，然后根据{key:value}取值</li>
+<li>对于索引数组生成的json数据格式，用js的eval()转为json对象后，由于[]代表数组格式，所以遇到[]还是按照数组取值，遇到{key:value}这种形式的按照对象取值就行了</li>
+</ul>
+<p>当数组维数多的时候需要根据转换后的json数据格式用js进行相应的解析，避免出错。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,161 +1604,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/22/markdown-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/22/markdown-01/" itemprop="url">markdown-01</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T15:44:07+08:00">
-                2017-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><em>试试一下markdowm</em></p>
-<h2 id="这是一个标题"><a href="#这是一个标题" class="headerlink" title="这是一个标题"></a>这是一个标题</h2><ol>
-<li>这是第一行列表项</li>
-<li>这是第二行列表项</li>
-</ol>
-<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>Markdown 支持有序列表和无序列表。</p>
-<p>无序列表使用星号、加号或是减号作为列表标记：</p>
-<pre>
-*   Red
-*   Green
-*   Blue
-</pre>
-等同于：
-<pre>
-+   Red
-+   Green
-+   Blue
-</pre>
-也等同于：
-<pre>
--   Red
--   Green
--   Blue
-</pre>
-有序列表则使用数字接着一个英文句点：
-<pre>
-1.  Bird
-2.  McHale
-3.  Parish
-</pre>
-
-<h2 id="代码区块"><a href="#代码区块" class="headerlink" title="代码区块"></a>代码区块</h2><p>markdown使用<pre></pre><code></code> 来将代码包裹起来</p>
-<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><hr>
-<hr>
-<hr>
-<hr>
-<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.println(&quot;helllo world&quot;);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[This link](http://example.net/) has no title attribute.</div></pre></td></tr></table></figure>
-<p><a href="http://example.net/" target="_blank" rel="external">This link</a> has no title attribute.</p>
-<h2 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h2><p>Markdown 使用星号（<em>）和底线（_）作为标记强调字词的符号，被 </em> 或 <em> 包围的字词会被转成用 <em> 标签包围，用两个 * 或 </em> 包起来的话，则会被转成 <strong>，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">*single asterisks*</div><div class="line"></div><div class="line">_single underscores_</div><div class="line"></div><div class="line">**double asterisks**</div><div class="line"></div><div class="line">__double underscores__</div></pre></td></tr></table></figure></strong></em></p>
-<p>会转成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;em&gt;single asterisks&lt;/em&gt;</div><div class="line"></div><div class="line">&lt;em&gt;single underscores&lt;/em&gt;</div><div class="line"></div><div class="line">&lt;strong&gt;double asterisks&lt;/strong&gt;</div><div class="line"></div><div class="line">&lt;strong&gt;double underscores&lt;/strong&gt;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -586,7 +1653,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

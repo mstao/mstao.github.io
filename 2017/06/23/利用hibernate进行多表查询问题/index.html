@@ -95,16 +95,16 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/06/23/hello-world/index.html">
+<meta property="og:title" content="明山的博客">
+<meta property="og:url" content="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/index.html">
 <meta property="og:site_name" content="明山的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2017-06-23T10:10:30.046Z">
+<meta property="og:description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
+<meta property="og:updated_time" content="2017-06-23T12:53:19.211Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
 
 
 
@@ -132,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/23/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/"/>
 
 
 
 
 
-  <title>Hello World | 明山的博客</title>
+  <title> | 明山的博客</title>
   
 
 
@@ -277,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -306,7 +306,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T18:10:30+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:52:13+08:00">
                 2017-06-23
               </time>
             
@@ -341,15 +341,79 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
+<blockquote>
+<p>实体类</p>
+</blockquote>
+<pre><code>@Entity
+@Table(name = &quot;ps_trends&quot;)
+public class Trends implements Serializable{
+
+
+private static final long serialVersionUID = -2228382525594394975L;
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private int id;
+
+@Column(name = &quot;item_title&quot;)
+private String itemTitle;
+
+@Column(name = &quot;item_content&quot;)
+private String itemContent;
+
+@Column(name = &quot;type_id&quot;)
+private int  typeId;
+
+@Column(name = &quot;add_time&quot;)
+private String addTime;
+
+@Column(name = &quot;view_count&quot;)
+private int viewCount;
+
+@Column(name = &quot;is_image&quot;)
+private int isImage;
+
+@Column(name = &quot;is_publish&quot;)
+private int isPublish;
+
+//临时属性
+@Transient
+private String itemTypeFlag;
+
+@Transient
+private String itemTypeName;
+
+public Trends(){}
+
+public Trends(int id, String itemTitle, String itemContent, String addTime, int viewCount,
+          String itemTypeName,String itemTypeFlag) {
+    super();
+    this.id = id;
+    this.itemTitle = itemTitle;
+    this.itemContent = itemContent;
+    this.addTime = addTime;
+    this.viewCount = viewCount;
+    this.itemTypeName = itemTypeName;
+    this.itemTypeFlag = itemTypeFlag;
+
+}
+setter ，getter方法
+}
+</code></pre> <a id="more"></a> 
+<p>这里有两个属性注解为Transient，因为它们不是主表的映射字段。同时写一个有参构造方法，构造方法的参数列表即为要查询的映射字段。</p>
+<blockquote>
+<p>DaoImpl方法</p>
+</blockquote>
+<pre><code>@Override
+public Trends findTrendsInfoById(int id) {
+    // TODO Auto-generated method stub
+    String hql=&quot;select new com.primaryschool.home.entity.Trends(t.id,t.itemTitle,t.itemContent,t.addTime,t.viewCount,tt.itemTypeName,tt.itemTypeFlag)from Trends t,TrendsType tt  where tt.id=t.typeId and t.id=? and t.isPublish=1&quot;;
+    Query query=sessionFactory.getCurrentSession().createQuery(hql);
+    query.setInteger(0, id);
+    return (Trends) query.uniqueResult();
+}
+</code></pre><p>在findTrendsInfoById(int id)方法中，hql语句有些特别，它是将两个表的需要字段传入到Trends实体类的构造方法中，这样就可以直接利用getter方法进行取值了。</p>
 
       
     </div>
@@ -386,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/22/markdown-01/" rel="next" title="markdown-01">
-                <i class="fa fa-chevron-left"></i> markdown-01
+              <a href="/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -396,7 +460,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/23/php  json_encode函数使用遇到的问题/" rel="prev" title="">
+              <a href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/" rel="prev" title="">
                  <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -445,17 +509,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -535,22 +590,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

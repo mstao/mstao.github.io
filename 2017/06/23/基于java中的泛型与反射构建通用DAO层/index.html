@@ -95,16 +95,16 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/06/23/hello-world/index.html">
+<meta property="og:title" content="明山的博客">
+<meta property="og:url" content="http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/index.html">
 <meta property="og:site_name" content="明山的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2017-06-23T10:10:30.046Z">
+<meta property="og:description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
+<meta property="og:updated_time" content="2017-06-23T12:54:43.708Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
 
 
 
@@ -132,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/23/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/"/>
 
 
 
 
 
-  <title>Hello World | 明山的博客</title>
+  <title> | 明山的博客</title>
   
 
 
@@ -277,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -306,7 +306,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T18:10:30+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:53:52+08:00">
                 2017-06-23
               </time>
             
@@ -341,15 +341,173 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。</p>
+<blockquote>
+<p>首先建一个实体类Dog</p>
+</blockquote>
+<pre><code>import java.io.Serializable;
+
+public class Dog implements Serializable{
+
+private static final long serialVersionUID = 8108340856807454651L;
+
+
+private int age;
+private String name;
+public int getAge() {
+    return age;
+}
+public void setAge(int age) {
+    this.age = age;
+}
+public String getName() {
+    return name;
+}
+public void setName(String name) {
+    this.name = name;
+}
+
+}
+</code></pre><a id="more"></a>
+<blockquote>
+<p> 然后写一个基类，在此类中可以获取泛型的类型</p>
+</blockquote>
+<pre><code>package com.han.one;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 通过反射获取泛型实例
+ */
+ public  class Genericity&lt;T&gt; {
+
+@SuppressWarnings(&quot;rawtypes&quot;)
+protected Class clazz;
+
+@SuppressWarnings(&quot;unchecked&quot;)
+/**
+ * 把泛型的参数提取出来的过程放入到构造函数中写，因为
+ * 当子类创建对象的时候，直接调用父类的构造函数
+ */
+public Genericity() {
+    // 通过反射机制获取子类传递过来的实体类的类型信息
+    ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
+    //得到t的实际类型
+    clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[0];
+}
+
+/**
+ * 获取指定实例的所有属性名及对应值的Map实例
+ * @param entity 实例
+ * @return 字段名及对应值的Map实例
+ */
+protected Map&lt;String, Object&gt; getFieldValueMap(T entity) {
+    // key是属性名，value是对应值
+    Map&lt;String, Object&gt; fieldValueMap = new HashMap&lt;String, Object&gt;();
+
+    // 获取当前加载的实体类中所有属性
+    Field[] fields = this.clazz.getDeclaredFields();
+
+    for (int i = 0; i &lt; fields.length; i++) {
+        Field f = fields[i];
+        // 属性名
+        String key = f.getName();
+        //属性值
+        Object value = null;
+        // 忽略序列化版本ID号
+        if (! &quot;serialVersionUID&quot;.equals(key)) {
+            // 取消Java语言访问检查
+            f.setAccessible(true);
+            try {
+                value =f.get(entity);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            fieldValueMap.put(key, value);
+        }
+    }
+    return fieldValueMap;
+}
+}
+</code></pre><p>在此类的构造方法中利用反射获取子类传递过来的实体类的类型信息，getFieldValueMap方法用于获取该实体类的属性信息</p>
+<blockquote>
+<p>最后写一个测试类</p>
+</blockquote>
+<pre><code>package com.han.one;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * 测试：通过反射获取运行过程中泛型实例
+ *
+ */
+
+public class GenericityTest extends Genericity&lt;Dog&gt; {
+
+public static void main(String[] args) {
+
+    GenericityTest gt = new GenericityTest();
+
+    //赋值
+    Dog  dd=new Dog();
+    dd.setAge(1);
+    dd.setName(&quot;旺财&quot;);
+
+    Map&lt;String,Object&gt; map = gt.getFieldValueMap(dd);
+    //遍历
+    Set&lt;Map.Entry&lt;String, Object&gt;&gt; entrySet = map.entrySet();
+    for (Map.Entry&lt;String, Object&gt; entry : entrySet){
+        String key = entry.getKey();
+        Object value = entry.getValue();
+        System.out.println(key + &quot;---&quot; + value);
+    }
+}
+}
+</code></pre><p>在这个测试类中，此类继承基类，并向其传递实体类，这样在父类中就可以通过反射获取泛型的类型了。</p>
+<p>以此为基础，就可以构建通用的DAO了，代码如下：</p>
+<pre><code>public class BaseDaoImpl&lt;T&gt;  implements IBaseDao&lt;T&gt; {
+
+
+@Autowired
+private SessionFactory  sessionFactory;
+
+
+@SuppressWarnings(&quot;rawtypes&quot;)
+private final Class clazz;
+
+
+@SuppressWarnings(&quot;unchecked&quot;)
+public BaseDaoImpl(){
+    // 通过反射机制获取子类传递过来的实体类的类型信息
+    ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
+    clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[0];
+}
+
+
+@Override
+public boolean update(T t) {
+    // TODO Auto-generated method stub
+
+    StringBuffer stringBuffer=new StringBuffer();
+    stringBuffer.append(&quot;update &quot;+this.clazz.getSimpleName());
+    stringBuffer.append(&quot; u set u.itemTitle=:itemTitle ,u.itemContent=:itemContent,u.addTime=:addTime,u.isImage=:isImage,u.isPublish=:isPublish,u.author=:author  where u.id=:id&quot;);
+    System.out.println(stringBuffer.toString());
+    Query query  = sessionFactory.getCurrentSession().createQuery(stringBuffer.toString());
+    query.setProperties(t);
+    return (query.executeUpdate()&gt;0);
+}
+}
+</code></pre><p>这里只是在update方法中利用反射获取实体类，通过拼装hql语句来达到重用目的，当然参数也可以动态获取，这里只是个小例子。</p>
+<blockquote>
+<p>总结</p>
+</blockquote>
+<p>java中泛型与反射的应用很广泛，想要完全掌握不是那么容易，多写多练是比较好的方式^_^</p>
 
       
     </div>
@@ -386,8 +544,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/22/markdown-01/" rel="next" title="markdown-01">
-                <i class="fa fa-chevron-left"></i> markdown-01
+              <a href="/2017/06/23/利用hibernate进行多表查询问题/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -395,10 +553,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/23/php  json_encode函数使用遇到的问题/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -445,17 +599,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -535,22 +680,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
