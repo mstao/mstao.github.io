@@ -234,7 +234,7 @@ public void setName(String name) {
     <link href="http://yoursite.com/2017/06/23/%E5%88%A9%E7%94%A8hibernate%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/</id>
     <published>2017-06-23T12:52:13.388Z</published>
-    <updated>2017-06-23T13:05:09.956Z</updated>
+    <updated>2017-06-23T13:10:24.687Z</updated>
     
     <content type="html"><![CDATA[<p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
 <blockquote>
@@ -377,7 +377,7 @@ setter ，getter方法
     </summary>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+      <category term="Hibernate" scheme="http://yoursite.com/tags/Hibernate/"/>
     
   </entry>
   
@@ -622,11 +622,11 @@ class Pet{
   </entry>
   
   <entry>
-    <title></title>
+    <title>javaee 配置数据源后数据库连接未及时关闭出现的问题</title>
     <link href="http://yoursite.com/2017/06/23/javaee%20%20%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90%E5%90%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%9C%AA%E5%8F%8A%E6%97%B6%E5%85%B3%E9%97%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/</id>
     <published>2017-06-23T12:43:01.663Z</published>
-    <updated>2017-06-23T12:45:39.908Z</updated>
+    <updated>2017-06-23T13:11:12.869Z</updated>
     
     <content type="html"><![CDATA[<p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
 <blockquote>
@@ -648,14 +648,16 @@ class Pet{
     </summary>
     
     
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
   </entry>
   
   <entry>
-    <title></title>
+    <title>javaee 配置Tomcat数据源问题</title>
     <link href="http://yoursite.com/2017/06/23/javaee%20%E9%85%8D%E7%BD%AETomcat%E6%95%B0%E6%8D%AE%E6%BA%90%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/javaee 配置Tomcat数据源问题/</id>
     <published>2017-06-23T12:42:10.365Z</published>
-    <updated>2017-06-23T12:42:31.804Z</updated>
+    <updated>2017-06-23T13:11:51.787Z</updated>
     
     <content type="html"><![CDATA[<p>最近用javaee写网站配置数据源时遇到了这个错误:</p>
 <blockquote>
@@ -673,14 +675,16 @@ class Pet{
     </summary>
     
     
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
   </entry>
   
   <entry>
-    <title></title>
+    <title>php json_encode函数使用遇到的问题</title>
     <link href="http://yoursite.com/2017/06/23/php%20%20json_encode%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/php  json_encode函数使用遇到的问题/</id>
     <published>2017-06-23T12:35:53.853Z</published>
-    <updated>2017-06-23T12:41:26.932Z</updated>
+    <updated>2017-06-23T13:10:15.317Z</updated>
     
     <content type="html"><![CDATA[<p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：</p>
 <pre><code>//关联二位数组
@@ -714,6 +718,129 @@ $a2=array(
     
     </summary>
     
+    
+      <category term="php" scheme="http://yoursite.com/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于首页feed流如何展示和数据库如何设计问题</title>
+    <link href="http://yoursite.com/2017/06/23/%E5%85%B3%E4%BA%8E%E9%A6%96%E9%A1%B5feed%E6%B5%81%E5%A6%82%E4%BD%95%E5%B1%95%E7%A4%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2017/06/23/关于首页feed流如何展示和数据库如何设计问题/</id>
+    <published>2017-06-23T12:34:14.035Z</published>
+    <updated>2017-06-23T13:10:23.029Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。</p>
+<p>这里涉及到两个概念 <strong>推模式（push）</strong>和<strong>拉模式（pull）</strong>，这里有两篇大神分享的知识<a href="http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html" target="_blank" rel="external"> 新浪微博架构和FEED架构分析–人人架构<em>paper0023</em>新浪博客</a>和<a href="http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html" target="_blank" rel="external">微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨</a>，讲解的比较清楚</p>
+<blockquote>
+<p>简单来说，什么是推，什么是拉呢？</p>
+</blockquote>
+<ol>
+<li><strong>推模式</strong>是一个用户发表了一条动态，那么后台就遍历关注该用户的所有用户，向他们的feed中推送一条动态</li>
+<li><strong>拉模式</strong>与推模式相反，当用户刷新首页时，后台会遍历该用户关注的用户的动态信息，并将动态信息压入到该用户的feed中</li>
+</ol>
+<p>简单介绍完推拉模式后，下面就要考虑数据库表该怎么设计了，我采用的是最简单的推模式，毕竟新手嘛，先掌握实现流程。</p>
+<hr>
+<p>首先设计feed表，这里我设计一个feed表来存储推送的信息，该表主要有以下几个字段</p>
+<ul>
+<li>id  自增id</li>
+<li>suid  推送者uid</li>
+<li>ruid  接收者uid</li>
+<li>item_id  推送的信息id</li>
+<li>type   推送信息类型</li>
+<li>add_time  推送时间</li>
+</ul>
+<p>这是我感觉很简单的feed表，毕竟我那个问答站推送类型不是太多，当然还需要为这个表设计索引哦。<br>设计完数据库表后，下面该考虑后台推送逻辑和代码如何实现以及前台首页如何渲染feed流信息。</p>
+<hr>
+<p>后台我用的是PHP的ThinkPHP框架，新手表示该框架很好用，用该框架可以快速实现的我的想法，我感觉这一点还是很好的。首先在推送类型的选择中我选择了以下几种推送类型</p>
+<ul>
+<li>当一个话题下有新话题发起时，推送给关注该话题的用户</li>
+<li>当一个问题有回答时，推送给关注该问题的用户</li>
+<li>当一个话题的问题有新回答时，推送给关注该话题的用户</li>
+</ul>
+<p>上面推送过程中会产生大量的重复信息，所以需要在推送时对推送信息进行过滤，以避免重复的推送信息出现。代码就是当上面的推送类型产生时，将信息写入到feed表中，这里并没有对推送用户进行筛选（对推送用户的筛选可以降低数据库的压力）。</p>
+<p>前台渲染的话需要对信息进行排序整合，并对每一条动态信息进行标记，以便在模板渲染时匹配对应的模板。<br>我写的简单部分整合代码，需要对信息进行遍历整合（这里没写）</p>
+<pre><code> //如果推送类型 为a  则代表推送信息类型为  用户关注的话题有关的问题或关注的问题产生的回答
+ $aid=$val[&apos;item_id&apos;];
+ /**根据回答id获取获取与此回答有关的信息**/
+ //获取推送人的uid
+ $suid=$val[&apos;suid&apos;];
+ //获取当前用户对回答的赞同状态
+ $upvote_status=$this-&gt;getUpvoteStatusByAid($aid, $uid);
+//获取feed流 回答信息
+ $a_info_all=$this-&gt;getFeedAnswerInfo($aid);
+ $question_id=$a_info_all[0][&apos;question_id&apos;];
+ //根据问题id获取与此问题相关的话题信息
+ $tinfo_a=D(&apos;Topic&apos;)-&gt;getFeedTopicByQuestion($question_id);
+ //将话题信息追加到回答信息数组中
+ $a_info_all[0][&apos;topic&apos;]= $tinfo_a;
+ //将当前用户对回答的赞同状态最佳到信息数组中
+ $a_info_all[0][&apos;upvote_status&apos;]=$upvote_status;
+ //将整理后的信息添加到feed数组中，并做一个标记 a,以便在模板中判断解析
+ $arr_fd[&apos;answer&apos;]=$a_info_all;
+ $arr_fd[&apos;feed_flag&apos;]=&apos;a&apos;;
+ $feed_return_arr[]=  $arr_fd;
+</code></pre><p>这里 $feed_return_arr[]是一个三维数组，在模板渲染的时候要注意一下。<br><a id="more"></a><br>上面是我对feed流简单的思考，如果是真实网络环境下这种简单的实现有许多大问题，比如feed表数据量过大，是否设定一个时间阀对表中超过该时间阀的推送信息进行删除以减少feed表的记录量等等。所以这种方式并不适合真实的网络环境，需要将推拉模式结合进行使用。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。&lt;/p&gt;
+&lt;p&gt;这里涉及到两个概念 &lt;strong&gt;推模式（push）&lt;/strong&gt;和&lt;strong&gt;拉模式（pull）&lt;/strong&gt;，这里有两篇大神分享的知识&lt;a href=&quot;http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt; 新浪微博架构和FEED架构分析–人人架构&lt;em&gt;paper0023&lt;/em&gt;新浪博客&lt;/a&gt;和&lt;a href=&quot;http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨&lt;/a&gt;，讲解的比较清楚&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;简单来说，什么是推，什么是拉呢？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;推模式&lt;/strong&gt;是一个用户发表了一条动态，那么后台就遍历关注该用户的所有用户，向他们的feed中推送一条动态&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;拉模式&lt;/strong&gt;与推模式相反，当用户刷新首页时，后台会遍历该用户关注的用户的动态信息，并将动态信息压入到该用户的feed中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;简单介绍完推拉模式后，下面就要考虑数据库表该怎么设计了，我采用的是最简单的推模式，毕竟新手嘛，先掌握实现流程。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;首先设计feed表，这里我设计一个feed表来存储推送的信息，该表主要有以下几个字段&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;id  自增id&lt;/li&gt;
+&lt;li&gt;suid  推送者uid&lt;/li&gt;
+&lt;li&gt;ruid  接收者uid&lt;/li&gt;
+&lt;li&gt;item_id  推送的信息id&lt;/li&gt;
+&lt;li&gt;type   推送信息类型&lt;/li&gt;
+&lt;li&gt;add_time  推送时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这是我感觉很简单的feed表，毕竟我那个问答站推送类型不是太多，当然还需要为这个表设计索引哦。&lt;br&gt;设计完数据库表后，下面该考虑后台推送逻辑和代码如何实现以及前台首页如何渲染feed流信息。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;后台我用的是PHP的ThinkPHP框架，新手表示该框架很好用，用该框架可以快速实现的我的想法，我感觉这一点还是很好的。首先在推送类型的选择中我选择了以下几种推送类型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当一个话题下有新话题发起时，推送给关注该话题的用户&lt;/li&gt;
+&lt;li&gt;当一个问题有回答时，推送给关注该问题的用户&lt;/li&gt;
+&lt;li&gt;当一个话题的问题有新回答时，推送给关注该话题的用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面推送过程中会产生大量的重复信息，所以需要在推送时对推送信息进行过滤，以避免重复的推送信息出现。代码就是当上面的推送类型产生时，将信息写入到feed表中，这里并没有对推送用户进行筛选（对推送用户的筛选可以降低数据库的压力）。&lt;/p&gt;
+&lt;p&gt;前台渲染的话需要对信息进行排序整合，并对每一条动态信息进行标记，以便在模板渲染时匹配对应的模板。&lt;br&gt;我写的简单部分整合代码，需要对信息进行遍历整合（这里没写）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; //如果推送类型 为a  则代表推送信息类型为  用户关注的话题有关的问题或关注的问题产生的回答
+ $aid=$val[&amp;apos;item_id&amp;apos;];
+ /**根据回答id获取获取与此回答有关的信息**/
+ //获取推送人的uid
+ $suid=$val[&amp;apos;suid&amp;apos;];
+ //获取当前用户对回答的赞同状态
+ $upvote_status=$this-&amp;gt;getUpvoteStatusByAid($aid, $uid);
+//获取feed流 回答信息
+ $a_info_all=$this-&amp;gt;getFeedAnswerInfo($aid);
+ $question_id=$a_info_all[0][&amp;apos;question_id&amp;apos;];
+ //根据问题id获取与此问题相关的话题信息
+ $tinfo_a=D(&amp;apos;Topic&amp;apos;)-&amp;gt;getFeedTopicByQuestion($question_id);
+ //将话题信息追加到回答信息数组中
+ $a_info_all[0][&amp;apos;topic&amp;apos;]= $tinfo_a;
+ //将当前用户对回答的赞同状态最佳到信息数组中
+ $a_info_all[0][&amp;apos;upvote_status&amp;apos;]=$upvote_status;
+ //将整理后的信息添加到feed数组中，并做一个标记 a,以便在模板中判断解析
+ $arr_fd[&amp;apos;answer&amp;apos;]=$a_info_all;
+ $arr_fd[&amp;apos;feed_flag&amp;apos;]=&amp;apos;a&amp;apos;;
+ $feed_return_arr[]=  $arr_fd;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里 $feed_return_arr[]是一个三维数组，在模板渲染的时候要注意一下。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://yoursite.com/tags/php/"/>
     
   </entry>
   
