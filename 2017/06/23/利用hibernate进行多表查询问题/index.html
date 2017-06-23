@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="java," />
 
 
 
@@ -96,14 +96,15 @@
 
 
 <meta name="description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="明山的博客">
+<meta property="og:title" content="利用hibernate进行多表查询问题">
 <meta property="og:url" content="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
-<meta property="og:updated_time" content="2017-06-23T12:53:19.211Z">
+<meta property="og:updated_time" content="2017-06-23T13:05:09.956Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:title" content="利用hibernate进行多表查询问题">
 <meta name="twitter:description" content="在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：  实体类  @Entity @Table(name = &amp;quot;ps_trends&amp;quot;) public class Trends implements Serializable{">
 
 
@@ -138,7 +139,7 @@
 
 
 
-  <title> | 明山的博客</title>
+  <title>利用hibernate进行多表查询问题 | 明山的博客</title>
   
 
 
@@ -294,7 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">利用hibernate进行多表查询问题</h1>
         
 
         <div class="post-meta">
@@ -400,7 +401,7 @@ public Trends(int id, String itemTitle, String itemContent, String addTime, int 
 }
 setter ，getter方法
 }
-</code></pre> <a id="more"></a> 
+</code></pre> <a id="more"></a>
 <p>这里有两个属性注解为Transient，因为它们不是主表的映射字段。同时写一个有参构造方法，构造方法的参数列表即为要查询的映射字段。</p>
 <blockquote>
 <p>DaoImpl方法</p>
@@ -441,6 +442,12 @@ public Trends findTrendsInfoById(int id) {
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
 
       
       
@@ -450,8 +457,8 @@ public Trends findTrendsInfoById(int id) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/" rel="next" title="利用uploadify插件上传文件时java后台获取不到当前session问题">
+                <i class="fa fa-chevron-left"></i> 利用uploadify插件上传文件时java后台获取不到当前session问题
               </a>
             
           </div>
@@ -460,8 +467,8 @@ public Trends findTrendsInfoById(int id) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/" rel="prev" title="基于java中的泛型与反射构建通用DAO层">
+                基于java中的泛型与反射构建通用DAO层 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -538,7 +545,7 @@ public Trends findTrendsInfoById(int id) {
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -663,9 +670,6 @@ public Trends findTrendsInfoById(int id) {
 
 
 
-  
-  
-
 
 
 
@@ -691,12 +695,6 @@ public Trends findTrendsInfoById(int id) {
 
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/three.min.js"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
 
 
   

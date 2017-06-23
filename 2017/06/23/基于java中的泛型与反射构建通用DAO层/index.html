@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="java," />
 
 
 
@@ -96,14 +96,15 @@
 
 
 <meta name="description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="明山的博客">
+<meta property="og:title" content="基于java中的泛型与反射构建通用DAO层">
 <meta property="og:url" content="http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
-<meta property="og:updated_time" content="2017-06-23T12:54:43.708Z">
+<meta property="og:updated_time" content="2017-06-23T13:05:44.037Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:title" content="基于java中的泛型与反射构建通用DAO层">
 <meta name="twitter:description" content="在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。  首先建一个实体类Dog  import java.io.Serializable;  public class Dog implements Seriali">
 
 
@@ -138,7 +139,7 @@
 
 
 
-  <title> | 明山的博客</title>
+  <title>基于java中的泛型与反射构建通用DAO层 | 明山的博客</title>
   
 
 
@@ -294,7 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">基于java中的泛型与反射构建通用DAO层</h1>
         
 
         <div class="post-meta">
@@ -535,6 +536,12 @@ public boolean update(T t) {
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
 
       
       
@@ -544,8 +551,8 @@ public boolean update(T t) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/23/利用hibernate进行多表查询问题/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/06/23/利用hibernate进行多表查询问题/" rel="next" title="利用hibernate进行多表查询问题">
+                <i class="fa fa-chevron-left"></i> 利用hibernate进行多表查询问题
               </a>
             
           </div>
@@ -628,7 +635,7 @@ public boolean update(T t) {
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -753,9 +760,6 @@ public boolean update(T t) {
 
 
 
-  
-  
-
 
 
 
@@ -781,12 +785,6 @@ public boolean update(T t) {
 
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/three.min.js"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
 
 
   
