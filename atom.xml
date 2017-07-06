@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-23T13:05:44.037Z</updated>
+  <updated>2017-07-06T08:51:20.066Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,283 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java枚举探究</title>
+    <link href="http://yoursite.com/2017/07/06/java%E6%9E%9A%E4%B8%BE%E6%8E%A2%E7%A9%B6/"/>
+    <id>http://yoursite.com/2017/07/06/java枚举探究/</id>
+    <published>2017-07-06T02:11:07.000Z</published>
+    <updated>2017-07-06T08:51:20.066Z</updated>
+    
+    <content type="html"><![CDATA[<p>在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们<br>今天来看看java的枚举是个什么样子。</p>
+<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><pre>
+<code>
+protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象  
+protected final Object clone()throws CloneNotSupportedException  //克隆枚举对象  
+public final int compareTo(E o) //比较枚举与指定对象的顺序
+public final boolean equals(Object other)  //比较两个枚举对象  
+public final int hashCode()  //返回枚举常量的哈希码  
+public final String name()  //返回枚举类的名称  
+public final int ordinal()  //返回枚举常量的序号  
+public static <t extends="" enum<t="">> T valueOf(Class<t> enum Type,String name)  //返回带指定名称的指定枚举类型的枚举常量  
+</t></t></code>
+</pre>
+
+<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><pre>
+<code>
+/**
+ * 定义枚举
+ * @author mingshan
+ *
+ */
+public enum EnumTest {
+     MON, TUE, WED, THU, FRI, SAT, SUN;
+}
+</code>
+
+</pre>
+
+<p>这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。</p>
+<pre>
+<code>
+/**
+ * 枚举测试
+ * @author mingshan
+ *
+ */
+public class Test {
+
+    public static void main(String[] args) {
+
+        //遍历枚举
+        for(EnumTest e : EnumTest.values()) {
+            System.out.println(e.toString());
+        }
+
+        System.out.println("我是分割线------");
+
+
+        //switch 操作
+        EnumTest fri = EnumTest.FRI;
+
+        switch(fri){
+            case MON :
+                System.out.println("今天是星期一"); break;
+            case FRI :
+                System.out.println("今天是星期五"); break;
+            default :
+                System.out.println("-----"); break;
+        }
+
+        //返回
+        System.out.println(fri.getDeclaringClass());
+
+        //利用compareTo进行比较
+        switch (fri.compareTo(EnumTest.SAT)) {
+        case -1:
+            System.out.println("之前");
+            break;
+        case 1:
+            System.out.println("之后");
+            break;
+        default:
+            break;
+        }
+
+
+
+    }
+}
+
+</code>
+</pre>
+
+<p>我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当<br>我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我<br>们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个<br>枚举的顺序</p>
+<a id="more"></a>
+<h2 id="给-enum-对象加一下-value-的属性和-getValue-的方法"><a href="#给-enum-对象加一下-value-的属性和-getValue-的方法" class="headerlink" title="给 enum 对象加一下 value 的属性和 getValue() 的方法"></a>给 enum 对象加一下 value 的属性和 getValue() 的方法</h2><pre>
+<code>
+/**
+ * 赋初值
+ * 给 enum 对象加一下 value 的属性和 getValue() 的方法
+ * @author mingshan
+ *
+ */
+public enum EnumTest2 {
+    MON(1), TUE(2), WED(3), THU(4), FRI(5), SAT(6) {
+        @Override
+        public boolean isRest() {
+
+            return true;
+        }
+    },
+    SUN(0) {
+        @Override
+        public boolean isRest() {
+
+            return true;
+        }
+
+    };
+
+    private int value;
+
+    private EnumTest2(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public boolean isRest() {
+        return false;
+    }
+
+
+}
+
+</code>
+</pre>
+
+<blockquote>
+<p>获取属性值</p>
+</blockquote>
+<pre>
+<code>
+/**
+ * 获取属性值
+ */
+System.out.println(EnumTest2.FRI.getValue());
+<code>
+</code></code></pre>
+
+<blockquote>
+<p>EnumSet的使用</p>
+</blockquote>
+<pre>
+<code>
+//EnumSet的使用
+EnumSet<enumtest2> allOf = EnumSet.allOf(EnumTest2.class);
+
+//遍历枚举
+for (EnumTest2 enumTest2 : allOf) {
+    System.out.println(enumTest2.toString());
+}
+</enumtest2></code>
+</pre>
+
+<blockquote>
+<p>EnumMap的使用</p>
+</blockquote>
+<pre>
+<code>
+EnumMap<enumtest2, object=""> enumMap = new EnumMap<>(EnumTest2.class);
+
+enumMap.put(EnumTest2.FRI, "星期五");
+enumMap.put(EnumTest2.SUN, "星期天");
+
+//遍历map
+for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
+    System.out.println(enumTest2.getKey()+"---"+enumTest2.getValue());
+
+}
+</enumtest2,></enumtest2,></code>
+</pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们&lt;br&gt;今天来看看java的枚举是个什么样子。&lt;/p&gt;
+&lt;h2 id=&quot;枚举的主要操作方法&quot;&gt;&lt;a href=&quot;#枚举的主要操作方法&quot; class=&quot;headerlink&quot; title=&quot;枚举的主要操作方法&quot;&gt;&lt;/a&gt;枚举的主要操作方法&lt;/h2&gt;&lt;pre&gt;
+&lt;code&gt;
+protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象  
+protected final Object clone()throws CloneNotSupportedException  //克隆枚举对象  
+public final int compareTo(E o) //比较枚举与指定对象的顺序
+public final boolean equals(Object other)  //比较两个枚举对象  
+public final int hashCode()  //返回枚举常量的哈希码  
+public final String name()  //返回枚举类的名称  
+public final int ordinal()  //返回枚举常量的序号  
+public static &lt;t extends=&quot;&quot; enum&lt;t=&quot;&quot;&gt;&gt; T valueOf(Class&lt;t&gt; enum Type,String name)  //返回带指定名称的指定枚举类型的枚举常量  
+&lt;/t&gt;&lt;/t&gt;&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;a href=&quot;#先定义一个枚举，用enum关键字&quot; class=&quot;headerlink&quot; title=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;/a&gt;先定义一个枚举，用enum关键字&lt;/h2&gt;&lt;pre&gt;
+&lt;code&gt;
+/**
+ * 定义枚举
+ * @author mingshan
+ *
+ */
+public enum EnumTest {
+     MON, TUE, WED, THU, FRI, SAT, SUN;
+}
+&lt;/code&gt;
+
+&lt;/pre&gt;
+
+&lt;p&gt;这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。&lt;/p&gt;
+&lt;pre&gt;
+&lt;code&gt;
+/**
+ * 枚举测试
+ * @author mingshan
+ *
+ */
+public class Test {
+
+    public static void main(String[] args) {
+
+        //遍历枚举
+        for(EnumTest e : EnumTest.values()) {
+            System.out.println(e.toString());
+        }
+
+        System.out.println(&quot;我是分割线------&quot;);
+
+
+        //switch 操作
+        EnumTest fri = EnumTest.FRI;
+
+        switch(fri){
+            case MON :
+                System.out.println(&quot;今天是星期一&quot;); break;
+            case FRI :
+                System.out.println(&quot;今天是星期五&quot;); break;
+            default :
+                System.out.println(&quot;-----&quot;); break;
+        }
+
+        //返回
+        System.out.println(fri.getDeclaringClass());
+
+        //利用compareTo进行比较
+        switch (fri.compareTo(EnumTest.SAT)) {
+        case -1:
+            System.out.println(&quot;之前&quot;);
+            break;
+        case 1:
+            System.out.println(&quot;之后&quot;);
+            break;
+        default:
+            break;
+        }
+
+
+
+    }
+}
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当&lt;br&gt;我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我&lt;br&gt;们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个&lt;br&gt;枚举的顺序&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>基于java中的泛型与反射构建通用DAO层</title>
