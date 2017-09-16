@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/16/在Service层进行事务控制/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="利用接口回调实现JDBCTemplate 设计一个回调接口JDBCCallback, 用来设置参数和获取结果集, 代码如下： 123456public interface JDBCCallback&amp;lt;T&amp;gt; &amp;#123;		T rsToObject(ResultSet rs) throws SQLException;	void setParams(PreparedStatement pst">
-<meta property="og:updated_time" content="2017-09-16T13:26:19.306Z">
+<meta property="og:updated_time" content="2017-09-16T13:33:06.008Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Service层进行事务控制">
 <meta name="twitter:description" content="利用接口回调实现JDBCTemplate 设计一个回调接口JDBCCallback, 用来设置参数和获取结果集, 代码如下： 123456public interface JDBCCallback&amp;lt;T&amp;gt; &amp;#123;		T rsToObject(ResultSet rs) throws SQLException;	void setParams(PreparedStatement pst">
@@ -360,7 +360,8 @@
 </ol>
 <p>—————————————————————————OVER————————————————————————————</p>
 <hr>
-<h2 id="如何在Service层进行事务控制？"><a href="#如何在Service层进行事务控制？" class="headerlink" title="如何在Service层进行事务控制？"></a>如何在Service层进行事务控制？</h2><ol>
+<h2 id="如何在Service层进行事务控制？"><a href="#如何在Service层进行事务控制？" class="headerlink" title="如何在Service层进行事务控制？"></a>如何在Service层进行事务控制？</h2><a id="more"></a>
+<ol>
 <li><p>设计一个ConnectionHolder类，用来存放Connection。<br> 该类有两个成员变量 Connection conn, boolean isOpenTransaction, 并且提供getter和setter方法。<br> Connection conn 用来存放Connection, boolean isOpenTransaction 用来判断需不需要开启事务</p>
 </li>
 <li><p>编写ConnectionProxy类，并实现InvocationHandler接口，该类用来真正实现事务控制，具体解析如下：</p>
