@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="Java, Lock, ReentrantLock," />
 
 
 
@@ -95,17 +95,19 @@
 
 
 
-<meta name="description" content="在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们今天来看看java的枚举是个什么样子。 枚举的主要操作方法  protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象   protected final Object clone()throws CloneNotSupportedExc">
-<meta name="keywords" content="java">
+<meta name="description" content="ReentrantLock 学习 ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync  NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和Fai">
+<meta name="keywords" content="Java, Lock, ReentrantLock">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java枚举探究">
-<meta property="og:url" content="http://yoursite.com/2017/07/06/java枚举探究/index.html">
+<meta property="og:title" content="ReentrantLock源码笔记">
+<meta property="og:url" content="http://yoursite.com/2017/09/20/ReentrantLock源码笔记/index.html">
 <meta property="og:site_name" content="明山的博客">
-<meta property="og:description" content="在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们今天来看看java的枚举是个什么样子。 枚举的主要操作方法  protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象   protected final Object clone()throws CloneNotSupportedExc">
-<meta property="og:updated_time" content="2017-07-06T08:51:20.066Z">
+<meta property="og:description" content="ReentrantLock 学习 ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync  NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和Fai">
+<meta property="og:image" content="https://syy.freep.cn/590836/ReentrantLock.png">
+<meta property="og:updated_time" content="2017-09-20T14:58:27.731Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java枚举探究">
-<meta name="twitter:description" content="在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们今天来看看java的枚举是个什么样子。 枚举的主要操作方法  protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象   protected final Object clone()throws CloneNotSupportedExc">
+<meta name="twitter:title" content="ReentrantLock源码笔记">
+<meta name="twitter:description" content="ReentrantLock 学习 ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync  NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和Fai">
+<meta name="twitter:image" content="https://syy.freep.cn/590836/ReentrantLock.png">
 
 
 
@@ -133,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/06/java枚举探究/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/20/ReentrantLock源码笔记/"/>
 
 
 
 
 
-  <title>java枚举探究 | 明山的博客</title>
+  <title>ReentrantLock源码笔记 | 明山的博客</title>
   
 
 
@@ -278,7 +280,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/06/java枚举探究/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/ReentrantLock源码笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -295,7 +297,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java枚举探究</h1>
+          <h1 class="post-title" itemprop="name headline">ReentrantLock源码笔记</h1>
         
 
         <div class="post-meta">
@@ -307,8 +309,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-06T10:11:07+08:00">
-                2017-07-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-20T22:56:57+08:00">
+                2017-09-20
               </time>
             
 
@@ -342,180 +344,50 @@
       
 
       
-        <p>在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们<br>今天来看看java的枚举是个什么样子。</p>
-<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><pre>
-<code>
-protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象  
-protected final Object clone()throws CloneNotSupportedException  //克隆枚举对象  
-public final int compareTo(E o) //比较枚举与指定对象的顺序
-public final boolean equals(Object other)  //比较两个枚举对象  
-public final int hashCode()  //返回枚举常量的哈希码  
-public final String name()  //返回枚举类的名称  
-public final int ordinal()  //返回枚举常量的序号  
-public static <t extends="" enum<t="">> T valueOf(Class<t> enum Type,String name)  //返回带指定名称的指定枚举类型的枚举常量  
-</t></t></code>
-</pre>
-
-<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><pre>
-<code>
-/**
- * 定义枚举
- * @author mingshan
- *
- */
-public enum EnumTest {
-     MON, TUE, WED, THU, FRI, SAT, SUN;
-}
-</code>
-
-</pre>
-
-<p>这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。</p>
-<pre>
-<code>
-/**
- * 枚举测试
- * @author mingshan
- *
- */
-public class Test {
-
-    public static void main(String[] args) {
-
-        //遍历枚举
-        for(EnumTest e : EnumTest.values()) {
-            System.out.println(e.toString());
-        }
-
-        System.out.println("我是分割线------");
-
-
-        //switch 操作
-        EnumTest fri = EnumTest.FRI;
-
-        switch(fri){
-            case MON :
-                System.out.println("今天是星期一"); break;
-            case FRI :
-                System.out.println("今天是星期五"); break;
-            default :
-                System.out.println("-----"); break;
-        }
-
-        //返回
-        System.out.println(fri.getDeclaringClass());
-
-        //利用compareTo进行比较
-        switch (fri.compareTo(EnumTest.SAT)) {
-        case -1:
-            System.out.println("之前");
-            break;
-        case 1:
-            System.out.println("之后");
-            break;
-        default:
-            break;
-        }
-
-
-
-    }
-}
-
-</code>
-</pre>
-
-<p>我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当<br>我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我<br>们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个<br>枚举的顺序</p>
-<a id="more"></a>
-<h2 id="给-enum-对象加一下-value-的属性和-getValue-的方法"><a href="#给-enum-对象加一下-value-的属性和-getValue-的方法" class="headerlink" title="给 enum 对象加一下 value 的属性和 getValue() 的方法"></a>给 enum 对象加一下 value 的属性和 getValue() 的方法</h2><pre>
-<code>
-/**
- * 赋初值
- * 给 enum 对象加一下 value 的属性和 getValue() 的方法
- * @author mingshan
- *
- */
-public enum EnumTest2 {
-    MON(1), TUE(2), WED(3), THU(4), FRI(5), SAT(6) {
-        @Override
-        public boolean isRest() {
-
-            return true;
-        }
-    },
-    SUN(0) {
-        @Override
-        public boolean isRest() {
-
-            return true;
-        }
-
-    };
-
-    private int value;
-
-    private EnumTest2(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public boolean isRest() {
-        return false;
-    }
-
-
-}
-
-</code>
-</pre>
-
-<blockquote>
-<p>获取属性值</p>
-</blockquote>
-<pre>
-<code>
-/**
- * 获取属性值
- */
-System.out.println(EnumTest2.FRI.getValue());
-<code>
-</code></code></pre>
-
-<blockquote>
-<p>EnumSet的使用</p>
-</blockquote>
-<pre>
-<code>
-//EnumSet的使用
-EnumSet<enumtest2> allOf = EnumSet.allOf(EnumTest2.class);
-
-//遍历枚举
-for (EnumTest2 enumTest2 : allOf) {
-    System.out.println(enumTest2.toString());
-}
-</enumtest2></code>
-</pre>
-
-<blockquote>
-<p>EnumMap的使用</p>
-</blockquote>
-<pre>
-<code>
-EnumMap<enumtest2, object=""> enumMap = new EnumMap<>(EnumTest2.class);
-
-enumMap.put(EnumTest2.FRI, "星期五");
-enumMap.put(EnumTest2.SUN, "星期天");
-
-//遍历map
-for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
-    System.out.println(enumTest2.getKey()+"---"+enumTest2.getValue());
-
-}
-</enumtest2,></enumtest2,></code>
-</pre>
+        <h2 id="ReentrantLock-学习"><a href="#ReentrantLock-学习" class="headerlink" title="ReentrantLock 学习"></a>ReentrantLock 学习</h2><hr>
+<p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
+<h3 id="ReentrantLock类的结构为："><a href="#ReentrantLock类的结构为：" class="headerlink" title="ReentrantLock类的结构为："></a>ReentrantLock类的结构为：<br></h3><p><img src="https://syy.freep.cn/590836/ReentrantLock.png" alt="image"></p>
+<p>从图中可以看出，ReentrantLock类包含三个静态内部类：</p>
+<ul>
+<li>Sync </li>
+<li>NonfairSync</li>
+<li>FairSync</li>
+</ul>
+<p>其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和FairSync继承Sync。</p>
+<h3 id="ReentrantLock的基本用法："><a href="#ReentrantLock的基本用法：" class="headerlink" title="ReentrantLock的基本用法："></a>ReentrantLock的基本用法：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</div><div class="line">    <span class="comment">// ...</span></div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m</span><span class="params">()</span> </span>&#123;</div><div class="line">      lock.lock();  <span class="comment">// block until condition holds</span></div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// ... method body</span></div><div class="line">      &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        lock.unlock()</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="ReentrantLock的创建"><a href="#ReentrantLock的创建" class="headerlink" title="ReentrantLock的创建"></a>ReentrantLock的创建</h3><ul>
+<li>非公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</div></pre></td></tr></table></figure>
+<ul>
+<li>公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>);</div></pre></td></tr></table></figure>
+<p>由于默认创建的为非公平锁，所以想创建公平锁，就需要向其构造方法传入true。</p>
+<ol>
+<li>创建非公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125;.</div><div class="line"> * This is equivalent to using &#123;<span class="doctag">@code</span> ReentrantLock(false)&#125;.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync = <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>创建公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 根据传入的布尔值来判断创建哪种锁</div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125; with the</div><div class="line"> * given fairness policy.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> fair &#123;<span class="doctag">@code</span> true&#125; if this lock should use a fair ordering policy</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h3><p>非公平锁的用法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
+<p>在ReetrantLock类的内部提供了一个加锁的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.lock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法里又调用了==sync==的==lock==方法，又因为Sync这个类为一个抽象类，在ReentrantLock类实例化的时候，根据参数来判断调用哪个具体的类。</p>
+<p>这里先谈谈非公平锁的加锁实现。</p>
+<p><strong>简化版的非公平锁实现步骤</strong>：</p>
+<p> 基予CAS(Compare And Swap)将state由0设置为1。<br></p>
+<ul>
+<li>如果设置成功，那么直接获得锁，并设置独占锁的线程为当前线程。<br></li>
+<li>如果设置失败，原先内存state的值不是0，已经有其他线程获得锁，那么就会再获取一次state。<br><ol>
+<li>如果state为0， 那么就会再次给予CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。<br></li>
+<li>如果state不为0，那么需要判断当前线程是否是独占锁的线程，如果是，那么就将state加1， 并且判断当前state的值不能小于0；如果不是，那么就将该线程封装在一个Node(AQS里面)里,并加入到等待列队里，等其他线程唤醒。 </li>
+</ol>
+</li>
+</ul>
 
       
     </div>
@@ -545,7 +417,7 @@ for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java-Lock-ReentrantLock/" rel="tag"># Java, Lock, ReentrantLock</a>
           
         </div>
       
@@ -558,8 +430,8 @@ for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/23/基于java中的泛型与反射构建通用DAO层/" rel="next" title="基于java中的泛型与反射构建通用DAO层">
-                <i class="fa fa-chevron-left"></i> 基于java中的泛型与反射构建通用DAO层
+              <a href="/2017/09/16/在Service层进行事务控制/" rel="next" title="在Service层进行事务控制">
+                <i class="fa fa-chevron-left"></i> 在Service层进行事务控制
               </a>
             
           </div>
@@ -567,10 +439,6 @@ for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/16/在Service层进行事务控制/" rel="prev" title="在Service层进行事务控制">
-                在Service层进行事务控制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -717,7 +585,7 @@ for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举的主要操作方法"><span class="nav-number">1.</span> <span class="nav-text">枚举的主要操作方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#先定义一个枚举，用enum关键字"><span class="nav-number">2.</span> <span class="nav-text">先定义一个枚举，用enum关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给-enum-对象加一下-value-的属性和-getValue-的方法"><span class="nav-number">3.</span> <span class="nav-text">给 enum 对象加一下 value 的属性和 getValue() 的方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ReentrantLock-学习"><span class="nav-number">1.</span> <span class="nav-text">ReentrantLock 学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock类的结构为："><span class="nav-number">1.1.</span> <span class="nav-text">ReentrantLock类的结构为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock的基本用法："><span class="nav-number">1.2.</span> <span class="nav-text">ReentrantLock的基本用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock的创建"><span class="nav-number">1.3.</span> <span class="nav-text">ReentrantLock的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁"><span class="nav-number">1.4.</span> <span class="nav-text">非公平锁</span></a></li></ol></li></ol></div>
             
 
           </div>

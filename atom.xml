@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-16T13:33:06.008Z</updated>
+  <updated>2017-09-20T14:58:27.731Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,71 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ReentrantLock源码笔记</title>
+    <link href="http://yoursite.com/2017/09/20/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2017/09/20/ReentrantLock源码笔记/</id>
+    <published>2017-09-20T14:56:57.951Z</published>
+    <updated>2017-09-20T14:58:27.731Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="ReentrantLock-学习"><a href="#ReentrantLock-学习" class="headerlink" title="ReentrantLock 学习"></a>ReentrantLock 学习</h2><hr>
+<p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
+<h3 id="ReentrantLock类的结构为："><a href="#ReentrantLock类的结构为：" class="headerlink" title="ReentrantLock类的结构为："></a>ReentrantLock类的结构为：<br></h3><p><img src="https://syy.freep.cn/590836/ReentrantLock.png" alt="image"></p>
+<p>从图中可以看出，ReentrantLock类包含三个静态内部类：</p>
+<ul>
+<li>Sync </li>
+<li>NonfairSync</li>
+<li>FairSync</li>
+</ul>
+<p>其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和FairSync继承Sync。</p>
+<h3 id="ReentrantLock的基本用法："><a href="#ReentrantLock的基本用法：" class="headerlink" title="ReentrantLock的基本用法："></a>ReentrantLock的基本用法：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</div><div class="line">    <span class="comment">// ...</span></div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m</span><span class="params">()</span> </span>&#123;</div><div class="line">      lock.lock();  <span class="comment">// block until condition holds</span></div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// ... method body</span></div><div class="line">      &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        lock.unlock()</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="ReentrantLock的创建"><a href="#ReentrantLock的创建" class="headerlink" title="ReentrantLock的创建"></a>ReentrantLock的创建</h3><ul>
+<li>非公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</div></pre></td></tr></table></figure>
+<ul>
+<li>公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>);</div></pre></td></tr></table></figure>
+<p>由于默认创建的为非公平锁，所以想创建公平锁，就需要向其构造方法传入true。</p>
+<ol>
+<li>创建非公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125;.</div><div class="line"> * This is equivalent to using &#123;<span class="doctag">@code</span> ReentrantLock(false)&#125;.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync = <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>创建公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 根据传入的布尔值来判断创建哪种锁</div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125; with the</div><div class="line"> * given fairness policy.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> fair &#123;<span class="doctag">@code</span> true&#125; if this lock should use a fair ordering policy</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h3><p>非公平锁的用法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
+<p>在ReetrantLock类的内部提供了一个加锁的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.lock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法里又调用了==sync==的==lock==方法，又因为Sync这个类为一个抽象类，在ReentrantLock类实例化的时候，根据参数来判断调用哪个具体的类。</p>
+<p>这里先谈谈非公平锁的加锁实现。</p>
+<p><strong>简化版的非公平锁实现步骤</strong>：</p>
+<p> 基予CAS(Compare And Swap)将state由0设置为1。<br></p>
+<ul>
+<li>如果设置成功，那么直接获得锁，并设置独占锁的线程为当前线程。<br></li>
+<li>如果设置失败，原先内存state的值不是0，已经有其他线程获得锁，那么就会再获取一次state。<br><ol>
+<li>如果state为0， 那么就会再次给予CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。<br></li>
+<li>如果state不为0，那么需要判断当前线程是否是独占锁的线程，如果是，那么就将state加1， 并且判断当前state的值不能小于0；如果不是，那么就将该线程封装在一个Node(AQS里面)里,并加入到等待列队里，等其他线程唤醒。 </li>
+</ol>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;ReentrantLock-学习&quot;&gt;&lt;a href=&quot;#ReentrantLock-学习&quot; class=&quot;headerlink&quot; title=&quot;ReentrantLock 学习&quot;&gt;&lt;/a&gt;ReentrantLock 学习&lt;/h2&gt;&lt;hr&gt;
+&lt;p&gt;Reentrant
+    
+    </summary>
+    
+    
+      <category term="Java, Lock, ReentrantLock" scheme="http://yoursite.com/tags/Java-Lock-ReentrantLock/"/>
+    
+  </entry>
   
   <entry>
     <title>在Service层进行事务控制</title>
