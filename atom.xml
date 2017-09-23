@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-23T00:56:43.697Z</updated>
+  <updated>2017-09-23T00:58:24.254Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/20/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2017/09/20/ReentrantLock源码笔记/</id>
     <published>2017-09-20T14:56:57.951Z</published>
-    <updated>2017-09-23T00:56:43.697Z</updated>
+    <updated>2017-09-23T00:58:24.254Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock-学习（JDK-1-8）"><a href="#ReentrantLock-学习（JDK-1-8）" class="headerlink" title="ReentrantLock 学习（JDK 1.8）"></a>ReentrantLock 学习（JDK 1.8）</h2><hr>
 <p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
