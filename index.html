@@ -379,7 +379,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.lock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在这个方法里又调用了==sync==的==lock==方法，又因为Sync这个类为一个抽象类，在ReentrantLock类实例化的时候，根据参数来判断调用哪个具体的类。</p>
 <p>这里先谈谈非公平锁的加锁实现。</p>
-<h4 id="简化版的非公平锁实现步骤："><a href="#简化版的非公平锁实现步骤：" class="headerlink" title="简化版的非公平锁实现步骤："></a><strong>简化版的非公平锁实现步骤</strong>：</h4><p> 基予CAS(Compare And Swap)将state由0设置为1。<br></p>
+<h4 id="非公平锁实现简单步骤："><a href="#非公平锁实现简单步骤：" class="headerlink" title="非公平锁实现简单步骤："></a><strong>非公平锁实现简单步骤</strong>：</h4><p> 基予CAS(Compare And Swap)将state由0设置为1。<br></p>
 <ul>
 <li>如果设置成功，那么直接获得锁，并设置独占锁的线程为当前线程。<br></li>
 <li>如果设置失败，原先内存state的值不是0，已经有其他线程获得锁，那么就会再获取一次state。<br><ol>
@@ -1797,7 +1797,7 @@ class Pet{
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
