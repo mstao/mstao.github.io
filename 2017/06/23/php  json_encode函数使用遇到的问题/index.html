@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如： //关联二位数组 $a2=array(       &amp;apos;1&amp;apos;=&amp;gt;array(&amp;apos;name&amp;apos;=&amp;gt;&amp;apos;john&amp;apos;,&amp;apos;age&amp;apos;=&amp;gt;&amp;apos;32&amp;apos;),   &amp;apos">
+<meta name="description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如：1234567891011121314//关联二位数组$a2=array(      &apos;1&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;john&apos;,&apos;age&apos;=&amp;gt;&apos;32&apos;),  &apos;2&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;tom&apos;,&apos;age&apos;=&amp;gt">
 <meta name="keywords" content="php">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php json_encode函数使用遇到的问题">
 <meta property="og:url" content="http://yoursite.com/2017/06/23/php  json_encode函数使用遇到的问题/index.html">
 <meta property="og:site_name" content="明山的博客">
-<meta property="og:description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如： //关联二位数组 $a2=array(       &amp;apos;1&amp;apos;=&amp;gt;array(&amp;apos;name&amp;apos;=&amp;gt;&amp;apos;john&amp;apos;,&amp;apos;age&amp;apos;=&amp;gt;&amp;apos;32&amp;apos;),   &amp;apos">
-<meta property="og:updated_time" content="2017-06-23T13:10:15.317Z">
+<meta property="og:description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如：1234567891011121314//关联二位数组$a2=array(      &apos;1&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;john&apos;,&apos;age&apos;=&amp;gt;&apos;32&apos;),  &apos;2&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;tom&apos;,&apos;age&apos;=&amp;gt">
+<meta property="og:updated_time" content="2017-09-24T04:56:02.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="php json_encode函数使用遇到的问题">
-<meta name="twitter:description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如： //关联二位数组 $a2=array(       &amp;apos;1&amp;apos;=&amp;gt;array(&amp;apos;name&amp;apos;=&amp;gt;&amp;apos;john&amp;apos;,&amp;apos;age&amp;apos;=&amp;gt;&amp;apos;32&amp;apos;),   &amp;apos">
+<meta name="twitter:description" content="在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode但在使用这个函数时转化的格式不一致，比如：1234567891011121314//关联二位数组$a2=array(      &apos;1&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;john&apos;,&apos;age&apos;=&amp;gt;&apos;32&apos;),  &apos;2&apos;=&amp;gt;array(&apos;name&apos;=&amp;gt;&apos;tom&apos;,&apos;age&apos;=&amp;gt">
 
 
 
@@ -342,22 +342,8 @@
       
 
       
-        <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：</p>
-<pre><code>//关联二位数组
-$a2=array(    
-  &apos;1&apos;=&gt;array(&apos;name&apos;=&gt;&apos;john&apos;,&apos;age&apos;=&gt;&apos;32&apos;),
-  &apos;2&apos;=&gt;array(&apos;name&apos;=&gt;&apos;tom&apos;,&apos;age&apos;=&gt;&apos;22&apos;)
-);
-$json2=json_encode($a2);
-echo $json2.&quot;&lt;br&gt;&quot;; //{&quot;1&quot;:{&quot;name&quot;:&quot;john&quot;,&quot;age&quot;:&quot;32&quot;},&quot;2&quot;:{&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:&quot;22&quot;}}
-//索引二维数组
-$a3=array(
-   array(&apos;name&apos;=&gt;&apos;zz&apos;,&apos;age&apos;=&gt;&apos;31&apos;),
-   array(&apos;name&apos;=&gt;&apos;we&apos;,&apos;AGE&apos;=&gt;&apos;12&apos;)
-  );
- $json3=json_encode($a3);
- echo $json3.&quot;&lt;br&gt;&quot;;//[{&quot;name&quot;:&quot;zz&quot;,&quot;age&quot;:&quot;31&quot;},{&quot;name&quot;:&quot;we&quot;,&quot;AGE&quot;:&quot;12&quot;}]
-</code></pre><p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
+        <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//关联二位数组</span></div><div class="line">$a2=<span class="keyword">array</span>(    </div><div class="line">  <span class="string">'1'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'john'</span>,<span class="string">'age'</span>=&gt;<span class="string">'32'</span>),</div><div class="line">  <span class="string">'2'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'tom'</span>,<span class="string">'age'</span>=&gt;<span class="string">'22'</span>)</div><div class="line">);</div><div class="line">$json2=json_encode($a2);</div><div class="line"><span class="keyword">echo</span> $json2.<span class="string">"&lt;br&gt;"</span>; <span class="comment">//&#123;"1":&#123;"name":"john","age":"32"&#125;,"2":&#123;"name":"tom","age":"22"&#125;&#125;</span></div><div class="line"><span class="comment">//索引二维数组</span></div><div class="line">$a3=<span class="keyword">array</span>(</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'zz'</span>,<span class="string">'age'</span>=&gt;<span class="string">'31'</span>),</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'we'</span>,<span class="string">'AGE'</span>=&gt;<span class="string">'12'</span>)</div><div class="line">  );</div><div class="line"> $json3=json_encode($a3);</div><div class="line"> <span class="keyword">echo</span> $json3.<span class="string">"&lt;br&gt;"</span>;<span class="comment">//[&#123;"name":"zz","age":"31"&#125;,&#123;"name":"we","AGE":"12"&#125;]</span></div></pre></td></tr></table></figure></p>
+<p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
 <ul>
 <li>对于关联数组生成的json数据格式 ，在前台直接用js的eval()将其转化为json对象，然后根据{key:value}取值</li>
 <li>对于索引数组生成的json数据格式，用js的eval()转为json对象后，由于[]代表数组格式，所以遇到[]还是按照数组取值，遇到{key:value}这种形式的按照对象取值就行了</li>
