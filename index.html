@@ -278,7 +278,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/ReentrantLock源码笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/ReentrantLock源码笔记 - 获取锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -297,7 +297,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/20/ReentrantLock源码笔记/" itemprop="url">ReentrantLock源码笔记（JDK 1.8）</a></h1>
+                <a class="post-title-link" href="/2017/09/20/ReentrantLock源码笔记 - 获取锁/" itemprop="url">ReentrantLock源码笔记 - 获取锁（JDK 1.8）</a></h1>
         
 
         <div class="post-meta">
@@ -345,7 +345,7 @@
 
       
         
-          <h2 id="ReentrantLock-学习（JDK-1-8）"><a href="#ReentrantLock-学习（JDK-1-8）" class="headerlink" title="ReentrantLock 学习（JDK 1.8）"></a>ReentrantLock 学习（JDK 1.8）</h2><hr>
+          <h2 id="ReentrantLock-学习-获取锁（JDK-1-8）"><a href="#ReentrantLock-学习-获取锁（JDK-1-8）" class="headerlink" title="ReentrantLock 学习 - 获取锁（JDK 1.8）"></a>ReentrantLock 学习 - 获取锁（JDK 1.8）</h2><hr>
 <p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
 <h3 id="ReentrantLock类的结构为："><a href="#ReentrantLock类的结构为：" class="headerlink" title="ReentrantLock类的结构为："></a>ReentrantLock类的结构为：<br></h3><p><img src="https://syy.freep.cn/590836/ReentrantLock.png" alt="image"></p>
 <p>从图中可以看出，ReentrantLock类包含三个静态内部类：</p>
@@ -373,8 +373,7 @@
 <li>创建公平锁的构造方法为：</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 根据传入的布尔值来判断创建哪种锁</div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125; with the</div><div class="line"> * given fairness policy.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> fair &#123;<span class="doctag">@code</span> true&#125; if this lock should use a fair ordering policy</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h3><p>非公平锁的用法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
+<h3 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h3><h4 id="非公平锁的用法"><a href="#非公平锁的用法" class="headerlink" title="非公平锁的用法"></a>非公平锁的用法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
 <p>在ReetrantLock类的内部提供了一个加锁的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.lock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在这个方法里又调用了==sync==的==lock==方法，又因为Sync这个类为一个抽象类，在ReentrantLock类实例化的时候，根据参数来判断调用哪个具体的类。</p>
@@ -383,7 +382,7 @@
 <ul>
 <li>如果设置成功，那么直接获得锁，并设置独占锁的线程为当前线程。<br></li>
 <li>如果设置失败，原先内存state的值不是0，已经有其他线程获得锁，那么就会再获取一次state。<br><ol>
-<li>如果state为0， 那么就会再次给予CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。<br></li>
+<li>如果state为0， 那么就会再次利用CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。<br></li>
 <li>如果state不为0，那么需要判断当前线程是否是独占锁的线程，如果是，那么就将state加1， 并且判断当前state的值不能小于0；如果不是，那么就将该线程封装在一个Node(AQS里面)里,并加入到等待列队里，等其他线程唤醒。 </li>
 </ol>
 </li>
@@ -398,7 +397,7 @@
 <p>tryAcquire方法会调用ReentrantLock中NonfairSync内部类中的tryAcquire方法<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/20/ReentrantLock源码笔记/#more" rel="contents">
+            <a class="btn" href="/2017/09/20/ReentrantLock源码笔记 - 获取锁/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
