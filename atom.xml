@@ -276,269 +276,37 @@
     <link href="http://yoursite.com/2017/07/06/java%E6%9E%9A%E4%B8%BE%E6%8E%A2%E7%A9%B6/"/>
     <id>http://yoursite.com/2017/07/06/java枚举探究/</id>
     <published>2017-07-06T02:11:07.000Z</published>
-    <updated>2017-07-06T08:51:20.066Z</updated>
+    <updated>2017-09-24T04:35:38.885Z</updated>
     
     <content type="html"><![CDATA[<p>在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们<br>今天来看看java的枚举是个什么样子。</p>
-<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><pre>
-<code>
-protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象  
-protected final Object clone()throws CloneNotSupportedException  //克隆枚举对象  
-public final int compareTo(E o) //比较枚举与指定对象的顺序
-public final boolean equals(Object other)  //比较两个枚举对象  
-public final int hashCode()  //返回枚举常量的哈希码  
-public final String name()  //返回枚举类的名称  
-public final int ordinal()  //返回枚举常量的序号  
-public static <t extends="" enum<t="">> T valueOf(Class<t> enum Type,String name)  //返回带指定名称的指定枚举类型的枚举常量  
-</t></t></code>
-</pre>
-
-<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><pre>
-<code>
-/**
- * 定义枚举
- * @author mingshan
- *
- */
-public enum EnumTest {
-     MON, TUE, WED, THU, FRI, SAT, SUN;
-}
-</code>
-
-</pre>
-
+<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="title">Enum</span><span class="params">(String name,<span class="keyword">int</span> ordinal)</span>  <span class="comment">//接受枚举的名称和枚举的常量创建枚举对象  </span></span></div><div class="line"><span class="keyword">protected</span> <span class="keyword">final</span> Object <span class="title">clone</span><span class="params">()</span><span class="keyword">throws</span> CloneNotSupportedException  <span class="comment">//克隆枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(E o)</span> <span class="comment">//比较枚举与指定对象的顺序</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object other)</span>  <span class="comment">//比较两个枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span>  <span class="comment">//返回枚举常量的哈希码  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">name</span><span class="params">()</span>  <span class="comment">//返回枚举类的名称  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span>  <span class="comment">//返回枚举常量的序号  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; <span class="keyword">enum</span> Type,String name)</span>  <span class="comment">//返回带指定名称的指定枚举类型的枚举常量</span></div></pre></td></tr></table></figure>
+<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 定义枚举</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EnumTest &#123;</div><div class="line">	 MON, TUE, WED, THU, FRI, SAT, SUN;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。</p>
-<pre>
-<code>
-/**
- * 枚举测试
- * @author mingshan
- *
- */
-public class Test {
-
-    public static void main(String[] args) {
-
-        //遍历枚举
-        for(EnumTest e : EnumTest.values()) {
-            System.out.println(e.toString());
-        }
-
-        System.out.println("我是分割线------");
-
-
-        //switch 操作
-        EnumTest fri = EnumTest.FRI;
-
-        switch(fri){
-            case MON :
-                System.out.println("今天是星期一"); break;
-            case FRI :
-                System.out.println("今天是星期五"); break;
-            default :
-                System.out.println("-----"); break;
-        }
-
-        //返回
-        System.out.println(fri.getDeclaringClass());
-
-        //利用compareTo进行比较
-        switch (fri.compareTo(EnumTest.SAT)) {
-        case -1:
-            System.out.println("之前");
-            break;
-        case 1:
-            System.out.println("之后");
-            break;
-        default:
-            break;
-        }
-
-
-
-    }
-}
-
-</code>
-</pre>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 枚举测试</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">		<span class="comment">//遍历枚举</span></div><div class="line">		<span class="keyword">for</span>(EnumTest e : EnumTest.values()) &#123;</div><div class="line">			System.out.println(e.toString());</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		System.out.println(<span class="string">"我是分割线------"</span>);</div><div class="line"></div><div class="line"></div><div class="line">		<span class="comment">//switch 操作</span></div><div class="line">		EnumTest fri = EnumTest.FRI;</div><div class="line"></div><div class="line">		<span class="keyword">switch</span>(fri)&#123;</div><div class="line">			<span class="keyword">case</span> MON :</div><div class="line">				System.out.println(<span class="string">"今天是星期一"</span>); <span class="keyword">break</span>;</div><div class="line">			<span class="keyword">case</span> FRI :</div><div class="line">				System.out.println(<span class="string">"今天是星期五"</span>); <span class="keyword">break</span>;</div><div class="line">		    <span class="keyword">default</span> :</div><div class="line">		    	System.out.println(<span class="string">"-----"</span>); <span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">//返回</span></div><div class="line">		System.out.println(fri.getDeclaringClass());</div><div class="line"></div><div class="line">		<span class="comment">//利用compareTo进行比较</span></div><div class="line">		<span class="keyword">switch</span> (fri.compareTo(EnumTest.SAT)) &#123;</div><div class="line">		<span class="keyword">case</span> -<span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之前"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之后"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当<br>我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我<br>们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个<br>枚举的顺序</p>
 <a id="more"></a>
-<h2 id="给-enum-对象加一下-value-的属性和-getValue-的方法"><a href="#给-enum-对象加一下-value-的属性和-getValue-的方法" class="headerlink" title="给 enum 对象加一下 value 的属性和 getValue() 的方法"></a>给 enum 对象加一下 value 的属性和 getValue() 的方法</h2><pre>
-<code>
-/**
- * 赋初值
- * 给 enum 对象加一下 value 的属性和 getValue() 的方法
- * @author mingshan
- *
- */
-public enum EnumTest2 {
-    MON(1), TUE(2), WED(3), THU(4), FRI(5), SAT(6) {
-        @Override
-        public boolean isRest() {
-
-            return true;
-        }
-    },
-    SUN(0) {
-        @Override
-        public boolean isRest() {
-
-            return true;
-        }
-
-    };
-
-    private int value;
-
-    private EnumTest2(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public boolean isRest() {
-        return false;
-    }
-
-
-}
-
-</code>
-</pre>
-
+<h2 id="给-enum-对象加一下-value-的属性和-getValue-的方法"><a href="#给-enum-对象加一下-value-的属性和-getValue-的方法" class="headerlink" title="给 enum 对象加一下 value 的属性和 getValue() 的方法"></a>给 enum 对象加一下 value 的属性和 getValue() 的方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 赋初值</div><div class="line"> * 给 enum 对象加一下 value 的属性和 getValue() 的方法</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EnumTest2 &#123;</div><div class="line">    MON(<span class="number">1</span>), TUE(<span class="number">2</span>), WED(<span class="number">3</span>), THU(<span class="number">4</span>), FRI(<span class="number">5</span>), SAT(<span class="number">6</span>) &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">	    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRest</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">	    	<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">	    &#125;</div><div class="line">    &#125;,</div><div class="line">    SUN(<span class="number">0</span>) &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">	    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRest</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">	    	<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">	    &#125;</div><div class="line"></div><div class="line">    &#125;;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> value;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">EnumTest2</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.value = value;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValue</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> value;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>获取属性值</p>
 </blockquote>
-<pre>
-<code>
-/**
- * 获取属性值
- */
-System.out.println(EnumTest2.FRI.getValue());
-<code>
-</code></code></pre>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 获取属性值</div><div class="line"> */</div><div class="line">System.out.println(EnumTest2.FRI.getValue());</div></pre></td></tr></table></figure>
 <blockquote>
 <p>EnumSet的使用</p>
 </blockquote>
-<pre>
-<code>
-//EnumSet的使用
-EnumSet<enumtest2> allOf = EnumSet.allOf(EnumTest2.class);
-
-//遍历枚举
-for (EnumTest2 enumTest2 : allOf) {
-    System.out.println(enumTest2.toString());
-}
-</enumtest2></code>
-</pre>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//EnumSet的使用</span></div><div class="line">EnumSet&lt;EnumTest2&gt; allOf = EnumSet.allOf(EnumTest2.class);</div><div class="line"></div><div class="line"><span class="comment">//遍历枚举</span></div><div class="line"><span class="keyword">for</span> (EnumTest2 enumTest2 : allOf) &#123;</div><div class="line">	System.out.println(enumTest2.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>EnumMap的使用</p>
 </blockquote>
-<pre>
-<code>
-EnumMap<enumtest2, object=""> enumMap = new EnumMap<>(EnumTest2.class);
-
-enumMap.put(EnumTest2.FRI, "星期五");
-enumMap.put(EnumTest2.SUN, "星期天");
-
-//遍历map
-for (Entry<enumtest2, object=""> enumTest2 : enumMap.entrySet()) {
-    System.out.println(enumTest2.getKey()+"---"+enumTest2.getValue());
-
-}
-</enumtest2,></enumtest2,></code>
-</pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">EnumMap&lt;EnumTest2, Object&gt; enumMap = <span class="keyword">new</span> EnumMap&lt;&gt;(EnumTest2.class);</div><div class="line"></div><div class="line">enumMap.put(EnumTest2.FRI, <span class="string">"星期五"</span>);</div><div class="line">enumMap.put(EnumTest2.SUN, <span class="string">"星期天"</span>);</div><div class="line"></div><div class="line"><span class="comment">//遍历map</span></div><div class="line"><span class="keyword">for</span> (Entry&lt;EnumTest2, Object&gt; enumTest2 : enumMap.entrySet()) &#123;</div><div class="line">	System.out.println(enumTest2.getKey()+<span class="string">"---"</span>+enumTest2.getValue());</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt;在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们&lt;br&gt;今天来看看java的枚举是个什么样子。&lt;/p&gt;
-&lt;h2 id=&quot;枚举的主要操作方法&quot;&gt;&lt;a href=&quot;#枚举的主要操作方法&quot; class=&quot;headerlink&quot; title=&quot;枚举的主要操作方法&quot;&gt;&lt;/a&gt;枚举的主要操作方法&lt;/h2&gt;&lt;pre&gt;
-&lt;code&gt;
-protected Enum(String name,int ordinal)  //接受枚举的名称和枚举的常量创建枚举对象  
-protected final Object clone()throws CloneNotSupportedException  //克隆枚举对象  
-public final int compareTo(E o) //比较枚举与指定对象的顺序
-public final boolean equals(Object other)  //比较两个枚举对象  
-public final int hashCode()  //返回枚举常量的哈希码  
-public final String name()  //返回枚举类的名称  
-public final int ordinal()  //返回枚举常量的序号  
-public static &lt;t extends=&quot;&quot; enum&lt;t=&quot;&quot;&gt;&gt; T valueOf(Class&lt;t&gt; enum Type,String name)  //返回带指定名称的指定枚举类型的枚举常量  
-&lt;/t&gt;&lt;/t&gt;&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h2 id=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;a href=&quot;#先定义一个枚举，用enum关键字&quot; class=&quot;headerlink&quot; title=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;/a&gt;先定义一个枚举，用enum关键字&lt;/h2&gt;&lt;pre&gt;
-&lt;code&gt;
-/**
- * 定义枚举
- * @author mingshan
- *
- */
-public enum EnumTest {
-     MON, TUE, WED, THU, FRI, SAT, SUN;
-}
-&lt;/code&gt;
-
-&lt;/pre&gt;
-
+&lt;h2 id=&quot;枚举的主要操作方法&quot;&gt;&lt;a href=&quot;#枚举的主要操作方法&quot; class=&quot;headerlink&quot; title=&quot;枚举的主要操作方法&quot;&gt;&lt;/a&gt;枚举的主要操作方法&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String name,&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; ordinal)&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//接受枚举的名称和枚举的常量创建枚举对象  &lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Object &lt;span class=&quot;title&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; CloneNotSupportedException  &lt;span class=&quot;comment&quot;&gt;//克隆枚举对象  &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;compareTo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(E o)&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;//比较枚举与指定对象的顺序&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Object other)&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//比较两个枚举对象  &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//返回枚举常量的哈希码  &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//返回枚举类的名称  &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ordinal&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//返回枚举常量的序号  &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &amp;lt;T extends Enum&amp;lt;T&amp;gt;&amp;gt; T &lt;span class=&quot;title&quot;&gt;valueOf&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Class&amp;lt;T&amp;gt; &lt;span class=&quot;keyword&quot;&gt;enum&lt;/span&gt; Type,String name)&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;//返回带指定名称的指定枚举类型的枚举常量&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;a href=&quot;#先定义一个枚举，用enum关键字&quot; class=&quot;headerlink&quot; title=&quot;先定义一个枚举，用enum关键字&quot;&gt;&lt;/a&gt;先定义一个枚举，用enum关键字&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 定义枚举&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@author&lt;/span&gt; mingshan&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;enum&lt;/span&gt; EnumTest &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	 MON, TUE, WED, THU, FRI, SAT, SUN;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。&lt;/p&gt;
-&lt;pre&gt;
-&lt;code&gt;
-/**
- * 枚举测试
- * @author mingshan
- *
- */
-public class Test {
-
-    public static void main(String[] args) {
-
-        //遍历枚举
-        for(EnumTest e : EnumTest.values()) {
-            System.out.println(e.toString());
-        }
-
-        System.out.println(&quot;我是分割线------&quot;);
-
-
-        //switch 操作
-        EnumTest fri = EnumTest.FRI;
-
-        switch(fri){
-            case MON :
-                System.out.println(&quot;今天是星期一&quot;); break;
-            case FRI :
-                System.out.println(&quot;今天是星期五&quot;); break;
-            default :
-                System.out.println(&quot;-----&quot;); break;
-        }
-
-        //返回
-        System.out.println(fri.getDeclaringClass());
-
-        //利用compareTo进行比较
-        switch (fri.compareTo(EnumTest.SAT)) {
-        case -1:
-            System.out.println(&quot;之前&quot;);
-            break;
-        case 1:
-            System.out.println(&quot;之后&quot;);
-            break;
-        default:
-            break;
-        }
-
-
-
-    }
-}
-
-&lt;/code&gt;
-&lt;/pre&gt;
-
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;34&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;35&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;36&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;37&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;38&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;39&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;40&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;41&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;42&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;43&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;44&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;45&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;46&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;47&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;48&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 枚举测试&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@author&lt;/span&gt; mingshan&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Test&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//遍历枚举&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt;(EnumTest e : EnumTest.values()) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			System.out.println(e.toString());&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;我是分割线------&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//switch 操作&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		EnumTest fri = EnumTest.FRI;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt;(fri)&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			&lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MON :&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;				System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;今天是星期一&quot;&lt;/span&gt;); &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			&lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; FRI :&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;				System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;今天是星期五&quot;&lt;/span&gt;); &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		    &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt; :&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		    	System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;-----&quot;&lt;/span&gt;); &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//返回&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		System.out.println(fri.getDeclaringClass());&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//利用compareTo进行比较&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (fri.compareTo(EnumTest.SAT)) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;之前&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			&lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;之后&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			&lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;			&lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当&lt;br&gt;我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我&lt;br&gt;们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个&lt;br&gt;枚举的顺序&lt;/p&gt;
     
     </summary>
@@ -553,171 +321,23 @@ public class Test {
     <link href="http://yoursite.com/2017/06/23/%E5%9F%BA%E4%BA%8Ejava%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B%E4%B8%8E%E5%8F%8D%E5%B0%84%E6%9E%84%E5%BB%BA%E9%80%9A%E7%94%A8DAO%E5%B1%82/"/>
     <id>http://yoursite.com/2017/06/23/基于java中的泛型与反射构建通用DAO层/</id>
     <published>2017-06-23T12:53:52.425Z</published>
-    <updated>2017-06-23T13:05:44.037Z</updated>
+    <updated>2017-09-24T04:37:32.738Z</updated>
     
     <content type="html"><![CDATA[<p>在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。</p>
 <blockquote>
-<p>首先建一个实体类Dog</p>
+<p>首先建一个实体类Dog<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">   <span class="keyword">import</span> java.io.Serializable;</div><div class="line"></div><div class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">8108340856807454651L</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line"><span class="keyword">private</span> String name;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> age;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">	<span class="keyword">this</span>.age = age;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> name;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = name;</div><div class="line">&#125;</div><div class="line"></div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
 </blockquote>
-<pre><code>import java.io.Serializable;
-
-public class Dog implements Serializable{
-
-private static final long serialVersionUID = 8108340856807454651L;
-
-
-private int age;
-private String name;
-public int getAge() {
-    return age;
-}
-public void setAge(int age) {
-    this.age = age;
-}
-public String getName() {
-    return name;
-}
-public void setName(String name) {
-    this.name = name;
-}
-
-}
-</code></pre><a id="more"></a>
+<a id="more"></a>
 <blockquote>
-<p> 然后写一个基类，在此类中可以获取泛型的类型</p>
+<p> 然后写一个基类，在此类中可以获取泛型的类型<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">package</span> com.han.one;</div><div class="line"></div><div class="line">  <span class="keyword">import</span> java.lang.reflect.Field;</div><div class="line">  <span class="keyword">import</span> java.lang.reflect.ParameterizedType;</div><div class="line">  <span class="keyword">import</span> java.util.HashMap;</div><div class="line">  <span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 通过反射获取泛型实例</div><div class="line">   */</div><div class="line">   <span class="keyword">public</span>  <span class="class"><span class="keyword">class</span> <span class="title">Genericity</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</div><div class="line">  <span class="keyword">protected</span> Class clazz;</div><div class="line"></div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">  <span class="comment">/**</span></div><div class="line">* 把泛型的参数提取出来的过程放入到构造函数中写，因为</div><div class="line">* 当子类创建对象的时候，直接调用父类的构造函数</div><div class="line">*/</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Genericity</span><span class="params">()</span> </span>&#123;</div><div class="line">  	<span class="comment">// 通过反射机制获取子类传递过来的实体类的类型信息</span></div><div class="line">      ParameterizedType type = (ParameterizedType) <span class="keyword">this</span>.getClass().getGenericSuperclass();</div><div class="line">      <span class="comment">//得到t的实际类型</span></div><div class="line">      clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[<span class="number">0</span>];</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 获取指定实例的所有属性名及对应值的Map实例</div><div class="line">   * <span class="doctag">@param</span> entity 实例</div><div class="line">   * <span class="doctag">@return</span> 字段名及对应值的Map实例</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title">getFieldValueMap</span><span class="params">(T entity)</span> </span>&#123;</div><div class="line">      <span class="comment">// key是属性名，value是对应值</span></div><div class="line">      Map&lt;String, Object&gt; fieldValueMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</div><div class="line"></div><div class="line">      <span class="comment">// 获取当前加载的实体类中所有属性</span></div><div class="line">      Field[] fields = <span class="keyword">this</span>.clazz.getDeclaredFields();</div><div class="line"></div><div class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fields.length; i++) &#123;</div><div class="line">          Field f = fields[i];</div><div class="line">          <span class="comment">// 属性名</span></div><div class="line">          String key = f.getName();</div><div class="line">          <span class="comment">//属性值</span></div><div class="line">          Object value = <span class="keyword">null</span>;</div><div class="line">          <span class="comment">// 忽略序列化版本ID号</span></div><div class="line">          <span class="keyword">if</span> (! <span class="string">"serialVersionUID"</span>.equals(key)) &#123;</div><div class="line">          	<span class="comment">// 取消Java语言访问检查</span></div><div class="line">          	f.setAccessible(<span class="keyword">true</span>);</div><div class="line">              <span class="keyword">try</span> &#123;</div><div class="line">                  value =f.get(entity);</div><div class="line">              &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</div><div class="line">                  e.printStackTrace();</div><div class="line">              &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                  e.printStackTrace();</div><div class="line">              &#125;</div><div class="line">              fieldValueMap.put(key, value);</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> fieldValueMap;</div><div class="line">  &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
 </blockquote>
-<pre><code>package com.han.one;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * 通过反射获取泛型实例
- */
- public  class Genericity&lt;T&gt; {
-
-@SuppressWarnings(&quot;rawtypes&quot;)
-protected Class clazz;
-
-@SuppressWarnings(&quot;unchecked&quot;)
-/**
- * 把泛型的参数提取出来的过程放入到构造函数中写，因为
- * 当子类创建对象的时候，直接调用父类的构造函数
- */
-public Genericity() {
-    // 通过反射机制获取子类传递过来的实体类的类型信息
-    ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-    //得到t的实际类型
-    clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[0];
-}
-
-/**
- * 获取指定实例的所有属性名及对应值的Map实例
- * @param entity 实例
- * @return 字段名及对应值的Map实例
- */
-protected Map&lt;String, Object&gt; getFieldValueMap(T entity) {
-    // key是属性名，value是对应值
-    Map&lt;String, Object&gt; fieldValueMap = new HashMap&lt;String, Object&gt;();
-
-    // 获取当前加载的实体类中所有属性
-    Field[] fields = this.clazz.getDeclaredFields();
-
-    for (int i = 0; i &lt; fields.length; i++) {
-        Field f = fields[i];
-        // 属性名
-        String key = f.getName();
-        //属性值
-        Object value = null;
-        // 忽略序列化版本ID号
-        if (! &quot;serialVersionUID&quot;.equals(key)) {
-            // 取消Java语言访问检查
-            f.setAccessible(true);
-            try {
-                value =f.get(entity);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            fieldValueMap.put(key, value);
-        }
-    }
-    return fieldValueMap;
-}
-}
-</code></pre><p>在此类的构造方法中利用反射获取子类传递过来的实体类的类型信息，getFieldValueMap方法用于获取该实体类的属性信息</p>
+<p>在此类的构造方法中利用反射获取子类传递过来的实体类的类型信息，getFieldValueMap方法用于获取该实体类的属性信息</p>
 <blockquote>
-<p>最后写一个测试类</p>
+<p>最后写一个测试类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.han.one;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 测试：通过反射获取运行过程中泛型实例</div><div class="line"> *</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericityTest</span> <span class="keyword">extends</span> <span class="title">Genericity</span>&lt;<span class="title">Dog</span>&gt; </span>&#123;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">    GenericityTest gt = <span class="keyword">new</span> GenericityTest();</div><div class="line"></div><div class="line">    <span class="comment">//赋值</span></div><div class="line">    Dog  dd=<span class="keyword">new</span> Dog();</div><div class="line">    dd.setAge(<span class="number">1</span>);</div><div class="line">    dd.setName(<span class="string">"旺财"</span>);</div><div class="line"></div><div class="line">    Map&lt;String,Object&gt; map = gt.getFieldValueMap(dd);</div><div class="line">    <span class="comment">//遍历</span></div><div class="line">    Set&lt;Map.Entry&lt;String, Object&gt;&gt; entrySet = map.entrySet();</div><div class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : entrySet)&#123;</div><div class="line">        String key = entry.getKey();</div><div class="line">        Object value = entry.getValue();</div><div class="line">        System.out.println(key + <span class="string">"---"</span> + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 </blockquote>
-<pre><code>package com.han.one;
-
-import java.util.Map;
-import java.util.Set;
-
-/**
- * 测试：通过反射获取运行过程中泛型实例
- *
- */
-
-public class GenericityTest extends Genericity&lt;Dog&gt; {
-
-public static void main(String[] args) {
-
-    GenericityTest gt = new GenericityTest();
-
-    //赋值
-    Dog  dd=new Dog();
-    dd.setAge(1);
-    dd.setName(&quot;旺财&quot;);
-
-    Map&lt;String,Object&gt; map = gt.getFieldValueMap(dd);
-    //遍历
-    Set&lt;Map.Entry&lt;String, Object&gt;&gt; entrySet = map.entrySet();
-    for (Map.Entry&lt;String, Object&gt; entry : entrySet){
-        String key = entry.getKey();
-        Object value = entry.getValue();
-        System.out.println(key + &quot;---&quot; + value);
-    }
-}
-}
-</code></pre><p>在这个测试类中，此类继承基类，并向其传递实体类，这样在父类中就可以通过反射获取泛型的类型了。</p>
-<p>以此为基础，就可以构建通用的DAO了，代码如下：</p>
-<pre><code>public class BaseDaoImpl&lt;T&gt;  implements IBaseDao&lt;T&gt; {
-
-
-@Autowired
-private SessionFactory  sessionFactory;
-
-
-@SuppressWarnings(&quot;rawtypes&quot;)
-private final Class clazz;
-
-
-@SuppressWarnings(&quot;unchecked&quot;)
-public BaseDaoImpl(){
-    // 通过反射机制获取子类传递过来的实体类的类型信息
-    ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-    clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[0];
-}
-
-
-@Override
-public boolean update(T t) {
-    // TODO Auto-generated method stub
-
-    StringBuffer stringBuffer=new StringBuffer();
-    stringBuffer.append(&quot;update &quot;+this.clazz.getSimpleName());
-    stringBuffer.append(&quot; u set u.itemTitle=:itemTitle ,u.itemContent=:itemContent,u.addTime=:addTime,u.isImage=:isImage,u.isPublish=:isPublish,u.author=:author  where u.id=:id&quot;);
-    System.out.println(stringBuffer.toString());
-    Query query  = sessionFactory.getCurrentSession().createQuery(stringBuffer.toString());
-    query.setProperties(t);
-    return (query.executeUpdate()&gt;0);
-}
-}
-</code></pre><p>这里只是在update方法中利用反射获取实体类，通过拼装hql语句来达到重用目的，当然参数也可以动态获取，这里只是个小例子。</p>
+<p>在这个测试类中，此类继承基类，并向其传递实体类，这样在父类中就可以通过反射获取泛型的类型了。</p>
+<p>以此为基础，就可以构建通用的DAO了，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseDaoImpl</span>&lt;<span class="title">T</span>&gt;  <span class="keyword">implements</span> <span class="title">IBaseDao</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> SessionFactory  sessionFactory;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Class clazz;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">BaseDaoImpl</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="comment">// 通过反射机制获取子类传递过来的实体类的类型信息</span></div><div class="line">       ParameterizedType type = (ParameterizedType) <span class="keyword">this</span>.getClass().getGenericSuperclass();</div><div class="line">       clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[<span class="number">0</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">update</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">	<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	StringBuffer stringBuffer=<span class="keyword">new</span> StringBuffer();</div><div class="line">	stringBuffer.append(<span class="string">"update "</span>+<span class="keyword">this</span>.clazz.getSimpleName());</div><div class="line">	stringBuffer.append(<span class="string">" u set u.itemTitle=:itemTitle ,u.itemContent=:itemContent,u.addTime=:addTime,u.isImage=:isImage,u.isPublish=:isPublish,u.author=:author  where u.id=:id"</span>);</div><div class="line">	System.out.println(stringBuffer.toString());</div><div class="line">	Query query  = sessionFactory.getCurrentSession().createQuery(stringBuffer.toString());</div><div class="line">	query.setProperties(t);</div><div class="line">	<span class="keyword">return</span> (query.executeUpdate()&gt;<span class="number">0</span>);</div><div class="line">&#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这里只是在update方法中利用反射获取实体类，通过拼装hql语句来达到重用目的，当然参数也可以动态获取，这里只是个小例子。</p>
 <blockquote>
 <p>总结</p>
 </blockquote>
@@ -728,32 +348,8 @@ public boolean update(T t) {
     
       &lt;p&gt;在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;首先建一个实体类Dog&lt;/p&gt;
+&lt;p&gt;首先建一个实体类Dog&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.io.Serializable;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Serializable&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; serialVersionUID = &lt;span class=&quot;number&quot;&gt;8108340856807454651L&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; age;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String name;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getAge&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; age;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setAge&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; age)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.age = age;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; name;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setName&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String name)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.name = name;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;import java.io.Serializable;
-
-public class Dog implements Serializable{
-
-private static final long serialVersionUID = 8108340856807454651L;
-
-
-private int age;
-private String name;
-public int getAge() {
-    return age;
-}
-public void setAge(int age) {
-    this.age = age;
-}
-public String getName() {
-    return name;
-}
-public void setName(String name) {
-    this.name = name;
-}
-
-}
-&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
     
@@ -767,145 +363,26 @@ public void setName(String name) {
     <link href="http://yoursite.com/2017/06/23/%E5%88%A9%E7%94%A8hibernate%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/</id>
     <published>2017-06-23T12:52:13.388Z</published>
-    <updated>2017-06-23T13:10:24.687Z</updated>
+    <updated>2017-09-24T04:36:34.225Z</updated>
     
     <content type="html"><![CDATA[<p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
 <blockquote>
-<p>实体类</p>
+<p>实体类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">   <span class="meta">@Entity</span></div><div class="line">   <span class="meta">@Table</span>(name = <span class="string">"ps_trends"</span>)</div><div class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Trends</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2228382525594394975L</span>;</div><div class="line"></div><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"item_title"</span>)</div><div class="line"><span class="keyword">private</span> String itemTitle;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"item_content"</span>)</div><div class="line"><span class="keyword">private</span> String itemContent;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"type_id"</span>)</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span>  typeId;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"add_time"</span>)</div><div class="line"><span class="keyword">private</span> String addTime;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"view_count"</span>)</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> viewCount;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"is_image"</span>)</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> isImage;</div><div class="line"></div><div class="line"><span class="meta">@Column</span>(name = <span class="string">"is_publish"</span>)</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> isPublish;</div><div class="line"></div><div class="line">   <span class="comment">//临时属性</span></div><div class="line">   <span class="meta">@Transient</span></div><div class="line">   <span class="keyword">private</span> String itemTypeFlag;</div><div class="line"></div><div class="line">   <span class="meta">@Transient</span></div><div class="line"><span class="keyword">private</span> String itemTypeName;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">()</span></span>&#123;&#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">(<span class="keyword">int</span> id, String itemTitle, String itemContent, String addTime, <span class="keyword">int</span> viewCount,</span></span></div><div class="line">		  String itemTypeName,String itemTypeFlag) &#123;</div><div class="line">	<span class="keyword">super</span>();</div><div class="line">	<span class="keyword">this</span>.id = id;</div><div class="line">	<span class="keyword">this</span>.itemTitle = itemTitle;</div><div class="line">	<span class="keyword">this</span>.itemContent = itemContent;</div><div class="line">	<span class="keyword">this</span>.addTime = addTime;</div><div class="line">	<span class="keyword">this</span>.viewCount = viewCount;</div><div class="line">	<span class="keyword">this</span>.itemTypeName = itemTypeName;</div><div class="line">	<span class="keyword">this</span>.itemTypeFlag = itemTypeFlag;</div><div class="line"></div><div class="line">   &#125;</div><div class="line">   setter ，getter方法</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
 </blockquote>
-<pre><code>@Entity
-@Table(name = &quot;ps_trends&quot;)
-public class Trends implements Serializable{
-
-
-private static final long serialVersionUID = -2228382525594394975L;
-
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int id;
-
-@Column(name = &quot;item_title&quot;)
-private String itemTitle;
-
-@Column(name = &quot;item_content&quot;)
-private String itemContent;
-
-@Column(name = &quot;type_id&quot;)
-private int  typeId;
-
-@Column(name = &quot;add_time&quot;)
-private String addTime;
-
-@Column(name = &quot;view_count&quot;)
-private int viewCount;
-
-@Column(name = &quot;is_image&quot;)
-private int isImage;
-
-@Column(name = &quot;is_publish&quot;)
-private int isPublish;
-
-//临时属性
-@Transient
-private String itemTypeFlag;
-
-@Transient
-private String itemTypeName;
-
-public Trends(){}
-
-public Trends(int id, String itemTitle, String itemContent, String addTime, int viewCount,
-          String itemTypeName,String itemTypeFlag) {
-    super();
-    this.id = id;
-    this.itemTitle = itemTitle;
-    this.itemContent = itemContent;
-    this.addTime = addTime;
-    this.viewCount = viewCount;
-    this.itemTypeName = itemTypeName;
-    this.itemTypeFlag = itemTypeFlag;
-
-}
-setter ，getter方法
-}
-</code></pre> <a id="more"></a>
+ <a id="more"></a>
 <p>这里有两个属性注解为Transient，因为它们不是主表的映射字段。同时写一个有参构造方法，构造方法的参数列表即为要查询的映射字段。</p>
 <blockquote>
-<p>DaoImpl方法</p>
+<p>DaoImpl方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">   <span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Trends <span class="title">findTrendsInfoById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">	<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">	String hql=<span class="string">"select new com.primaryschool.home.entity.Trends(t.id,t.itemTitle,t.itemContent,t.addTime,t.viewCount,tt.itemTypeName,tt.itemTypeFlag)from Trends t,TrendsType tt  where tt.id=t.typeId and t.id=? and t.isPublish=1"</span>;</div><div class="line">	Query query=sessionFactory.getCurrentSession().createQuery(hql);</div><div class="line">	query.setInteger(<span class="number">0</span>, id);</div><div class="line">	<span class="keyword">return</span> (Trends) query.uniqueResult();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 </blockquote>
-<pre><code>@Override
-public Trends findTrendsInfoById(int id) {
-    // TODO Auto-generated method stub
-    String hql=&quot;select new com.primaryschool.home.entity.Trends(t.id,t.itemTitle,t.itemContent,t.addTime,t.viewCount,tt.itemTypeName,tt.itemTypeFlag)from Trends t,TrendsType tt  where tt.id=t.typeId and t.id=? and t.isPublish=1&quot;;
-    Query query=sessionFactory.getCurrentSession().createQuery(hql);
-    query.setInteger(0, id);
-    return (Trends) query.uniqueResult();
-}
-</code></pre><p>在findTrendsInfoById(int id)方法中，hql语句有些特别，它是将两个表的需要字段传入到Trends实体类的构造方法中，这样就可以直接利用getter方法进行取值了。</p>
+<p>在findTrendsInfoById(int id)方法中，hql语句有些特别，它是将两个表的需要字段传入到Trends实体类的构造方法中，这样就可以直接利用getter方法进行取值了。</p>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt;在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;实体类&lt;/p&gt;
+&lt;p&gt;实体类&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;34&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;35&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;36&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;37&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;38&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;39&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;40&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;41&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;42&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;43&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;44&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;45&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;46&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;47&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;48&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;49&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;50&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;51&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;52&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;53&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;54&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;55&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;meta&quot;&gt;@Entity&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;meta&quot;&gt;@Table&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;ps_trends&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Trends&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Serializable&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; serialVersionUID = -&lt;span class=&quot;number&quot;&gt;2228382525594394975L&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Id&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@GeneratedValue&lt;/span&gt;(strategy = GenerationType.IDENTITY)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;item_title&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String itemTitle;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;item_content&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String itemContent;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;type_id&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;  typeId;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;add_time&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String addTime;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;view_count&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewCount;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;is_image&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; isImage;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Column&lt;/span&gt;(name = &lt;span class=&quot;string&quot;&gt;&quot;is_publish&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; isPublish;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;comment&quot;&gt;//临时属性&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;meta&quot;&gt;@Transient&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String itemTypeFlag;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;meta&quot;&gt;@Transient&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String itemTypeName;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Trends&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Trends&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id, String itemTitle, String itemContent, String addTime, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewCount,&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		  String itemTypeName,String itemTypeFlag) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.id = id;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.itemTitle = itemTitle;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.itemContent = itemContent;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.addTime = addTime;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.viewCount = viewCount;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.itemTypeName = itemTypeName;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.itemTypeFlag = itemTypeFlag;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   setter ，getter方法&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;@Entity
-@Table(name = &amp;quot;ps_trends&amp;quot;)
-public class Trends implements Serializable{
-
-
-private static final long serialVersionUID = -2228382525594394975L;
-
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int id;
-
-@Column(name = &amp;quot;item_title&amp;quot;)
-private String itemTitle;
-
-@Column(name = &amp;quot;item_content&amp;quot;)
-private String itemContent;
-
-@Column(name = &amp;quot;type_id&amp;quot;)
-private int  typeId;
-
-@Column(name = &amp;quot;add_time&amp;quot;)
-private String addTime;
-
-@Column(name = &amp;quot;view_count&amp;quot;)
-private int viewCount;
-
-@Column(name = &amp;quot;is_image&amp;quot;)
-private int isImage;
-
-@Column(name = &amp;quot;is_publish&amp;quot;)
-private int isPublish;
-
-//临时属性
-@Transient
-private String itemTypeFlag;
-
-@Transient
-private String itemTypeName;
-
-public Trends(){}
-
-public Trends(int id, String itemTitle, String itemContent, String addTime, int viewCount,
-          String itemTypeName,String itemTypeFlag) {
-    super();
-    this.id = id;
-    this.itemTitle = itemTitle;
-    this.itemContent = itemContent;
-    this.addTime = addTime;
-    this.viewCount = viewCount;
-    this.itemTypeName = itemTypeName;
-    this.itemTypeFlag = itemTypeFlag;
-
-}
-setter ，getter方法
-}
-&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
     
