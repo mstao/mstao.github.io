@@ -278,6 +278,126 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/" itemprop="url">javaee 配置数据源后数据库连接未及时关闭出现的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:43:01+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
+<blockquote>
+<p>org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot get a connection, pool error Timeout waiting for idle objec</p>
+</blockquote>
+<p>这个异常产生的原因是在使用完数据库连接后没有及时关闭，导致数据库连接池的连接没有可供使用的连接，进而报异常。<br>解决的方法是检查代码，将数据库连接及时关闭，并且在context.xml文件中加上</p>
+<blockquote>
+<p>removeAbandoned=”true” removeAbandonedTimeout=”60”<br>logAbandoned=”true”</p>
+</blockquote>
+<p>这样就解决问题了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/javaee 配置Tomcat数据源问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -990,7 +1110,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
