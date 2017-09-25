@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-25T12:54:41.546Z</updated>
+  <updated>2017-09-25T13:05:35.005Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/25/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E9%87%8A%E6%94%BE%E9%94%81/"/>
     <id>http://yoursite.com/2017/09/25/ReentrantLock源码笔记 - 释放锁/</id>
     <published>2017-09-25T12:51:43.892Z</published>
-    <updated>2017-09-25T12:54:41.546Z</updated>
+    <updated>2017-09-25T13:05:35.005Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock源码学习-释放锁（unlock）"><a href="#ReentrantLock源码学习-释放锁（unlock）" class="headerlink" title="ReentrantLock源码学习 - 释放锁（unlock）"></a>ReentrantLock源码学习 - 释放锁（unlock）</h2><hr>
 <p>上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程</p>
@@ -32,6 +32,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> c = getState() - releases;</div><div class="line">    <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">    <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">        free = <span class="keyword">true</span>;</div><div class="line">        setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    setState(c);</div><div class="line">    <span class="keyword">return</span> free;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>接下来来看方法unparkSuccessor，该方法的作用就是为了释放node节点的后继结点。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * If status is negative (i.e., possibly needing signal) try</div><div class="line">     * to clear in anticipation of signalling.  It is OK if this</div><div class="line">     * fails or if status is changed by waiting thread.</div><div class="line">     */</div><div class="line">     <span class="comment">// 获取节点的状态</span></div><div class="line">    <span class="keyword">int</span> ws = node.waitStatus;</div><div class="line">    <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</div><div class="line">        compareAndSetWaitStatus(node, ws, <span class="number">0</span>); <span class="comment">// 利用CAS 将状态设置为0</span></div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">     * Thread to unpark is held in successor, which is normally</div><div class="line">     * just the next node.  But if cancelled or apparently null,</div><div class="line">     * traverse backwards from tail to find the actual</div><div class="line">     * non-cancelled successor.</div><div class="line">     */</div><div class="line">    <span class="comment">// 获取节点的后继节点</span></div><div class="line">    Node s = node.next;</div><div class="line">    <span class="comment">// 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED</span></div><div class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</div><div class="line">        s = <span class="keyword">null</span>; <span class="comment">// 将后继节点置为null</span></div><div class="line">        <span class="comment">// 从尾节点从后向前开始遍历知道节点为空或者当前节点为止</span></div><div class="line">        <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</div><div class="line">            <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>) <span class="comment">// 如果此时节点的状态小于等于0</span></div><div class="line">                s = t; <span class="comment">// 将此节点赋给传入节点的后继节点</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (s != <span class="keyword">null</span>)  <span class="comment">// 节点不为空，释放</span></div><div class="line">        LockSupport.unpark(s.thread);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://blog.csdn.net/luonanqin/article/details/41871909" target="_blank" rel="external">http://blog.csdn.net/luonanqin/article/details/41871909</a></p>
 ]]></content>
     
     <summary type="html">
@@ -56,7 +57,7 @@
     <link href="http://yoursite.com/2017/09/20/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E8%8E%B7%E5%8F%96%E9%94%81/"/>
     <id>http://yoursite.com/2017/09/20/ReentrantLock源码笔记 - 获取锁/</id>
     <published>2017-09-20T14:56:57.951Z</published>
-    <updated>2017-09-24T04:53:42.191Z</updated>
+    <updated>2017-09-25T13:13:51.261Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock-学习-获取锁（JDK-1-8）"><a href="#ReentrantLock-学习-获取锁（JDK-1-8）" class="headerlink" title="ReentrantLock 学习 - 获取锁（JDK 1.8）"></a>ReentrantLock 学习 - 获取锁（JDK 1.8）</h2><hr>
 <p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
@@ -162,6 +163,7 @@
 <li>FairSync 而公平锁则需要判断CLH队列中是否还有其他线程在等待获取锁</li>
 </ul>
 <p>ReentrantLock是基于AbstractQueuedSynchronizer（AQS）实现的，AQS可以实现独占锁也可以实现共享锁，ReentrantLock只是使用了其中的独占锁模式。</p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://www.cnblogs.com/java-zhao/p/5131544.html" target="_blank" rel="external">http://www.cnblogs.com/java-zhao/p/5131544.html</a></p>
 ]]></content>
     
     <summary type="html">
