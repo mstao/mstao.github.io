@@ -278,6 +278,158 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/02/谈谈基于ZooKeeper的分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/02/谈谈基于ZooKeeper的分布式锁/" itemprop="url">谈谈基于ZooKeeper的分布式锁</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-02T07:25:34+08:00">
+                2017-10-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>分布式锁可以基于以下几种方式实现：</p>
+<ul>
+<li>基于数据库的乐观锁，用于分布式锁</li>
+<li>基于缓存(Redis, memcached)实现分布式锁</li>
+<li>基于ZooKeeper实现分布式锁</li>
+</ul>
+<p>在这篇文章中，主要讲讲ZooKeeper以及分布式锁的实现，通过了解基于ZooKeeper分布式锁实现的原理，我们会对ZooKeeper有一个基本的了解。</p>
+<h2 id="ZooKeeper介绍"><a href="#ZooKeeper介绍" class="headerlink" title="ZooKeeper介绍"></a>ZooKeeper介绍</h2><p>首先谈谈ZooKeeper，ZooKeeper是一种为分布式应用所设计的高可用、高性能且一致的开源协调服务，它提供了一项基本服务：分布式锁服务。由于ZooKeeper的开源特性，后来我们的开发者在分布式锁的基础上，摸索了出了其他的使用方法：配置维护、组服务、分布式消息队列、分布式通知/协调等。</p>
+<p>在ZooKeeper中，有一个被称为ZNode的节点，在该节点可以存储同步相关的数据，并且多个ZNode节点可以形成类似下图的结构。</p>
+<p><img src="https://ip.freep.cn/590836/85ffcfb7fa7f23df911ed8304d3a88af.png" alt="image"></p>
+<h3 id="基本命令："><a href="#基本命令：" class="headerlink" title="基本命令："></a>基本命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">1. 查看节点</div><div class="line">    ls /</div><div class="line">2. 创建节点</div><div class="line">    create /zk myData</div><div class="line">3. 查看节点</div><div class="line">    get /zk</div><div class="line">4. 设置节点</div><div class="line">    set /zk myData2</div><div class="line">5. 删除节点</div><div class="line">    delete /zk data</div><div class="line">6. 创建临时节点</div><div class="line">    create -e /han</div><div class="line">7. 创建顺序节点</div><div class="line">    create -s /han/ data</div><div class="line">8. 创建顺序临时节点</div><div class="line">    create -s -e /han/ data</div></pre></td></tr></table></figure>
+<h3 id="ZNode"><a href="#ZNode" class="headerlink" title="ZNode"></a>ZNode</h3><p>客户端可以在一个ZNode上设置一个监视器（Watch），如果该ZNode数据发生变更，ZooKeeper会通知客户端，从而触发监视器中实现的逻辑的执行。其中ZNode有以下几种类型：</p>
+<ul>
+<li>PERSISTENT</li>
+<li>PERSISTENT_SEQUENTIAL</li>
+<li>EPHEMERAL</li>
+<li>EPHEMERAL_SEQUENTIAL</li>
+</ul>
+<p>下面分别解释一下：</p>
+<ol>
+<li>PERSISTENT为持久节点，持久节点是指在节点创建后，就一直存在，直到有删除操作来主动清除这个节点——不会因为创建该节点的客户端会话失效而消失。<br>ZooKeeper命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create /zk myData</div></pre></td></tr></table></figure>
+<ol>
+<li>PERSISTENT_SEQUENTIAL为持久顺序节点，基本特性与持久节点一致，但每个父节点会为他的第一级子节点维护一份时序，会记录每个子节点创建的先后顺序。命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -s /han/ data</div></pre></td></tr></table></figure>
+<p>用这条命令的话，需要先创建/han节点，节点类型为PERSISTENT。</p>
+<ol>
+<li>EPHEMERAL为临时节点，客户端会话失效或连接关闭后，该节点会被自动删除，且不能在临时节点下面创建子节点，命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -e /han</div></pre></td></tr></table></figure>
+<p>如果在临时节点下面还要创建子节点，那么zk就会提示：Ephemerals cannot have children</p>
+<ol>
+<li>EPHEMERAL_SEQUENTIAL为临时顺序节点，该节点的除了不是持久性节点，其他特性与持久顺序节点一致。命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -s -e /han/ data</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/02/谈谈基于ZooKeeper的分布式锁/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/25/ReentrantLock源码笔记 - 释放锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1403,146 +1555,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/java多态学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/23/java多态学习/" itemprop="url">java多态学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:46:18+08:00">
-                2017-06-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在java多态中，引用与对象可以是不同的类型，如:</p>
-<pre><code>A b=new B();
-</code></pre><p>运用多态时，引用类型可以是实际对象类型的父类，即实际对象类型已经是一个比较具体的类，而引用类型则是一个比较抽象的类，任何extends过声明引用类型的对象都可以赋值给这个引用变量，这样就可以做出类似动态数组的东西，如下:</p>
-<pre><code>Animal[] a=new Animal[2];
-a[0]=new Dog();
-a[1]=new Cat();
-for(int i=0;i&lt;a.length;i++){
-    a[i].eat();
-}
-</code></pre><p>a数组里面可以放任何Animal的子类对象，调用的时候可以把子类都当作Animal来操作，实际上调用的是子类的方法，是不是很好玩呢→_→</p>
-<p>当然，多态的应用很广泛呢，参数和返回类型也可以多态，如下:</p>
-<pre><code>class Vet{
-   public void giveShot(Anmial a){
-
-      a.makeNoise();
-   }
-}
-
-class Pet{
-   public void a(){
-      Vet v=new Vet();
-      Dog dog=new Dog();
-      Cat cat=new Cat();
-      v.giveShot(dog);
-      v.giveShot(cat);
-   }
-
-}
-</code></pre><p>giveShot会接受任何Animal的子类的对象实例，根据传入的参数不同，会调用不同对象的方法。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1592,7 +1604,7 @@ class Pet{
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1605,7 +1617,7 @@ class Pet{
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
