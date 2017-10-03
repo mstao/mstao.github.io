@@ -140,7 +140,7 @@
     <link href="http://yoursite.com/2017/09/25/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E9%87%8A%E6%94%BE%E9%94%81/"/>
     <id>http://yoursite.com/2017/09/25/ReentrantLock源码笔记 - 释放锁/</id>
     <published>2017-09-25T12:51:43.892Z</published>
-    <updated>2017-09-25T13:05:35.005Z</updated>
+    <updated>2017-09-25T13:05:35.004Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock源码学习-释放锁（unlock）"><a href="#ReentrantLock源码学习-释放锁（unlock）" class="headerlink" title="ReentrantLock源码学习 - 释放锁（unlock）"></a>ReentrantLock源码学习 - 释放锁（unlock）</h2><hr>
 <p>上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程</p>
@@ -177,7 +177,7 @@
     <link href="http://yoursite.com/2017/09/20/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E8%8E%B7%E5%8F%96%E9%94%81/"/>
     <id>http://yoursite.com/2017/09/20/ReentrantLock源码笔记 - 获取锁/</id>
     <published>2017-09-20T14:56:57.951Z</published>
-    <updated>2017-09-25T13:13:51.261Z</updated>
+    <updated>2017-09-25T13:13:51.260Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock-学习-获取锁（JDK-1-8）"><a href="#ReentrantLock-学习-获取锁（JDK-1-8）" class="headerlink" title="ReentrantLock 学习 - 获取锁（JDK 1.8）"></a>ReentrantLock 学习 - 获取锁（JDK 1.8）</h2><hr>
 <p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
@@ -356,7 +356,7 @@
     <title>在Service层进行事务控制</title>
     <link href="http://yoursite.com/2017/09/16/%E5%9C%A8Service%E5%B1%82%E8%BF%9B%E8%A1%8C%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6/"/>
     <id>http://yoursite.com/2017/09/16/在Service层进行事务控制/</id>
-    <published>2017-09-16T13:23:17.994Z</published>
+    <published>2017-09-16T13:23:17.993Z</published>
     <updated>2017-09-16T13:33:06.008Z</updated>
     
     <content type="html"><![CDATA[<h2 id="利用接口回调实现JDBCTemplate"><a href="#利用接口回调实现JDBCTemplate" class="headerlink" title="利用接口回调实现JDBCTemplate"></a>利用接口回调实现JDBCTemplate</h2><ol>
@@ -520,7 +520,7 @@
     <title>利用hibernate进行多表查询问题</title>
     <link href="http://yoursite.com/2017/06/23/%E5%88%A9%E7%94%A8hibernate%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/</id>
-    <published>2017-06-23T12:52:13.388Z</published>
+    <published>2017-06-23T12:52:13.387Z</published>
     <updated>2017-09-24T04:51:34.453Z</updated>
     
     <content type="html"><![CDATA[<p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
@@ -554,7 +554,7 @@
     <link href="http://yoursite.com/2017/06/23/%E5%88%A9%E7%94%A8uploadify%E6%8F%92%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%97%B6java%E5%90%8E%E5%8F%B0%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E5%BD%93%E5%89%8Dsession%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/</id>
     <published>2017-06-23T12:51:23.675Z</published>
-    <updated>2017-06-23T13:04:31.971Z</updated>
+    <updated>2017-06-23T13:04:31.970Z</updated>
     
     <content type="html"><![CDATA[<p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
 <pre><code>$(&quot;#uploadify&quot;).uploadify({
@@ -580,7 +580,7 @@
     <title>javaweb下载文件时IE浏览器下报错问题</title>
     <link href="http://yoursite.com/2017/06/23/javaweb%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E6%97%B6IE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8B%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/javaweb下载文件时IE浏览器下报错问题/</id>
-    <published>2017-06-23T12:50:10.805Z</published>
+    <published>2017-06-23T12:50:10.804Z</published>
     <updated>2017-06-23T13:04:03.725Z</updated>
     
     <content type="html"><![CDATA[<p>最近做的网站的一个下载功能出现了问题，在firefox浏览器以及360浏览器下下载均正常，也能将中文正常转换，但在IE浏览器下却出现了问题，当点击下载链接的时候，后台直接报错：<br><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/1999726111.png" alt="2017-03-17_113722.png"><br>后台我怎么兼容也不能解决问题，我下载的部分java代码：</p>
@@ -605,7 +605,7 @@
     <title>网站消息推送之long polling（长轮询）初探</title>
     <link href="http://yoursite.com/2017/06/23/%E7%BD%91%E7%AB%99%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81%E4%B9%8Blong%20polling%EF%BC%88%E9%95%BF%E8%BD%AE%E8%AF%A2%EF%BC%89%E5%88%9D%E6%8E%A2/"/>
     <id>http://yoursite.com/2017/06/23/网站消息推送之long polling（长轮询）初探/</id>
-    <published>2017-06-23T12:47:58.301Z</published>
+    <published>2017-06-23T12:47:58.300Z</published>
     <updated>2017-09-24T04:55:17.389Z</updated>
     
     <content type="html"><![CDATA[<p>网站的消息推送功能应用很广泛，比如论坛，问答网站等等都需要推送消息，那么采用什么样的推送方式更加便捷，更加节省服务器资源呢，这个需要根据网站的流量和规模来决定，因为long polling是我最先接触到的，我就来谈谈它吧。</p>
@@ -639,8 +639,8 @@
     <title>java多态学习</title>
     <link href="http://yoursite.com/2017/06/23/java%E5%A4%9A%E6%80%81%E5%AD%A6%E4%B9%A0/"/>
     <id>http://yoursite.com/2017/06/23/java多态学习/</id>
-    <published>2017-06-23T12:46:18.002Z</published>
-    <updated>2017-06-23T13:05:55.245Z</updated>
+    <published>2017-06-23T12:46:18.001Z</published>
+    <updated>2017-06-23T13:05:55.244Z</updated>
     
     <content type="html"><![CDATA[<p>在java多态中，引用与对象可以是不同的类型，如:</p>
 <pre><code>A b=new B();
@@ -690,8 +690,8 @@ class Pet{
     <title>javaee 配置数据源后数据库连接未及时关闭出现的问题</title>
     <link href="http://yoursite.com/2017/06/23/javaee%20%20%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90%E5%90%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%9C%AA%E5%8F%8A%E6%97%B6%E5%85%B3%E9%97%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/javaee  配置数据源后数据库连接未及时关闭出现的问题/</id>
-    <published>2017-06-23T12:43:01.663Z</published>
-    <updated>2017-06-23T13:11:12.869Z</updated>
+    <published>2017-06-23T12:43:01.662Z</published>
+    <updated>2017-06-23T13:11:12.868Z</updated>
     
     <content type="html"><![CDATA[<p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
 <blockquote>
@@ -748,7 +748,7 @@ class Pet{
     <title>php json_encode函数使用遇到的问题</title>
     <link href="http://yoursite.com/2017/06/23/php%20%20json_encode%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/php  json_encode函数使用遇到的问题/</id>
-    <published>2017-06-23T12:35:53.853Z</published>
+    <published>2017-06-23T12:35:53.852Z</published>
     <updated>2017-09-24T04:56:02.204Z</updated>
     
     <content type="html"><![CDATA[<p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//关联二位数组</span></div><div class="line">$a2=<span class="keyword">array</span>(    </div><div class="line">  <span class="string">'1'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'john'</span>,<span class="string">'age'</span>=&gt;<span class="string">'32'</span>),</div><div class="line">  <span class="string">'2'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'tom'</span>,<span class="string">'age'</span>=&gt;<span class="string">'22'</span>)</div><div class="line">);</div><div class="line">$json2=json_encode($a2);</div><div class="line"><span class="keyword">echo</span> $json2.<span class="string">"&lt;br&gt;"</span>; <span class="comment">//&#123;"1":&#123;"name":"john","age":"32"&#125;,"2":&#123;"name":"tom","age":"22"&#125;&#125;</span></div><div class="line"><span class="comment">//索引二维数组</span></div><div class="line">$a3=<span class="keyword">array</span>(</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'zz'</span>,<span class="string">'age'</span>=&gt;<span class="string">'31'</span>),</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'we'</span>,<span class="string">'AGE'</span>=&gt;<span class="string">'12'</span>)</div><div class="line">  );</div><div class="line"> $json3=json_encode($a3);</div><div class="line"> <span class="keyword">echo</span> $json3.<span class="string">"&lt;br&gt;"</span>;<span class="comment">//[&#123;"name":"zz","age":"31"&#125;,&#123;"name":"we","AGE":"12"&#125;]</span></div></pre></td></tr></table></figure></p>
@@ -775,8 +775,8 @@ class Pet{
     <title>关于首页feed流如何展示和数据库如何设计问题</title>
     <link href="http://yoursite.com/2017/06/23/%E5%85%B3%E4%BA%8E%E9%A6%96%E9%A1%B5feed%E6%B5%81%E5%A6%82%E4%BD%95%E5%B1%95%E7%A4%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2017/06/23/关于首页feed流如何展示和数据库如何设计问题/</id>
-    <published>2017-06-23T12:34:14.035Z</published>
-    <updated>2017-06-23T13:10:23.029Z</updated>
+    <published>2017-06-23T12:34:14.034Z</published>
+    <updated>2017-06-23T13:10:23.028Z</updated>
     
     <content type="html"><![CDATA[<p>最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。</p>
 <p>这里涉及到两个概念 <strong>推模式（push）</strong>和<strong>拉模式（pull）</strong>，这里有两篇大神分享的知识<a href="http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html" target="_blank" rel="external"> 新浪微博架构和FEED架构分析–人人架构<em>paper0023</em>新浪博客</a>和<a href="http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html" target="_blank" rel="external">微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨</a>，讲解的比较清楚</p>
@@ -896,8 +896,8 @@ class Pet{
     <title>Hello World</title>
     <link href="http://yoursite.com/2017/06/23/hello-world/"/>
     <id>http://yoursite.com/2017/06/23/hello-world/</id>
-    <published>2017-06-23T10:10:30.046Z</published>
-    <updated>2017-06-23T10:10:30.046Z</updated>
+    <published>2017-06-23T10:10:30.045Z</published>
+    <updated>2017-06-23T10:10:30.045Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
@@ -924,7 +924,7 @@ class Pet{
     <link href="http://yoursite.com/2017/06/22/markdown-01/"/>
     <id>http://yoursite.com/2017/06/22/markdown-01/</id>
     <published>2017-06-22T07:44:07.000Z</published>
-    <updated>2017-06-22T08:46:20.941Z</updated>
+    <updated>2017-06-22T08:46:20.940Z</updated>
     
     <content type="html"><![CDATA[<p><em>试试一下markdowm</em></p>
 <h2 id="这是一个标题"><a href="#这是一个标题" class="headerlink" title="这是一个标题"></a>这是一个标题</h2><ol>
