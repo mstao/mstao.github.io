@@ -278,6 +278,133 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/31/设计模式之单例模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/31/设计模式之单例模式/" itemprop="url">设计模式之单例模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-31T00:20:01+08:00">
+                2017-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在项目中会遇到这样一些情况，比如一个类，我们想让这个类在系统中有且仅有一个对象，不能够重复创建类的实例，因为这种类是无状态的，我们只需要有过一个类的实例就行了。这时我们需要用到设计模式的单例模式。</p>
+<p>单例模式分为饿汉式和懒汉式，下面对这两种模式简单介绍:</p>
+<ol>
+<li>饿汉式是指当系统启动或者类被加载时就已经创建了类的实例</li>
+<li>懒汉式是指当该类第一次被调用的时候才会去创建该类的实例</li>
+</ol>
+<p>单例模式有很多实现，不同实现有优有劣，下面谈谈单例的具体的一些实现</p>
+<h2 id="单例模式-饿汉式"><a href="#单例模式-饿汉式" class="headerlink" title="单例模式  - 饿汉式"></a>单例模式  - 饿汉式</h2><p>对于饿汉式，如果不实现懒加载的话，那么实现就比较简单，首先让无参构造函数私有化，我们可以直接对该类进行实例化，然后将其赋值给类的成员变量instance，然后提供一个外部可以访问的方法来获取类的实例。下面是代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  - 饿汉式</div><div class="line"> * 线程安全，但未实现懒加载。</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo1</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonDemo1 instance = <span class="keyword">new</span> SingletonDemo1();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo1 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="单例模式-懒汉式"><a href="#单例模式-懒汉式" class="headerlink" title="单例模式  - 懒汉式"></a>单例模式  - 懒汉式</h2><p>如果想实现懒加载，那么就要用到懒汉式了。懒汉式是当类第一次被调用的时候才被实例化，但这个时候就会出现线程安全问题，所以我们需要对进行类实例化的部分进行加锁，来保证类的实例只有一个，由于加锁的问题，性能就会降低。虽然做到了线程安全，并且解决了多实例的问题，但是它并不高效。因为在任何时候只能有一个线程调用 getInstance()方法。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  - 懒汉模式</div><div class="line"> * 实现延迟加载 ，所以 getInstance() 方法必须同步</div><div class="line"> *</div><div class="line"> * 此方法实现单例模式 性能比饿汉式低</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo2</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonDemo2 instance = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo2</span><span class="params">()</span> </span>&#123;&#125;    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonDemo2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> SingletonDemo2();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有一种实现懒加载的方式使用静态内部类来实现单例，由于静态内部类外部不能被访问到，这一种写法简单，比较容易理解，推荐使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  使用静态内部类 实现延迟加载</div><div class="line"> * 比较推荐</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo3</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo3</span><span class="params">()</span></span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonDemo3 instance = <span class="keyword">new</span> SingletonDemo3();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo3 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> SingletonHolder.instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面写了一个线程安全的单例模式的懒汉式，但却不是十分理想，假如同时有好多线程去调用getInstance方法，那么同一时间只有一个线程能够获取到类的实例，其他的线程都要排队等待该线程释放锁，效率低下。所以此时引出了“双重检验锁”。现在同时有两个线程进入到getInstance方法中，那么两个线程都会进入到第一个判空语句块中，因为此时还没有创建类的实例，接下来只有一个线程能获取到锁，进入到synchronized (SingletonDemo4.class){}语句块中，创建类的实例后释放锁，当前等待线程就会获取到锁，此时如果没有第二次判空操作，那么第二个线程就会再创建一次类的实例，这样就违背了单例的原则，所以双重检验锁就是这么来的。因为上来不是直接就加锁，而是在进行判空后加锁，也就是只有该类还没有被实例化时才会被加锁，当有实例了就不用加锁了，自然就提高了性能。当代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 懒汉式的再次优化</div><div class="line"> * 双重检验锁，解决线程安全问题</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo4</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> SingletonDemo4 instance = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo4</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo4 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (SingletonDemo4.class) &#123;</div><div class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;            </div><div class="line">                    instance = <span class="keyword">new</span> SingletonDemo4();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里用到了volatile关键字，这里保证了不同线程对这个变量进行操作时的可见性。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/29/Linux基本命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1529,124 +1656,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/23/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">利用uploadify插件上传文件时java后台获取不到当前session问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:51:23+08:00">
-                2017-06-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
-<pre><code>$(&quot;#uploadify&quot;).uploadify({
-        debug            : false,
-        swf             :  CTPPATH+&apos;/admin/static/uploadify/js/uploadify.swf&apos;,    //swf文件路径
-        method            : &apos;get&apos;,    // 提交方式
-        uploader        :  CTPPATH+&apos;/processUpload.ado;jsessionid=${pageContext.session.id}&apos;, // 服务器端处理该上传请求的程序(servlet, struts2-Action)   )};
-</code></pre><p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1696,7 +1705,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1709,7 +1718,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
