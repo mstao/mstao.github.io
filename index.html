@@ -593,8 +593,7 @@
 
       
         
-          
-            <h2 id="目录操作："><a href="#目录操作：" class="headerlink" title="目录操作："></a>目录操作：</h2><ul>
+          <h2 id="目录操作："><a href="#目录操作：" class="headerlink" title="目录操作："></a>目录操作：</h2><ul>
 <li>创建目录：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir $HOME/testFolder</div></pre></td></tr></table></figure>
@@ -620,66 +619,13 @@
 </ul>
 <p><strong>使用 ls 命令查看 /etc<br> 目录下所有文件和文件夹</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls /etc</div></pre></td></tr></table></figure>
-<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><ul>
-<li>创建文件</li>
-</ul>
-<p><strong>使用 touch 命令创建文件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch ~/testFile</div></pre></td></tr></table></figure>
-<ul>
-<li>复制文件</li>
-</ul>
-<p><strong>使用 cp 命令复制文件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp ~/testFile ~/testNewFile</div></pre></td></tr></table></figure>
-<ul>
-<li>删除文件</li>
-</ul>
-<p><strong>使用 rm 命令删除文件, 输入 y 后回车确认删除</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm ~/testFile</div></pre></td></tr></table></figure>
-<ul>
-<li>查看文件内容</li>
-</ul>
-<p><strong>使用 cat 命令查看 .bash_history 文件内容</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/.bash_history</div></pre></td></tr></table></figure>
-<h2 id="过滤-管道与重定向"><a href="#过滤-管道与重定向" class="headerlink" title="过滤, 管道与重定向"></a>过滤, 管道与重定向</h2><ul>
-<li>过滤</li>
-</ul>
-<p><strong>过滤出 /etc/passwd 文件中包含 root 的记录</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep &apos;root&apos; /etc/passwd</div></pre></td></tr></table></figure>
-<p><strong>递归地过滤出 /var/log/ 目录中包含 linux 的记录</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep -r &apos;linux&apos; /var/log/</div></pre></td></tr></table></figure>
-<ul>
-<li>管道</li>
-</ul>
-<p>简单来说, Linux 中管道的作用是将上一个命令的输出作为下一个命令的输入, 像 pipe 一样将各个命令串联起来执行, 管道的操作符是 |</p>
-<p><strong>比如, 我们可以将 cat 和 grep 两个命令用管道组合在一起</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd | grep &apos;root&apos;</div></pre></td></tr></table></figure>
-<p>过滤出 /etc 目录中名字包含 ssh 的目录(不包括子目录)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls /etc | grep &apos;ssh&apos;</div></pre></td></tr></table></figure>
-<ul>
-<li>重定向</li>
-</ul>
-<p><strong>可以使用 &gt; 或 &lt; 将命令的输出重定向到一个文件中</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;Hello World&apos; &gt; ~/test.txt</div></pre></td></tr></table></figure>
-<h2 id="运维常用命令"><a href="#运维常用命令" class="headerlink" title="运维常用命令"></a>运维常用命令</h2><ul>
-<li>ping 命令</li>
-</ul>
-<p><strong>对 cloud.tencent.com 发送 4 个 ping 包, 检查与其是否联通</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ping -c 4 cloud.tencent.com</div></pre></td></tr></table></figure>
-<ul>
-<li>netstat 命令</li>
-</ul>
-<p>netstat 命令用于显示各种网络相关信息，如网络连接, 路由表, 接口状态等等</p>
-<p><strong>列出所有处于监听状态的tcp端口</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -lt</div></pre></td></tr></table></figure>
-<p><strong>查看所有的端口信息, 包括 PID 和进程名称</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -tulpn</div></pre></td></tr></table></figure>
-<ul>
-<li>ps 命令</li>
-</ul>
-<p><strong>过滤得到当前系统中的 ssh 进程信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -aux | grep &apos;ssh</div></pre></td></tr></table></figure>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/29/Linux基本命令/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

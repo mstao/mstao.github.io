@@ -115,7 +115,7 @@
     <link href="http://yoursite.com/2017/10/29/Linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/"/>
     <id>http://yoursite.com/2017/10/29/Linux基本命令/</id>
     <published>2017-10-29T03:18:23.863Z</published>
-    <updated>2017-10-29T03:19:52.659Z</updated>
+    <updated>2017-11-01T15:56:29.249Z</updated>
     
     <content type="html"><![CDATA[<h2 id="目录操作："><a href="#目录操作：" class="headerlink" title="目录操作："></a>目录操作：</h2><ul>
 <li>创建目录：</li>
@@ -143,6 +143,7 @@
 </ul>
 <p><strong>使用 ls 命令查看 /etc<br> 目录下所有文件和文件夹</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls /etc</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><ul>
 <li>创建文件</li>
 </ul>
@@ -208,7 +209,29 @@
       &lt;h2 id=&quot;目录操作：&quot;&gt;&lt;a href=&quot;#目录操作：&quot; class=&quot;headerlink&quot; title=&quot;目录操作：&quot;&gt;&lt;/a&gt;目录操作：&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;创建目录：&lt;/li&gt;
 &lt;/ul&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;ta
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;mkdir $HOME/testFolder&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;切换目录：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用 cd 命令切换目录&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;cd $HOME/testFolder&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;使用 cd ../ 命令切换到上一级目录&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;cd ../&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;移动目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用 mv 命令移动目录&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;mv $HOME/testFolder /var/tmp&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;删除目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用 rm -rf 命令删除目录&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;rm -rf /var/tmp/testFolder&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;查看目录下的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使用 ls 命令查看 /etc&lt;br&gt; 目录下所有文件和文件夹&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;ls /etc&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
