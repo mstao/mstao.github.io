@@ -278,6 +278,127 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/01/设计模式之观察者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/01/设计模式之观察者模式/" itemprop="url">设计模式之观察者模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T23:52:35+08:00">
+                2017-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我们在生活中会遇到这样一些例子，比如你订阅了某人的博客，那么这个人发布博客的时候会将消息推送给你，而且不是只推送你自己一人，只要订阅了该人的博客，那么订阅者都会收到通知，像这样的例子生活中实在是太多了。其实这种操作可以抽象一下，A对象（观察者）对B对象（被观察者）的某种变化高度敏感，需要在B变化的一瞬间做出反应，同时在B对象中维护着所有A的集合。我们在实际编程中称这种模式为观察者模式，有时也称为发布/订阅(Publish/Subscribe)模型。</p>
+<p>在JDK的util包中已经帮我们实现了观察者模式，不过我们还是先通过自己写代码来看看观察者到底是怎么回事，自己该如何简单的实现，相信通过自己的简单实现，来理解JDK的观察者模式的实现是十分容易的。</p>
+<p>在观察者模式中，首先要有两个角色，观察者与被观察者，这两者拥有的功能是不同的。对于观察者，需要有一个方法来接收被观察者发出的信息(update)，而对于被观察者而言，需要在其内部维护一个观察者的列表，用来记录需要通知的观察者(list)，所以需要一个添加观察者的方法(addWatcher），同时还要有一个方法可以用来移除观察者(removeWatcher), 最后我们需要一个用来通知所有观察者的方法(notifyWatchers), 一切准备就绪，那么我们来看代码吧。</p>
+<p>先定义两个接口，观察者(Watcher)和被观察者(Watched),代码如下：</p>
+<p>首先是观察者接口，定义了update方法用来接收通知</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 观察者</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Watcher</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 用来接收通知</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span>  <span class="title">update</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/01/设计模式之观察者模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/31/设计模式之单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1537,130 +1658,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/利用hibernate进行多表查询问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/23/利用hibernate进行多表查询问题/" itemprop="url">利用hibernate进行多表查询问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:52:13+08:00">
-                2017-06-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
-<blockquote>
-<p>实体类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Entity</span></div><div class="line"><span class="meta">@Table</span>(name = <span class="string">"ps_trends"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Trends</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2228382525594394975L</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Id</span></div><div class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_title"</span>)</div><div class="line">    <span class="keyword">private</span> String itemTitle;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_content"</span>)</div><div class="line">    <span class="keyword">private</span> String itemContent;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"type_id"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>  typeId;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"add_time"</span>)</div><div class="line">    <span class="keyword">private</span> String addTime;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"view_count"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> viewCount;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_image"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isImage;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_publish"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isPublish;</div><div class="line"></div><div class="line">    <span class="comment">//临时属性</span></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeFlag;</div><div class="line"></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeName;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">(<span class="keyword">int</span> id, String itemTitle, String itemContent, String addTime, <span class="keyword">int</span> viewCount,</span></span></div><div class="line">    	  String itemTypeName,String itemTypeFlag) &#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">        <span class="keyword">this</span>.itemTitle = itemTitle;</div><div class="line">        <span class="keyword">this</span>.itemContent = itemContent;</div><div class="line">        <span class="keyword">this</span>.addTime = addTime;</div><div class="line">        <span class="keyword">this</span>.viewCount = viewCount;</div><div class="line">        <span class="keyword">this</span>.itemTypeName = itemTypeName;</div><div class="line">        <span class="keyword">this</span>.itemTypeFlag = itemTypeFlag;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    setter ，getter方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/23/利用hibernate进行多表查询问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1705,7 +1707,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1718,7 +1720,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
