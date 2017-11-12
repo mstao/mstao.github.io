@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/25/ReentrantLock源码笔记 - 释放锁/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="ReentrantLock源码学习 - 释放锁（unlock） 上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程 首先调用ReentrantLock的unlock方法 123public void unlock() &amp;#123;    sync.release(1);&amp;#125; 然后会调用AbstractQueuedSynchronizer（AQS）的r">
-<meta property="og:updated_time" content="2017-11-12T07:35:28.375Z">
+<meta property="og:updated_time" content="2017-11-12T07:44:24.646Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReentrantLock源码笔记 - 释放锁（JDK 1.8）">
 <meta name="twitter:description" content="ReentrantLock源码学习 - 释放锁（unlock） 上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程 首先调用ReentrantLock的unlock方法 123public void unlock() &amp;#123;    sync.release(1);&amp;#125; 然后会调用AbstractQueuedSynchronizer（AQS）的r">
