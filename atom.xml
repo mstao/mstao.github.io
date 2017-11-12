@@ -92,7 +92,7 @@
     <link href="http://yoursite.com/2017/11/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2017/11/01/设计模式之观察者模式/</id>
     <published>2017-11-01T15:52:35.448Z</published>
-    <updated>2017-11-01T15:58:26.446Z</updated>
+    <updated>2017-11-12T07:29:23.477Z</updated>
     
     <content type="html"><![CDATA[<p>我们在生活中会遇到这样一些例子，比如你订阅了某人的博客，那么这个人发布博客的时候会将消息推送给你，而且不是只推送你自己一人，只要订阅了该人的博客，那么订阅者都会收到通知，像这样的例子生活中实在是太多了。其实这种操作可以抽象一下，A对象（观察者）对B对象（被观察者）的某种变化高度敏感，需要在B变化的一瞬间做出反应，同时在B对象中维护着所有A的集合。我们在实际编程中称这种模式为观察者模式，有时也称为发布/订阅(Publish/Subscribe)模型。</p>
 <p>在JDK的util包中已经帮我们实现了观察者模式，不过我们还是先通过自己写代码来看看观察者到底是怎么回事，自己该如何简单的实现，相信通过自己的简单实现，来理解JDK的观察者模式的实现是十分容易的。</p>
@@ -131,6 +131,8 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 观察者&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@author&lt;/span&gt; mingshan&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Watcher&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;     * 用来接收通知&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;     */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;  &lt;span class=&quot;title&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
