@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/25/ReentrantLock源码笔记 - 释放锁/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="ReentrantLock源码学习 - 释放锁（unlock） 上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程 首先调用ReentrantLock的unlock方法 123public void unlock() &amp;#123;    sync.release(1);&amp;#125; 然后会调用AbstractQueuedSynchronizer（AQS）的r">
-<meta property="og:updated_time" content="2017-09-25T13:05:35.004Z">
+<meta property="og:updated_time" content="2017-11-12T07:35:28.375Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReentrantLock源码笔记 - 释放锁（JDK 1.8）">
 <meta name="twitter:description" content="ReentrantLock源码学习 - 释放锁（unlock） 上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程 首先调用ReentrantLock的unlock方法 123public void unlock() &amp;#123;    sync.release(1);&amp;#125; 然后会调用AbstractQueuedSynchronizer（AQS）的r">
@@ -328,6 +328,39 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/JUC/" itemprop="url" rel="index">
+                    <span itemprop="name">JUC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -506,7 +539,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
