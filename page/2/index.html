@@ -661,12 +661,8 @@
         
           
             <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
-<pre><code>$(&quot;#uploadify&quot;).uploadify({
-        debug            : false,
-        swf             :  CTPPATH+&apos;/admin/static/uploadify/js/uploadify.swf&apos;,    //swf文件路径
-        method            : &apos;get&apos;,    // 提交方式
-        uploader        :  CTPPATH+&apos;/processUpload.ado;jsessionid=${pageContext.session.id}&apos;, // 服务器端处理该上传请求的程序(servlet, struts2-Action)   )};
-</code></pre><p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#uploadify"</span>).uploadify(&#123;</div><div class="line">	<span class="attr">debug</span>			: <span class="literal">false</span>,</div><div class="line">	<span class="attr">swf</span> 			:  CTPPATH+<span class="string">'/admin/static/uploadify/js/uploadify.swf'</span>,	<span class="comment">//swf文件路径</span></div><div class="line">	method			: <span class="string">'get'</span>,	<span class="comment">// 提交方式</span></div><div class="line">	uploader		:  CTPPATH+<span class="string">'/processUpload.ado;jsessionid=$&#123;pageContext.session.id&#125;'</span>, <span class="comment">// 服务器端处理该上传请求的程序(servlet, struts2-Action)   )&#125;;</span></div></pre></td></tr></table></figure>
+<p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
 
           
         
@@ -803,8 +799,8 @@
             <p>最近做的网站的一个下载功能出现了问题，在firefox浏览器以及360浏览器下下载均正常，也能将中文正常转换，但在IE浏览器下却出现了问题，当点击下载链接的时候，后台直接报错：<br><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/1999726111.png" alt="2017-03-17_113722.png"><br>后台我怎么兼容也不能解决问题，我下载的部分java代码：</p>
 <p><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/95431087.png" alt="QQ图片20170317113901.png"></p>
 <p>进过我仔细查找，发现我前台通过get方式提交的文件名包含一下字符，导致浏览器解析url不一致，所以需要将url通过javascript进行转码，即用encodeURIComponent函数进行编码，代码如下</p>
-<pre><code>&lt;a href=&quot;javascript:location.href=&apos;${pageContext.request.contextPath}/download.do?realname=&apos;+encodeURIComponent(&apos;${file_list.real_name}&apos;)+&apos;&amp;filename=&apos;+encodeURIComponent(&apos;${file_list.file_name}&apos;);&quot; class=&quot;file-name&quot;&gt;${file_list.file_name}&lt;/a&gt;
-</code></pre><p>通过将文件名编码之后就能解决问题了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:location.href='$&#123;pageContext.request.contextPath&#125;/download.do?realname='+encodeURIComponent('$&#123;file_list.real_name&#125;')+'&amp;filename='+encodeURIComponent('$&#123;file_list.file_name&#125;');"</span> <span class="attr">class</span>=<span class="string">"file-name"</span>&gt;</span>$&#123;file_list.file_name&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>通过将文件名编码之后就能解决问题了</p>
 
           
         
@@ -1081,34 +1077,13 @@
         
           
             <p>在java多态中，引用与对象可以是不同的类型，如:</p>
-<pre><code>A b=new B();
-</code></pre><p>运用多态时，引用类型可以是实际对象类型的父类，即实际对象类型已经是一个比较具体的类，而引用类型则是一个比较抽象的类，任何extends过声明引用类型的对象都可以赋值给这个引用变量，这样就可以做出类似动态数组的东西，如下:</p>
-<pre><code>Animal[] a=new Animal[2];
-a[0]=new Dog();
-a[1]=new Cat();
-for(int i=0;i&lt;a.length;i++){
-    a[i].eat();
-}
-</code></pre><p>a数组里面可以放任何Animal的子类对象，调用的时候可以把子类都当作Animal来操作，实际上调用的是子类的方法，是不是很好玩呢→_→</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A b=<span class="keyword">new</span> B();</div></pre></td></tr></table></figure>
+<p>运用多态时，引用类型可以是实际对象类型的父类，即实际对象类型已经是一个比较具体的类，而引用类型则是一个比较抽象的类，任何extends过声明引用类型的对象都可以赋值给这个引用变量，这样就可以做出类似动态数组的东西，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Animal[] a=<span class="keyword">new</span> Animal[<span class="number">2</span>];</div><div class="line">a[<span class="number">0</span>]=<span class="keyword">new</span> Dog();</div><div class="line">a[<span class="number">1</span>]=<span class="keyword">new</span> Cat();</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)&#123;</div><div class="line">    a[i].eat();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>a数组里面可以放任何Animal的子类对象，调用的时候可以把子类都当作Animal来操作，实际上调用的是子类的方法，是不是很好玩呢→_→</p>
 <p>当然，多态的应用很广泛呢，参数和返回类型也可以多态，如下:</p>
-<pre><code>class Vet{
-   public void giveShot(Anmial a){
-
-      a.makeNoise();
-   }
-}
-
-class Pet{
-   public void a(){
-      Vet v=new Vet();
-      Dog dog=new Dog();
-      Cat cat=new Cat();
-      v.giveShot(dog);
-      v.giveShot(cat);
-   }
-
-}
-</code></pre><p>giveShot会接受任何Animal的子类的对象实例，根据传入的参数不同，会调用不同对象的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vet</span></span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">giveShot</span><span class="params">(Anmial a)</span></span>&#123;</div><div class="line"></div><div class="line">      a.makeNoise();</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pet</span></span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>&#123;</div><div class="line">      Vet v=<span class="keyword">new</span> Vet();</div><div class="line">      Dog dog=<span class="keyword">new</span> Dog();</div><div class="line">      Cat cat=<span class="keyword">new</span> Cat();</div><div class="line">      v.giveShot(dog);</div><div class="line">      v.giveShot(cat);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>giveShot会接受任何Animal的子类的对象实例，根据传入的参数不同，会调用不同对象的方法。</p>
 
           
         
