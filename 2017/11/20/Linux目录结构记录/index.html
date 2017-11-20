@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -96,15 +96,16 @@
 
 
 <meta name="description" content="Linux目录结构： /: 根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中 /bin:/usr/bin: 可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 /boot: 放置linux系统启动时用到的一些文件。/boot/vmlinuz为linux的内核文件，以及/boot/gurb。建议单独分区，分区">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="明山的博客">
+<meta property="og:title" content="Linux目录结构">
 <meta property="og:url" content="http://yoursite.com/2017/11/20/Linux目录结构记录/index.html">
 <meta property="og:site_name" content="明山的博客">
 <meta property="og:description" content="Linux目录结构： /: 根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中 /bin:/usr/bin: 可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 /boot: 放置linux系统启动时用到的一些文件。/boot/vmlinuz为linux的内核文件，以及/boot/gurb。建议单独分区，分区">
 <meta property="og:image" content="http://yoursite.com/images/linux目录.png">
-<meta property="og:updated_time" content="2017-11-20T14:15:48.116Z">
+<meta property="og:updated_time" content="2017-11-20T14:24:14.885Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:title" content="Linux目录结构">
 <meta name="twitter:description" content="Linux目录结构： /: 根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中 /bin:/usr/bin: 可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。 /boot: 放置linux系统启动时用到的一些文件。/boot/vmlinuz为linux的内核文件，以及/boot/gurb。建议单独分区，分区">
 <meta name="twitter:image" content="http://yoursite.com/images/linux目录.png">
 
@@ -140,7 +141,7 @@
 
 
 
-  <title> | 明山的博客</title>
+  <title>Linux目录结构 | 明山的博客</title>
   
 
 
@@ -306,7 +307,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline"></h2>
+          <h2 class="post-title" itemprop="name headline">Linux目录结构</h2>
         
 
         <div class="post-meta">
@@ -328,6 +329,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -361,6 +384,7 @@
 <p><strong>/etc</strong>：系统配置文件存放的目录，不建议在此目录下存放可执行文件，重要的配置文件有/etc/inittab、/etc/fstab、/etc/init.d、/etc/X11、/etc/sysconfig、/etc/xinetd.d修改配置文件之前记得备份。<br>注：/etc/X11存放与x windows有关的设置。</p>
 <p><strong>/home</strong>：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，~表示当前用户的家目录，~test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据</p>
 <p><strong>/lib:/usr/lib:/usr/local/lib</strong>：系统使用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为/lib/modules。</p>
+<a id="more"></a>
 <p><strong>/lost+fount</strong>：系统异常产生错误时，会将一些遗失的片段放置于此目录下，通常这个目录会自动出现在装置目录下。如加载硬盘于/disk 中，此目录下就会自动产生目录/disk/lost+found</p>
 <p><strong>/mnt:/media</strong>：光盘默认挂载点，通常光盘挂载于/mnt/cdrom下，也不一定，可以选择任意位置进行挂载。</p>
 <p><strong>/opt</strong>：给主机额外安装软件所摆放的目录。如：FC4使用的Fedora 社群开发软件，如果想要自行安装新的KDE 桌面软件，可以将该软件安装在该目录下。以前的 Linux 系统中，习惯放置在 /usr/local 目录下</p>
@@ -398,6 +422,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
       
 
       
