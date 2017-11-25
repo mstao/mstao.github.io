@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-11-25T13:55:03.376Z</updated>
+  <updated>2017-11-25T13:59:23.142Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/11/25/SpringBoot%E4%B8%8ERabbitMQ%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/"/>
     <id>http://yoursite.com/2017/11/25/SpringBoot与RabbitMQ结合使用/</id>
     <published>2017-11-25T13:44:28.214Z</published>
-    <updated>2017-11-25T13:55:03.376Z</updated>
+    <updated>2017-11-25T13:59:23.142Z</updated>
     
     <content type="html"><![CDATA[<p>上一篇文章中是使用amqp-client来操作RabbitMQ的，但我们平常用SpringBoot比较多，SpringBoot也整合了RabbitMQ，用起来是是十分方便的。</p>
 <p>首先，我们先添加依赖</p>
@@ -106,9 +106,7 @@
     
     </summary>
     
-      <category term="SpringBoot" scheme="http://yoursite.com/categories/SpringBoot/"/>
-    
-      <category term="RabbitMQ" scheme="http://yoursite.com/categories/SpringBoot/RabbitMQ/"/>
+      <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
       <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
