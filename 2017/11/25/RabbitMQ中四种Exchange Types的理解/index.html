@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java,RabbitMQ,Exchange Types," />
+  <meta name="keywords" content="RabbitMQ,java,Exchange Types," />
 
 
 
@@ -96,7 +96,7 @@
 
 
 <meta name="description" content="由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。 RabbitMQ简介RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考：AMQP介绍 RabbitMQ">
-<meta name="keywords" content="java,RabbitMQ,Exchange Types">
+<meta name="keywords" content="RabbitMQ,java,Exchange Types">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RabbitMQ中四种Exchange Types的理解">
 <meta property="og:url" content="http://yoursite.com/2017/11/25/RabbitMQ中四种Exchange Types的理解/index.html">
@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/images/mq_fanout.png">
 <meta property="og:image" content="http://yoursite.com/images/mq_direct.png">
 <meta property="og:image" content="http://yoursite.com/images/mq_topic.png">
-<meta property="og:updated_time" content="2017-11-25T07:57:50.895Z">
+<meta property="og:updated_time" content="2017-11-25T08:01:08.888Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RabbitMQ中四种Exchange Types的理解">
 <meta name="twitter:description" content="由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。 RabbitMQ简介RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考：AMQP介绍 RabbitMQ">
@@ -405,7 +405,8 @@
 <pre><code>虚拟主机，一个broker里可以开设多个vhost，用作不同用户的权限分离。
 </code></pre><p>Excahnge Types</p>
 <pre><code>RabbitMQ常用的Exchange Type有fanout、direct、topic、headers这四种，下面分别进行介绍。
-</code></pre><h2 id="Exchange-Types-简单介绍"><a href="#Exchange-Types-简单介绍" class="headerlink" title="Exchange Types 简单介绍"></a>Exchange Types 简单介绍</h2><p>下面对这四种Exchange Types进行简单介绍，由于用到maven来组织项目，所以需要先添加依赖</p>
+</code></pre><a id="more"></a>
+<h2 id="Exchange-Types-简单介绍"><a href="#Exchange-Types-简单介绍" class="headerlink" title="Exchange Types 简单介绍"></a>Exchange Types 简单介绍</h2><p>下面对这四种Exchange Types进行简单介绍，由于用到maven来组织项目，所以需要先添加依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.rabbitmq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>amqp-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
 <h3 id="fanout"><a href="#fanout" class="headerlink" title="fanout"></a>fanout</h3><p>fanout类型的Exchange路由规则非常简单，它会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中。</p>
 <p><img src="/images/mq_fanout.png" alt="image"></p>
@@ -475,9 +476,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
-          
             <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
           
             <a href="/tags/Exchange-Types/" rel="tag"># Exchange Types</a>
           

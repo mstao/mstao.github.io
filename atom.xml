@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-11-25T07:57:50.895Z</updated>
+  <updated>2017-11-25T08:01:08.888Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/11/25/RabbitMQ%E4%B8%AD%E5%9B%9B%E7%A7%8DExchange%20Types%E7%9A%84%E7%90%86%E8%A7%A3/"/>
     <id>http://yoursite.com/2017/11/25/RabbitMQ中四种Exchange Types的理解/</id>
     <published>2017-11-25T07:54:58.012Z</published>
-    <updated>2017-11-25T07:57:50.895Z</updated>
+    <updated>2017-11-25T08:01:08.888Z</updated>
     
     <content type="html"><![CDATA[<p>由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。</p>
 <h2 id="RabbitMQ简介"><a href="#RabbitMQ简介" class="headerlink" title="RabbitMQ简介"></a>RabbitMQ简介</h2><p>RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考<a href="http://www.rabbitmq.com/tutorials/amqp-concepts.html" target="_blank" rel="external">：AMQP介绍</a></p>
@@ -49,7 +49,8 @@
 <pre><code>虚拟主机，一个broker里可以开设多个vhost，用作不同用户的权限分离。
 </code></pre><p>Excahnge Types</p>
 <pre><code>RabbitMQ常用的Exchange Type有fanout、direct、topic、headers这四种，下面分别进行介绍。
-</code></pre><h2 id="Exchange-Types-简单介绍"><a href="#Exchange-Types-简单介绍" class="headerlink" title="Exchange Types 简单介绍"></a>Exchange Types 简单介绍</h2><p>下面对这四种Exchange Types进行简单介绍，由于用到maven来组织项目，所以需要先添加依赖</p>
+</code></pre><a id="more"></a>
+<h2 id="Exchange-Types-简单介绍"><a href="#Exchange-Types-简单介绍" class="headerlink" title="Exchange Types 简单介绍"></a>Exchange Types 简单介绍</h2><p>下面对这四种Exchange Types进行简单介绍，由于用到maven来组织项目，所以需要先添加依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.rabbitmq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>amqp-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
 <h3 id="fanout"><a href="#fanout" class="headerlink" title="fanout"></a>fanout</h3><p>fanout类型的Exchange路由规则非常简单，它会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中。</p>
 <p><img src="/images/mq_fanout.png" alt="image"></p>
@@ -95,16 +96,42 @@
     <summary type="html">
     
       &lt;p&gt;由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。&lt;/p&gt;
-&lt;h2 id=&quot;RabbitMQ简介&quot;&gt;&lt;a href=&quot;#RabbitMQ简介&quot; class=&quot;headerlin
+&lt;h2 id=&quot;RabbitMQ简介&quot;&gt;&lt;a href=&quot;#RabbitMQ简介&quot; class=&quot;headerlink&quot; title=&quot;RabbitMQ简介&quot;&gt;&lt;/a&gt;RabbitMQ简介&lt;/h2&gt;&lt;p&gt;RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考&lt;a href=&quot;http://www.rabbitmq.com/tutorials/amqp-concepts.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;：AMQP介绍&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;RabbitMQ概念介绍&quot;&gt;&lt;a href=&quot;#RabbitMQ概念介绍&quot; class=&quot;headerlink&quot; title=&quot;RabbitMQ概念介绍&quot;&gt;&lt;/a&gt;RabbitMQ概念介绍&lt;/h2&gt;&lt;p&gt;RabbitMQ有许多重要的概念，了解这些概念对了解RabbitMQ是十分有必要的，下面简单介绍一下：&lt;/p&gt;
+&lt;p&gt;RabbitMQ 消息模型&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;RabbitMQ消息发送时，生产者是不知道消息是否发送到某个队列中去了，生产者仅仅只能将消息发送给某个交换器。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ConnectionFactory&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;连接工厂类。可以创建一个连接。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Connection&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;在客户创建一个到某个虚拟主机的连接。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Channel&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;消息通道，包含了大量的API可用于编程。在客户端的每个连接里，可建立多个channel，每个channel代表一个会话任务。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Broker&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;RabbbitMQ消息队列代理服务器实体。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Producer&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;发送消息的应用程序。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Consumer&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;接收消息的用户程序。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Exchange&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;交换器，生产者直接将消息发送给交换器。交换器将消息分发给指定的队列。它指定消息按什么规则，路由到哪个队列。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Binding&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;绑定，指的是交换器和队列之间的关系。它的作用就是把exchange和queue按照路由规则绑定起来。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Routing Key&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;路由关键字，exchange根据这个关键字进行消息投递。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;vhost&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;虚拟主机，一个broker里可以开设多个vhost，用作不同用户的权限分离。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Excahnge Types&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;RabbitMQ常用的Exchange Type有fanout、direct、topic、headers这四种，下面分别进行介绍。
+&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
     
       <category term="RabbitMQ, java" scheme="http://yoursite.com/categories/RabbitMQ-java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
     
