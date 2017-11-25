@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-11-25T08:01:08.888Z</updated>
+  <updated>2017-11-25T08:03:17.351Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/11/25/RabbitMQ%E4%B8%AD%E5%9B%9B%E7%A7%8DExchange%20Types%E7%9A%84%E7%90%86%E8%A7%A3/"/>
     <id>http://yoursite.com/2017/11/25/RabbitMQ中四种Exchange Types的理解/</id>
     <published>2017-11-25T07:54:58.012Z</published>
-    <updated>2017-11-25T08:01:08.888Z</updated>
+    <updated>2017-11-25T08:03:17.351Z</updated>
     
     <content type="html"><![CDATA[<p>由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。</p>
 <h2 id="RabbitMQ简介"><a href="#RabbitMQ简介" class="headerlink" title="RabbitMQ简介"></a>RabbitMQ简介</h2><p>RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考<a href="http://www.rabbitmq.com/tutorials/amqp-concepts.html" target="_blank" rel="external">：AMQP介绍</a></p>
@@ -126,12 +126,12 @@
     
     </summary>
     
-      <category term="RabbitMQ, java" scheme="http://yoursite.com/categories/RabbitMQ-java/"/>
+      <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
-    
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
     
