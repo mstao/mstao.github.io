@@ -288,6 +288,146 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/php  json_encode函数使用遇到的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/23/php  json_encode函数使用遇到的问题/" itemprop="url">php json_encode函数使用遇到的问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T20:35:53+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//关联二位数组</span></div><div class="line">$a2=<span class="keyword">array</span>(    </div><div class="line">  <span class="string">'1'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'john'</span>,<span class="string">'age'</span>=&gt;<span class="string">'32'</span>),</div><div class="line">  <span class="string">'2'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'tom'</span>,<span class="string">'age'</span>=&gt;<span class="string">'22'</span>)</div><div class="line">);</div><div class="line">$json2=json_encode($a2);</div><div class="line"><span class="keyword">echo</span> $json2.<span class="string">"&lt;br&gt;"</span>; <span class="comment">//&#123;"1":&#123;"name":"john","age":"32"&#125;,"2":&#123;"name":"tom","age":"22"&#125;&#125;</span></div><div class="line"><span class="comment">//索引二维数组</span></div><div class="line">$a3=<span class="keyword">array</span>(</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'zz'</span>,<span class="string">'age'</span>=&gt;<span class="string">'31'</span>),</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'we'</span>,<span class="string">'AGE'</span>=&gt;<span class="string">'12'</span>)</div><div class="line">  );</div><div class="line"> $json3=json_encode($a3);</div><div class="line"> <span class="keyword">echo</span> $json3.<span class="string">"&lt;br&gt;"</span>;<span class="comment">//[&#123;"name":"zz","age":"31"&#125;,&#123;"name":"we","AGE":"12"&#125;]</span></div></pre></td></tr></table></figure></p>
+<p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
+<ul>
+<li>对于关联数组生成的json数据格式 ，在前台直接用js的eval()将其转化为json对象，然后根据{key:value}取值</li>
+<li>对于索引数组生成的json数据格式，用js的eval()转为json对象后，由于[]代表数组格式，所以遇到[]还是按照数组取值，遇到{key:value}这种形式的按照对象取值就行了</li>
+</ul>
+<p>当数组维数多的时候需要根据转换后的json数据格式用js进行相应的解析，避免出错。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/关于首页feed流如何展示和数据库如何设计问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -810,7 +950,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -821,7 +961,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -832,7 +972,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
