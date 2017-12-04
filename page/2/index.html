@@ -288,7 +288,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/ReentrantLock源码笔记 - 释放锁/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/在Service层进行事务控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -307,7 +307,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/ReentrantLock源码笔记 - 释放锁/" itemprop="url">ReentrantLock源码笔记 - 释放锁（JDK 1.8）</a></h2>
+                <a class="post-title-link" href="/2017/09/15/在Service层进行事务控制/" itemprop="url">在Service层进行事务控制</a></h2>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T00:00:00+08:00">
+                2017-09-15
               </time>
             
 
@@ -344,17 +344,6 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/JUC/" itemprop="url" rel="index">
-                    <span itemprop="name">JUC</span>
                   </a>
                 </span>
 
@@ -388,179 +377,17 @@
 
       
         
-          
-            <h2 id="ReentrantLock源码学习-释放锁（unlock）"><a href="#ReentrantLock源码学习-释放锁（unlock）" class="headerlink" title="ReentrantLock源码学习 - 释放锁（unlock）"></a>ReentrantLock源码学习 - 释放锁（unlock）</h2><hr>
-<p>上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程</p>
-<p>首先调用ReentrantLock的unlock方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.release(<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后会调用AbstractQueuedSynchronizer（AQS）的release方法，在这个方法中首先会调用ReentrantLock的Sync的tryRelease方法，来进行尝试释放锁，如果返回true，那么获取CLH队列的头结点，判断头结点不为空并且头结点的状态不为0（None），那么就调用AQS的unparkSuccessor方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (tryRelease(arg)) &#123;</div><div class="line">        Node h = head;</div><div class="line">        <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.waitStatus != <span class="number">0</span>)</div><div class="line">            unparkSuccessor(h);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在tryRelease方法里，首先让当前的state与传入的值（这里为1）进行相减，然后得到c，判断当前线程是不是获取独占锁的线程，如果不是，直接抛出异常；如果是，那么需要判断c是否为0，因为只有c为0时，才符合释放独占锁的条件，这是设置独占锁线程为null，最后设置下state的值（注意这里c为0不为0都会设置）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> c = getState() - releases;</div><div class="line">    <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">    <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">        free = <span class="keyword">true</span>;</div><div class="line">        setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    setState(c);</div><div class="line">    <span class="keyword">return</span> free;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接下来来看方法unparkSuccessor，该方法的作用就是为了释放node节点的后继结点。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * If status is negative (i.e., possibly needing signal) try</div><div class="line">     * to clear in anticipation of signalling.  It is OK if this</div><div class="line">     * fails or if status is changed by waiting thread.</div><div class="line">     */</div><div class="line">     <span class="comment">// 获取节点的状态</span></div><div class="line">    <span class="keyword">int</span> ws = node.waitStatus;</div><div class="line">    <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</div><div class="line">        compareAndSetWaitStatus(node, ws, <span class="number">0</span>); <span class="comment">// 利用CAS 将状态设置为0</span></div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">     * Thread to unpark is held in successor, which is normally</div><div class="line">     * just the next node.  But if cancelled or apparently null,</div><div class="line">     * traverse backwards from tail to find the actual</div><div class="line">     * non-cancelled successor.</div><div class="line">     */</div><div class="line">    <span class="comment">// 获取节点的后继节点</span></div><div class="line">    Node s = node.next;</div><div class="line">    <span class="comment">// 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED</span></div><div class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</div><div class="line">        s = <span class="keyword">null</span>; <span class="comment">// 将后继节点置为null</span></div><div class="line">        <span class="comment">// 从尾节点从后向前开始遍历知道节点为空或者当前节点为止</span></div><div class="line">        <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</div><div class="line">            <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>) <span class="comment">// 如果此时节点的状态小于等于0</span></div><div class="line">                s = t; <span class="comment">// 将此节点赋给传入节点的后继节点</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (s != <span class="keyword">null</span>)  <span class="comment">// 节点不为空，释放</span></div><div class="line">        LockSupport.unpark(s.thread);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://blog.csdn.net/luonanqin/article/details/41871909" target="_blank" rel="external">http://blog.csdn.net/luonanqin/article/details/41871909</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/在 Spring Data Redis中使用AOP进行数据缓存/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/04/在 Spring Data Redis中使用AOP进行数据缓存/" itemprop="url">在 Spring Data Redis中使用AOP进行数据缓存</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="为什么要对数据进行缓存"><a href="#为什么要对数据进行缓存" class="headerlink" title="为什么要对数据进行缓存"></a>为什么要对数据进行缓存</h2><p>当我们将数据从数据库中取出来后，如果我们需要再一次进行同样的操作，获取相同的数据，那么再次查询数据库无疑不是很好的方式，这时我们可以考虑来将我们的数据缓存起来，当再次获取相同的数据时，直接从缓存拿就行了。</p>
-<h2 id="进行缓存需要考虑什么问题"><a href="#进行缓存需要考虑什么问题" class="headerlink" title="进行缓存需要考虑什么问题"></a>进行缓存需要考虑什么问题</h2><ol>
-<li>缓存数据存在什么地方？</li>
-<li>怎样识别相同的操作(判断两次取的数据相同，生成唯一标识)</li>
-<li>数据更新时缓存该如何处理？</li>
-<li>缓存数据是否设置过期时间？</li>
-<li>如何序列化查询结果？查询结果可能是单个实体对象，也可能是一个List。</li>
-<li>代码该写在哪？不能对原有代码有侵入性</li>
-</ol>
-<p>针对以上问题，我们下面来慢慢分析解决。</p>
-<h2 id="采用Redis缓存数据"><a href="#采用Redis缓存数据" class="headerlink" title="采用Redis缓存数据"></a>采用Redis缓存数据</h2><p>Redis是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，hyperloglogs等数据类型。内置复制、Lua脚本、LRU收回、事务以及不同级别磁盘持久化功能，同时通过Redis Sentinel提供高可用，通过Redis Cluster提供自动分区。</p>
-<p>我们在 Spring 中使用 Redis 是通过 Spring Data Redis 提供的 RedisTemplate 来操作Redis</p>
-<p><strong>添加依赖</strong><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.data<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.1.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>spring集合Redis的配置如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- redis 相关配置 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"poolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxIdle&#125;"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxWaitMillis"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxWait&#125;"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"testOnBorrow"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisConnectionFactory"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.connection.jedis.JedisConnectionFactory"</span></span></div><div class="line">  <span class="attr">p:host-name</span>=<span class="string">"$&#123;redis.host&#125;"</span> <span class="attr">p:port</span>=<span class="string">"$&#123;redis.port&#125;"</span> <span class="attr">p:pool-config-ref</span>=<span class="string">"poolConfig"</span>/&gt;</div><div class="line"></div><div class="line"><span class="comment">&lt;!-- redis template definition --&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"redisTemplate"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.core.RedisTemplate"</span>&gt;</span>  </div><div class="line">    <span class="comment">&lt;!-- 设置 Redis 连接工厂--&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connectionFactory"</span> <span class="attr">ref</span>=<span class="string">"jedisConnectionFactory"</span>/&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 设置默认 Serializer ，包含 keySerializer &amp; valueSerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultSerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 单独设置 keySerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"keySerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 单独设置 valueSerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"valueSerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
+          <h2 id="利用接口回调实现JDBCTemplate"><a href="#利用接口回调实现JDBCTemplate" class="headerlink" title="利用接口回调实现JDBCTemplate"></a>利用接口回调实现JDBCTemplate</h2><ol>
+<li><p>设计一个回调接口JDBCCallback<t>, 用来设置参数和获取结果集, 代码如下：<br></t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JDBCCallback</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">	<span class="function">T <span class="title">rsToObject</span><span class="params">(ResultSet rs)</span> <span class="keyword">throws</span> SQLException</span>;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setParams</span><span class="params">(PreparedStatement pstmt)</span> <span class="keyword">throws</span> SQLException</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>设计一个抽象类JDBCAbstractCallBack<t>，该类实现JDBCCallback<t>接口，重写接口中的两个方法，<br> 不需要具体实现，只需要重写一下就可以了，这样在DAO层用的时候不用这两个方法全部都要实现，代码如下：</t></t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * JDBC abstract callback class, implements &#123;<span class="doctag">@link</span> JDBCCallback&#125; interface.</div><div class="line"> * <span class="doctag">@author</span> Mingshan</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> &lt;T&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">JDBCAbstractCallBack</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">JDBCCallback</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">rsToObject</span><span class="params">(ResultSet rs)</span> <span class="keyword">throws</span> SQLException </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParams</span><span class="params">(PreparedStatement pstmt)</span> <span class="keyword">throws</span> SQLException </span>&#123;</div><div class="line">		<span class="comment">// NOOP</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>设计一个JDBCTemplate类，该类实现增删改查的基本方法，把公共的代码抽取出来，以便DAO层去调用JDBCTemplate来实现具体的业务，部分代码如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/04/在 Spring Data Redis中使用AOP进行数据缓存/#more" rel="contents">
+            <a class="btn" href="/2017/09/15/在Service层进行事务控制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -606,7 +433,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/利用hibernate进行多表查询问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -625,7 +452,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/" itemprop="url">利用SpringMVC实现RESTful API，并与Swagger集成生成API文档</a></h2>
+                <a class="post-title-link" href="/2017/08/10/利用hibernate进行多表查询问题/" itemprop="url">利用hibernate进行多表查询问题</a></h2>
         
 
         <div class="post-meta">
@@ -637,8 +464,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T00:00:00+08:00">
+                2017-08-10
               </time>
             
 
@@ -695,27 +522,13 @@
 
       
         
-          <h2 id="认识RESTful-API"><a href="#认识RESTful-API" class="headerlink" title="认识RESTful API"></a>认识RESTful API</h2><p>RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。</p>
-<h2 id="参考RESTful-API规范"><a href="#参考RESTful-API规范" class="headerlink" title="参考RESTful API规范"></a>参考RESTful API规范</h2><p>下面是两篇文章讲解RESTful API的，推荐：</p>
-<ol>
-<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">RESTful API 设计指南</a></li>
-<li><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API" target="_blank" rel="external">RESTful API 设计最佳实践</a></li>
-</ol>
-<h2 id="SpringMVC实现RESTful-API"><a href="#SpringMVC实现RESTful-API" class="headerlink" title="SpringMVC实现RESTful API"></a>SpringMVC实现RESTful API</h2><p>SpringMVC提供了一些注解来实现RESTful API, 例如<strong>@RestController</strong>，同时我们用Swagger来生成API文档，这样更加利于测试API。</p>
-<h3 id="常见swagger注解一览与使用"><a href="#常见swagger注解一览与使用" class="headerlink" title="常见swagger注解一览与使用"></a>常见swagger注解一览与使用</h3><p><strong>最常用的5个注解</strong></p>
-<p>@Api：修饰整个类，描述Controller的作用<br>@ApiOperation：描述一个类的一个方法，或者说一个接口<br>@ApiParam：单个参数描述<br>@ApiModel：用对象来接收参数<br>@ApiProperty：用对象接收参数时，描述对象的一个字段</p>
-<p><strong>其它若干</strong></p>
-<p>@ApiResponse：HTTP响应其中1个描述<br>@ApiResponses：HTTP响应整体描述<br>@ApiClass<br>@ApiError<br>@ApiErrors<br>@ApiParamImplicit<br>@ApiParamsImplicit</p>
-<p><strong>其中@ApiOperation和@ApiParam参数说明</strong></p>
-<p>@ApiOperation和@ApiParam为添加的API相关注解，参数说明如下：<br>@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；<br>@ApiParam(required = “是否必须参数”, name = “参数名称”, value = “参数具体描述”</p>
-<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>首先在pom.xml文件中添加swagger依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- swagger --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mangofactory<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger-springmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="Swagger-UI配置"><a href="#Swagger-UI配置" class="headerlink" title="Swagger-UI配置"></a>Swagger-UI配置</h3><p>首先从<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="external">Swagger-UI下载地址</a>下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。</p>
-<p>修改swagger/index.html文件，默认是从连接<a href="http://petstore.swagger.io/v2/swagger.json获取" target="_blank" rel="external">http://petstore.swagger.io/v2/swagger.json获取</a> API 的JSON，这里需要将url值修改为<a href="http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs" target="_blank" rel="external">http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs</a></p>
-<h3 id="编写swagger配置文件"><a href="#编写swagger配置文件" class="headerlink" title="编写swagger配置文件"></a>编写swagger配置文件</h3><p>配置完Swagger-UI后，我们需要配置Swagger，并将其交给Spring进行管理。<br>
+          <p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
+<blockquote>
+<p>实体类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Entity</span></div><div class="line"><span class="meta">@Table</span>(name = <span class="string">"ps_trends"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Trends</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2228382525594394975L</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Id</span></div><div class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_title"</span>)</div><div class="line">    <span class="keyword">private</span> String itemTitle;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_content"</span>)</div><div class="line">    <span class="keyword">private</span> String itemContent;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"type_id"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>  typeId;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"add_time"</span>)</div><div class="line">    <span class="keyword">private</span> String addTime;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"view_count"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> viewCount;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_image"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isImage;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_publish"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isPublish;</div><div class="line"></div><div class="line">    <span class="comment">//临时属性</span></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeFlag;</div><div class="line"></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeName;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">(<span class="keyword">int</span> id, String itemTitle, String itemContent, String addTime, <span class="keyword">int</span> viewCount,</span></span></div><div class="line">    	  String itemTypeName,String itemTypeFlag) &#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">        <span class="keyword">this</span>.itemTitle = itemTitle;</div><div class="line">        <span class="keyword">this</span>.itemContent = itemContent;</div><div class="line">        <span class="keyword">this</span>.addTime = addTime;</div><div class="line">        <span class="keyword">this</span>.viewCount = viewCount;</div><div class="line">        <span class="keyword">this</span>.itemTypeName = itemTypeName;</div><div class="line">        <span class="keyword">this</span>.itemTypeFlag = itemTypeFlag;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    setter ，getter方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/04/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/利用hibernate进行多表查询问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -761,7 +574,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/利用uploadify插件上传文件时java后台获取不到当前session问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/03/Linux目录结构记录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -780,7 +593,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">利用uploadify插件上传文件时java后台获取不到当前session问题</a></h2>
+                <a class="post-title-link" href="/2017/08/03/Linux目录结构记录/" itemprop="url">Linux目录结构</a></h2>
         
 
         <div class="post-meta">
@@ -792,8 +605,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T00:00:00+08:00">
+                2017-08-03
               </time>
             
 
@@ -815,8 +628,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -850,12 +663,21 @@
 
       
         
-          
-            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#uploadify"</span>).uploadify(&#123;</div><div class="line">	<span class="attr">debug</span>			: <span class="literal">false</span>,</div><div class="line">	<span class="attr">swf</span> 			:  CTPPATH+<span class="string">'/admin/static/uploadify/js/uploadify.swf'</span>,	<span class="comment">//swf文件路径</span></div><div class="line">	method			: <span class="string">'get'</span>,	<span class="comment">// 提交方式</span></div><div class="line">	uploader		:  CTPPATH+<span class="string">'/processUpload.ado;jsessionid=$&#123;pageContext.session.id&#125;'</span>, <span class="comment">// 服务器端处理该上传请求的程序(servlet, struts2-Action)   )&#125;;</span></div></pre></td></tr></table></figure>
-<p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
-
-          
+          <h3 id="Linux目录结构："><a href="#Linux目录结构：" class="headerlink" title="Linux目录结构："></a>Linux目录结构：</h3><p><img src="/images/linux目录.png" alt="image"></p>
+<p><strong>/:</strong> 根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中</p>
+<p><strong>/bin:/usr/bin</strong>: 可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。</p>
+<p><strong>/boot</strong>: 放置linux系统启动时用到的一些文件。/boot/vmlinuz为linux的内核文件，以及/boot/gurb。建议单独分区，分区大小100M即可</p>
+<p><strong>/dev</strong>：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount /dev/cdrom /mnt。</p>
+<p><strong>/etc</strong>：系统配置文件存放的目录，不建议在此目录下存放可执行文件，重要的配置文件有/etc/inittab、/etc/fstab、/etc/init.d、/etc/X11、/etc/sysconfig、/etc/xinetd.d修改配置文件之前记得备份。<br>注：/etc/X11存放与x windows有关的设置。</p>
+<p><strong>/home</strong>：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，~表示当前用户的家目录，~test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据</p>
+<p><strong>/lib:/usr/lib:/usr/local/lib</strong>：系统使用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为/lib/modules。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/03/Linux目录结构记录/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -897,7 +719,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/01/Linux基本命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -916,7 +738,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/hello-world/" itemprop="url">Hello World</a></h2>
+                <a class="post-title-link" href="/2017/08/01/Linux基本命令/" itemprop="url">Linux基本命令</a></h2>
         
 
         <div class="post-meta">
@@ -928,128 +750,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/Linux基本命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/04/Linux基本命令/" itemprop="url">Linux基本命令</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T00:00:00+08:00">
+                2017-08-01
               </time>
             
 
@@ -1134,7 +836,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls /etc</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/04/Linux基本命令/#more" rel="contents">
+            <a class="btn" href="/2017/08/01/Linux基本命令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1180,7 +882,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/php  json_encode函数使用遇到的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/java枚举探究/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -1199,7 +901,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/php  json_encode函数使用遇到的问题/" itemprop="url">php json_encode函数使用遇到的问题</a></h2>
+                <a class="post-title-link" href="/2017/07/26/java枚举探究/" itemprop="url">java枚举探究</a></h2>
         
 
         <div class="post-meta">
@@ -1211,8 +913,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T10:11:07+08:00">
+                2017-07-26
               </time>
             
 
@@ -1234,8 +936,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/php/" itemprop="url" rel="index">
-                    <span itemprop="name">php</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1269,177 +971,15 @@
 
       
         
-          
-            <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//关联二位数组</span></div><div class="line">$a2=<span class="keyword">array</span>(    </div><div class="line">  <span class="string">'1'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'john'</span>,<span class="string">'age'</span>=&gt;<span class="string">'32'</span>),</div><div class="line">  <span class="string">'2'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'tom'</span>,<span class="string">'age'</span>=&gt;<span class="string">'22'</span>)</div><div class="line">);</div><div class="line">$json2=json_encode($a2);</div><div class="line"><span class="keyword">echo</span> $json2.<span class="string">"&lt;br&gt;"</span>; <span class="comment">//&#123;"1":&#123;"name":"john","age":"32"&#125;,"2":&#123;"name":"tom","age":"22"&#125;&#125;</span></div><div class="line"><span class="comment">//索引二维数组</span></div><div class="line">$a3=<span class="keyword">array</span>(</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'zz'</span>,<span class="string">'age'</span>=&gt;<span class="string">'31'</span>),</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'we'</span>,<span class="string">'AGE'</span>=&gt;<span class="string">'12'</span>)</div><div class="line">  );</div><div class="line"> $json3=json_encode($a3);</div><div class="line"> <span class="keyword">echo</span> $json3.<span class="string">"&lt;br&gt;"</span>;<span class="comment">//[&#123;"name":"zz","age":"31"&#125;,&#123;"name":"we","AGE":"12"&#125;]</span></div></pre></td></tr></table></figure></p>
-<p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
-<ul>
-<li>对于关联数组生成的json数据格式 ，在前台直接用js的eval()将其转化为json对象，然后根据{key:value}取值</li>
-<li>对于索引数组生成的json数据格式，用js的eval()转为json对象后，由于[]代表数组格式，所以遇到[]还是按照数组取值，遇到{key:value}这种形式的按照对象取值就行了</li>
-</ul>
-<p>当数组维数多的时候需要根据转换后的json数据格式用js进行相应的解析，避免出错。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/RabbitMQ中四种Exchange Types的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/04/RabbitMQ中四种Exchange Types的理解/" itemprop="url">RabbitMQ中四种Exchange Types的理解</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RabbitMQ/" itemprop="url" rel="index">
-                    <span itemprop="name">RabbitMQ</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。</p>
-<h2 id="RabbitMQ简介"><a href="#RabbitMQ简介" class="headerlink" title="RabbitMQ简介"></a>RabbitMQ简介</h2><p>RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考<a href="http://www.rabbitmq.com/tutorials/amqp-concepts.html" target="_blank" rel="external">：AMQP介绍</a></p>
-<h2 id="RabbitMQ概念介绍"><a href="#RabbitMQ概念介绍" class="headerlink" title="RabbitMQ概念介绍"></a>RabbitMQ概念介绍</h2><p>RabbitMQ有许多重要的概念，了解这些概念对了解RabbitMQ是十分有必要的，下面简单介绍一下：</p>
-<p>RabbitMQ 消息模型</p>
-<pre><code>RabbitMQ消息发送时，生产者是不知道消息是否发送到某个队列中去了，生产者仅仅只能将消息发送给某个交换器。
-</code></pre><p>ConnectionFactory</p>
-<pre><code>连接工厂类。可以创建一个连接。
-</code></pre><p>Connection</p>
-<pre><code>在客户创建一个到某个虚拟主机的连接。
-</code></pre><p>Channel</p>
-<pre><code>消息通道，包含了大量的API可用于编程。在客户端的每个连接里，可建立多个channel，每个channel代表一个会话任务。
-</code></pre><p>Broker</p>
-<pre><code>RabbbitMQ消息队列代理服务器实体。
-</code></pre><p>Producer</p>
-<pre><code>发送消息的应用程序。
-</code></pre><p>Consumer</p>
-<pre><code>接收消息的用户程序。
-</code></pre><p>Exchange</p>
-<pre><code>交换器，生产者直接将消息发送给交换器。交换器将消息分发给指定的队列。它指定消息按什么规则，路由到哪个队列。
-</code></pre><p>Binding</p>
-<pre><code>绑定，指的是交换器和队列之间的关系。它的作用就是把exchange和queue按照路由规则绑定起来。
-</code></pre><p>Routing Key</p>
-<pre><code>路由关键字，exchange根据这个关键字进行消息投递。
-</code></pre><p>vhost</p>
-<pre><code>虚拟主机，一个broker里可以开设多个vhost，用作不同用户的权限分离。
-</code></pre><p>Excahnge Types</p>
-<pre><code>RabbitMQ常用的Exchange Type有fanout、direct、topic、headers这四种，下面分别进行介绍。
-</code></pre>
+          <p>在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们<br>今天来看看java的枚举是个什么样子。</p>
+<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="title">Enum</span><span class="params">(String name,<span class="keyword">int</span> ordinal)</span>  <span class="comment">//接受枚举的名称和枚举的常量创建枚举对象  </span></span></div><div class="line"><span class="keyword">protected</span> <span class="keyword">final</span> Object <span class="title">clone</span><span class="params">()</span><span class="keyword">throws</span> CloneNotSupportedException  <span class="comment">//克隆枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(E o)</span> <span class="comment">//比较枚举与指定对象的顺序</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object other)</span>  <span class="comment">//比较两个枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span>  <span class="comment">//返回枚举常量的哈希码  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">name</span><span class="params">()</span>  <span class="comment">//返回枚举类的名称  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span>  <span class="comment">//返回枚举常量的序号  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; <span class="keyword">enum</span> Type,String name)</span>  <span class="comment">//返回带指定名称的指定枚举类型的枚举常量</span></div></pre></td></tr></table></figure>
+<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 定义枚举</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EnumTest &#123;</div><div class="line">	 MON, TUE, WED, THU, FRI, SAT, SUN;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 枚举测试</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">		<span class="comment">//遍历枚举</span></div><div class="line">		<span class="keyword">for</span>(EnumTest e : EnumTest.values()) &#123;</div><div class="line">			System.out.println(e.toString());</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		System.out.println(<span class="string">"我是分割线------"</span>);</div><div class="line"></div><div class="line"></div><div class="line">		<span class="comment">//switch 操作</span></div><div class="line">		EnumTest fri = EnumTest.FRI;</div><div class="line"></div><div class="line">		<span class="keyword">switch</span>(fri)&#123;</div><div class="line">			<span class="keyword">case</span> MON :</div><div class="line">				System.out.println(<span class="string">"今天是星期一"</span>); <span class="keyword">break</span>;</div><div class="line">			<span class="keyword">case</span> FRI :</div><div class="line">				System.out.println(<span class="string">"今天是星期五"</span>); <span class="keyword">break</span>;</div><div class="line">		    <span class="keyword">default</span> :</div><div class="line">		    	System.out.println(<span class="string">"-----"</span>); <span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">//返回</span></div><div class="line">		System.out.println(fri.getDeclaringClass());</div><div class="line"></div><div class="line">		<span class="comment">//利用compareTo进行比较</span></div><div class="line">		<span class="keyword">switch</span> (fri.compareTo(EnumTest.SAT)) &#123;</div><div class="line">		<span class="keyword">case</span> -<span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之前"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之后"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当<br>我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我<br>们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个<br>枚举的顺序</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/04/RabbitMQ中四种Exchange Types的理解/#more" rel="contents">
+            <a class="btn" href="/2017/07/26/java枚举探究/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1485,7 +1025,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/java多态学习/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/25/java多态学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -1504,7 +1044,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/java多态学习/" itemprop="url">java多态学习</a></h2>
+                <a class="post-title-link" href="/2017/07/25/java多态学习/" itemprop="url">java多态学习</a></h2>
         
 
         <div class="post-meta">
@@ -1516,8 +1056,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T00:00:00+08:00">
+                2017-07-25
               </time>
             
 
@@ -1626,7 +1166,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/javaee  配置数据源后数据库连接未及时关闭出现的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/23/基于java中的泛型与反射构建通用DAO层/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -1645,7 +1185,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/javaee  配置数据源后数据库连接未及时关闭出现的问题/" itemprop="url">javaee 配置数据源后数据库连接未及时关闭出现的问题</a></h2>
+                <a class="post-title-link" href="/2017/07/23/基于java中的泛型与反射构建通用DAO层/" itemprop="url">基于java中的泛型与反射构建通用DAO层</a></h2>
         
 
         <div class="post-meta">
@@ -1657,8 +1197,337 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T00:00:00+08:00">
+                2017-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在利用hibernate写通用DAO层时需要获取泛型的类型，比如我在写hql的update语句时需要获取泛型的实体类，由于泛型有擦除机制，所以与需要在运行过程中获取泛型的类型产生了矛盾。此时需要利用反射机制来实现此功能，下面来看一个小例子。</p>
+<blockquote>
+<p>首先建一个实体类Dog<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.Serializable;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">8108340856807454651L</span>;</div><div class="line">	  <span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line">	  <span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</div><div class="line">  		<span class="keyword">return</span> age;</div><div class="line">  	&#125;</div><div class="line"></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">  		<span class="keyword">this</span>.age = age;</div><div class="line">  	&#125;</div><div class="line"></div><div class="line">  	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">  		<span class="keyword">return</span> name;</div><div class="line">  	&#125;</div><div class="line"></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">  		<span class="keyword">this</span>.name = name;</div><div class="line">  	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/23/基于java中的泛型与反射构建通用DAO层/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/15/关于首页feed流如何展示和数据库如何设计问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/15/关于首页feed流如何展示和数据库如何设计问题/" itemprop="url">关于首页feed流如何展示和数据库如何设计问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T00:00:00+08:00">
+                2017-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。</p>
+<p>这里涉及到两个概念 <strong>推模式（push）</strong>和<strong>拉模式（pull）</strong>，这里有两篇大神分享的知识<a href="http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html" target="_blank" rel="external"> 新浪微博架构和FEED架构分析–人人架构<em>paper0023</em>新浪博客</a>和<a href="http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html" target="_blank" rel="external">微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨</a>，讲解的比较清楚</p>
+<blockquote>
+<p>简单来说，什么是推，什么是拉呢？</p>
+</blockquote>
+<ol>
+<li><strong>推模式</strong>是一个用户发表了一条动态，那么后台就遍历关注该用户的所有用户，向他们的feed中推送一条动态</li>
+<li><strong>拉模式</strong>与推模式相反，当用户刷新首页时，后台会遍历该用户关注的用户的动态信息，并将动态信息压入到该用户的feed中</li>
+</ol>
+<p>简单介绍完推拉模式后，下面就要考虑数据库表该怎么设计了，我采用的是最简单的推模式，毕竟新手嘛，先掌握实现流程。</p>
+<hr>
+<p>首先设计feed表，这里我设计一个feed表来存储推送的信息，该表主要有以下几个字段</p>
+<ul>
+<li>id  自增id</li>
+<li>suid  推送者uid</li>
+<li>ruid  接收者uid</li>
+<li>item_id  推送的信息id</li>
+<li>type   推送信息类型</li>
+<li>add_time  推送时间</li>
+</ul>
+<p>这是我感觉很简单的feed表，毕竟我那个问答站推送类型不是太多，当然还需要为这个表设计索引哦。<br>设计完数据库表后，下面该考虑后台推送逻辑和代码如何实现以及前台首页如何渲染feed流信息。</p>
+<hr>
+<p>后台我用的是PHP的ThinkPHP框架，新手表示该框架很好用，用该框架可以快速实现的我的想法，我感觉这一点还是很好的。首先在推送类型的选择中我选择了以下几种推送类型</p>
+<ul>
+<li>当一个话题下有新话题发起时，推送给关注该话题的用户</li>
+<li>当一个问题有回答时，推送给关注该问题的用户</li>
+<li>当一个话题的问题有新回答时，推送给关注该话题的用户</li>
+</ul>
+<p>上面推送过程中会产生大量的重复信息，所以需要在推送时对推送信息进行过滤，以避免重复的推送信息出现。代码就是当上面的推送类型产生时，将信息写入到feed表中，这里并没有对推送用户进行筛选（对推送用户的筛选可以降低数据库的压力）。</p>
+<p>前台渲染的话需要对信息进行排序整合，并对每一条动态信息进行标记，以便在模板渲染时匹配对应的模板。<br>我写的简单部分整合代码，需要对信息进行遍历整合（这里没写）</p>
+<pre><code> //如果推送类型 为a  则代表推送信息类型为  用户关注的话题有关的问题或关注的问题产生的回答
+ $aid=$val[&apos;item_id&apos;];
+ /**根据回答id获取获取与此回答有关的信息**/
+ //获取推送人的uid
+ $suid=$val[&apos;suid&apos;];
+ //获取当前用户对回答的赞同状态
+ $upvote_status=$this-&gt;getUpvoteStatusByAid($aid, $uid);
+//获取feed流 回答信息
+ $a_info_all=$this-&gt;getFeedAnswerInfo($aid);
+ $question_id=$a_info_all[0][&apos;question_id&apos;];
+ //根据问题id获取与此问题相关的话题信息
+ $tinfo_a=D(&apos;Topic&apos;)-&gt;getFeedTopicByQuestion($question_id);
+ //将话题信息追加到回答信息数组中
+ $a_info_all[0][&apos;topic&apos;]= $tinfo_a;
+ //将当前用户对回答的赞同状态最佳到信息数组中
+ $a_info_all[0][&apos;upvote_status&apos;]=$upvote_status;
+ //将整理后的信息添加到feed数组中，并做一个标记 a,以便在模板中判断解析
+ $arr_fd[&apos;answer&apos;]=$a_info_all;
+ $arr_fd[&apos;feed_flag&apos;]=&apos;a&apos;;
+ $feed_return_arr[]=  $arr_fd;
+</code></pre><p>这里 $feed_return_arr[]是一个三维数组，在模板渲染的时候要注意一下。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/15/关于首页feed流如何展示和数据库如何设计问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">利用uploadify插件上传文件时java后台获取不到当前session问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T00:00:00+08:00">
+                2017-07-10
               </time>
             
 
@@ -1716,17 +1585,153 @@
       
         
           
-            <p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
-<blockquote>
-<p>org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot get a connection, pool error Timeout waiting for idle objec</p>
-</blockquote>
-<p>这个异常产生的原因是在使用完数据库连接后没有及时关闭，导致数据库连接池的连接没有可供使用的连接，进而报异常。<br>解决的方法是检查代码，将数据库连接及时关闭，并且在context.xml文件中加上</p>
-<blockquote>
-<p>removeAbandoned=”true” removeAbandonedTimeout=”60”<br>logAbandoned=”true”</p>
-</blockquote>
-<p>这样就解决问题了。</p>
+            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#uploadify"</span>).uploadify(&#123;</div><div class="line">	<span class="attr">debug</span>			: <span class="literal">false</span>,</div><div class="line">	<span class="attr">swf</span> 			:  CTPPATH+<span class="string">'/admin/static/uploadify/js/uploadify.swf'</span>,	<span class="comment">//swf文件路径</span></div><div class="line">	method			: <span class="string">'get'</span>,	<span class="comment">// 提交方式</span></div><div class="line">	uploader		:  CTPPATH+<span class="string">'/processUpload.ado;jsessionid=$&#123;pageContext.session.id&#125;'</span>, <span class="comment">// 服务器端处理该上传请求的程序(servlet, struts2-Action)   )&#125;;</span></div></pre></td></tr></table></figure>
+<p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
 
           
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/网站消息推送之long polling（长轮询）初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/" itemprop="url">网站消息推送之long polling（长轮询）初探</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T00:00:00+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>网站的消息推送功能应用很广泛，比如论坛，问答网站等等都需要推送消息，那么采用什么样的推送方式更加便捷，更加节省服务器资源呢，这个需要根据网站的流量和规模来决定，因为long polling是我最先接触到的，我就来谈谈它吧。</p>
+<p>长轮询初看像是轮流查询的意思，其实不是，它是客户端通过ajax发出请求，然后客户端挂起，等待服务器端响应，服务器端会检测有无新消息，如果有消息，服务器端会将新消息推送给客户端，结束本次请求，如果在有效请求期内没有新消息出现，那么会一直检测有无新消息出现。连接会保持一段时间周期直到数据或状态改变或者时间过期，通过这种机制来减少无效的客户端和服务器间的交互。</p>
+<p>虽然长轮循比传统的轮询性能会有些提高，但在服务器端数据变化非常频繁的情况下，两者的性能并不能差多少，因为都是客户端先请求，服务器再响应，只是两者服务器端响应的机制不同。<br>下面来说说代码，服务器端我用的是php，客户端用的是jQuery</p>
+<p>服务器端代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@desc</span> ajax长轮询 来获取通知消息信息</div><div class="line"> * <span class="doctag">@return</span> 通知信息数量&gt;o</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">longPolling</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(!$_GET[<span class="string">'timed'</span>]) <span class="keyword">exit</span>();</div><div class="line">    date_default_timezone_set(<span class="string">"PRC"</span>);</div><div class="line">    session_write_close(); <span class="comment">//防止session访问互斥问题</span></div><div class="line">    set_time_limit(<span class="number">0</span>);<span class="comment">//无限请求超时时间</span></div><div class="line">    $timed = $_GET[<span class="string">'timed'</span>];</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">        sleep(<span class="number">3</span>); <span class="comment">// 休眠3秒</span></div><div class="line">        <span class="comment">//判断有无新通知出现</span></div><div class="line">         $no_count=D(<span class="string">'Notifications'</span>)-&gt;getNotificationsCount(<span class="keyword">$this</span>-&gt;uid);</div><div class="line">         <span class="keyword">if</span> ($no_count&gt;<span class="number">0</span>) &#123;</div><div class="line">            $responseTime = time();</div><div class="line">            <span class="comment">// 返回数据信息，请求时间、返回数据时间、耗时</span></div><div class="line">            $content=<span class="keyword">array</span>(</div><div class="line">                <span class="string">'result'</span>         =&gt;$no_count,</div><div class="line">                <span class="string">'reponse_time'</span>   =&gt;$responseTime,</div><div class="line">                <span class="string">'request_time'</span>   =&gt;$timed,</div><div class="line">                <span class="string">'use_time'</span>       =&gt;($responseTime - $timed)</div><div class="line">            );</div><div class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;ajaxReturn($content);</div><div class="line">            <span class="keyword">exit</span>();</div><div class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 模拟没有数据变化，将休眠 hold住连接</span></div><div class="line">            sleep(<span class="number">13</span>);</div><div class="line">            <span class="keyword">exit</span>();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

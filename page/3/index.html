@@ -288,7 +288,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/javaee 配置Tomcat数据源问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/01/php  json_encode函数使用遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -307,7 +307,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/javaee 配置Tomcat数据源问题/" itemprop="url">javaee 配置Tomcat数据源问题</a></h2>
+                <a class="post-title-link" href="/2017/07/01/php  json_encode函数使用遇到的问题/" itemprop="url">php json_encode函数使用遇到的问题</a></h2>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T00:00:00+08:00">
+                2017-07-01
               </time>
             
 
@@ -342,8 +342,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
                   </a>
                 </span>
 
@@ -378,11 +378,13 @@
       
         
           
-            <p>最近用javaee写网站配置数据源时遇到了这个错误:</p>
-<blockquote>
-<p>java.lang.ClassCastException: org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper cannot be cast to com.mysql.jdbc.Connection</p>
-</blockquote>
-<p>经过我查看代码发现有些类中包导错了，涉及到数据库的包应该导入java.sql.*这个相关的，而我用ide自动导入为jdbc那个了，发生了类型不匹配问题，改掉就不会报这个错了。</p>
+            <p>在php中有一个函数可以将数组转化为json数据存储格式，这个函数就是json_encode<br>但在使用这个函数时转化的格式不一致，比如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//关联二位数组</span></div><div class="line">$a2=<span class="keyword">array</span>(    </div><div class="line">  <span class="string">'1'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'john'</span>,<span class="string">'age'</span>=&gt;<span class="string">'32'</span>),</div><div class="line">  <span class="string">'2'</span>=&gt;<span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'tom'</span>,<span class="string">'age'</span>=&gt;<span class="string">'22'</span>)</div><div class="line">);</div><div class="line">$json2=json_encode($a2);</div><div class="line"><span class="keyword">echo</span> $json2.<span class="string">"&lt;br&gt;"</span>; <span class="comment">//&#123;"1":&#123;"name":"john","age":"32"&#125;,"2":&#123;"name":"tom","age":"22"&#125;&#125;</span></div><div class="line"><span class="comment">//索引二维数组</span></div><div class="line">$a3=<span class="keyword">array</span>(</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'zz'</span>,<span class="string">'age'</span>=&gt;<span class="string">'31'</span>),</div><div class="line">   <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'we'</span>,<span class="string">'AGE'</span>=&gt;<span class="string">'12'</span>)</div><div class="line">  );</div><div class="line"> $json3=json_encode($a3);</div><div class="line"> <span class="keyword">echo</span> $json3.<span class="string">"&lt;br&gt;"</span>;<span class="comment">//[&#123;"name":"zz","age":"31"&#125;,&#123;"name":"we","AGE":"12"&#125;]</span></div></pre></td></tr></table></figure></p>
+<p>关联二维数组和索引二维数组转化为json数据格式不同，这时在前台用js解析json的时候就有差别</p>
+<ul>
+<li>对于关联数组生成的json数据格式 ，在前台直接用js的eval()将其转化为json对象，然后根据{key:value}取值</li>
+<li>对于索引数组生成的json数据格式，用js的eval()转为json对象后，由于[]代表数组格式，所以遇到[]还是按照数组取值，遇到{key:value}这种形式的按照对象取值就行了</li>
+</ul>
+<p>当数组维数多的时候需要根据转换后的json数据格式用js进行相应的解析，避免出错。</p>
 
           
         
@@ -426,7 +428,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/javaweb下载文件时IE浏览器下报错问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/javaweb下载文件时IE浏览器下报错问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -445,7 +447,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/javaweb下载文件时IE浏览器下报错问题/" itemprop="url">javaweb下载文件时IE浏览器下报错问题</a></h2>
+                <a class="post-title-link" href="/2017/06/15/javaweb下载文件时IE浏览器下报错问题/" itemprop="url">javaweb下载文件时IE浏览器下报错问题</a></h2>
         
 
         <div class="post-meta">
@@ -457,8 +459,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T00:00:00+08:00">
+                2017-06-15
               </time>
             
 
@@ -564,7 +566,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/Linux目录结构记录/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/08/javaee 配置Tomcat数据源问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -583,7 +585,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/04/Linux目录结构记录/" itemprop="url">Linux目录结构</a></h2>
+                <a class="post-title-link" href="/2017/06/08/javaee 配置Tomcat数据源问题/" itemprop="url">javaee 配置Tomcat数据源问题</a></h2>
         
 
         <div class="post-meta">
@@ -595,291 +597,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T22:02:32+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="Linux目录结构："><a href="#Linux目录结构：" class="headerlink" title="Linux目录结构："></a>Linux目录结构：</h3><p><img src="/images/linux目录.png" alt="image"></p>
-<p><strong>/:</strong> 根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中</p>
-<p><strong>/bin:/usr/bin</strong>: 可执行二进制文件的目录，如常用的命令ls、tar、mv、cat等。</p>
-<p><strong>/boot</strong>: 放置linux系统启动时用到的一些文件。/boot/vmlinuz为linux的内核文件，以及/boot/gurb。建议单独分区，分区大小100M即可</p>
-<p><strong>/dev</strong>：存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备，常用的是挂载光驱mount /dev/cdrom /mnt。</p>
-<p><strong>/etc</strong>：系统配置文件存放的目录，不建议在此目录下存放可执行文件，重要的配置文件有/etc/inittab、/etc/fstab、/etc/init.d、/etc/X11、/etc/sysconfig、/etc/xinetd.d修改配置文件之前记得备份。<br>注：/etc/X11存放与x windows有关的设置。</p>
-<p><strong>/home</strong>：系统默认的用户家目录，新增用户账号时，用户的家目录都存放在此目录下，~表示当前用户的家目录，~test表示用户test的家目录。建议单独分区，并设置较大的磁盘空间，方便用户存放数据</p>
-<p><strong>/lib:/usr/lib:/usr/local/lib</strong>：系统使用的函数库的目录，程序在执行过程中，需要调用一些额外的参数时需要函数库的协助，比较重要的目录为/lib/modules。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/04/Linux目录结构记录/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/恢复被Reset掉的提交/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/04/恢复被Reset掉的提交/" itemprop="url">恢复被Reset掉的提交</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T21:49:00+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了<strong>Revert</strong>操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了<strong>git reflog</strong>命令，这个命令用于记录对git仓库进行的各种操作，输入命令显示如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">D:\code\LightBlog [master ≡ +0 ~2 -0 !]&gt; git reflog</div><div class="line">4ca2fb7 HEAD@&#123;0&#125;: commit: Add spring-redis for cache</div><div class="line">ddcc61a HEAD@&#123;1&#125;: commit: Add light blog ui template</div><div class="line">1e9f0b9 HEAD@&#123;2&#125;: pull --progress --prune origin master: Fast-forward</div><div class="line">93d6519 HEAD@&#123;3&#125;: commit: Add encryption util with MD5</div><div class="line">1d158ff HEAD@&#123;4&#125;: commit: fIX(#2) HttpStatus 204 -&gt;no content</div><div class="line">ef8cb50 HEAD@&#123;5&#125;: revert: Revert &quot;Refine exception handler&quot;</div><div class="line">51a7b00 HEAD@&#123;6&#125;: rebase: updating HEAD</div><div class="line">51a7b00 HEAD@&#123;7&#125;: rebase: aborting</div><div class="line">e20b30f HEAD@&#123;8&#125;: pull --progress --rebase --prune origin master: checkout e20b30f0a282cb4b1229a5ebcf220422d3685c40</div><div class="line">51a7b00 HEAD@&#123;9&#125;: commit: Refine exception handler</div><div class="line">294b1e3 HEAD@&#123;10&#125;: pull --progress --prune origin master: Merge made by the &apos;recursive&apos; strategy.</div><div class="line">927ff21 HEAD@&#123;11&#125;: commit: Add exception handler for RESTful</div><div class="line">4e2592c HEAD@&#123;12&#125;: commit: Add authorization for web with redis.</div></pre></td></tr></table></figure>
-<p>可以看见每次操作都会有记录的（没有全部贴出来），这是我们可以用<strong>git reset ID</strong>来恢复内容，ID指的第一列的东西，比如<strong>4ca2fb7</strong>，这样我们就可以找回丢失的内容了。</p>
-<p>下面是我常用的一套命令，用来更新本地代码，这也是我经过好几次拉取远程代码冲突一大片得到的经验，<strong>git mergetool</strong>指的是当发生代码冲突时，输入此命令就会进行冲突的解决，由于我用的VS，输入此命令后就会跳到VS中来解决冲突了，对于一个文件如果冲突实在是太多，推荐<strong>winmerge</strong>工具，一个轻量且免费的冲突合并工具，我平时也用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">git status</div><div class="line"></div><div class="line">git commit -m &apos;temp commit&apos;</div><div class="line"></div><div class="line">git stash save appconfig</div><div class="line"></div><div class="line">git log</div><div class="line"></div><div class="line">git pull -r origin develop</div><div class="line"></div><div class="line">git mergetool(回车合并冲突)</div><div class="line"></div><div class="line">git reset HEAD~</div><div class="line"></div><div class="line">git stash apply</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/06/java枚举探究/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/06/java枚举探究/" itemprop="url">java枚举探究</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-06T10:11:07+08:00">
-                2017-07-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-08T00:00:00+08:00">
+                2017-06-08
               </time>
             
 
@@ -936,19 +655,14 @@
 
       
         
-          <p>在jdk1.5中引入枚举这个小功能，这个功能虽然用的不多，但是却给我们的开发带来很多便利，我们<br>今天来看看java的枚举是个什么样子。</p>
-<h2 id="枚举的主要操作方法"><a href="#枚举的主要操作方法" class="headerlink" title="枚举的主要操作方法"></a>枚举的主要操作方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="title">Enum</span><span class="params">(String name,<span class="keyword">int</span> ordinal)</span>  <span class="comment">//接受枚举的名称和枚举的常量创建枚举对象  </span></span></div><div class="line"><span class="keyword">protected</span> <span class="keyword">final</span> Object <span class="title">clone</span><span class="params">()</span><span class="keyword">throws</span> CloneNotSupportedException  <span class="comment">//克隆枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(E o)</span> <span class="comment">//比较枚举与指定对象的顺序</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object other)</span>  <span class="comment">//比较两个枚举对象  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span>  <span class="comment">//返回枚举常量的哈希码  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">name</span><span class="params">()</span>  <span class="comment">//返回枚举类的名称  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span>  <span class="comment">//返回枚举常量的序号  </span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; <span class="keyword">enum</span> Type,String name)</span>  <span class="comment">//返回带指定名称的指定枚举类型的枚举常量</span></div></pre></td></tr></table></figure>
-<h2 id="先定义一个枚举，用enum关键字"><a href="#先定义一个枚举，用enum关键字" class="headerlink" title="先定义一个枚举，用enum关键字"></a>先定义一个枚举，用enum关键字</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 定义枚举</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EnumTest &#123;</div><div class="line">	 MON, TUE, WED, THU, FRI, SAT, SUN;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里将星期定义为枚举类型，但没有赋值，既然已经定义好了，那么就先测试一下吧。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 枚举测试</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">		<span class="comment">//遍历枚举</span></div><div class="line">		<span class="keyword">for</span>(EnumTest e : EnumTest.values()) &#123;</div><div class="line">			System.out.println(e.toString());</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		System.out.println(<span class="string">"我是分割线------"</span>);</div><div class="line"></div><div class="line"></div><div class="line">		<span class="comment">//switch 操作</span></div><div class="line">		EnumTest fri = EnumTest.FRI;</div><div class="line"></div><div class="line">		<span class="keyword">switch</span>(fri)&#123;</div><div class="line">			<span class="keyword">case</span> MON :</div><div class="line">				System.out.println(<span class="string">"今天是星期一"</span>); <span class="keyword">break</span>;</div><div class="line">			<span class="keyword">case</span> FRI :</div><div class="line">				System.out.println(<span class="string">"今天是星期五"</span>); <span class="keyword">break</span>;</div><div class="line">		    <span class="keyword">default</span> :</div><div class="line">		    	System.out.println(<span class="string">"-----"</span>); <span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">//返回</span></div><div class="line">		System.out.println(fri.getDeclaringClass());</div><div class="line"></div><div class="line">		<span class="comment">//利用compareTo进行比较</span></div><div class="line">		<span class="keyword">switch</span> (fri.compareTo(EnumTest.SAT)) &#123;</div><div class="line">		<span class="keyword">case</span> -<span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之前"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">			System.out.println(<span class="string">"之后"</span>);</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>我们可以遍历枚举，用java的foreach进行遍历，调用枚举的values方法获取定义的枚举列表，但当<br>我们编写自定义enum时，却不包含values这个方法，这个方法是当我门编译文件时，编译器自动帮我<br>们加上的。枚举还可以进行switch操作，可以对获取的枚举进行判断。利用compareTo函数进行比较两个<br>枚举的顺序</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/06/java枚举探究/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <p>最近用javaee写网站配置数据源时遇到了这个错误:</p>
+<blockquote>
+<p>java.lang.ClassCastException: org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper cannot be cast to com.mysql.jdbc.Connection</p>
+</blockquote>
+<p>经过我查看代码发现有些类中包导错了，涉及到数据库的包应该导入java.sql.*这个相关的，而我用ide自动导入为jdbc那个了，发生了类型不匹配问题，改掉就不会报这个错了。</p>
+
+          
         
       
     </div>
@@ -990,7 +704,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/22/markdown-01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/07/markdown-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -1009,7 +723,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/22/markdown-01/" itemprop="url">markdown-01</a></h2>
+                <a class="post-title-link" href="/2017/06/07/markdown-01/" itemprop="url">markdown-01</a></h2>
         
 
         <div class="post-meta">
@@ -1021,8 +735,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T15:44:07+08:00">
-                2017-06-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T15:44:07+08:00">
+                2017-06-07
               </time>
             
 
@@ -1121,6 +835,268 @@
 <p><a href="http://example.net/" target="_blank" rel="external">This link</a> has no title attribute.</p>
 <h2 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h2><p>Markdown 使用星号（<em>）和底线（_）作为标记强调字词的符号，被 </em> 或 <em> 包围的字词会被转成用 <em> 标签包围，用两个 * 或 </em> 包起来的话，则会被转成 <strong>，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">*single asterisks*</div><div class="line"></div><div class="line">_single underscores_</div><div class="line"></div><div class="line">**double asterisks**</div><div class="line"></div><div class="line">__double underscores__</div></pre></td></tr></table></figure></strong></em></p>
 <p>会转成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;em&gt;single asterisks&lt;/em&gt;</div><div class="line"></div><div class="line">&lt;em&gt;single underscores&lt;/em&gt;</div><div class="line"></div><div class="line">&lt;strong&gt;double asterisks&lt;/strong&gt;</div><div class="line"></div><div class="line">&lt;strong&gt;double underscores&lt;/strong&gt;</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/javaee  配置数据源后数据库连接未及时关闭出现的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/06/javaee  配置数据源后数据库连接未及时关闭出现的问题/" itemprop="url">javaee 配置数据源后数据库连接未及时关闭出现的问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T00:00:00+08:00">
+                2017-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我在配置要数据源后没有仔细检查我的代码，有些数据库连接没有及时关闭，报以下异常:</p>
+<blockquote>
+<p>org.apache.tomcat.dbcp.dbcp.SQLNestedException: Cannot get a connection, pool error Timeout waiting for idle objec</p>
+</blockquote>
+<p>这个异常产生的原因是在使用完数据库连接后没有及时关闭，导致数据库连接池的连接没有可供使用的连接，进而报异常。<br>解决的方法是检查代码，将数据库连接及时关闭，并且在context.xml文件中加上</p>
+<blockquote>
+<p>removeAbandoned=”true” removeAbandonedTimeout=”60”<br>logAbandoned=”true”</p>
+</blockquote>
+<p>这样就解决问题了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/08/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/08/hello-world/" itemprop="url">Hello World</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-08T00:00:00+08:00">
+                2017-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
           
         

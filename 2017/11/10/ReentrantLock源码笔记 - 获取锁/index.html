@@ -1,0 +1,904 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,Lock,JUC,ReentrantLock," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="明山的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="ReentrantLock 学习 - 获取锁（JDK 1.8） ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), N">
+<meta name="keywords" content="java,Lock,JUC,ReentrantLock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReentrantLock源码笔记 - 获取锁（JDK 1.8）">
+<meta property="og:url" content="http://yoursite.com/2017/11/10/ReentrantLock源码笔记 - 获取锁/index.html">
+<meta property="og:site_name" content="明山的博客">
+<meta property="og:description" content="ReentrantLock 学习 - 获取锁（JDK 1.8） ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), N">
+<meta property="og:image" content="http://yoursite.com/images/ReentrantLock.png">
+<meta property="og:updated_time" content="2017-12-04T14:43:38.484Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReentrantLock源码笔记 - 获取锁（JDK 1.8）">
+<meta name="twitter:description" content="ReentrantLock 学习 - 获取锁（JDK 1.8） ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。 ReentrantLock类的结构为： 从图中可以看出，ReentrantLock类包含三个静态内部类：  Sync NonfairSync FairSync  其中Sync类继承AbstractQueuedSynchronize（AQS), N">
+<meta name="twitter:image" content="http://yoursite.com/images/ReentrantLock.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/10/ReentrantLock源码笔记 - 获取锁/"/>
+
+
+
+
+
+  <title>ReentrantLock源码笔记 - 获取锁（JDK 1.8） | 明山的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">明山的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一念开明，反身而诚</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/10/ReentrantLock源码笔记 - 获取锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ReentrantLock源码笔记 - 获取锁（JDK 1.8）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-10T00:00:00+08:00">
+                2017-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/JUC/" itemprop="url" rel="index">
+                    <span itemprop="name">JUC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ReentrantLock-学习-获取锁（JDK-1-8）"><a href="#ReentrantLock-学习-获取锁（JDK-1-8）" class="headerlink" title="ReentrantLock 学习 - 获取锁（JDK 1.8）"></a>ReentrantLock 学习 - 获取锁（JDK 1.8）</h2><hr>
+<p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
+<h3 id="ReentrantLock类的结构为："><a href="#ReentrantLock类的结构为：" class="headerlink" title="ReentrantLock类的结构为："></a>ReentrantLock类的结构为：<br></h3><p><img src="/images/ReentrantLock.png" alt="image"></p>
+<p>从图中可以看出，ReentrantLock类包含三个静态内部类：</p>
+<ul>
+<li>Sync</li>
+<li>NonfairSync</li>
+<li>FairSync</li>
+</ul>
+<p>其中Sync类继承AbstractQueuedSynchronize（AQS), NonfairSync和FairSync继承Sync。</p>
+<h3 id="ReentrantLock的基本用法："><a href="#ReentrantLock的基本用法：" class="headerlink" title="ReentrantLock的基本用法："></a>ReentrantLock的基本用法：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</div><div class="line">    <span class="comment">// ...</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m</span><span class="params">()</span> </span>&#123;</div><div class="line">      lock.lock();  <span class="comment">// block until condition holds</span></div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// ... method body</span></div><div class="line">      &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        lock.unlock()</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="ReentrantLock的创建"><a href="#ReentrantLock的创建" class="headerlink" title="ReentrantLock的创建"></a>ReentrantLock的创建</h3><ul>
+<li>非公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</div></pre></td></tr></table></figure>
+<ul>
+<li>公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Lock lock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>);</div></pre></td></tr></table></figure>
+<p>由于默认创建的为非公平锁，所以想创建公平锁，就需要向其构造方法传入true。</p>
+<ol>
+<li>创建非公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125;.</div><div class="line"> * This is equivalent to using &#123;<span class="doctag">@code</span> ReentrantLock(false)&#125;.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync = <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>创建公平锁的构造方法为：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 根据传入的布尔值来判断创建哪种锁</div><div class="line"> * Creates an instance of &#123;<span class="doctag">@code</span> ReentrantLock&#125; with the</div><div class="line"> * given fairness policy.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> fair &#123;<span class="doctag">@code</span> true&#125; if this lock should use a fair ordering policy</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h3><h4 id="非公平锁的用法"><a href="#非公平锁的用法" class="headerlink" title="非公平锁的用法"></a>非公平锁的用法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
+<p>在ReetrantLock类的内部提供了一个加锁的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.lock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法里又调用了==sync==的==lock==方法，又因为Sync这个类为一个抽象类，在ReentrantLock类实例化的时候，根据参数来判断调用哪个具体的类。</p>
+<p>这里先谈谈非公平锁的加锁实现。</p>
+<h4 id="非公平锁实现简单步骤："><a href="#非公平锁实现简单步骤：" class="headerlink" title="非公平锁实现简单步骤："></a><strong>非公平锁实现简单步骤</strong>：</h4><p> 基予CAS(Compare And Swap)将state由0设置为1。<br></p>
+<ul>
+<li>如果设置成功，那么直接获得锁，并设置独占锁的线程为当前线程。<br></li>
+<li>如果设置失败，原先内存state的值不是0，已经有其他线程获得锁，那么就会再获取一次state。<br><ol>
+<li>如果state为0， 那么就会再次利用CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。<br></li>
+<li>如果state不为0，那么需要判断当前线程是否是独占锁的线程，如果是，那么就将state加1， 并且判断当前state的值不能小于0；如果不是，那么就将该线程封装在一个Node(AQS里面)里,并加入到等待列队里，等其他线程唤醒。</li>
+</ol>
+</li>
+</ul>
+<a id="more"></a>
+<h4 id="具体流程如下："><a href="#具体流程如下：" class="headerlink" title="具体流程如下："></a>具体流程如下：</h4><p>首先通过ReentrantLock的lock方法调用到其内部类NonFairLock的lock方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</div><div class="line">        setExclusiveOwnerThread(Thread.currentThread());</div><div class="line">    <span class="keyword">else</span></div><div class="line">        acquire(<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在lock方法中，先调用compareAndSetState方法来将state由0设置为1，如果设置成功，设置当前线程为独占锁线程，如果失败，则调用AbstractQueuedSynchronizer类的acquire(1)方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</div><div class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</div><div class="line">        selfInterrupt();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>向aquire方法传入参数1，此方法是线程获取临界资源的顶层入口， 如果获得到资源则直接返回，如果失败，则将当前先后才能放入到等待列队，直到获取到资源才返回。此过程忽略中断影响，模式为独占模式。</p>
+<p>因为这个方法涉及到线程的入队操作，下面来看看AbstractQueuedSynchronizer类内部封装的Node.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 同步等待队列（双向链表）节点</div><div class="line"> */</div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Node SHARED = <span class="keyword">new</span> Node();</div><div class="line">    <span class="comment">// 一个标记：用于表明该节点在独占模式下进行等待</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Node EXCLUSIVE = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 线程被取消了</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANCELLED =  <span class="number">1</span>;</div><div class="line">    <span class="comment">// 节点等待触发</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIGNAL    = -<span class="number">1</span>;</div><div class="line">    <span class="comment">// 节点等待条件</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CONDITION = -<span class="number">2</span>;</div><div class="line">    <span class="comment">// 节点状态需要向后传播</span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PROPAGATE = -<span class="number">3</span>;</div><div class="line"></div><div class="line">    <span class="keyword">volatile</span> <span class="keyword">int</span> waitStatus;</div><div class="line"></div><div class="line">    <span class="comment">// 前驱节点</span></div><div class="line">    <span class="keyword">volatile</span> Node prev;</div><div class="line"></div><div class="line">    <span class="comment">// 后继节点</span></div><div class="line">    <span class="keyword">volatile</span> Node next;</div><div class="line"></div><div class="line">    <span class="comment">// 线程</span></div><div class="line">    <span class="keyword">volatile</span> Thread thread;</div><div class="line"></div><div class="line"></div><div class="line">    Node nextWaiter;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">isShared</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> nextWaiter == SHARED;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">final</span> Node <span class="title">predecessor</span><span class="params">()</span> <span class="keyword">throws</span> NullPointerException </span>&#123;</div><div class="line">        Node p = prev;</div><div class="line">        <span class="keyword">if</span> (p == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="keyword">return</span> p;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Node() &#123;    <span class="comment">// Used to establish initial head or SHARED marker</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Node(Thread thread, Node mode) &#123;     <span class="comment">// Used by addWaiter</span></div><div class="line">        <span class="keyword">this</span>.nextWaiter = mode;</div><div class="line">        <span class="keyword">this</span>.thread = thread;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Node(Thread thread, <span class="keyword">int</span> waitStatus) &#123; <span class="comment">// Used by Condition</span></div><div class="line">        <span class="keyword">this</span>.waitStatus = waitStatus;</div><div class="line">        <span class="keyword">this</span>.thread = thread;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>tryAcquire方法会调用ReentrantLock中NonfairSync内部类中的tryAcquire方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> nonfairTryAcquire(acquires);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后调用nonfairTryAcquire方法进行再一次尝试获取锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">nonfairTryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</div><div class="line">    <span class="comment">// 当前线程</span></div><div class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</div><div class="line">    <span class="comment">// 再一次获取state</span></div><div class="line">    <span class="keyword">int</span> c = getState();</div><div class="line">    <span class="comment">// 如果state为0，说明其他线程已经释放了锁，可以尝试获取锁</span></div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// 利用CAS来设置当前state的值</span></div><div class="line">        <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, acquires)) &#123;</div><div class="line">            <span class="comment">// 如果成功则设置当前线程为独占锁线程，然后直接返回</span></div><div class="line">            setExclusiveOwnerThread(current);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="comment">// 如果当前state不是0，则判断当前线程是否为独占锁线程</span></div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</div><div class="line">        <span class="comment">// 将state进行+1操作，判断state值后返回</span></div><div class="line">        <span class="keyword">int</span> nextc = c + acquires;</div><div class="line">        <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>) <span class="comment">// overflow</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</div><div class="line">        setState(nextc);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// 获取锁失败，考虑将线程加入等待队列</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在nonfairTryAcquire方法为再一次尝试获取锁，这个过程可能获取锁的线程已经释放了锁，所以再一次判断state的值，如果state的值为0，那么利用CAS将state由0设值为1，如果成功，获取锁成功，设值当前线程为独占锁线程，直接返回；如果state不为0，则判断当前线程是否为独占锁线程（可重入锁来源，state每加一次1，那么就需要释放锁的次数也要+1，这样才能保证state最终在线程释放锁的情况下值为0），如果是，将state加1，然后返回；其他情况返回false，获取锁失败。</p>
+<p>如果当前线程获取锁失败，就需要将该线程加入等待队列的末尾。<br>该等待列队是CLH队列，队列的示意图如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">     +------+  prev +-----+       +-----+</div><div class="line">head |      | &lt;---- |     | &lt;---- |     |  tail</div><div class="line">     +------+       +-----+       +-----+</div></pre></td></tr></table></figure>
+<p>接下来就会调用AQS的addWaiter(Node.EXCLUSIVE)方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">addWaiter</span><span class="params">(Node mode)</span> </span>&#123;</div><div class="line">    <span class="comment">// 根据当前线程创建一个Node节点，并设置为独占模式</span></div><div class="line">    Node node = <span class="keyword">new</span> Node(Thread.currentThread(), mode);</div><div class="line">    <span class="comment">// 试图进行快速入队操作，仅尝试一次</span></div><div class="line">    <span class="comment">// 将队列的尾节点tail赋给pred</span></div><div class="line">    Node pred = tail;</div><div class="line">    <span class="comment">// 判断尾节点是否为空</span></div><div class="line">    <span class="keyword">if</span> (pred != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 将尾节点作为创造出来的节点的前驱节点，即将创造出来的节点</span></div><div class="line">        <span class="comment">// 链接到为尾节点后</span></div><div class="line">        node.prev = pred;</div><div class="line">        <span class="comment">// 利用CAS将尾节点tail由pred设置为node</span></div><div class="line">        <span class="comment">// 此时队列 node1 &lt;-&gt; node</span></div><div class="line">        <span class="comment">// 再加上 node1 &lt;-&gt; prev</span></div><div class="line">        <span class="comment">// 所以此时队列应为  node1 &lt;-&gt; prev &lt;-&gt; node</span></div><div class="line">        <span class="keyword">if</span> (compareAndSetTail(pred, node)) &#123;</div><div class="line">            <span class="comment">// 如果成功，则将pred的后继节点为node</span></div><div class="line">            pred.next = node;</div><div class="line">            <span class="keyword">return</span> node;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    enq(node); <span class="comment">// 正常入队</span></div><div class="line">    <span class="keyword">return</span> node;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体的实现流程已在代码中注释，如果不是快速入队，那么就进行正常入队，即调用AQS的enq(node)方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">enq</span><span class="params">(<span class="keyword">final</span> Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">// 等待，直到插入到队列位置</span></div><div class="line">    <span class="keyword">for</span> (;;) &#123;</div><div class="line">        <span class="comment">// 将尾节点tail赋给t</span></div><div class="line">        Node t = tail;</div><div class="line">        <span class="comment">// 判断尾节点是否为空，如果尾节点为空，说明队列为空</span></div><div class="line">        <span class="keyword">if</span> (t == <span class="keyword">null</span>) &#123; <span class="comment">// Must initialize</span></div><div class="line">            <span class="comment">// 生成一个新节点，将head由null设置为新节点的值</span></div><div class="line">            <span class="comment">// 如果设置失败，说明在这个过程中已经有其他线程设置过head了</span></div><div class="line">            <span class="comment">// 当成功的将这个dummy节点设置到head节点上去时，我们又将这个head节点// 设置给了tail节点，即head与tail都是当前这个dummy节点，</span></div><div class="line">            <span class="comment">// 之后有新节点入队的话，就插入到该dummy之后</span></div><div class="line">            <span class="keyword">if</span> (compareAndSetHead(<span class="keyword">new</span> Node()))</div><div class="line">                tail = head;</div><div class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">//如果尾节点不为空，则按照快速入队操作进行操作</span></div><div class="line">            node.prev = t;</div><div class="line">            <span class="keyword">if</span> (compareAndSetTail(t, node)) &#123; <span class="comment">// 尝试将尾节点设置为node</span></div><div class="line">                t.next = node; <span class="comment">// 将node节点设置为尾节点,即将尾节点的后继节点设置为node节点</span></div><div class="line">                <span class="keyword">return</span> t;  <span class="comment">// 返回原先的尾节点</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>入队成功之后需要调用AQS的acquireQueued(addWaiter(Node.EXCLUSIVE), arg))方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 队列中的结点在独占且忽略中断的模式下获取锁</div><div class="line">  * 如果获取成功则返回false</div><div class="line">  * 如果获取失败</div><div class="line">  */</div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">acquireQueued</span><span class="params">(<span class="keyword">final</span> Node node, <span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">    <span class="keyword">boolean</span> failed = <span class="keyword">true</span>; <span class="comment">// 失败标志</span></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">boolean</span> interrupted = <span class="keyword">false</span>; <span class="comment">//中断标志</span></div><div class="line">        <span class="keyword">for</span> (;;) &#123; <span class="comment">// 无限等待</span></div><div class="line">            <span class="keyword">final</span> Node p = node.predecessor(); <span class="comment">// 获取插入节点的前一个节点p</span></div><div class="line">            <span class="comment">// 仅当当前的节点的前驱节点并且</span></div><div class="line">            <span class="comment">// 尝试获取锁成功，跳出循环</span></div><div class="line">            <span class="comment">// 当第一次循环就获取成功了，interrupted为false，不需要中断</span></div><div class="line"></div><div class="line">            <span class="keyword">if</span> (p == head &amp;&amp; tryAcquire(arg)) &#123;</div><div class="line">                setHead(node); <span class="comment">// 设置头结点</span></div><div class="line">                p.next = <span class="keyword">null</span>; <span class="comment">// help GC</span></div><div class="line">                failed = <span class="keyword">false</span>;</div><div class="line">                <span class="keyword">return</span> interrupted;</div><div class="line">            &#125; <span class="comment">// 当获取(锁)失败后，检查并且更新结点状态, 挂起当前节点并检查中断</span></div><div class="line">            <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</div><div class="line">                parkAndCheckInterrupt())</div><div class="line">                interrupted = <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        <span class="keyword">if</span> (failed)</div><div class="line">            cancelAcquire(node);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果acquireQueued方法没有跳出循环（获取锁失败），那么就要判断当前节点是否可以安全的挂起（park），下面就会调用AQS的shouldParkAfterFailedAcquire(Node pred, Node node) 方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 当获取(资源)失败后，检查并且更新结点状态</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">shouldParkAfterFailedAcquire</span><span class="params">(Node pred, Node node)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> ws = pred.waitStatus; <span class="comment">// 获取前驱节点的状态</span></div><div class="line">     <span class="comment">// 当且仅当状态为SIGNAL时，表示当前节点在以后可以被唤醒，那么就可以进行挂起// （park）操作了</span></div><div class="line">     <span class="comment">// 此时 ws的值为-1</span></div><div class="line">    <span class="keyword">if</span> (ws == Node.SIGNAL)</div><div class="line">        <span class="comment">/*</span></div><div class="line">         * This node has already set status asking a release</div><div class="line">         * to signal it, so it can safely park.</div><div class="line">         */</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    <span class="comment">// ws大于零说明前驱节点的状态为CANCEL, 即为1</span></div><div class="line">    <span class="comment">// 即前驱节点的线程被取消了，需要将其从队列中除去，最终返回false</span></div><div class="line">    <span class="comment">// 不能被安全的挂起</span></div><div class="line">    <span class="keyword">if</span> (ws &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">/*</span></div><div class="line">         * Predecessor was cancelled. Skip over predecessors and</div><div class="line">         * indicate retry.</div><div class="line">         */</div><div class="line">        <span class="keyword">do</span> &#123;</div><div class="line">            <span class="comment">// 这句话node.prev = pred = pred.prev;</span></div><div class="line">            <span class="comment">// 相当于</span></div><div class="line">            <span class="comment">// pred = pred.prev;</span></div><div class="line">            <span class="comment">// node.prev = pred;</span></div><div class="line">            node.prev = pred = pred.prev;</div><div class="line">        &#125; <span class="keyword">while</span> (pred.waitStatus &gt; <span class="number">0</span>); <span class="comment">// 找到pred结点前面最近的一个状态不为CANCELLED的结点</span></div><div class="line">        pred.next = node; <span class="comment">// 将该节点的后继节点设置为当前节点</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// waitStatus 为PROPAGATE -3 或者是0 表示无状态,(为CONDITION -2时，表示此节点在condition queue中)</span></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * waitStatus must be 0 or PROPAGATE.  Indicate that we</div><div class="line">         * need a signal, but don't park yet.  Caller will need to</div><div class="line">         * retry to make sure it cannot acquire before parking.</div><div class="line">         */</div><div class="line">        <span class="comment">// 利用CAS来将当前节点的前驱节点的状态设置为SIGNAL</span></div><div class="line">        <span class="comment">// 如果设置成功的话，下次再来访问 状态就为SIGNAL了</span></div><div class="line">        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// 如果ws不为SIGNAL, 其他情况全部返回false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在该方法中需要判断当前节点的前驱节点的状态，如果状态为SIGNAL时，表示当前节点在以后可以被唤醒，那么就可以进行挂起了<br><br><strong>如果不是</strong></p>
+<ul>
+<li>那么就需要判断该前驱节点（线程）是否被取消了，如果被取消，那么这个前驱节点应该从队列中除去，再经过while循环找到pred结点前面最近的一个状态不为CANCELLED的结点，并将当前节点的前驱节点设置为该节点；</li>
+<li>如果该前驱节点的waitStatus不为CANCELLED,那么利用CAS将当前节点的前驱节点的状态设置为SIGNAL</li>
+</ul>
+<p>接下来就会执行AQS 中的parkAndCheckInterrupt()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 进行挂起（park）操作并且返回该线程是否被中断</div><div class="line">  */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">parkAndCheckInterrupt</span><span class="params">()</span> </span>&#123;</div><div class="line">    LockSupport.park(<span class="keyword">this</span>); <span class="comment">//挂起当前线程</span></div><div class="line">    <span class="keyword">return</span> Thread.interrupted(); <span class="comment">// 如果当前线程已经被中断了，返回true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>parkAndCheckInterrupt方法首先执行挂起（park）操作，然后返回该线程是否已经被中断。</p>
+<p>此时回到acquireQueued(final Node node, int arg)方法，看finally语句块中的cancelAcquire(node)方法，该方法在挂起失败后执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 取消继续获取锁</div><div class="line">  */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">cancelAcquire</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">// Ignore if node doesn't exist</span></div><div class="line">    <span class="comment">// node为空，返回</span></div><div class="line">    <span class="keyword">if</span> (node == <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    <span class="comment">// node节点内的线程置为空</span></div><div class="line">    node.thread = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// Skip cancelled predecessors</span></div><div class="line">    <span class="comment">// 该节点的前驱节点</span></div><div class="line">    Node pred = node.prev;</div><div class="line">    <span class="comment">// 找到pred结点前面最近的一个状态不为CANCELLED的结点</span></div><div class="line">    <span class="keyword">while</span> (pred.waitStatus &gt; <span class="number">0</span>)</div><div class="line">        node.prev = pred = pred.prev;</div><div class="line"></div><div class="line">    <span class="comment">// node结点为尾结点，则利用CAS设置尾结点为pred结点</span></div><div class="line">    <span class="keyword">if</span> (node == tail &amp;&amp; compareAndSetTail(node, pred)) &#123;</div><div class="line">        compareAndSetNext(pred, predNext, <span class="keyword">null</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">// node结点不为尾结点，或者CAS设置不成功</span></div><div class="line">        <span class="comment">// If successor needs signal, try to set pred's next-link</span></div><div class="line">        <span class="comment">// so it will get one. Otherwise wake it up to propagate.</span></div><div class="line">        <span class="keyword">int</span> ws;</div><div class="line">        <span class="comment">// （pred结点不为头结点，并且pred结点的状态为SIGNAL）或者</span></div><div class="line">        <span class="comment">//  ws小于0，并且比较并设置等待状态为SIGNAL成功，并且pred结点内的线程不为空</span></div><div class="line">        <span class="keyword">if</span> (pred != head &amp;&amp;</div><div class="line">            ((ws = pred.waitStatus) == Node.SIGNAL ||</div><div class="line">             (ws &lt;= <span class="number">0</span> &amp;&amp; compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) &amp;&amp;</div><div class="line">            pred.thread != <span class="keyword">null</span>) &#123;</div><div class="line">            Node next = node.next; <span class="comment">// 获取节点的后继节点</span></div><div class="line">            <span class="comment">// 如果后继节点不为空 并且后继节点的等待状态小于等于0</span></div><div class="line">            <span class="keyword">if</span> (next != <span class="keyword">null</span> &amp;&amp; next.waitStatus &lt;= <span class="number">0</span>)</div><div class="line">                compareAndSetNext(pred, predNext, next); <span class="comment">// 比较并设置pred.next = next;</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            unparkSuccessor(node); <span class="comment">// 释放节点的后继节点</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        node.next = node; <span class="comment">// help GC</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在该方法中取消继续获取锁。</p>
+<p>在该方法中会调用一个方法unparkSuccessor，该方法的作用就是为了释放node节点的后继结点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * If status is negative (i.e., possibly needing signal) try</div><div class="line">     * to clear in anticipation of signalling.  It is OK if this</div><div class="line">     * fails or if status is changed by waiting thread.</div><div class="line">     */</div><div class="line">     <span class="comment">// 获取节点的状态</span></div><div class="line">    <span class="keyword">int</span> ws = node.waitStatus;</div><div class="line">    <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</div><div class="line">        compareAndSetWaitStatus(node, ws, <span class="number">0</span>); <span class="comment">// 利用CAS 将状态设置为0</span></div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">     * Thread to unpark is held in successor, which is normally</div><div class="line">     * just the next node.  But if cancelled or apparently null,</div><div class="line">     * traverse backwards from tail to find the actual</div><div class="line">     * non-cancelled successor.</div><div class="line">     */</div><div class="line">    <span class="comment">// 获取节点的后继节点</span></div><div class="line">    Node s = node.next;</div><div class="line">    <span class="comment">// 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED</span></div><div class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</div><div class="line">        s = <span class="keyword">null</span>; <span class="comment">// 将后继节点置为null</span></div><div class="line">        <span class="comment">// 从尾节点从后向前开始遍历知道节点为空或者当前节点为止</span></div><div class="line">        <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</div><div class="line">            <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>) <span class="comment">// 如果此时节点的状态小于等于0</span></div><div class="line">                s = t; <span class="comment">// 将此节点赋给传入节点的后继节点</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (s != <span class="keyword">null</span>)  <span class="comment">// 节点不为空，释放</span></div><div class="line">        LockSupport.unpark(s.thread);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，ReentrantLock获取非公平锁的步骤就结束了。</p>
+<h3 id="公平锁"><a href="#公平锁" class="headerlink" title="公平锁"></a>公平锁</h3><p>如果需要使用公平锁，那么在创建ReentrantLock实例的时候需要向其构造函数传入布尔值true，然后在构造方法里利用三元运算创建公平锁的实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="公平锁的用法"><a href="#公平锁的用法" class="headerlink" title="公平锁的用法"></a>公平锁的用法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock.lock();</div></pre></td></tr></table></figure>
+<h4 id="公平锁加锁的简单步骤："><a href="#公平锁加锁的简单步骤：" class="headerlink" title="公平锁加锁的简单步骤："></a>公平锁加锁的简单步骤：</h4><p>获取一次state的值</p>
+<ul>
+<li>如果state为0，查看CLH队列中是否还有其他线程在等待获取锁，如果有，则获取锁失败；如果没有，则利用CAS将state的值由0设置为1，如果成功，设置独占锁的线程为当前线。</li>
+<li>如果state不为0或者CLH队列中还有其他线程在等待获取锁，查看当前线程是不是已经是独占锁的线程了，如果是，则将当前的锁数量+1；如果不是，则将该线程封装在一个Node内，并加入到等待队列中去。等待被其前一个线程节点唤醒。</li>
+</ul>
+<p>此过程严格遵守“先到先得”策略。</p>
+<h4 id="公平锁与非公平锁的重要区别是："><a href="#公平锁与非公平锁的重要区别是：" class="headerlink" title="公平锁与非公平锁的重要区别是："></a>公平锁与非公平锁的重要区别是：</h4><p>非公平锁在要获取锁的时候，首先会尝试直接获取锁，而公平锁则需要判断CLH队列中是否还有其他线程在等待获取锁。</p>
+<h4 id="公平锁具体获取流程："><a href="#公平锁具体获取流程：" class="headerlink" title="公平锁具体获取流程："></a>公平锁具体获取流程：</h4><p>首先调用FairSync静态内部类的lock方法，在这个方法中直接调用AQS的acquire方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    acquire(<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>AQS的acquire方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</div><div class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</div><div class="line">        selfInterrupt();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后会调用FairSync的tryAcquire方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 和非公平锁的区别：即使当前锁是空闲的，也要查看CLH队列中是否还有其他线程在等</div><div class="line">  * 待获取锁，如果有则获取失败，严格遵守“先到先得”的策略  </div><div class="line">  */</div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</div><div class="line">    <span class="comment">// 当前线程</span></div><div class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</div><div class="line">    <span class="comment">// 获取state</span></div><div class="line">    <span class="keyword">int</span> c = getState();</div><div class="line">    <span class="comment">// 判断state的值是否为0</span></div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// 这一步是判断CLH队列中是否还有其他等待获取锁的线程，如果有返回true，没有则返回false</span></div><div class="line">        <span class="comment">// 同时还需要利用CAS将state由0设置为1</span></div><div class="line">        <span class="comment">// 如果上述两步都返回true，那么设置独占锁线程为当前线程</span></div><div class="line">        <span class="keyword">if</span> (!hasQueuedPredecessors() &amp;&amp;</div><div class="line">            compareAndSetState(<span class="number">0</span>, acquires)) &#123;</div><div class="line">            setExclusiveOwnerThread(current);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;  <span class="comment">// 如果当前state不是0，则判断当前线程是否为独占锁线程</span></div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</div><div class="line">        <span class="comment">// 将state进行+1操作，判断state值后返回</span></div><div class="line">        <span class="keyword">int</span> nextc = c + acquires;</div><div class="line">        <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</div><div class="line">        setState(nextc);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// 获取锁失败，考虑将线程加入等待队列</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法中，首先获取state的值，判断当前是否可以获取锁</p>
+<ul>
+<li>如果state为0，说明锁没有被其他线程获取，但由于是公平锁，那么需要判断CLH队列中是否还有其他线程在等待获取锁，如果有，那么就获取锁失败了；如果没有，则需要利用CAS将state由0设置为1，这两步都返回true，那么设置独占锁线程为当前线程</li>
+<li>如果当前state不是0，则判断当前线程是否为独占锁线程，如果是，将state加1，然后返回</li>
+<li>其他情况返回false，获取锁失败。</li>
+</ul>
+<p>判断CLH队列中是否还有其他等待获取锁的线程需要调用CAS的hasQueuedPredecessors方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 判断CLH队列中是否还有其他等待获取锁的线程</div><div class="line"> * 如果当前线程之前有一个排队的线程，返回true</div><div class="line"> * 如果当前线程在队列的头部或队列为空，返回false</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">hasQueuedPredecessors</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// The correctness of this depends on head being initialized</span></div><div class="line">    <span class="comment">// before tail and on head.next being accurate if the current</span></div><div class="line">    <span class="comment">// thread is first in queue.</span></div><div class="line">    Node t = tail; <span class="comment">// Read fields in reverse initialization order</span></div><div class="line">    Node h = head;</div><div class="line">    Node s;</div><div class="line">    <span class="keyword">return</span> h != t &amp;&amp;</div><div class="line">        ((s = h.next) == <span class="keyword">null</span> || s.thread != Thread.currentThread());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来的流程和非公平一样。</p>
+<h3 id="总结：非公平锁与公平锁获取锁对比："><a href="#总结：非公平锁与公平锁获取锁对比：" class="headerlink" title="总结：非公平锁与公平锁获取锁对比："></a>总结：非公平锁与公平锁获取锁对比：</h3><ul>
+<li>NonfairSync： 非公平锁在要获取锁的时候，首先会尝试直接获取锁</li>
+<li>FairSync 而公平锁则需要判断CLH队列中是否还有其他线程在等待获取锁</li>
+</ul>
+<p>ReentrantLock是基于AbstractQueuedSynchronizer（AQS）实现的，AQS可以实现独占锁也可以实现共享锁，ReentrantLock只是使用了其中的独占锁模式。</p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://www.cnblogs.com/java-zhao/p/5131544.html" target="_blank" rel="external">http://www.cnblogs.com/java-zhao/p/5131544.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/Lock/" rel="tag"># Lock</a>
+          
+            <a href="/tags/JUC/" rel="tag"># JUC</a>
+          
+            <a href="/tags/ReentrantLock/" rel="tag"># ReentrantLock</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/17/设计模式之观察者模式/" rel="next" title="设计模式之观察者模式">
+                <i class="fa fa-chevron-left"></i> 设计模式之观察者模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/11/在 Spring Data Redis中使用AOP进行数据缓存/" rel="prev" title="在 Spring Data Redis中使用AOP进行数据缓存">
+                在 Spring Data Redis中使用AOP进行数据缓存 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Mingshan" />
+          <p class="site-author-name" itemprop="name">Mingshan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/mstao" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/5388127605" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=25657348&auto=0&height=66"></iframe>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ReentrantLock-学习-获取锁（JDK-1-8）"><span class="nav-number">1.</span> <span class="nav-text">ReentrantLock 学习 - 获取锁（JDK 1.8）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock类的结构为："><span class="nav-number">1.1.</span> <span class="nav-text">ReentrantLock类的结构为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock的基本用法："><span class="nav-number">1.2.</span> <span class="nav-text">ReentrantLock的基本用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock的创建"><span class="nav-number">1.3.</span> <span class="nav-text">ReentrantLock的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁"><span class="nav-number">1.4.</span> <span class="nav-text">非公平锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非公平锁的用法"><span class="nav-number">1.4.1.</span> <span class="nav-text">非公平锁的用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非公平锁实现简单步骤："><span class="nav-number">1.4.2.</span> <span class="nav-text">非公平锁实现简单步骤：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体流程如下："><span class="nav-number">1.4.3.</span> <span class="nav-text">具体流程如下：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公平锁"><span class="nav-number">1.5.</span> <span class="nav-text">公平锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁的用法"><span class="nav-number">1.5.1.</span> <span class="nav-text">公平锁的用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁加锁的简单步骤："><span class="nav-number">1.5.2.</span> <span class="nav-text">公平锁加锁的简单步骤：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁与非公平锁的重要区别是："><span class="nav-number">1.5.3.</span> <span class="nav-text">公平锁与非公平锁的重要区别是：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁具体获取流程："><span class="nav-number">1.5.4.</span> <span class="nav-text">公平锁具体获取流程：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结：非公平锁与公平锁获取锁对比："><span class="nav-number">1.6.</span> <span class="nav-text">总结：非公平锁与公平锁获取锁对比：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考："><span class="nav-number">1.7.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mingshan</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+&nbsp; | &nbsp;
+<div id="busuanzi_container_site_pv">
+   <span id="busuanzi_value_site_pv"></span> times
+
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
