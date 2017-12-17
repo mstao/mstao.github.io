@@ -93,6 +93,75 @@
   </entry>
   
   <entry>
+    <title>栈结构分析</title>
+    <link href="http://yoursite.com/2017/12/17/%E6%A0%88%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2017/12/17/栈结构分析/</id>
+    <published>2017-12-16T16:00:00.000Z</published>
+    <updated>2017-12-17T13:10:46.272Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="栈介绍"><a href="#栈介绍" class="headerlink" title="栈介绍"></a>栈介绍</h3><p>栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：</p>
+<p><img src="/images/Stack.png" alt="image"></p>
+<h3 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h3><p>栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法</p>
+<ul>
+<li>push 入栈，将元素压入栈顶</li>
+<li>pop 出栈，获取栈顶元素并将其从栈中删除</li>
+<li>peek 获取栈顶元素，但不删除</li>
+<li>empty 判断栈是否为空</li>
+<li>size 获取栈内元素的数量</li>
+</ul>
+<p>下面来介绍一下实现这些方法的具体实现。</p>
+<a id="more"></a>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>栈内的元素是放在数组里面的，所以我们需要一些变量来存储和描述这些数据，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 存放栈内元素的数组，默认大小为10</span></div><div class="line"><span class="keyword">private</span> Object[] elementData;</div><div class="line"><span class="comment">// 元素的数量</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> elementCount;</div><div class="line"><span class="comment">// 指定要增加的容量大小</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> capacityIncrement;</div></pre></td></tr></table></figure>
+<p>在构造方法中初始数组容量，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组容初始量</div><div class="line"> * <span class="doctag">@param</span> capacityIncrement 扩容增加的容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">int</span> capacityIncrement)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>();</div><div class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal Capacity: "</span>+</div><div class="line">                                           initialCapacity);</div><div class="line">    <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</div><div class="line">    <span class="keyword">this</span>.capacityIncrement = capacityIncrement;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组初始容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(initialCapacity, <span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 构造方法初始化数组容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(<span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="push"><a href="#push" class="headerlink" title="push"></a>push</h4><p>入栈操作需要将数据存到数组里面，如有数组有初始化大小，所以每次入栈操作需要检查数组的大小，大小不够需要进行扩容操作，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 入栈</div><div class="line"> * <span class="doctag">@param</span> data</div><div class="line"> * <span class="doctag">@return</span> 入栈的数据</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E data)</span> </span>&#123;</div><div class="line">    addElement(data);</div><div class="line">    <span class="keyword">return</span> data;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里调用了<strong>addElement(data)</strong>方法，我们来看看代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 向栈顶添加元素</div><div class="line"> * <span class="doctag">@param</span> obj</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addElement</span><span class="params">(E obj)</span> </span>&#123;</div><div class="line">    ensureCapacity(elementCount + <span class="number">1</span>);</div><div class="line">    elementData[elementCount++] = obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<strong>addElement(data)</strong>方法中调用ensureCapacity来检测数组的大小，扩容操作也是在这个方法中进行的，下面是方法的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 确保栈容量，扩容</div><div class="line"> * <span class="doctag">@param</span> minCapacity </div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</div><div class="line">    <span class="comment">// 判断是否需要扩容</span></div><div class="line">    <span class="keyword">if</span> (oldCapacity &lt; minCapacity) &#123;</div><div class="line">        <span class="comment">// 指定要扩大多少，否则就扩容2倍</span></div><div class="line">        <span class="keyword">int</span> newCapacity = oldCapacity + (<span class="keyword">this</span>.capacityIncrement &gt; <span class="number">0</span> </div><div class="line">                ? <span class="keyword">this</span>.capacityIncrement : oldCapacity);</div><div class="line">        <span class="comment">// 将原数组的容量拷贝到扩容后的数组</span></div><div class="line">        elementData = Arrays.copyOf(elementData, newCapacity);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法中，首先判断当前的数组的大小够不够用，如果不够用，那么会根据传入的自定义扩容大小<strong>capacityIncrement</strong>来进行扩容操作，如果<strong>capacityIncrement</strong>小于0，那么容量就扩大2倍。最后将原来数组的数据拷贝到新数组中。</p>
+<h4 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h4><p>出栈是将栈顶的元素移除并返回，下面是代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 出栈，移除栈顶的元素</div><div class="line"> * <span class="doctag">@return</span> 被移除的元素</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">    E obj = peek();</div><div class="line">    <span class="keyword">if</span> (size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// 移除栈顶元素</span></div><div class="line">        elementData[elementCount - <span class="number">1</span>] = <span class="keyword">null</span>;</div><div class="line">        elementCount--;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在pop方法中，我们实则是调用了<strong>peek</strong>方法来获取栈顶元素，然后将栈顶元素移除下面来看<strong>peek</strong>的代码。</p>
+<h4 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h4><p>peek方法是获取栈顶的元素，代码比较简单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 获取栈顶的元素，但不移除</div><div class="line"> * <span class="doctag">@return</span> 栈顶的元素</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">peek</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> len = size();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (len == <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</div><div class="line">    E obj = (E) elementData[elementCount - <span class="number">1</span>];</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="search"><a href="#search" class="headerlink" title="search"></a>search</h4><p>通过传入的元素来获取该元素第一次出现的位置，如果找不到返回-1，下面是代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 返回对象在堆栈中的位置，以 0 为基数。</div><div class="line"> * <span class="doctag">@param</span> element</div><div class="line"> * <span class="doctag">@return</span> 元素第一次出现的位置，找不到返回-1</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(Object element)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> z = elementCount - <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (element == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (elementData[i] == <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (element.equals(elementData[i])) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于栈可以存储null，所以需对null进行处理。</p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><p>本篇博客的完整代码</p>
+<p><a href="https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java" target="_blank" rel="external">https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;栈介绍&quot;&gt;&lt;a href=&quot;#栈介绍&quot; class=&quot;headerlink&quot; title=&quot;栈介绍&quot;&gt;&lt;/a&gt;栈介绍&lt;/h3&gt;&lt;p&gt;栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Stack.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;主要操作&quot;&gt;&lt;a href=&quot;#主要操作&quot; class=&quot;headerlink&quot; title=&quot;主要操作&quot;&gt;&lt;/a&gt;主要操作&lt;/h3&gt;&lt;p&gt;栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;push 入栈，将元素压入栈顶&lt;/li&gt;
+&lt;li&gt;pop 出栈，获取栈顶元素并将其从栈中删除&lt;/li&gt;
+&lt;li&gt;peek 获取栈顶元素，但不删除&lt;/li&gt;
+&lt;li&gt;empty 判断栈是否为空&lt;/li&gt;
+&lt;li&gt;size 获取栈内元素的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面来介绍一下实现这些方法的具体实现。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="栈" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%88/"/>
+    
+    
+      <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="栈" scheme="http://yoursite.com/tags/%E6%A0%88/"/>
+    
+  </entry>
+  
+  <entry>
     <title>单链表结构分析</title>
     <link href="http://yoursite.com/2017/12/12/%E5%8D%95%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/12/单链表结构分析/</id>
@@ -1410,129 +1479,6 @@
     
     
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于首页feed流如何展示和数据库如何设计问题</title>
-    <link href="http://yoursite.com/2017/07/15/%E5%85%B3%E4%BA%8E%E9%A6%96%E9%A1%B5feed%E6%B5%81%E5%A6%82%E4%BD%95%E5%B1%95%E7%A4%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2017/07/15/关于首页feed流如何展示和数据库如何设计问题/</id>
-    <published>2017-07-14T16:00:00.000Z</published>
-    <updated>2017-12-04T14:36:58.580Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。</p>
-<p>这里涉及到两个概念 <strong>推模式（push）</strong>和<strong>拉模式（pull）</strong>，这里有两篇大神分享的知识<a href="http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html" target="_blank" rel="external"> 新浪微博架构和FEED架构分析–人人架构<em>paper0023</em>新浪博客</a>和<a href="http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html" target="_blank" rel="external">微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨</a>，讲解的比较清楚</p>
-<blockquote>
-<p>简单来说，什么是推，什么是拉呢？</p>
-</blockquote>
-<ol>
-<li><strong>推模式</strong>是一个用户发表了一条动态，那么后台就遍历关注该用户的所有用户，向他们的feed中推送一条动态</li>
-<li><strong>拉模式</strong>与推模式相反，当用户刷新首页时，后台会遍历该用户关注的用户的动态信息，并将动态信息压入到该用户的feed中</li>
-</ol>
-<p>简单介绍完推拉模式后，下面就要考虑数据库表该怎么设计了，我采用的是最简单的推模式，毕竟新手嘛，先掌握实现流程。</p>
-<hr>
-<p>首先设计feed表，这里我设计一个feed表来存储推送的信息，该表主要有以下几个字段</p>
-<ul>
-<li>id  自增id</li>
-<li>suid  推送者uid</li>
-<li>ruid  接收者uid</li>
-<li>item_id  推送的信息id</li>
-<li>type   推送信息类型</li>
-<li>add_time  推送时间</li>
-</ul>
-<p>这是我感觉很简单的feed表，毕竟我那个问答站推送类型不是太多，当然还需要为这个表设计索引哦。<br>设计完数据库表后，下面该考虑后台推送逻辑和代码如何实现以及前台首页如何渲染feed流信息。</p>
-<hr>
-<p>后台我用的是PHP的ThinkPHP框架，新手表示该框架很好用，用该框架可以快速实现的我的想法，我感觉这一点还是很好的。首先在推送类型的选择中我选择了以下几种推送类型</p>
-<ul>
-<li>当一个话题下有新话题发起时，推送给关注该话题的用户</li>
-<li>当一个问题有回答时，推送给关注该问题的用户</li>
-<li>当一个话题的问题有新回答时，推送给关注该话题的用户</li>
-</ul>
-<p>上面推送过程中会产生大量的重复信息，所以需要在推送时对推送信息进行过滤，以避免重复的推送信息出现。代码就是当上面的推送类型产生时，将信息写入到feed表中，这里并没有对推送用户进行筛选（对推送用户的筛选可以降低数据库的压力）。</p>
-<p>前台渲染的话需要对信息进行排序整合，并对每一条动态信息进行标记，以便在模板渲染时匹配对应的模板。<br>我写的简单部分整合代码，需要对信息进行遍历整合（这里没写）</p>
-<pre><code> //如果推送类型 为a  则代表推送信息类型为  用户关注的话题有关的问题或关注的问题产生的回答
- $aid=$val[&apos;item_id&apos;];
- /**根据回答id获取获取与此回答有关的信息**/
- //获取推送人的uid
- $suid=$val[&apos;suid&apos;];
- //获取当前用户对回答的赞同状态
- $upvote_status=$this-&gt;getUpvoteStatusByAid($aid, $uid);
-//获取feed流 回答信息
- $a_info_all=$this-&gt;getFeedAnswerInfo($aid);
- $question_id=$a_info_all[0][&apos;question_id&apos;];
- //根据问题id获取与此问题相关的话题信息
- $tinfo_a=D(&apos;Topic&apos;)-&gt;getFeedTopicByQuestion($question_id);
- //将话题信息追加到回答信息数组中
- $a_info_all[0][&apos;topic&apos;]= $tinfo_a;
- //将当前用户对回答的赞同状态最佳到信息数组中
- $a_info_all[0][&apos;upvote_status&apos;]=$upvote_status;
- //将整理后的信息添加到feed数组中，并做一个标记 a,以便在模板中判断解析
- $arr_fd[&apos;answer&apos;]=$a_info_all;
- $arr_fd[&apos;feed_flag&apos;]=&apos;a&apos;;
- $feed_return_arr[]=  $arr_fd;
-</code></pre><p>这里 $feed_return_arr[]是一个三维数组，在模板渲染的时候要注意一下。<br><a id="more"></a><br>上面是我对feed流简单的思考，如果是真实网络环境下这种简单的实现有许多大问题，比如feed表数据量过大，是否设定一个时间阀对表中超过该时间阀的推送信息进行删除以减少feed表的记录量等等。所以这种方式并不适合真实的网络环境，需要将推拉模式结合进行使用。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近在做一个简单的问答网站，首页的内容需要根据用户关注的话题和关注的问题等来展示最新的动态信息，刚开始的时候我想数据库表的设计是关键。&lt;/p&gt;
-&lt;p&gt;这里涉及到两个概念 &lt;strong&gt;推模式（push）&lt;/strong&gt;和&lt;strong&gt;拉模式（pull）&lt;/strong&gt;，这里有两篇大神分享的知识&lt;a href=&quot;http://blog.sina.com.cn/s/blog_53b95aec0100ujim.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt; 新浪微博架构和FEED架构分析–人人架构&lt;em&gt;paper0023&lt;/em&gt;新浪博客&lt;/a&gt;和&lt;a href=&quot;http://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;微博feed系统的推(push)模式和拉(pull)模式和时间分区拉模式架构探讨&lt;/a&gt;，讲解的比较清楚&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;简单来说，什么是推，什么是拉呢？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;推模式&lt;/strong&gt;是一个用户发表了一条动态，那么后台就遍历关注该用户的所有用户，向他们的feed中推送一条动态&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;拉模式&lt;/strong&gt;与推模式相反，当用户刷新首页时，后台会遍历该用户关注的用户的动态信息，并将动态信息压入到该用户的feed中&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;简单介绍完推拉模式后，下面就要考虑数据库表该怎么设计了，我采用的是最简单的推模式，毕竟新手嘛，先掌握实现流程。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;首先设计feed表，这里我设计一个feed表来存储推送的信息，该表主要有以下几个字段&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;id  自增id&lt;/li&gt;
-&lt;li&gt;suid  推送者uid&lt;/li&gt;
-&lt;li&gt;ruid  接收者uid&lt;/li&gt;
-&lt;li&gt;item_id  推送的信息id&lt;/li&gt;
-&lt;li&gt;type   推送信息类型&lt;/li&gt;
-&lt;li&gt;add_time  推送时间&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这是我感觉很简单的feed表，毕竟我那个问答站推送类型不是太多，当然还需要为这个表设计索引哦。&lt;br&gt;设计完数据库表后，下面该考虑后台推送逻辑和代码如何实现以及前台首页如何渲染feed流信息。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;后台我用的是PHP的ThinkPHP框架，新手表示该框架很好用，用该框架可以快速实现的我的想法，我感觉这一点还是很好的。首先在推送类型的选择中我选择了以下几种推送类型&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;当一个话题下有新话题发起时，推送给关注该话题的用户&lt;/li&gt;
-&lt;li&gt;当一个问题有回答时，推送给关注该问题的用户&lt;/li&gt;
-&lt;li&gt;当一个话题的问题有新回答时，推送给关注该话题的用户&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;上面推送过程中会产生大量的重复信息，所以需要在推送时对推送信息进行过滤，以避免重复的推送信息出现。代码就是当上面的推送类型产生时，将信息写入到feed表中，这里并没有对推送用户进行筛选（对推送用户的筛选可以降低数据库的压力）。&lt;/p&gt;
-&lt;p&gt;前台渲染的话需要对信息进行排序整合，并对每一条动态信息进行标记，以便在模板渲染时匹配对应的模板。&lt;br&gt;我写的简单部分整合代码，需要对信息进行遍历整合（这里没写）&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt; //如果推送类型 为a  则代表推送信息类型为  用户关注的话题有关的问题或关注的问题产生的回答
- $aid=$val[&amp;apos;item_id&amp;apos;];
- /**根据回答id获取获取与此回答有关的信息**/
- //获取推送人的uid
- $suid=$val[&amp;apos;suid&amp;apos;];
- //获取当前用户对回答的赞同状态
- $upvote_status=$this-&amp;gt;getUpvoteStatusByAid($aid, $uid);
-//获取feed流 回答信息
- $a_info_all=$this-&amp;gt;getFeedAnswerInfo($aid);
- $question_id=$a_info_all[0][&amp;apos;question_id&amp;apos;];
- //根据问题id获取与此问题相关的话题信息
- $tinfo_a=D(&amp;apos;Topic&amp;apos;)-&amp;gt;getFeedTopicByQuestion($question_id);
- //将话题信息追加到回答信息数组中
- $a_info_all[0][&amp;apos;topic&amp;apos;]= $tinfo_a;
- //将当前用户对回答的赞同状态最佳到信息数组中
- $a_info_all[0][&amp;apos;upvote_status&amp;apos;]=$upvote_status;
- //将整理后的信息添加到feed数组中，并做一个标记 a,以便在模板中判断解析
- $arr_fd[&amp;apos;answer&amp;apos;]=$a_info_all;
- $arr_fd[&amp;apos;feed_flag&amp;apos;]=&amp;apos;a&amp;apos;;
- $feed_return_arr[]=  $arr_fd;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里 $feed_return_arr[]是一个三维数组，在模板渲染的时候要注意一下。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="php" scheme="http://yoursite.com/categories/php/"/>
-    
-    
-      <category term="php" scheme="http://yoursite.com/tags/php/"/>
     
   </entry>
   
