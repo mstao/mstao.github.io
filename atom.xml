@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-09T14:45:52.664Z</updated>
+  <updated>2018-03-09T15:09:46.836Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2018/03/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8BBuilder%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2018/03/09/设计模式之Builder模式/</id>
     <published>2018-03-08T16:00:00.000Z</published>
-    <updated>2018-03-09T14:45:52.664Z</updated>
+    <updated>2018-03-09T15:09:46.836Z</updated>
     
-    <content type="html"><![CDATA[<p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。</p>
+    <content type="html"><![CDATA[<p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。</p>
 <p>比如我们想这样创建一个对象</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> User.Builder(<span class="string">"Walker"</span>, <span class="string">"Han"</span>)</div><div class="line">        .age(<span class="number">20</span>)</div><div class="line">        .phone(<span class="string">"123456789"</span>)</div><div class="line">        .address(<span class="string">"166号"</span>)</div><div class="line">        .build();</div></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -33,7 +33,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。&lt;/p&gt;
+      &lt;p&gt;当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。&lt;/p&gt;
 &lt;p&gt;比如我们想这样创建一个对象&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; User.Builder(&lt;span class=&quot;string&quot;&gt;&quot;Walker&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;Han&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        .age(&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        .phone(&lt;span class=&quot;string&quot;&gt;&quot;123456789&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        .address(&lt;span class=&quot;string&quot;&gt;&quot;166号&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        .build();&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
@@ -1406,11 +1406,11 @@
     
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
+      <category term="RESTful-API" scheme="http://yoursite.com/tags/RESTful-API/"/>
+    
       <category term="Swagger" scheme="http://yoursite.com/tags/Swagger/"/>
     
       <category term="SpringMVC" scheme="http://yoursite.com/tags/SpringMVC/"/>
-    
-      <category term="RESTful-API" scheme="http://yoursite.com/tags/RESTful-API/"/>
     
   </entry>
   

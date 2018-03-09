@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。 比如我们想这样创建一个对象 12345new User.">
+<meta name="description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个">
 <meta name="keywords" content="java,设计模式,Builder模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之Builder模式">
 <meta property="og:url" content="http://yoursite.com/2018/03/09/设计模式之Builder模式/index.html">
 <meta property="og:site_name" content="明山的博客">
-<meta property="og:description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。 比如我们想这样创建一个对象 12345new User.">
-<meta property="og:updated_time" content="2018-03-09T14:45:52.664Z">
+<meta property="og:description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个">
+<meta property="og:updated_time" content="2018-03-09T15:09:46.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之Builder模式">
-<meta name="twitter:description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。 比如我们想这样创建一个对象 12345new User.">
+<meta name="twitter:description" content="当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个">
 
 
 
@@ -374,7 +374,7 @@
       
 
       
-        <p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。</p>
+        <p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。</p>
 <p>比如我们想这样创建一个对象</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> User.Builder(<span class="string">"Walker"</span>, <span class="string">"Han"</span>)</div><div class="line">        .age(<span class="number">20</span>)</div><div class="line">        .phone(<span class="string">"123456789"</span>)</div><div class="line">        .address(<span class="string">"166号"</span>)</div><div class="line">        .build();</div></pre></td></tr></table></figure>
 <a id="more"></a>
