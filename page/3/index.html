@@ -288,6 +288,147 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/利用hibernate进行多表查询问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/利用hibernate进行多表查询问题/" itemprop="url">利用hibernate进行多表查询问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T00:00:00+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在Hibernate框架中，一个实体类映射为一个数据库表，在进行多表查询时,如何将不同表中的数据整合起来，并且映射为一个实体类是利用Hibernate进行多表查询的关键，根据我的理解，先将代码整理一下：</p>
+<blockquote>
+<p>实体类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Entity</span></div><div class="line"><span class="meta">@Table</span>(name = <span class="string">"ps_trends"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Trends</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2228382525594394975L</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Id</span></div><div class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_title"</span>)</div><div class="line">    <span class="keyword">private</span> String itemTitle;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"item_content"</span>)</div><div class="line">    <span class="keyword">private</span> String itemContent;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"type_id"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>  typeId;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"add_time"</span>)</div><div class="line">    <span class="keyword">private</span> String addTime;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"view_count"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> viewCount;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_image"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isImage;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_publish"</span>)</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isPublish;</div><div class="line"></div><div class="line">    <span class="comment">//临时属性</span></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeFlag;</div><div class="line"></div><div class="line">    <span class="meta">@Transient</span></div><div class="line">    <span class="keyword">private</span> String itemTypeName;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Trends</span><span class="params">(<span class="keyword">int</span> id, String itemTitle, String itemContent, String addTime, <span class="keyword">int</span> viewCount,</span></span></div><div class="line">    	  String itemTypeName,String itemTypeFlag) &#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">        <span class="keyword">this</span>.itemTitle = itemTitle;</div><div class="line">        <span class="keyword">this</span>.itemContent = itemContent;</div><div class="line">        <span class="keyword">this</span>.addTime = addTime;</div><div class="line">        <span class="keyword">this</span>.viewCount = viewCount;</div><div class="line">        <span class="keyword">this</span>.itemTypeName = itemTypeName;</div><div class="line">        <span class="keyword">this</span>.itemTypeFlag = itemTypeFlag;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    setter ，getter方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/利用hibernate进行多表查询问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/03/Linux目录结构记录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1618,144 +1759,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/javaweb下载文件时IE浏览器下报错问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/15/javaweb下载文件时IE浏览器下报错问题/" itemprop="url">javaweb下载文件时IE浏览器下报错问题</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T00:00:00+08:00">
-                2017-06-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近做的网站的一个下载功能出现了问题，在firefox浏览器以及360浏览器下下载均正常，也能将中文正常转换，但在IE浏览器下却出现了问题，当点击下载链接的时候，后台直接报错：<br><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/1999726111.png" alt="2017-03-17_113722.png"><br>后台我怎么兼容也不能解决问题，我下载的部分java代码：</p>
-<p><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/95431087.png" alt="QQ图片20170317113901.png"></p>
-<p>进过我仔细查找，发现我前台通过get方式提交的文件名包含一下字符，导致浏览器解析url不一致，所以需要将url通过javascript进行转码，即用encodeURIComponent函数进行编码，代码如下</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:location.href='$&#123;pageContext.request.contextPath&#125;/download.do?realname='+encodeURIComponent('$&#123;file_list.real_name&#125;')+'&amp;filename='+encodeURIComponent('$&#123;file_list.file_name&#125;');"</span> <span class="attr">class</span>=<span class="string">"file-name"</span>&gt;</span>$&#123;file_list.file_name&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>通过将文件名编码之后就能解决问题了</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1805,7 +1808,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1827,7 +1830,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1898,7 +1901,7 @@
 <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
