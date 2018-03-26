@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-26T12:51:58.145Z</updated>
+  <updated>2018-03-26T14:48:07.161Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/03/15/%E5%85%B3%E4%BA%8Egit%20reabse%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://yoursite.com/2018/03/15/关于git reabse的使用/</id>
     <published>2018-03-14T16:00:00.000Z</published>
-    <updated>2018-03-26T12:51:58.145Z</updated>
+    <updated>2018-03-26T14:48:07.161Z</updated>
     
     <content type="html"><![CDATA[<p>由于在工作中用到了git rebase命令，所以记录一下。</p>
 <p>比如当前在location-scan 分支做一个新功能，当新功能做完了，然后发pull request请求合并到develop分支，但在你提交pull request 之前，有人改动了develop分支的代码，导致你的代码与develop分支的代码发生了冲突， 由于有冲突，需要从develop分支将代码拉到location-scan 分支，进行代码的合并，然后再进行提交，此时的提交没有合并过的痕迹，所以此时我们就需要用到了git rebase命令了，具体的使用的流程：</p>
@@ -69,11 +69,62 @@
   </entry>
   
   <entry>
+    <title>Git合并多个commit</title>
+    <link href="http://yoursite.com/2018/03/15/Git%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AAcommit/"/>
+    <id>http://yoursite.com/2018/03/15/Git合并多个commit/</id>
+    <published>2018-03-14T16:00:00.000Z</published>
+    <updated>2018-03-26T14:48:07.150Z</updated>
+    
+    <content type="html"><![CDATA[<p>在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。</p>
+<a id="more"></a>
+<p><strong>1. git log查看提交记录</strong></p>
+<p>首先我们利用<strong>git log</strong>查看当前分支提交的历史，最近提交在最上面，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">commit 2d6454c942f3961ad351caf145bedf29c4d3743c</div><div class="line"></div><div class="line">commit d059f47fd7ab863353cd98fb29c98ceb1fe97845</div><div class="line"></div><div class="line">commit 951522a48081b8ab4a529fee706d94c8fe3b16c8</div><div class="line"></div><div class="line">commit 1d85c5a75128b6127de90b9db367dc9d67bdd17a</div></pre></td></tr></table></figure>
+<p><strong>2. git rebase</strong></p>
+<p>这里用到了<strong>git rebase</strong>命令，这个命令主要用于更新代码和合并commit。假设你本地和服务器目前是同步的，然后你本地做了几次commit，其他人向服务器推送了commit。如果你希望同步服务器的commit，但是本地的commit又不想push到服务器的时候(比如你开发完某个功能，可能需要5个commit)。先fetch，然后rebase服务器的代码。</p>
+<p>这里想要合并 1~2的commit，有两种方式</p>
+<ol>
+<li>从HEAD开始往后合并两次提交</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i HEAD~2</div></pre></td></tr></table></figure>
+<ol>
+<li>指定要合并的commit之前的版本号</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i 951522a</div></pre></td></tr></table></figure>
+<p>此时951522a这个commit不参与合并</p>
+<p><strong>3. 选取要合并的提交</strong></p>
+<p>当输入完以上两个命令会弹出一个文本文件，内容前几行如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pick d059f47 add test.txt</div><div class="line">pick 2d6454c Update test.txt</div></pre></td></tr></table></figure>
+<p>此时将第二个pick改为squash或者s,之后保存并关闭文本编辑窗口即可。改完之后文本内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p d059f47 add test.txt</div><div class="line">s 2d6454c Update test.txt</div></pre></td></tr></table></figure>
+<p>保存后会弹出一个新文件，前面是你刚才要合并的两条 commit message，然后将这两条commit message删除，然后重新设置新的message，保存退出，如下： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># This is a combination of 2 commits.</div><div class="line"></div><div class="line"># This is the commit message #2:</div><div class="line"></div><div class="line">Add and update test.txt</div></pre></td></tr></table></figure>
+<p>最后就可以发现两条commit message 已经合并为一条了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">commit 9fff5fa09e09836ff2c535486ced2a66f8e4c19a</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 21:24:47 2018 +0800</div><div class="line"></div><div class="line">    Add and update test.txt</div><div class="line"></div><div class="line">commit 951522a48081b8ab4a529fee706d94c8fe3b16c8</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 21:03:29 2018 +0800</div><div class="line"></div><div class="line">    update  .gitignore</div><div class="line"></div><div class="line">commit 1d85c5a75128b6127de90b9db367dc9d67bdd17a</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 20:59:13 2018 +0800</div><div class="line"></div><div class="line">    :octocat: Added .gitattributes &amp; .gitignore files</div></pre></td></tr></table></figure>
+<p>接下来推送到git服务器就好了</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Git" scheme="http://yoursite.com/categories/Git/"/>
+    
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+      <category term="rebase" scheme="http://yoursite.com/tags/rebase/"/>
+    
+  </entry>
+  
+  <entry>
     <title>设计模式之Builder模式</title>
     <link href="http://yoursite.com/2018/03/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8BBuilder%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2018/03/09/设计模式之Builder模式/</id>
     <published>2018-03-08T16:00:00.000Z</published>
-    <updated>2018-03-09T15:09:46.836Z</updated>
+    <updated>2018-03-26T14:48:07.182Z</updated>
     
     <content type="html"><![CDATA[<p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。</p>
 <p>比如我们想这样创建一个对象</p>
@@ -104,39 +155,11 @@
   </entry>
   
   <entry>
-    <title>忽然之间</title>
-    <link href="http://yoursite.com/2017/12/24/%E5%BF%BD%E7%84%B6%E4%B9%8B%E9%97%B4/"/>
-    <id>http://yoursite.com/2017/12/24/忽然之间/</id>
-    <published>2017-12-23T16:00:00.000Z</published>
-    <updated>2017-12-24T04:40:16.330Z</updated>
-    
-    <content type="html"><![CDATA[<p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
-<a id="more"></a>
-<p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
-<p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
-<p>一晃眼从初中到大学毕业差不多十年过去了，时间还真是个无情的猎手，猎杀着世间容易消失的一切，那些存在着，消失的，以及后悔不后悔着的，或许都溶于自己的内心，再也看不到以前的样子了。</p>
-<p>忽然之间，天昏地暗。最后发现孤独的还是自己，痛苦和快乐着的还是自己。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
     <title>二叉搜索树结构分析</title>
     <link href="http://yoursite.com/2017/12/24/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/24/二叉搜索树结构分析/</id>
     <published>2017-12-23T16:00:00.000Z</published>
-    <updated>2017-12-24T15:51:33.737Z</updated>
+    <updated>2018-03-26T14:48:07.161Z</updated>
     
     <content type="html"><![CDATA[<p>二叉查找树（Binary Search Tree），（又：二叉搜索树，二叉排序树），它具有以下特点：</p>
 <ol>
@@ -213,11 +236,39 @@
   </entry>
   
   <entry>
+    <title>忽然之间</title>
+    <link href="http://yoursite.com/2017/12/24/%E5%BF%BD%E7%84%B6%E4%B9%8B%E9%97%B4/"/>
+    <id>http://yoursite.com/2017/12/24/忽然之间/</id>
+    <published>2017-12-23T16:00:00.000Z</published>
+    <updated>2018-03-26T14:48:07.166Z</updated>
+    
+    <content type="html"><![CDATA[<p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
+<a id="more"></a>
+<p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
+<p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
+<p>一晃眼从初中到大学毕业差不多十年过去了，时间还真是个无情的猎手，猎杀着世间容易消失的一切，那些存在着，消失的，以及后悔不后悔着的，或许都溶于自己的内心，再也看不到以前的样子了。</p>
+<p>忽然之间，天昏地暗。最后发现孤独的还是自己，痛苦和快乐着的还是自己。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
     <title>链式队列结构分析</title>
     <link href="http://yoursite.com/2017/12/21/%E9%93%BE%E5%BC%8F%E9%98%9F%E5%88%97%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/21/链式队列结构分析/</id>
     <published>2017-12-20T16:00:00.000Z</published>
-    <updated>2017-12-21T16:03:32.030Z</updated>
+    <updated>2018-03-26T14:48:07.184Z</updated>
     
     <content type="html"><![CDATA[<h3 id="链式队列介绍"><a href="#链式队列介绍" class="headerlink" title="链式队列介绍"></a>链式队列介绍</h3><p>链式队列拥有队列的特性，只不过和顺序队列的区别是，顺序队列底层用的是数组存储元素，而链式队列用的是链表结构存储数据，也就是把一个元素和指向下个结点的指针封装成一个结点，这里称为Node，当队列为空，头指针与尾指针均指向头结点，只不过头结点为空结点，下面是链式队列的结构图</p>
 <p><img src="/images/LinkQueue.png" alt="image"></p>
@@ -263,7 +314,7 @@
     <link href="http://yoursite.com/2017/12/20/%E9%A1%BA%E5%BA%8F%E9%98%9F%E5%88%97%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/20/顺序队列结构分析/</id>
     <published>2017-12-19T16:00:00.000Z</published>
-    <updated>2017-12-21T16:03:41.369Z</updated>
+    <updated>2018-03-26T14:48:07.185Z</updated>
     
     <content type="html"><![CDATA[<h3 id="队列介绍"><a href="#队列介绍" class="headerlink" title="队列介绍"></a>队列介绍</h3><p>队列是一种特殊的线性表，特殊之处在于它只允许在表的前端（front）进行删除操作，而在表的后端（rear）进行插入操作，和栈一样，队列是一种操作受限制的线性表。进行插入操作的端称为队尾，进行删除操作的端称为队头。队列中没有元素时，称为空队列。<br>队列的特点是先进先出(FIFO)，下面是队列的结构图：</p>
 <p><img src="/images/ArrayQueue.png" alt="image"></p>
@@ -315,7 +366,7 @@
     <link href="http://yoursite.com/2017/12/19/RESTful%20API%E9%A3%8E%E6%A0%BC%E5%9F%BA%E4%BA%8EToken%E7%9A%84%E9%89%B4%E6%9D%83%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90(%E4%B8%8EJWT%E7%BB%93%E5%90%88)/"/>
     <id>http://yoursite.com/2017/12/19/RESTful API风格基于Token的鉴权机制分析(与JWT结合)/</id>
     <published>2017-12-18T16:00:00.000Z</published>
-    <updated>2017-12-20T15:41:32.423Z</updated>
+    <updated>2018-03-26T14:48:07.151Z</updated>
     
     <content type="html"><![CDATA[<h3 id="RESTful-API"><a href="#RESTful-API" class="headerlink" title="RESTful API"></a>RESTful API</h3><p>RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。具体介绍和如何使用参考这篇文章<br><a href="http://mingshan.me/2017/10/01/%E5%88%A9%E7%94%A8SpringMVC%E5%AE%9E%E7%8E%B0RESTful%20API%EF%BC%8C%E5%B9%B6%E4%B8%8ESwagger%E9%9B%86%E6%88%90%E7%94%9F%E6%88%90API%E6%96%87%E6%A1%A3/" target="_blank" rel="external">RESTful API介绍与使用</a></p>
 <h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><p>在我们的项目中，仅仅使用RESTful API是远远不够的，因为RESTful API只提供JSON数据，没有了视图层，将视图渲染交给了前端，这就带来了许多问题。比如我们以前在写JSP界面的时候，会把数据放到request里面，把登录的用户信息放在session里面，因为jsp本质上也是servlet，所以可以在界面直接拿到这些数据，现在前后端一分离，怎样对用户的身份进行识别就是首要考虑的问题。</p>
@@ -411,7 +462,7 @@
     <link href="http://yoursite.com/2017/12/17/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/17/双向链表结构分析/</id>
     <published>2017-12-16T16:00:00.000Z</published>
-    <updated>2017-12-21T16:04:16.570Z</updated>
+    <updated>2018-03-26T14:48:07.164Z</updated>
     
     <content type="html"><![CDATA[<h3 id="双向链表描述"><a href="#双向链表描述" class="headerlink" title="双向链表描述"></a>双向链表描述</h3><p>双向链表也叫双链表，它的每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，双向链表的图示如下：</p>
 <p><img src="/images/DoubleLinkedList.png" alt="image"></p>
@@ -488,7 +539,7 @@
     <link href="http://yoursite.com/2017/12/17/%E6%A0%88%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/17/栈结构分析/</id>
     <published>2017-12-16T16:00:00.000Z</published>
-    <updated>2017-12-17T13:10:46.272Z</updated>
+    <updated>2018-03-26T14:48:07.167Z</updated>
     
     <content type="html"><![CDATA[<h3 id="栈介绍"><a href="#栈介绍" class="headerlink" title="栈介绍"></a>栈介绍</h3><p>栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：</p>
 <p><img src="/images/Stack.png" alt="image"></p>
@@ -557,7 +608,7 @@
     <link href="http://yoursite.com/2017/12/12/%E5%8D%95%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/12/单链表结构分析/</id>
     <published>2017-12-11T16:00:00.000Z</published>
-    <updated>2017-12-21T16:04:14.105Z</updated>
+    <updated>2018-03-26T14:48:07.163Z</updated>
     
     <content type="html"><![CDATA[<h3 id="单链表描述"><a href="#单链表描述" class="headerlink" title="单链表描述"></a>单链表描述</h3><p>单链表又为单向链表，由数据域(Data)和结点域(Node)组成，数据域代表该结点所存储的元素，结点域指向下一个节点，单链表的图示如下：</p>
 <p><img src="/images/SingleLinkedList.png" alt="image"></p>
@@ -612,7 +663,7 @@
     <link href="http://yoursite.com/2017/12/04/%E6%81%A2%E5%A4%8D%E8%A2%ABReset%E6%8E%89%E7%9A%84%E6%8F%90%E4%BA%A4/"/>
     <id>http://yoursite.com/2017/12/04/恢复被Reset掉的提交/</id>
     <published>2017-12-03T16:00:00.000Z</published>
-    <updated>2017-12-04T14:37:37.809Z</updated>
+    <updated>2018-03-26T14:48:07.167Z</updated>
     
     <content type="html"><![CDATA[<p>记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了<strong>Revert</strong>操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了<strong>git reflog</strong>命令，这个命令用于记录对git仓库进行的各种操作，输入命令显示如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">D:\code\LightBlog [master ≡ +0 ~2 -0 !]&gt; git reflog</div><div class="line">4ca2fb7 HEAD@&#123;0&#125;: commit: Add spring-redis for cache</div><div class="line">ddcc61a HEAD@&#123;1&#125;: commit: Add light blog ui template</div><div class="line">1e9f0b9 HEAD@&#123;2&#125;: pull --progress --prune origin master: Fast-forward</div><div class="line">93d6519 HEAD@&#123;3&#125;: commit: Add encryption util with MD5</div><div class="line">1d158ff HEAD@&#123;4&#125;: commit: fIX(#2) HttpStatus 204 -&gt;no content</div><div class="line">ef8cb50 HEAD@&#123;5&#125;: revert: Revert &quot;Refine exception handler&quot;</div><div class="line">51a7b00 HEAD@&#123;6&#125;: rebase: updating HEAD</div><div class="line">51a7b00 HEAD@&#123;7&#125;: rebase: aborting</div><div class="line">e20b30f HEAD@&#123;8&#125;: pull --progress --rebase --prune origin master: checkout e20b30f0a282cb4b1229a5ebcf220422d3685c40</div><div class="line">51a7b00 HEAD@&#123;9&#125;: commit: Refine exception handler</div><div class="line">294b1e3 HEAD@&#123;10&#125;: pull --progress --prune origin master: Merge made by the &apos;recursive&apos; strategy.</div><div class="line">927ff21 HEAD@&#123;11&#125;: commit: Add exception handler for RESTful</div><div class="line">4e2592c HEAD@&#123;12&#125;: commit: Add authorization for web with redis.</div></pre></td></tr></table></figure>
@@ -639,7 +690,7 @@
     <link href="http://yoursite.com/2017/11/25/SpringBoot%E4%B8%8ERabbitMQ%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/"/>
     <id>http://yoursite.com/2017/11/25/SpringBoot与RabbitMQ结合使用/</id>
     <published>2017-11-24T16:00:00.000Z</published>
-    <updated>2017-12-04T14:37:56.419Z</updated>
+    <updated>2018-03-26T14:48:07.153Z</updated>
     
     <content type="html"><![CDATA[<p>上一篇文章中是使用amqp-client来操作RabbitMQ的，但我们平常用SpringBoot比较多，SpringBoot也整合了RabbitMQ，用起来是十分方便的。</p>
 <p>首先，我们先添加依赖</p>
@@ -741,7 +792,7 @@
     <link href="http://yoursite.com/2017/11/20/RabbitMQ%E4%B8%AD%E5%9B%9B%E7%A7%8DExchange%20Types%E7%9A%84%E7%90%86%E8%A7%A3/"/>
     <id>http://yoursite.com/2017/11/20/RabbitMQ中四种Exchange Types的理解/</id>
     <published>2017-11-19T16:00:00.000Z</published>
-    <updated>2017-12-04T14:38:15.735Z</updated>
+    <updated>2018-03-26T14:48:07.151Z</updated>
     
     <content type="html"><![CDATA[<p>由于在项目中用到了RabbitMQ，RabbitMQ是当前比较流行的消息中间件，所以在业余时间仔细了解下这个消息队列(Message Queue)。</p>
 <h2 id="RabbitMQ简介"><a href="#RabbitMQ简介" class="headerlink" title="RabbitMQ简介"></a>RabbitMQ简介</h2><p>RabbitMQ实现了AMQP(Advanced Message Queuing Protocol)协议，AMQP是一种消息传递协议，是应用层协议的一个开放标准，为面向消息的中间件设计。具体介绍参考<a href="http://www.rabbitmq.com/tutorials/amqp-concepts.html" target="_blank" rel="external">：AMQP介绍</a></p>
@@ -865,7 +916,7 @@
     <link href="http://yoursite.com/2017/11/12/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E9%87%8A%E6%94%BE%E9%94%81/"/>
     <id>http://yoursite.com/2017/11/12/ReentrantLock源码笔记 - 释放锁/</id>
     <published>2017-11-11T16:00:00.000Z</published>
-    <updated>2017-12-04T14:44:42.387Z</updated>
+    <updated>2018-03-26T14:48:07.153Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock源码学习-释放锁（unlock）"><a href="#ReentrantLock源码学习-释放锁（unlock）" class="headerlink" title="ReentrantLock源码学习 - 释放锁（unlock）"></a>ReentrantLock源码学习 - 释放锁（unlock）</h2><hr>
 <p>上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程</p>
@@ -906,7 +957,7 @@
     <link href="http://yoursite.com/2017/11/11/%E5%9C%A8%20Spring%20Data%20Redis%E4%B8%AD%E4%BD%BF%E7%94%A8AOP%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98/"/>
     <id>http://yoursite.com/2017/11/11/在 Spring Data Redis中使用AOP进行数据缓存/</id>
     <published>2017-11-10T16:00:00.000Z</published>
-    <updated>2017-12-04T14:42:53.987Z</updated>
+    <updated>2018-03-26T14:48:07.165Z</updated>
     
     <content type="html"><![CDATA[<h2 id="为什么要对数据进行缓存"><a href="#为什么要对数据进行缓存" class="headerlink" title="为什么要对数据进行缓存"></a>为什么要对数据进行缓存</h2><p>当我们将数据从数据库中取出来后，如果我们需要再一次进行同样的操作，获取相同的数据，那么再次查询数据库无疑不是很好的方式，这时我们可以考虑来将我们的数据缓存起来，当再次获取相同的数据时，直接从缓存拿就行了。</p>
 <h2 id="进行缓存需要考虑什么问题"><a href="#进行缓存需要考虑什么问题" class="headerlink" title="进行缓存需要考虑什么问题"></a>进行缓存需要考虑什么问题</h2><ol>
@@ -982,7 +1033,7 @@
     <link href="http://yoursite.com/2017/11/10/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E8%8E%B7%E5%8F%96%E9%94%81/"/>
     <id>http://yoursite.com/2017/11/10/ReentrantLock源码笔记 - 获取锁/</id>
     <published>2017-11-09T16:00:00.000Z</published>
-    <updated>2017-12-04T14:43:38.484Z</updated>
+    <updated>2018-03-26T14:48:07.152Z</updated>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock-学习-获取锁（JDK-1-8）"><a href="#ReentrantLock-学习-获取锁（JDK-1-8）" class="headerlink" title="ReentrantLock 学习 - 获取锁（JDK 1.8）"></a>ReentrantLock 学习 - 获取锁（JDK 1.8）</h2><hr>
 <p>ReentrantLock 提供非公平锁与公平锁两种加锁方式, 默认加锁方式为非公平锁。</p>
@@ -1160,7 +1211,7 @@
     <link href="http://yoursite.com/2017/10/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2017/10/17/设计模式之观察者模式/</id>
     <published>2017-10-16T16:00:00.000Z</published>
-    <updated>2017-12-04T14:42:07.888Z</updated>
+    <updated>2018-03-26T14:48:07.183Z</updated>
     
     <content type="html"><![CDATA[<p>我们在生活中会遇到这样一些例子，比如你订阅了某人的博客，那么这个人发布博客的时候会将消息推送给你，而且不是只推送你自己一人，只要订阅了该人的博客，那么订阅者都会收到通知，像这样的例子生活中实在是太多了。其实这种操作可以抽象一下，A对象（观察者）对B对象（被观察者）的某种变化高度敏感，需要在B变化的一瞬间做出反应，同时在B对象中维护着所有A的集合。我们在实际编程中称这种模式为观察者模式，有时也称为发布/订阅(Publish/Subscribe)模型。</p>
 <p>在JDK的util包中已经帮我们实现了观察者模式，不过我们还是先通过自己写代码来看看观察者到底是怎么回事，自己该如何简单的实现，相信通过自己的简单实现，来理解JDK的观察者模式的实现是十分容易的。</p>
@@ -1216,7 +1267,7 @@
     <link href="http://yoursite.com/2017/10/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2017/10/15/设计模式之单例模式/</id>
     <published>2017-10-14T16:00:00.000Z</published>
-    <updated>2017-12-04T14:42:00.105Z</updated>
+    <updated>2018-03-26T14:48:07.183Z</updated>
     
     <content type="html"><![CDATA[<p>我们在项目中会遇到这样一些情况，比如一个类，我们想让这个类在系统中有且仅有一个对象，不能够重复创建类的实例，因为这种类是无状态的，我们只需要有过一个类的实例就行了。这时我们需要用到设计模式的单例模式。</p>
 <p>单例模式分为饿汉式和懒汉式，下面对这两种模式简单介绍:</p>
@@ -1269,7 +1320,7 @@
     <link href="http://yoursite.com/2017/10/08/%E8%B0%88%E8%B0%88%E5%9F%BA%E4%BA%8EZooKeeper%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
     <id>http://yoursite.com/2017/10/08/谈谈基于ZooKeeper的分布式锁/</id>
     <published>2017-10-07T16:00:00.000Z</published>
-    <updated>2017-12-04T14:41:45.382Z</updated>
+    <updated>2018-03-26T14:48:07.184Z</updated>
     
     <content type="html"><![CDATA[<p>分布式锁可以基于以下几种方式实现：</p>
 <ul>
@@ -1385,85 +1436,6 @@
       <category term="ZooKeeper" scheme="http://yoursite.com/tags/ZooKeeper/"/>
     
       <category term="分布式锁" scheme="http://yoursite.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用SpringMVC实现RESTful API，并与Swagger集成生成API文档</title>
-    <link href="http://yoursite.com/2017/10/01/%E5%88%A9%E7%94%A8SpringMVC%E5%AE%9E%E7%8E%B0RESTful%20API%EF%BC%8C%E5%B9%B6%E4%B8%8ESwagger%E9%9B%86%E6%88%90%E7%94%9F%E6%88%90API%E6%96%87%E6%A1%A3/"/>
-    <id>http://yoursite.com/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/</id>
-    <published>2017-09-30T16:00:00.000Z</published>
-    <updated>2017-12-04T14:40:40.822Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="认识RESTful-API"><a href="#认识RESTful-API" class="headerlink" title="认识RESTful API"></a>认识RESTful API</h2><p>RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。</p>
-<h2 id="参考RESTful-API规范"><a href="#参考RESTful-API规范" class="headerlink" title="参考RESTful API规范"></a>参考RESTful API规范</h2><p>下面是两篇文章讲解RESTful API的，推荐：</p>
-<ol>
-<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">RESTful API 设计指南</a></li>
-<li><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API" target="_blank" rel="external">RESTful API 设计最佳实践</a></li>
-</ol>
-<h2 id="SpringMVC实现RESTful-API"><a href="#SpringMVC实现RESTful-API" class="headerlink" title="SpringMVC实现RESTful API"></a>SpringMVC实现RESTful API</h2><p>SpringMVC提供了一些注解来实现RESTful API, 例如<strong>@RestController</strong>，同时我们用Swagger来生成API文档，这样更加利于测试API。</p>
-<h3 id="常见swagger注解一览与使用"><a href="#常见swagger注解一览与使用" class="headerlink" title="常见swagger注解一览与使用"></a>常见swagger注解一览与使用</h3><p><strong>最常用的5个注解</strong></p>
-<p>@Api：修饰整个类，描述Controller的作用<br>@ApiOperation：描述一个类的一个方法，或者说一个接口<br>@ApiParam：单个参数描述<br>@ApiModel：用对象来接收参数<br>@ApiProperty：用对象接收参数时，描述对象的一个字段</p>
-<p><strong>其它若干</strong></p>
-<p>@ApiResponse：HTTP响应其中1个描述<br>@ApiResponses：HTTP响应整体描述<br>@ApiClass<br>@ApiError<br>@ApiErrors<br>@ApiParamImplicit<br>@ApiParamsImplicit</p>
-<p><strong>其中@ApiOperation和@ApiParam参数说明</strong></p>
-<p>@ApiOperation和@ApiParam为添加的API相关注解，参数说明如下：<br>@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；<br>@ApiParam(required = “是否必须参数”, name = “参数名称”, value = “参数具体描述”</p>
-<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>首先在pom.xml文件中添加swagger依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- swagger --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mangofactory<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger-springmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="Swagger-UI配置"><a href="#Swagger-UI配置" class="headerlink" title="Swagger-UI配置"></a>Swagger-UI配置</h3><p>首先从<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="external">Swagger-UI下载地址</a>下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。</p>
-<p>修改swagger/index.html文件，默认是从连接<a href="http://petstore.swagger.io/v2/swagger.json获取" target="_blank" rel="external">http://petstore.swagger.io/v2/swagger.json获取</a> API 的JSON，这里需要将url值修改为<a href="http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs" target="_blank" rel="external">http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs</a></p>
-<h3 id="编写swagger配置文件"><a href="#编写swagger配置文件" class="headerlink" title="编写swagger配置文件"></a>编写swagger配置文件</h3><p>配置完Swagger-UI后，我们需要配置Swagger，并将其交给Spring进行管理。<br><a id="more"></a><br>SwaggerConfig类代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.lightblog.swagger;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.configuration.SpringSwaggerConfig;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.models.dto.ApiInfo;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.EnableSwagger;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.EnableWebMvc;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@Description</span>:</div><div class="line"> * <span class="doctag">@Author</span>: Minsghan</div><div class="line"> * <span class="doctag">@Date</span>: Created in 16:40 2017/10/3</div><div class="line"> * <span class="doctag">@Modified</span> By:</div><div class="line"> */</div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableWebMvc</span><span class="comment">//如果没加这个会报错</span></div><div class="line"><span class="meta">@EnableSwagger</span><span class="comment">//上面三个注释都是必要的</span></div><div class="line"><span class="meta">@ComponentScan</span>(basePackages=<span class="string">"com.lightblog.controller"</span>)<span class="comment">//添加这个注释，会自动扫描该类中的每一个方法自动生成api文档</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> SpringSwaggerConfig springSwaggerConfig;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Required to autowire SpringSwaggerConfig</div><div class="line">     */</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSpringSwaggerConfig</span><span class="params">(SpringSwaggerConfig springSwaggerConfig)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">this</span>.springSwaggerConfig = springSwaggerConfig;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Every SwaggerSpringMvcPlugin bean is picked up by the swagger-mvc</div><div class="line">     * framework - allowing for multiple swagger groups i.e. same code base</div><div class="line">     * multiple swagger resource listings.</div><div class="line">     */</div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> SwaggerSpringMvcPlugin <span class="title">customImplementation</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SwaggerSpringMvcPlugin(<span class="keyword">this</span>.springSwaggerConfig)</div><div class="line">                .apiInfo(apiInfo())</div><div class="line">                .includePatterns(<span class="string">".*?"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        ApiInfo apiInfo = <span class="keyword">new</span> ApiInfo(</div><div class="line">                <span class="string">"springmvc搭建swagger"</span>,</div><div class="line">                <span class="string">"spring-API swagger测试"</span>,</div><div class="line">                <span class="string">"My Apps API terms of service"</span>,</div><div class="line">                <span class="string">"499445428@qq.com"</span>,</div><div class="line">                <span class="string">"web app"</span>,</div><div class="line">                <span class="string">"My Apps API License URL"</span>);</div><div class="line">        <span class="keyword">return</span> apiInfo;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>将 springSwaggerConfig加载到spring容器，配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 将 springSwaggerConfig加载到spring容器 --&gt;</div><div class="line">&lt;bean class=&quot;com.mangofactory.swagger.configuration.SpringSwaggerConfig&quot; /&gt;</div><div class="line">&lt;!-- 将自定义的swagger配置类加载到spring容器 --&gt;</div><div class="line">&lt;bean class=&quot;com.lightblog.swagger.SwaggerConfig&quot; /&gt;</div></pre></td></tr></table></figure>
-<h3 id="Controller实现REST-API以及与Swagger集成"><a href="#Controller实现REST-API以及与Swagger集成" class="headerlink" title="Controller实现REST API以及与Swagger集成"></a>Controller实现REST API以及与Swagger集成</h3><p>在Controller中，我们不需要返回页面了，而是要返回json格式的数据</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.lightblog.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.lightblog.model.User;</div><div class="line"><span class="keyword">import</span> com.lightblog.service.UserService;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.Api;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiOperation;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiParam;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpHeaders;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.MediaType;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</div><div class="line"><span class="keyword">import</span> org.springframework.web.util.UriComponentsBuilder;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@Description</span>: The api of user.</div><div class="line"> * <span class="doctag">@Author</span>: Minsghan</div><div class="line"> * <span class="doctag">@Date</span>: Created in 15:27 2017/10/3</div><div class="line"> * <span class="doctag">@Modified</span> By:</div><div class="line"> */</div><div class="line"><span class="meta">@Api</span>(value=<span class="string">"user"</span>)</div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/api/user"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> UserService userService;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Get list of user.</div><div class="line">     * <span class="doctag">@param</span>:  null</div><div class="line">     * <span class="doctag">@Date</span>: 15:16 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.GET)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取所有用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get users"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; listAllUsers() &#123;</div><div class="line">        List&lt;User&gt; users = userService.findAll();</div><div class="line">        <span class="keyword">if</span>(users.isEmpty())&#123;</div><div class="line">            <span class="comment">// You many decide to return HttpStatus.NOT_FOUND</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(HttpStatus.NO_CONTENT);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(users, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Get information of user by id.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> id</div><div class="line">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get user by id"</span>, response=User.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">getUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</div><div class="line">        logger.info(<span class="string">"Fetching User with id "</span> + id);</div><div class="line">        User user = userService.findById(id);</div><div class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(user, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Create a user.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.POST)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"新增用户"</span>, httpMethod=<span class="string">"POST"</span>, notes=<span class="string">"Create user"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">createUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户信息"</span>,name=<span class="string">"User"</span>)</span></span></div><div class="line">                                               @RequestBody User user, UriComponentsBuilder ucBuilder) &#123;</div><div class="line">        logger.info(<span class="string">"Creating User "</span> + user.getName());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (userService.isUserExist(user)) &#123;</div><div class="line">            System.out.println(<span class="string">"A User with name "</span> + user.getName() + <span class="string">" already exist"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.CONFLICT);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        userService.insert(user);</div><div class="line"></div><div class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</div><div class="line">        headers.setLocation(ucBuilder.path(<span class="string">"/user/&#123;id&#125;"</span>).buildAndExpand(user.getId()).toUri());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(headers, HttpStatus.CREATED);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Update a user.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:33 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.PUT)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"更新用户信息"</span>, httpMethod=<span class="string">"PUT"</span>, notes=<span class="string">"Update user"</span>, response=User.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">updateUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id,</span></div><div class="line">                                           @RequestBody User user) &#123;</div><div class="line">        logger.info(<span class="string">"Updating User "</span> + id);</div><div class="line"></div><div class="line">        User currentUser = userService.findById(id);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (currentUser == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        currentUser.setName(user.getName());</div><div class="line">        currentUser.setAge(user.getAge());</div><div class="line"></div><div class="line">        userService.update(currentUser);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(currentUser, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Delete a user by id.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:32 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.DELETE)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"删除用户"</span>, httpMethod=<span class="string">"DELETE"</span>, notes=<span class="string">"Delete user by id"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">deleteUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</div><div class="line">        logger.info(<span class="string">"Fetching &amp; Deleting User with id "</span> + id);</div><div class="line"></div><div class="line">        User user = userService.findById(id);</div><div class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"Unable to delete. User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        userService.delete(id);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NO_CONTENT);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="运行截图"><a href="#运行截图" class="headerlink" title="运行截图"></a>运行截图</h3><p><img src="https://ip.freep.cn/590836/snipaste20171008_163312.png" alt="image"><br><img src="https://ip.freep.cn/590836/snipaste20171008_163351.png" alt="image"></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="http://blog.csdn.net/fansunion/article/details/51923720" target="_blank" rel="external">http://blog.csdn.net/fansunion/article/details/51923720</a></li>
-<li><a href="http://blog.csdn.net/w605283073/article/details/51338765" target="_blank" rel="external">http://blog.csdn.net/w605283073/article/details/51338765</a></li>
-</ol>
-<p>官网：<a href="http://swagger.io/" target="_blank" rel="external">http://swagger.io/</a></p>
-<p>GitHub：</p>
-<p>swagger-springmvc:<a href="https://github.com/martypitt/swagger-springmvc" target="_blank" rel="external">https://github.com/martypitt/swagger-springmvc</a></p>
-<p>swagger-ui:<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="external">https://github.com/swagger-api/swagger-ui</a></p>
-<p>swagger-core:<a href="https://github.com/swagger-api/swagger-core" target="_blank" rel="external">https://github.com/swagger-api/swagger-core</a></p>
-<p>swagger-spec：<a href="https://github.com/swagger-api/swagger-spec" target="_blank" rel="external">https://github.com/swagger-api/swagger-spec</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;认识RESTful-API&quot;&gt;&lt;a href=&quot;#认识RESTful-API&quot; class=&quot;headerlink&quot; title=&quot;认识RESTful API&quot;&gt;&lt;/a&gt;认识RESTful API&lt;/h2&gt;&lt;p&gt;RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。&lt;/p&gt;
-&lt;h2 id=&quot;参考RESTful-API规范&quot;&gt;&lt;a href=&quot;#参考RESTful-API规范&quot; class=&quot;headerlink&quot; title=&quot;参考RESTful API规范&quot;&gt;&lt;/a&gt;参考RESTful API规范&lt;/h2&gt;&lt;p&gt;下面是两篇文章讲解RESTful API的，推荐：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.ruanyifeng.com/blog/2014/05/restful_api.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RESTful API 设计指南&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.csdn.net/article/2013-06-13/2815744-RESTful-API&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RESTful API 设计最佳实践&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;SpringMVC实现RESTful-API&quot;&gt;&lt;a href=&quot;#SpringMVC实现RESTful-API&quot; class=&quot;headerlink&quot; title=&quot;SpringMVC实现RESTful API&quot;&gt;&lt;/a&gt;SpringMVC实现RESTful API&lt;/h2&gt;&lt;p&gt;SpringMVC提供了一些注解来实现RESTful API, 例如&lt;strong&gt;@RestController&lt;/strong&gt;，同时我们用Swagger来生成API文档，这样更加利于测试API。&lt;/p&gt;
-&lt;h3 id=&quot;常见swagger注解一览与使用&quot;&gt;&lt;a href=&quot;#常见swagger注解一览与使用&quot; class=&quot;headerlink&quot; title=&quot;常见swagger注解一览与使用&quot;&gt;&lt;/a&gt;常见swagger注解一览与使用&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;最常用的5个注解&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;@Api：修饰整个类，描述Controller的作用&lt;br&gt;@ApiOperation：描述一个类的一个方法，或者说一个接口&lt;br&gt;@ApiParam：单个参数描述&lt;br&gt;@ApiModel：用对象来接收参数&lt;br&gt;@ApiProperty：用对象接收参数时，描述对象的一个字段&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;其它若干&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;@ApiResponse：HTTP响应其中1个描述&lt;br&gt;@ApiResponses：HTTP响应整体描述&lt;br&gt;@ApiClass&lt;br&gt;@ApiError&lt;br&gt;@ApiErrors&lt;br&gt;@ApiParamImplicit&lt;br&gt;@ApiParamsImplicit&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;其中@ApiOperation和@ApiParam参数说明&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;@ApiOperation和@ApiParam为添加的API相关注解，参数说明如下：&lt;br&gt;@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；&lt;br&gt;@ApiParam(required = “是否必须参数”, name = “参数名称”, value = “参数具体描述”&lt;/p&gt;
-&lt;h3 id=&quot;添加依赖&quot;&gt;&lt;a href=&quot;#添加依赖&quot; class=&quot;headerlink&quot; title=&quot;添加依赖&quot;&gt;&lt;/a&gt;添加依赖&lt;/h3&gt;&lt;p&gt;首先在pom.xml文件中添加swagger依赖&lt;/p&gt;
-&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!-- swagger --&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;com.mangofactory&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;swagger-springmvc&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;1.0.2&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;com.fasterxml.jackson.core&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;jackson-core&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.5.1&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;com.fasterxml.jackson.core&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;jackson-databind&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.5.1&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;com.fasterxml.jackson.core&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;jackson-annotations&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.5.1&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;Swagger-UI配置&quot;&gt;&lt;a href=&quot;#Swagger-UI配置&quot; class=&quot;headerlink&quot; title=&quot;Swagger-UI配置&quot;&gt;&lt;/a&gt;Swagger-UI配置&lt;/h3&gt;&lt;p&gt;首先从&lt;a href=&quot;https://github.com/swagger-api/swagger-ui&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Swagger-UI下载地址&lt;/a&gt;下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。&lt;/p&gt;
-&lt;p&gt;修改swagger/index.html文件，默认是从连接&lt;a href=&quot;http://petstore.swagger.io/v2/swagger.json获取&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://petstore.swagger.io/v2/swagger.json获取&lt;/a&gt; API 的JSON，这里需要将url值修改为&lt;a href=&quot;http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;编写swagger配置文件&quot;&gt;&lt;a href=&quot;#编写swagger配置文件&quot; class=&quot;headerlink&quot; title=&quot;编写swagger配置文件&quot;&gt;&lt;/a&gt;编写swagger配置文件&lt;/h3&gt;&lt;p&gt;配置完Swagger-UI后，我们需要配置Swagger，并将其交给Spring进行管理。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-      <category term="RESTful-API" scheme="http://yoursite.com/tags/RESTful-API/"/>
-    
-      <category term="Swagger" scheme="http://yoursite.com/tags/Swagger/"/>
-    
-      <category term="SpringMVC" scheme="http://yoursite.com/tags/SpringMVC/"/>
     
   </entry>
   
