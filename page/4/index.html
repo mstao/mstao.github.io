@@ -288,6 +288,153 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">利用uploadify插件上传文件时java后台获取不到当前session问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T00:00:00+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#uploadify"</span>).uploadify(&#123;</div><div class="line">	<span class="attr">debug</span>			: <span class="literal">false</span>,</div><div class="line">	<span class="attr">swf</span> 			:  CTPPATH+<span class="string">'/admin/static/uploadify/js/uploadify.swf'</span>,	<span class="comment">//swf文件路径</span></div><div class="line">	method			: <span class="string">'get'</span>,	<span class="comment">// 提交方式</span></div><div class="line">	uploader		:  CTPPATH+<span class="string">'/processUpload.ado;jsessionid=$&#123;pageContext.session.id&#125;'</span>, <span class="comment">// 服务器端处理该上传请求的程序(servlet, struts2-Action)   )&#125;;</span></div></pre></td></tr></table></figure>
+<p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/网站消息推送之long polling（长轮询）初探/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1399,7 +1546,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1410,7 +1557,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1421,7 +1568,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

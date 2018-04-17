@@ -288,6 +288,170 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/双向链表结构分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="明山的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/17/双向链表结构分析/" itemprop="url">双向链表结构分析</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T00:00:00+08:00">
+                2017-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/17/双向链表结构分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/17/双向链表结构分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="双向链表描述"><a href="#双向链表描述" class="headerlink" title="双向链表描述"></a>双向链表描述</h3><p>双向链表也叫双链表，它的每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，双向链表的图示如下：</p>
+<p><img src="/images/DoubleLinkedList.png" alt="image"></p>
+<p>从图片可以看出，双链表的头结点的前驱结点和尾结点的后继结点为空，这一点要注意，对双链表的操作要检查这两种情况。</p>
+<h3 id="双向链表结构"><a href="#双向链表结构" class="headerlink" title="双向链表结构"></a>双向链表结构</h3><p>每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，我们先来定义一个数据结点的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 内部Node，用于存储链表的结点</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</div><div class="line">    <span class="comment">// 存储节点的值</span></div><div class="line">    E item;</div><div class="line">    <span class="comment">// 指向节点的前驱结点</span></div><div class="line">    Node next;</div><div class="line">    <span class="comment">// 指向节点的后继结点</span></div><div class="line">    Node prev;</div><div class="line"></div><div class="line">    Node(Node prev, E element, Node next) &#123;</div><div class="line">        <span class="keyword">this</span>.item = element;</div><div class="line">        <span class="keyword">this</span>.next = next;</div><div class="line">        <span class="keyword">this</span>.prev = prev;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/17/双向链表结构分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/12/单链表结构分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1783,202 +1947,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/谈谈基于ZooKeeper的分布式锁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/" itemprop="url">谈谈基于ZooKeeper的分布式锁</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T00:00:00+08:00">
-                2017-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/ZooKeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">ZooKeeper</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/08/谈谈基于ZooKeeper的分布式锁/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>分布式锁可以基于以下几种方式实现：</p>
-<ul>
-<li>基于数据库的乐观锁，用于分布式锁</li>
-<li>基于缓存(Redis, memcached)实现分布式锁</li>
-<li>基于ZooKeeper实现分布式锁</li>
-</ul>
-<p>在这篇文章中，主要讲讲ZooKeeper以及分布式锁的实现，通过了解基于ZooKeeper分布式锁实现的原理，我们会对ZooKeeper有一个基本的了解。</p>
-<h2 id="ZooKeeper介绍"><a href="#ZooKeeper介绍" class="headerlink" title="ZooKeeper介绍"></a>ZooKeeper介绍</h2><p>首先谈谈ZooKeeper，ZooKeeper是一种为分布式应用所设计的高可用、高性能且一致的开源协调服务，它提供了一项基本服务：分布式锁服务。由于ZooKeeper的开源特性，后来我们的开发者在分布式锁的基础上，摸索了出了其他的使用方法：配置维护、组服务、分布式消息队列、分布式通知/协调等。</p>
-<p>在ZooKeeper中，有一个被称为ZNode的节点，在该节点可以存储同步相关的数据，并且多个ZNode节点可以形成类似下图的结构。</p>
-<p><img src="/images/zookeeper.png" alt="image"></p>
-<h3 id="基本命令："><a href="#基本命令：" class="headerlink" title="基本命令："></a>基本命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">1. 查看节点</div><div class="line">    ls /</div><div class="line">2. 创建节点</div><div class="line">    create /zk myData</div><div class="line">3. 查看节点</div><div class="line">    get /zk</div><div class="line">4. 设置节点</div><div class="line">    set /zk myData2</div><div class="line">5. 删除节点</div><div class="line">    delete /zk</div><div class="line">6. 创建临时节点</div><div class="line">    create -e /han data</div><div class="line">7. 创建顺序节点</div><div class="line">    create -s /han/ data</div><div class="line">8. 创建顺序临时节点</div><div class="line">    create -s -e /han/ data</div></pre></td></tr></table></figure>
-<h3 id="ZNode"><a href="#ZNode" class="headerlink" title="ZNode"></a>ZNode</h3><p>客户端可以在一个ZNode上设置一个监视器（Watch），如果该ZNode数据发生变更，ZooKeeper会通知客户端，从而触发监视器中实现的逻辑的执行。其中ZNode有以下几种类型：</p>
-<ul>
-<li>PERSISTENT</li>
-<li>PERSISTENT_SEQUENTIAL</li>
-<li>EPHEMERAL</li>
-<li>EPHEMERAL_SEQUENTIAL</li>
-</ul>
-<p>下面分别解释一下：</p>
-<ol>
-<li>PERSISTENT为持久节点，持久节点是指在节点创建后，就一直存在，直到有删除操作来主动清除这个节点——不会因为创建该节点的客户端会话失效而消失。<br>ZooKeeper命令：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create /zk myData</div></pre></td></tr></table></figure>
-<ol>
-<li>PERSISTENT_SEQUENTIAL为持久顺序节点，基本特性与持久节点一致，但每个父节点会为他的第一级子节点维护一份时序，会记录每个子节点创建的先后顺序。命令：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -s /han/ data</div></pre></td></tr></table></figure>
-<p>用这条命令的话，需要先创建/han节点，节点类型为PERSISTENT。</p>
-<ol>
-<li>EPHEMERAL为临时节点，客户端会话失效或连接关闭后，该节点会被自动删除，且不能在临时节点下面创建子节点，命令：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -e /han</div></pre></td></tr></table></figure>
-<p>如果在临时节点下面还要创建子节点，那么zk就会提示：Ephemerals cannot have children</p>
-<ol>
-<li>EPHEMERAL_SEQUENTIAL为临时顺序节点，该节点的除了不是持久性节点，其他特性与持久顺序节点一致。命令：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create -s -e /han/ data</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2028,7 +1996,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2039,7 +2007,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2050,7 +2018,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
