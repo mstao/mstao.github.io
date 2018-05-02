@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-EN">
+<html class="theme-next mist use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -155,7 +155,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-EN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -205,7 +205,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -215,7 +215,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            Kategorien
+            Categories
           </a>
         </li>
       
@@ -225,7 +225,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -235,7 +235,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -255,7 +255,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
             
-            公益404
+            Commonweal 404
           </a>
         </li>
       
@@ -317,7 +317,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-10T00:00:00+08:00">
                 2017-07-10
@@ -338,7 +338,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -464,7 +464,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-09T00:00:00+08:00">
                 2017-07-09
@@ -485,7 +485,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -542,8 +542,8 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@desc</span> ajax长轮询 来获取通知消息信息</div><div class="line"> * <span class="doctag">@return</span> 通知信息数量&gt;o</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">longPolling</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(!$_GET[<span class="string">'timed'</span>]) <span class="keyword">exit</span>();</div><div class="line">    date_default_timezone_set(<span class="string">"PRC"</span>);</div><div class="line">    session_write_close(); <span class="comment">//防止session访问互斥问题</span></div><div class="line">    set_time_limit(<span class="number">0</span>);<span class="comment">//无限请求超时时间</span></div><div class="line">    $timed = $_GET[<span class="string">'timed'</span>];</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">        sleep(<span class="number">3</span>); <span class="comment">// 休眠3秒</span></div><div class="line">        <span class="comment">//判断有无新通知出现</span></div><div class="line">         $no_count=D(<span class="string">'Notifications'</span>)-&gt;getNotificationsCount(<span class="keyword">$this</span>-&gt;uid);</div><div class="line">         <span class="keyword">if</span> ($no_count&gt;<span class="number">0</span>) &#123;</div><div class="line">            $responseTime = time();</div><div class="line">            <span class="comment">// 返回数据信息，请求时间、返回数据时间、耗时</span></div><div class="line">            $content=<span class="keyword">array</span>(</div><div class="line">                <span class="string">'result'</span>         =&gt;$no_count,</div><div class="line">                <span class="string">'reponse_time'</span>   =&gt;$responseTime,</div><div class="line">                <span class="string">'request_time'</span>   =&gt;$timed,</div><div class="line">                <span class="string">'use_time'</span>       =&gt;($responseTime - $timed)</div><div class="line">            );</div><div class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;ajaxReturn($content);</div><div class="line">            <span class="keyword">exit</span>();</div><div class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 模拟没有数据变化，将休眠 hold住连接</span></div><div class="line">            sleep(<span class="number">13</span>);</div><div class="line">            <span class="keyword">exit</span>();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/#далее" rel="contents">
-              Weiterlesen &raquo;
+            <a class="btn" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/#more" rel="contents">
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -617,7 +617,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-01T00:00:00+08:00">
                 2017-07-01
@@ -638,7 +638,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -768,7 +768,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T00:00:00+08:00">
                 2017-06-15
@@ -789,7 +789,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -917,7 +917,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-08T00:00:00+08:00">
                 2017-06-08
@@ -938,7 +938,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1066,7 +1066,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-07T15:44:07+08:00">
                 2017-06-07
@@ -1087,7 +1087,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1251,7 +1251,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-06T00:00:00+08:00">
                 2017-06-06
@@ -1272,7 +1272,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1404,7 +1404,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-08T00:00:00+08:00">
                 2017-05-08
@@ -1547,7 +1547,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">38</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -1558,7 +1558,7 @@
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
                 <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -1569,7 +1569,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">37</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -1648,7 +1648,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
