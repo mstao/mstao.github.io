@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-EN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -83,7 +83,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="明山的博客" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Mingshan's Blog" type="application/atom+xml" />
 
 
 
@@ -97,12 +97,12 @@
 
 <meta name="description" content="一念开明，反身而诚">
 <meta property="og:type" content="website">
-<meta property="og:title" content="明山的博客">
+<meta property="og:title" content="Mingshan&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
-<meta property="og:site_name" content="明山的博客">
+<meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="一念开明，反身而诚">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明山的博客">
+<meta name="twitter:title" content="Mingshan&#39;s Blog">
 <meta name="twitter:description" content="一念开明，反身而诚">
 
 
@@ -117,7 +117,7 @@
     motion: true,
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -137,7 +137,7 @@
 
 
 
-  <title>明山的博客</title>
+  <title>Mingshan's Blog</title>
   
 
 
@@ -155,7 +155,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-EN">
 
   
   
@@ -175,7 +175,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">明山的博客</span>
+        <span class="site-title">Mingshan's Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -205,7 +205,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            首页
+            Startseite
           </a>
         </li>
       
@@ -215,7 +215,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            分类
+            Kategorien
           </a>
         </li>
       
@@ -225,7 +225,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            关于
+            Über
           </a>
         </li>
       
@@ -235,7 +235,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            归档
+            Archiv
           </a>
         </li>
       
@@ -245,7 +245,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            标签
+            Tags
           </a>
         </li>
       
@@ -297,7 +297,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -317,9 +317,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-17T00:00:00+08:00">
                 2017-12-17
               </time>
             
@@ -338,7 +338,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -349,7 +349,7 @@
 
                 
                 
-                  ， 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -406,8 +406,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 内部Node，用于存储链表的结点</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</div><div class="line">    <span class="comment">// 存储节点的值</span></div><div class="line">    E item;</div><div class="line">    <span class="comment">// 指向节点的前驱结点</span></div><div class="line">    Node next;</div><div class="line">    <span class="comment">// 指向节点的后继结点</span></div><div class="line">    Node prev;</div><div class="line"></div><div class="line">    Node(Node prev, E element, Node next) &#123;</div><div class="line">        <span class="keyword">this</span>.item = element;</div><div class="line">        <span class="keyword">this</span>.next = next;</div><div class="line">        <span class="keyword">this</span>.prev = prev;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/17/双向链表结构分析/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/12/17/双向链表结构分析/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -461,7 +461,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -481,9 +481,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-12T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-12T00:00:00+08:00">
                 2017-12-12
               </time>
             
@@ -502,7 +502,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -513,7 +513,7 @@
 
                 
                 
-                  ， 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -569,8 +569,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</div><div class="line">    E item;</div><div class="line">    Node next;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.item = e;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/12/单链表结构分析/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/12/12/单链表结构分析/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -624,7 +624,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -644,9 +644,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-04T00:00:00+08:00">
                 2017-12-04
               </time>
             
@@ -665,7 +665,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -773,7 +773,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -793,9 +793,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-25T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-25T00:00:00+08:00">
                 2017-11-25
               </time>
             
@@ -814,7 +814,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -880,8 +880,8 @@
 <p>在接收方利用@RabbitListener注解来监听队列，利用@RabbitHandler来处理消息</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/25/SpringBoot与RabbitMQ结合使用/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/11/25/SpringBoot与RabbitMQ结合使用/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -935,7 +935,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -955,9 +955,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-20T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-20T00:00:00+08:00">
                 2017-11-20
               </time>
             
@@ -976,7 +976,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1056,8 +1056,8 @@
 </code></pre>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/20/RabbitMQ中四种Exchange Types的理解/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/11/20/RabbitMQ中四种Exchange Types的理解/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1111,7 +1111,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -1131,9 +1131,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-12T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-12T00:00:00+08:00">
                 2017-11-12
               </time>
             
@@ -1152,7 +1152,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1163,7 +1163,7 @@
 
                 
                 
-                  ， 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1277,7 +1277,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -1297,9 +1297,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-11T00:00:00+08:00">
                 2017-11-11
               </time>
             
@@ -1318,7 +1318,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1329,7 +1329,7 @@
 
                 
                 
-                  ， 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1396,8 +1396,8 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- redis 相关配置 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"poolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxIdle&#125;"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxWaitMillis"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxWait&#125;"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"testOnBorrow"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisConnectionFactory"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.connection.jedis.JedisConnectionFactory"</span></span></div><div class="line">  <span class="attr">p:host-name</span>=<span class="string">"$&#123;redis.host&#125;"</span> <span class="attr">p:port</span>=<span class="string">"$&#123;redis.port&#125;"</span> <span class="attr">p:pool-config-ref</span>=<span class="string">"poolConfig"</span>/&gt;</div><div class="line"></div><div class="line"><span class="comment">&lt;!-- redis template definition --&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"redisTemplate"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.core.RedisTemplate"</span>&gt;</span>  </div><div class="line">    <span class="comment">&lt;!-- 设置 Redis 连接工厂--&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connectionFactory"</span> <span class="attr">ref</span>=<span class="string">"jedisConnectionFactory"</span>/&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 设置默认 Serializer ，包含 keySerializer &amp; valueSerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultSerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 单独设置 keySerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"keySerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 单独设置 valueSerializer --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"valueSerializer"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/11/在 Spring Data Redis中使用AOP进行数据缓存/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/11/11/在 Spring Data Redis中使用AOP进行数据缓存/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1451,7 +1451,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -1471,9 +1471,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-10T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-10T00:00:00+08:00">
                 2017-11-10
               </time>
             
@@ -1492,7 +1492,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1503,7 +1503,7 @@
 
                 
                 
-                  ， 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1597,8 +1597,8 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/10/ReentrantLock源码笔记 - 获取锁/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/11/10/ReentrantLock源码笔记 - 获取锁/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1652,7 +1652,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -1672,9 +1672,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-17T00:00:00+08:00">
                 2017-10-17
               </time>
             
@@ -1693,7 +1693,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1751,8 +1751,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 观察者</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Watcher</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 用来接收通知</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span>  <span class="title">update</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/17/设计模式之观察者模式/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/10/17/设计模式之观察者模式/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1806,7 +1806,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="明山的博客">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
@@ -1826,9 +1826,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T00:00:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-15T00:00:00+08:00">
                 2017-10-15
               </time>
             
@@ -1847,7 +1847,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1910,8 +1910,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  - 懒汉模式</div><div class="line"> * 实现延迟加载 ，所以 getInstance() 方法必须同步</div><div class="line"> *</div><div class="line"> * 此方法实现单例模式 性能比饿汉式低</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo2</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonDemo2 instance = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo2</span><span class="params">()</span> </span>&#123;&#125;    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonDemo2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> SingletonDemo2();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/15/设计模式之单例模式/#more" rel="contents">
-              阅读全文 &raquo;
+            <a class="btn" href="/2017/10/15/设计模式之单例模式/#далее" rel="contents">
+              Weiterlesen &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1997,7 +1997,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">38</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -2008,7 +2008,7 @@
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
                 <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-name">Kategorien</span>
               </a>
             </div>
           
@@ -2019,7 +2019,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">37</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -2098,11 +2098,11 @@
 
 
 <div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  主题 -
+  Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Mist
   </a>
