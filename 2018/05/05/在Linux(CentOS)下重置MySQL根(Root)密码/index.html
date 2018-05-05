@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码 下面是操作步骤：  首先输入“service mysqld status”查看当前mysql服务状态，下图显示正在mysqld服务正在运行中。  输入“killall -TERM mysqld”命令停止所有的mysqld进程。  输入“service mysqld stop”命令停止mysqld服务。  输入“m">
 <meta property="og:image" content="http://yoursite.com/images/update_mysql_password.png">
-<meta property="og:updated_time" content="2018-05-05T09:37:47.523Z">
+<meta property="og:updated_time" content="2018-05-05T09:41:58.655Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Linux(CentOS)下重置MySQL根(Root)密码">
 <meta name="twitter:description" content="我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码 下面是操作步骤：  首先输入“service mysqld status”查看当前mysql服务状态，下图显示正在mysqld服务正在运行中。  输入“killall -TERM mysqld”命令停止所有的mysqld进程。  输入“service mysqld stop”命令停止mysqld服务。  输入“m">
@@ -415,9 +415,6 @@
 </li>
 <li><p>输入”update user set password=password(“admin”) where user=’root’;”将Root密码修改为admin。</p>
 </li>
-</ol>
-<a id="more"></a>
-<ol>
 <li><p>输入”flush privileges;”更新权限。</p>
 </li>
 <li><p>输入“quit”并按回车键退出。(注意：此处不需输入分号。)</p>
@@ -429,6 +426,7 @@
 <li><p>输入新密码New9ssw0rd并按回车键，提示已经成功登录。</p>
 </li>
 </ol>
+<a id="more"></a>
 <p>下面是所有步骤运行截图：</p>
 <p><img src="/images/update_mysql_password.png" alt="image"></p>
 
