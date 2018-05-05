@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-04-17T09:33:25.668Z</updated>
+  <updated>2018-05-05T07:20:43.424Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,89 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Linux(CentOS)下重置MySQL根(Root)密码</title>
+    <link href="http://yoursite.com/2018/05/05/%E5%9C%A8Linux(CentOS)%E4%B8%8B%E9%87%8D%E7%BD%AEMySQL%E6%A0%B9(Root)%E5%AF%86%E7%A0%81/"/>
+    <id>http://yoursite.com/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/</id>
+    <published>2018-05-04T16:00:00.000Z</published>
+    <updated>2018-05-05T07:20:43.424Z</updated>
+    
+    <content type="html"><![CDATA[<p>我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码</p>
+<p>下面是操作步骤：</p>
+<ol>
+<li><p>首先输入“service mysqld status”查看当前mysql服务状态，下图显示正在mysqld服务正在运行中。</p>
+</li>
+<li><p>输入“killall -TERM mysqld”命令停止所有的mysqld进程。</p>
+</li>
+<li><p>输入“service mysqld stop”命令停止mysqld服务。</p>
+</li>
+<li><p>输入“mysqld_safe  –skip-grant-tables &amp;”命令以无密码方式进入MySQL安全模式。</p>
+</li>
+<li><p>输入“mysql -u root”并按回车键即可。</p>
+</li>
+<li><p>输入“use mysql;”挂载数据库。</p>
+</li>
+</ol>
+<p>注意：请勿忘记在最后输入分号（;）。</p>
+<ol>
+<li>输入”update user set password=password(“admin”) where user=’root’;”将Root密码修改为admin。</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li><p>输入”flush privileges;”更新权限。</p>
+</li>
+<li><p>输入“quit”并按回车键退出。</p>
+</li>
+</ol>
+<p>注意：此处不需输入分号。</p>
+<ol>
+<li><p>输入”service mysqld restart”重启mysqld服务。</p>
+</li>
+<li><p>输入“mysql -u root -p”并按回车键提示输入密码。</p>
+</li>
+<li><p>输入新密码New9ssw0rd并按回车键，提示已经成功登录。</p>
+</li>
+</ol>
+<p>下面是所有步骤运行截图：</p>
+<p><img src="/images/update_mysql_password.png" alt="image"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码&lt;/p&gt;
+&lt;p&gt;下面是操作步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先输入“service mysqld status”查看当前mysql服务状态，下图显示正在mysqld服务正在运行中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;输入“killall -TERM mysqld”命令停止所有的mysqld进程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;输入“service mysqld stop”命令停止mysqld服务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;输入“mysqld_safe  –skip-grant-tables &amp;amp;”命令以无密码方式进入MySQL安全模式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;输入“mysql -u root”并按回车键即可。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;输入“use mysql;”挂载数据库。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：请勿忘记在最后输入分号（;）。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;输入”update user set password=password(“admin”) where user=’root’;”将Root密码修改为admin。&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
+    
+      <category term="MySQL" scheme="http://yoursite.com/categories/Linux/MySQL/"/>
+    
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
+    
+      <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>理解GC日志</title>
@@ -836,9 +919,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
     
@@ -960,9 +1043,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
     
@@ -1316,59 +1399,6 @@
       <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
       <category term="观察者模式" scheme="http://yoursite.com/tags/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式之单例模式</title>
-    <link href="http://yoursite.com/2017/10/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
-    <id>http://yoursite.com/2017/10/15/设计模式之单例模式/</id>
-    <published>2017-10-14T16:00:00.000Z</published>
-    <updated>2018-03-26T14:48:07.183Z</updated>
-    
-    <content type="html"><![CDATA[<p>我们在项目中会遇到这样一些情况，比如一个类，我们想让这个类在系统中有且仅有一个对象，不能够重复创建类的实例，因为这种类是无状态的，我们只需要有过一个类的实例就行了。这时我们需要用到设计模式的单例模式。</p>
-<p>单例模式分为饿汉式和懒汉式，下面对这两种模式简单介绍:</p>
-<ol>
-<li>饿汉式是指当系统启动或者类被加载时就已经创建了类的实例</li>
-<li>懒汉式是指当该类第一次被调用的时候才会去创建该类的实例</li>
-</ol>
-<p>单例模式有很多实现，不同实现有优有劣，下面谈谈单例的具体的一些实现</p>
-<h2 id="单例模式-饿汉式"><a href="#单例模式-饿汉式" class="headerlink" title="单例模式  - 饿汉式"></a>单例模式  - 饿汉式</h2><p>如果不实现懒加载的话，那么就用饿汉式实现单例就比较简单，首先让无参构造函数私有化，我们可以直接对该类进行实例化，然后将其赋值给类的成员变量instance，然后提供一个外部可以访问的方法来获取类的实例。下面是代码。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  - 饿汉式</div><div class="line"> * 线程安全，但未实现懒加载。</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo1</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonDemo1 instance = <span class="keyword">new</span> SingletonDemo1();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo1 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="单例模式-懒汉式"><a href="#单例模式-懒汉式" class="headerlink" title="单例模式  - 懒汉式"></a>单例模式  - 懒汉式</h2><p>如果想实现懒加载，那么就要用到懒汉式了。懒汉式是当类第一次被调用的时候才被实例化，但这个时候就会出现线程安全问题，所以我们需要对进行类实例化的部分进行加锁，来保证类的实例只有一个，由于加锁的问题，性能就会降低。虽然做到了线程安全，并且解决了多实例的问题，但是它并不高效。因为在任何时候只能有一个线程调用 getInstance()方法。代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  - 懒汉模式</div><div class="line"> * 实现延迟加载 ，所以 getInstance() 方法必须同步</div><div class="line"> *</div><div class="line"> * 此方法实现单例模式 性能比饿汉式低</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo2</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonDemo2 instance = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo2</span><span class="params">()</span> </span>&#123;&#125;    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonDemo2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> SingletonDemo2();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>还有一种实现懒加载的方式使用静态内部类来实现单例，由于静态内部类外部不能被访问到，这一种写法简单，比较容易理解，推荐使用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 单例模式  使用静态内部类 实现延迟加载</div><div class="line"> * 比较推荐</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo3</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo3</span><span class="params">()</span></span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonDemo3 instance = <span class="keyword">new</span> SingletonDemo3();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo3 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> SingletonHolder.instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面写了一个线程安全的单例模式的懒汉式，但却不是十分理想，假如同时有好多线程去调用getInstance方法，那么同一时间只有一个线程能够获取到类的实例，其他的线程都要排队等待该线程释放锁，效率低下。所以此时引出了“双重检验锁”。现在同时有两个线程进入到getInstance方法中，那么两个线程都会进入到第一个判空语句块中，因为此时还没有创建类的实例，接下来只有一个线程能获取到锁，进入到synchronized (SingletonDemo4.class){}语句块中，创建类的实例后释放锁，当前等待线程就会获取到锁，此时如果没有第二次判空操作，那么第二个线程就会再创建一次类的实例，这样就违背了单例的原则，所以双重检验锁就是这么来的。因为上来不是直接就加锁，而是在进行判空后加锁，也就是只有该类还没有被实例化时才会被加锁，当有实例了就不用加锁了，自然就提高了性能。当代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 懒汉式的再次优化</div><div class="line"> * 双重检验锁，解决线程安全问题</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDemo4</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> SingletonDemo4 instance = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDemo4</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo4 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (SingletonDemo4.class) &#123;</div><div class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;            </div><div class="line">                    instance = <span class="keyword">new</span> SingletonDemo4();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里用到了volatile关键字，这里保证了不同线程对这个变量进行操作时的可见性。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;我们在项目中会遇到这样一些情况，比如一个类，我们想让这个类在系统中有且仅有一个对象，不能够重复创建类的实例，因为这种类是无状态的，我们只需要有过一个类的实例就行了。这时我们需要用到设计模式的单例模式。&lt;/p&gt;
-&lt;p&gt;单例模式分为饿汉式和懒汉式，下面对这两种模式简单介绍:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;饿汉式是指当系统启动或者类被加载时就已经创建了类的实例&lt;/li&gt;
-&lt;li&gt;懒汉式是指当该类第一次被调用的时候才会去创建该类的实例&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;单例模式有很多实现，不同实现有优有劣，下面谈谈单例的具体的一些实现&lt;/p&gt;
-&lt;h2 id=&quot;单例模式-饿汉式&quot;&gt;&lt;a href=&quot;#单例模式-饿汉式&quot; class=&quot;headerlink&quot; title=&quot;单例模式  - 饿汉式&quot;&gt;&lt;/a&gt;单例模式  - 饿汉式&lt;/h2&gt;&lt;p&gt;如果不实现懒加载的话，那么就用饿汉式实现单例就比较简单，首先让无参构造函数私有化，我们可以直接对该类进行实例化，然后将其赋值给类的成员变量instance，然后提供一个外部可以访问的方法来获取类的实例。下面是代码。&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 单例模式  - 饿汉式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 线程安全，但未实现懒加载。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@author&lt;/span&gt; mingshan&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SingletonDemo1&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SingletonDemo1&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; SingletonDemo1 instance = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; SingletonDemo1();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; SingletonDemo1 &lt;span class=&quot;title&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; instance;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;单例模式-懒汉式&quot;&gt;&lt;a href=&quot;#单例模式-懒汉式&quot; class=&quot;headerlink&quot; title=&quot;单例模式  - 懒汉式&quot;&gt;&lt;/a&gt;单例模式  - 懒汉式&lt;/h2&gt;&lt;p&gt;如果想实现懒加载，那么就要用到懒汉式了。懒汉式是当类第一次被调用的时候才被实例化，但这个时候就会出现线程安全问题，所以我们需要对进行类实例化的部分进行加锁，来保证类的实例只有一个，由于加锁的问题，性能就会降低。虽然做到了线程安全，并且解决了多实例的问题，但是它并不高效。因为在任何时候只能有一个线程调用 getInstance()方法。代码如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 单例模式  - 懒汉模式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 实现延迟加载 ，所以 getInstance() 方法必须同步&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * 此方法实现单例模式 性能比饿汉式低&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@author&lt;/span&gt; mingshan&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; *&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SingletonDemo2&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; SingletonDemo2 instance = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SingletonDemo2&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&amp;#125;    &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;synchronized&lt;/span&gt; SingletonDemo2 &lt;span class=&quot;title&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (instance == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            instance = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; SingletonDemo2();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; instance;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://yoursite.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-      <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-      <category term="单例模式" scheme="http://yoursite.com/tags/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
