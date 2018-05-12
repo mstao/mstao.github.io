@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-05-12T03:14:23.270Z</updated>
+  <updated>2018-05-12T03:20:25.219Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/05/12/CentOS7%20%E6%90%AD%E5%BB%BA%20Zookeeper-3.4.10%20%E5%8D%95%E6%9C%BA%E6%9C%8D%E5%8A%A1/"/>
     <id>http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/</id>
     <published>2018-05-11T16:00:00.000Z</published>
-    <updated>2018-05-12T03:14:23.270Z</updated>
+    <updated>2018-05-12T03:20:25.219Z</updated>
     
     <content type="html"><![CDATA[<p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
 <a id="more"></a>
@@ -66,7 +66,7 @@
 <li>停止服务</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh stop</div></pre></td></tr></table></figure>
-<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="https://segmentfault.com/a/1190000010791627" target="_blank" rel="external">https://segmentfault.com/a/1190000010791627</a></p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="https://segmentfault.com/a/1190000010791627" target="_blank" rel="external">https://segmentfault.com/a/1190000010791627</a></p>
 ]]></content>
     
     <summary type="html">
@@ -1018,9 +1018,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
     
@@ -1142,9 +1142,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
     
