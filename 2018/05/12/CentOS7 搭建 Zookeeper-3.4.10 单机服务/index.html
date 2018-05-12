@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Git," />
+  <meta name="keywords" content="Linux,Zookeeper," />
 
 
 
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了Revert操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了git reflog命令，这个命令用于记录对git仓库进行的各种">
-<meta name="keywords" content="Git">
+<meta name="description" content="由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。">
+<meta name="keywords" content="Linux,Zookeeper">
 <meta property="og:type" content="article">
-<meta property="og:title" content="恢复被Reset掉的提交">
-<meta property="og:url" content="http://yoursite.com/2017/12/04/恢复被Reset掉的提交/index.html">
+<meta property="og:title" content="CentOS7 搭建 Zookeeper-3.4.10 单机服务">
+<meta property="og:url" content="http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了Revert操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了git reflog命令，这个命令用于记录对git仓库进行的各种">
-<meta property="og:updated_time" content="2018-03-26T14:48:07.167Z">
+<meta property="og:description" content="由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。">
+<meta property="og:updated_time" content="2018-05-12T03:14:23.270Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="恢复被Reset掉的提交">
-<meta name="twitter:description" content="记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了Revert操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了git reflog命令，这个命令用于记录对git仓库进行的各种">
+<meta name="twitter:title" content="CentOS7 搭建 Zookeeper-3.4.10 单机服务">
+<meta name="twitter:description" content="由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/04/恢复被Reset掉的提交/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/"/>
 
 
 
 
 
-  <title>恢复被Reset掉的提交 | Mingshan's Blog</title>
+  <title>CentOS7 搭建 Zookeeper-3.4.10 单机服务 | Mingshan's Blog</title>
   
 
 
@@ -288,7 +288,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/恢复被Reset掉的提交/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -305,7 +305,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">恢复被Reset掉的提交</h2>
+          <h2 class="post-title" itemprop="name headline">CentOS7 搭建 Zookeeper-3.4.10 单机服务</h2>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-04T00:00:00+08:00">
-                2017-12-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-12T00:00:00+08:00">
+                2018-05-12
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -358,9 +358,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/04/恢复被Reset掉的提交/#comments" itemprop="discussionUrl">
+                <a href="/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/12/04/恢复被Reset掉的提交/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,11 +385,51 @@
       
 
       
-        <p>记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了<strong>Revert</strong>操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了<strong>git reflog</strong>命令，这个命令用于记录对git仓库进行的各种操作，输入命令显示如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">D:\code\LightBlog [master ≡ +0 ~2 -0 !]&gt; git reflog</div><div class="line">4ca2fb7 HEAD@&#123;0&#125;: commit: Add spring-redis for cache</div><div class="line">ddcc61a HEAD@&#123;1&#125;: commit: Add light blog ui template</div><div class="line">1e9f0b9 HEAD@&#123;2&#125;: pull --progress --prune origin master: Fast-forward</div><div class="line">93d6519 HEAD@&#123;3&#125;: commit: Add encryption util with MD5</div><div class="line">1d158ff HEAD@&#123;4&#125;: commit: fIX(#2) HttpStatus 204 -&gt;no content</div><div class="line">ef8cb50 HEAD@&#123;5&#125;: revert: Revert &quot;Refine exception handler&quot;</div><div class="line">51a7b00 HEAD@&#123;6&#125;: rebase: updating HEAD</div><div class="line">51a7b00 HEAD@&#123;7&#125;: rebase: aborting</div><div class="line">e20b30f HEAD@&#123;8&#125;: pull --progress --rebase --prune origin master: checkout e20b30f0a282cb4b1229a5ebcf220422d3685c40</div><div class="line">51a7b00 HEAD@&#123;9&#125;: commit: Refine exception handler</div><div class="line">294b1e3 HEAD@&#123;10&#125;: pull --progress --prune origin master: Merge made by the &apos;recursive&apos; strategy.</div><div class="line">927ff21 HEAD@&#123;11&#125;: commit: Add exception handler for RESTful</div><div class="line">4e2592c HEAD@&#123;12&#125;: commit: Add authorization for web with redis.</div></pre></td></tr></table></figure>
-<p>可以看见每次操作都会有记录的（没有全部贴出来），这是我们可以用<strong>git reset ID</strong>来恢复内容，ID指的第一列的东西，比如<strong>4ca2fb7</strong>，这样我们就可以找回丢失的内容了。</p>
-<p>下面是我常用的一套命令，用来更新本地代码，这也是我经过好几次拉取远程代码冲突一大片得到的经验，<strong>git mergetool</strong>指的是当发生代码冲突时，输入此命令就会进行冲突的解决，由于我用的VS，输入此命令后就会跳到VS中来解决冲突了，对于一个文件如果冲突实在是太多，推荐<strong>winmerge</strong>工具，一个轻量且免费的冲突合并工具，我平时也用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">git status</div><div class="line"></div><div class="line">git commit -m &apos;temp commit&apos;</div><div class="line"></div><div class="line">git stash save appconfig</div><div class="line"></div><div class="line">git log</div><div class="line"></div><div class="line">git pull -r origin develop</div><div class="line"></div><div class="line">git mergetool(回车合并冲突)</div><div class="line"></div><div class="line">git reset HEAD~</div><div class="line"></div><div class="line">git stash apply</div></pre></td></tr></table></figure>
+        <p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
+<a id="more"></a>
+<h3 id="Zookeeper的安装"><a href="#Zookeeper的安装" class="headerlink" title="Zookeeper的安装"></a>Zookeeper的安装</h3><ol>
+<li>下载Zookeeper</li>
+</ol>
+<p>下载最新版本的ZooKeeper，这里有两个镜像可以选择</p>
+<blockquote>
+<p>清华镜像:<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/</a></p>
+<p>阿里镜像:<a href="https://mirrors.aliyun.com/apache/zookeeper/" target="_blank" rel="external">https://mirrors.aliyun.com/apache/zookeeper/</a></p>
+</blockquote>
+<p>我就选择阿里镜像进行安装。</p>
+<p>首先在<strong>/usr/local</strong>目录下创建<strong>services</strong> 文件夹和其子文件<strong>zookeeper</strong>,然后进入该文件夹，<br>最后用wget进行下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /usr/local/services/zookeeper</div><div class="line"></div><div class="line">cd /usr/local/services/zookeeper</div><div class="line"></div><div class="line">wget --no-check-certificate  https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</div></pre></td></tr></table></figure>
+<ol>
+<li>提取tar文件</li>
+</ol>
+<p>接下来解压<strong>zookeeper-3.4.10.tar.gz</strong>， 首先进入到该文件夹, 然后进行解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/services/zookeeper</div><div class="line"></div><div class="line">tar -zxf  zookeeper-3.4.10.tar.gz</div><div class="line"></div><div class="line">cd zookeeper-3.4.10</div></pre></td></tr></table></figure>
+<p>进入到解压后的文件夹后，创建<strong>data</strong>文件夹 用于存储数据文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir data</div></pre></td></tr></table></figure>
+<p>创建<strong>logs</strong>文件夹 用于存储日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir logs</div></pre></td></tr></table></figure>
+<ol>
+<li>创建配置文件</li>
+</ol>
+<p>使用命令 vim conf/zoo.cfg 创建配置文件并打开, 其实该文件夹下有了一个zoo_sample.cfg示例配置文件，我们还是新创建一个吧。</p>
+<p>编辑内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tickTime = 2000</div><div class="line">dataDir = /usr/local/services/zookeeper/zookeeper-3.4.10/data</div><div class="line">dataLogDir = /usr/local/services/zookeeper/zookeeper-3.4.10/logs</div><div class="line">tickTime = 2000</div><div class="line">clientPort = 2181</div><div class="line">initLimit = 5</div><div class="line">syncLimit = 2</div></pre></td></tr></table></figure>
+<h3 id="Zookeeper服务"><a href="#Zookeeper服务" class="headerlink" title="Zookeeper服务"></a>Zookeeper服务</h3><ol>
+<li>启动服务</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh start</div></pre></td></tr></table></figure>
+<ol>
+<li>连接服务</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkCli.sh</div></pre></td></tr></table></figure>
+<ol>
+<li>查看服务状态</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh status</div></pre></td></tr></table></figure>
+<ol>
+<li>停止服务</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh stop</div></pre></td></tr></table></figure>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="https://segmentfault.com/a/1190000010791627" target="_blank" rel="external">https://segmentfault.com/a/1190000010791627</a></p>
 
       
     </div>
@@ -419,7 +459,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Git/" rel="tag"># Git</a>
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Zookeeper/" rel="tag"># Zookeeper</a>
           
         </div>
       
@@ -432,8 +474,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/25/SpringBoot与RabbitMQ结合使用/" rel="next" title="SpringBoot与RabbitMQ结合使用">
-                <i class="fa fa-chevron-left"></i> SpringBoot与RabbitMQ结合使用
+              <a href="/2018/05/08/利用WebMagic来爬取ZZULI的通知/" rel="next" title="利用WebMagic来爬取ZZULI的通知">
+                <i class="fa fa-chevron-left"></i> 利用WebMagic来爬取ZZULI的通知
               </a>
             
           </div>
@@ -441,10 +483,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/12/单链表结构分析/" rel="prev" title="单链表结构分析">
-                单链表结构分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -498,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -588,6 +635,22 @@
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=25657348&auto=0&height=66"></iframe>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper的安装"><span class="nav-number">1.</span> <span class="nav-text">Zookeeper的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper服务"><span class="nav-number">2.</span> <span class="nav-text">Zookeeper服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考："><span class="nav-number"></span> <span class="nav-text">参考：</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -732,9 +795,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2017/12/04/恢复被Reset掉的提交/';
-          this.page.identifier = '2017/12/04/恢复被Reset掉的提交/';
-          this.page.title = '恢复被Reset掉的提交';
+          this.page.url = 'http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/';
+          this.page.identifier = '2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/';
+          this.page.title = 'CentOS7 搭建 Zookeeper-3.4.10 单机服务';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
