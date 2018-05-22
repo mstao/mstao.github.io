@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/images/webmagic.jpg">
 <meta property="og:image" content="http://yoursite.com/images/spide-list-page.png">
 <meta property="og:image" content="http://yoursite.com/images/spide-detail-page.png">
-<meta property="og:updated_time" content="2018-05-22T00:53:18.814Z">
+<meta property="og:updated_time" content="2018-05-22T01:13:28.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用WebMagic来爬取ZZULI的通知">
 <meta name="twitter:description" content="WebMagic介绍WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。">
@@ -415,7 +415,7 @@
 <p>详细页页面如下：<br><img src="/images/spide-detail-page.png" alt="image"></p>
 <h3 id="发现通知URL"><a href="#发现通知URL" class="headerlink" title="发现通知URL"></a>发现通知URL</h3><p>在这个爬虫需求中，我们需要知道这些详细通知的URL，所以如何抽取这些URL显得很重要，事实也是如此，也是我们要实现爬虫的第一步。我们可以先考虑用以下正则表达式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm</div></pre></td></tr></table></figure></p>
 <p>来过滤通知的详细界面，但这样未免太过广泛，爬取效率也比较低，此时考虑到列表页中含有通知的详细界面的URL，所以我们必须从列表页中指定的区域获取URL。</p>
-<p>在这里，我们使用xpath //table[@id=\”newslist\”]选中所有区域，再使用links()获取所有链接，最后再使用正则表达式<a href="http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，对URL进行过滤，去掉一些其他无用的链接。于是，我们可以这样写：" target="_blank" rel="external">http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，对URL进行过滤，去掉一些其他无用的链接。于是，我们可以这样写：</a></p>
+<p>在这里，我们使用xpath //table[@id=\”newslist\”]选中所有区域，再使用links()获取所有链接，最后再使用正则表达式<a href="http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，" target="_blank" rel="external">http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，</a> 对URL进行过滤，去掉一些其他无用的链接。于是，我们可以这样写：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">page.addTargetRequests(page.getHtml().xpath(&quot;//table[@id=\&quot;newslist\&quot;]&quot;).links().regex(URL_POST).all());</div></pre></td></tr></table></figure>
 <p>同时，我们需要把所有找到的列表页也加到待下载的URL中去：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">page.addTargetRequests(page.getHtml().links().regex(URL_LIST).all());</div></pre></td></tr></table></figure>
