@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/images/redisroot-folder.png">
 <meta property="og:image" content="http://yoursite.com/images/service-redis-start.png">
 <meta property="og:image" content="http://yoursite.com/images/redis-test.png">
-<meta property="og:updated_time" content="2018-05-23T07:59:26.953Z">
+<meta property="og:updated_time" content="2018-05-23T08:55:25.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS7安裝Redis遇到问题及解决">
 <meta name="twitter:description" content="前段时间我在我的CentOS7服务器上安装了Redis，遇到了一些问题忘记记录下来了ヽ(￣▽￣)ﾉ，而且我参考网上的教程配置一些脚本的时候发现有错误，根据我对shell的简单理解会介绍一下，毕竟这个东西很常用。">
@@ -398,7 +398,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/services/redis</div><div class="line"></div><div class="line">tar -xzvf redis-4.0.2.tar.gz</div></pre></td></tr></table></figure>
 <p>进入到解压后的文件夹，进行编译即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/services/redis/redis-4.0.2</div><div class="line"></div><div class="line">make</div></pre></td></tr></table></figure>
-<p>编译完后，我们需要将<strong>redis-cli</strong>，<strong>redis-server</strong>，<strong>redis.conf</strong>拷贝倒到一个单独的文件夹，这里我们在<strong>/usr/local/services/redis</strong> 文件夹下新建一个文件夹<br><strong>redisroot</strong></p>
+<p>编译完后，我们需要将<strong>redis-cli</strong>，<strong>redis-server</strong>，<strong>redis.conf</strong>拷贝到一个单独的文件夹，这里我们在<strong>/usr/local/services/redis</strong> 文件夹下新建一个文件夹<br><strong>redisroot</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir -p /usr/local/services/redis/redisroot</div></pre></td></tr></table></figure>
 <p>然后将编译后的<strong>redis-cli</strong>，<strong>redis-server</strong>，<strong>redis.conf</strong>拷贝到<strong>redisroot</strong>文件夹下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cp /usr/local/services/redis/redis-4.0.2/src/redis-server /usr/local/services/redis/redisroot</div><div class="line"></div><div class="line">cp /usr/local/services/redis/redis-4.0.2/src/redis-cli /usr/local/services/redis/redisroot</div><div class="line"></div><div class="line">cp /usr/local/services/redis/redis-4.0.2/redis.conf /usr/local/services/redis/redisroot</div></pre></td></tr></table></figure>
