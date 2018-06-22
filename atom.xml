@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-05-28T04:09:15.185Z</updated>
+  <updated>2018-06-22T10:18:51.371Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,39 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>离人</title>
+    <link href="http://yoursite.com/2018/06/22/%E7%A6%BB%E4%BA%BA/"/>
+    <id>http://yoursite.com/2018/06/22/离人/</id>
+    <published>2018-06-21T16:00:00.000Z</published>
+    <updated>2018-06-22T10:18:51.371Z</updated>
+    
+    <content type="html"><![CDATA[<p>好久不写文章，只因这段时间太忙了，忙到忘记离别的日子已经逼在眼前，倒让人措手不及。当这些繁琐的流程到了末尾，离别的日子真是要到来了。</p>
+<p>大学是我目前人生中最充实的时光，回想以前的上学时代，也真让人怀念。十年回首，可喜可悲可叹其实现在也没有多深的记忆了，也或许都释怀了吧。释怀这个词其实不怎么靠谱，哪里有什么释怀不释怀的，只不过心里能够接受事情的好与坏，不需要过多纠结；明白人总是聚少离多，那些离开的人，可能一辈子也不会再见了。人因为情感变得复杂，也变得有趣。</p>
+<p>最近一直在看梁晓声的《中国人的日常》这本书，印象十分深刻。他谈及自己的初恋，感觉充满一种令人羡慕的稚气与甜蜜，或许是那个时代特有的那种情感，也或许是每个人在经历初恋时都会有的这种感觉。稚气地认为，各自的心灵从此有了依靠，被自己感动，已被对方感动。在那个年代，爱不可声张，甚至不敢承认，这对于热恋中的人来说是有多么压抑和煎熬。我们都向往纯真，向往无邪，其他当你向往这些的时候，说明这些早已远离于你，这些也只是虚幻想象的样子，真实早已消失。</p>
+<p>他在谈及在他年幼时遇到改变其一生的启蒙恩师，这是何等幸运。在人生启蒙时代能遇到为他们人生指明道路之人，没有因为一时错念而浪费自己的人生。普通人千千万万，并不是每个人都会遇到指点迷津之人，在混沌的日子里，在无可奈何的岁月中，怎么做到顿悟自我，不浪费自己的生命呢？对于年轻人来说，最浪费时间的事情就是给其讲经验、大道理，讲一万句不如自己去摔一跤，不如自己去尝试一下，眼泪教你做人，后悔帮你成长，疼痛才是人生之师。人生该走的弯路，其实一米也少不了。</p>
+<p>大学其实让人成长不少，遇到了这么多有趣的人，十分不寂寞。人生遇到了每一个人，其实都有缘分，缘分大也罢，小也罢，其实都不怎么重要。毕竟在人生漫漫长河中，他们都是那一朵朵的浪花，这是多么的有趣和富有生气，倘若平静死水般，该是多么的无聊与苍白。人生不如意之事七八九，苦事。终归还能与人言一二三，幸事。感谢能遇到一群能一起喝酒玩乐、酒后畅谈之舍友们，共同成长，希望再见如故。</p>
+<p>感慨这么多，还是说句俗话，希望各位万事大吉，天天吃鸡(￣▽￣)／</p>
+<p>放两张照片吧，以此纪念我的大学。</p>
+<p><img src="/images/_MG_0731.JPG" alt="image"></p>
+<p><img src="/images/_MG_0984.JPG" alt="image"></p>
+<p><img src="/images/_MG_0932.JPG" alt="image"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;好久不写文章，只因这段时间太忙了，忙到忘记离别的日子已经逼在眼前，倒让人措手不及。当这些繁琐的流程到了末尾，离别的日子真是要到来了。&lt;/p&gt;
+&lt;p&gt;大学是我目前人生中最充实的时光，回想以前的上学时代，也真让人怀念。十年回首，可喜可悲可叹其实现在也没有多深的记忆了，也或许都释
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="大学" scheme="http://yoursite.com/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
   
   <entry>
     <title>CentOS7安裝Redis遇到问题及解决</title>
@@ -777,6 +810,75 @@
   </entry>
   
   <entry>
+    <title>栈结构分析</title>
+    <link href="http://yoursite.com/2017/12/17/%E6%A0%88%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2017/12/17/栈结构分析/</id>
+    <published>2017-12-16T16:00:00.000Z</published>
+    <updated>2018-03-26T14:48:07.167Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="栈介绍"><a href="#栈介绍" class="headerlink" title="栈介绍"></a>栈介绍</h3><p>栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：</p>
+<p><img src="/images/Stack.png" alt="image"></p>
+<h3 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h3><p>栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法</p>
+<ul>
+<li>push 入栈，将元素压入栈顶</li>
+<li>pop 出栈，获取栈顶元素并将其从栈中删除</li>
+<li>peek 获取栈顶元素，但不删除</li>
+<li>empty 判断栈是否为空</li>
+<li>size 获取栈内元素的数量</li>
+</ul>
+<p>下面来介绍一下实现这些方法的具体实现。</p>
+<a id="more"></a>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>栈内的元素是放在数组里面的，所以我们需要一些变量来存储和描述这些数据，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 存放栈内元素的数组，默认大小为10</span></div><div class="line"><span class="keyword">private</span> Object[] elementData;</div><div class="line"><span class="comment">// 元素的数量</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> elementCount;</div><div class="line"><span class="comment">// 指定要增加的容量大小</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> capacityIncrement;</div></pre></td></tr></table></figure>
+<p>在构造方法中初始数组容量，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组容初始量</div><div class="line"> * <span class="doctag">@param</span> capacityIncrement 扩容增加的容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">int</span> capacityIncrement)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>();</div><div class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal Capacity: "</span>+</div><div class="line">                                           initialCapacity);</div><div class="line">    <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</div><div class="line">    <span class="keyword">this</span>.capacityIncrement = capacityIncrement;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组初始容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(initialCapacity, <span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 构造方法初始化数组容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(<span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="push"><a href="#push" class="headerlink" title="push"></a>push</h4><p>入栈操作需要将数据存到数组里面，如有数组有初始化大小，所以每次入栈操作需要检查数组的大小，大小不够需要进行扩容操作，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 入栈</div><div class="line"> * <span class="doctag">@param</span> data</div><div class="line"> * <span class="doctag">@return</span> 入栈的数据</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E data)</span> </span>&#123;</div><div class="line">    addElement(data);</div><div class="line">    <span class="keyword">return</span> data;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里调用了<strong>addElement(data)</strong>方法，我们来看看代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 向栈顶添加元素</div><div class="line"> * <span class="doctag">@param</span> obj</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addElement</span><span class="params">(E obj)</span> </span>&#123;</div><div class="line">    ensureCapacity(elementCount + <span class="number">1</span>);</div><div class="line">    elementData[elementCount++] = obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<strong>addElement(data)</strong>方法中调用ensureCapacity来检测数组的大小，扩容操作也是在这个方法中进行的，下面是方法的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 确保栈容量，扩容</div><div class="line"> * <span class="doctag">@param</span> minCapacity </div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</div><div class="line">    <span class="comment">// 判断是否需要扩容</span></div><div class="line">    <span class="keyword">if</span> (oldCapacity &lt; minCapacity) &#123;</div><div class="line">        <span class="comment">// 指定要扩大多少，否则就扩容2倍</span></div><div class="line">        <span class="keyword">int</span> newCapacity = oldCapacity + (<span class="keyword">this</span>.capacityIncrement &gt; <span class="number">0</span> </div><div class="line">                ? <span class="keyword">this</span>.capacityIncrement : oldCapacity);</div><div class="line">        <span class="comment">// 将原数组的容量拷贝到扩容后的数组</span></div><div class="line">        elementData = Arrays.copyOf(elementData, newCapacity);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法中，首先判断当前的数组的大小够不够用，如果不够用，那么会根据传入的自定义扩容大小<strong>capacityIncrement</strong>来进行扩容操作，如果<strong>capacityIncrement</strong>小于0，那么容量就扩大2倍。最后将原来数组的数据拷贝到新数组中。</p>
+<h4 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h4><p>出栈是将栈顶的元素移除并返回，下面是代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 出栈，移除栈顶的元素</div><div class="line"> * <span class="doctag">@return</span> 被移除的元素</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">    E obj = peek();</div><div class="line">    <span class="keyword">if</span> (size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// 移除栈顶元素</span></div><div class="line">        elementData[elementCount - <span class="number">1</span>] = <span class="keyword">null</span>;</div><div class="line">        elementCount--;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在pop方法中，我们实则是调用了<strong>peek</strong>方法来获取栈顶元素，然后将栈顶元素移除下面来看<strong>peek</strong>的代码。</p>
+<h4 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h4><p>peek方法是获取栈顶的元素，代码比较简单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 获取栈顶的元素，但不移除</div><div class="line"> * <span class="doctag">@return</span> 栈顶的元素</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">peek</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> len = size();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (len == <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</div><div class="line">    E obj = (E) elementData[elementCount - <span class="number">1</span>];</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="search"><a href="#search" class="headerlink" title="search"></a>search</h4><p>通过传入的元素来获取该元素第一次出现的位置，如果找不到返回-1，下面是代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 返回对象在堆栈中的位置，以 0 为基数。</div><div class="line"> * <span class="doctag">@param</span> element</div><div class="line"> * <span class="doctag">@return</span> 元素第一次出现的位置，找不到返回-1</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(Object element)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> z = elementCount - <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (element == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (elementData[i] == <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (element.equals(elementData[i])) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于栈可以存储null，所以需对null进行处理。</p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><p>本篇博客的完整代码</p>
+<p><a href="https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java" target="_blank" rel="external">https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;栈介绍&quot;&gt;&lt;a href=&quot;#栈介绍&quot; class=&quot;headerlink&quot; title=&quot;栈介绍&quot;&gt;&lt;/a&gt;栈介绍&lt;/h3&gt;&lt;p&gt;栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Stack.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;主要操作&quot;&gt;&lt;a href=&quot;#主要操作&quot; class=&quot;headerlink&quot; title=&quot;主要操作&quot;&gt;&lt;/a&gt;主要操作&lt;/h3&gt;&lt;p&gt;栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;push 入栈，将元素压入栈顶&lt;/li&gt;
+&lt;li&gt;pop 出栈，获取栈顶元素并将其从栈中删除&lt;/li&gt;
+&lt;li&gt;peek 获取栈顶元素，但不删除&lt;/li&gt;
+&lt;li&gt;empty 判断栈是否为空&lt;/li&gt;
+&lt;li&gt;size 获取栈内元素的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面来介绍一下实现这些方法的具体实现。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="栈" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%88/"/>
+    
+    
+      <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="栈" scheme="http://yoursite.com/tags/%E6%A0%88/"/>
+    
+  </entry>
+  
+  <entry>
     <title>双向链表结构分析</title>
     <link href="http://yoursite.com/2017/12/17/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/17/双向链表结构分析/</id>
@@ -850,75 +952,6 @@
       <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
       <category term="双向链表" scheme="http://yoursite.com/tags/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>栈结构分析</title>
-    <link href="http://yoursite.com/2017/12/17/%E6%A0%88%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
-    <id>http://yoursite.com/2017/12/17/栈结构分析/</id>
-    <published>2017-12-16T16:00:00.000Z</published>
-    <updated>2018-03-26T14:48:07.167Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="栈介绍"><a href="#栈介绍" class="headerlink" title="栈介绍"></a>栈介绍</h3><p>栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：</p>
-<p><img src="/images/Stack.png" alt="image"></p>
-<h3 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h3><p>栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法</p>
-<ul>
-<li>push 入栈，将元素压入栈顶</li>
-<li>pop 出栈，获取栈顶元素并将其从栈中删除</li>
-<li>peek 获取栈顶元素，但不删除</li>
-<li>empty 判断栈是否为空</li>
-<li>size 获取栈内元素的数量</li>
-</ul>
-<p>下面来介绍一下实现这些方法的具体实现。</p>
-<a id="more"></a>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>栈内的元素是放在数组里面的，所以我们需要一些变量来存储和描述这些数据，定义如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 存放栈内元素的数组，默认大小为10</span></div><div class="line"><span class="keyword">private</span> Object[] elementData;</div><div class="line"><span class="comment">// 元素的数量</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> elementCount;</div><div class="line"><span class="comment">// 指定要增加的容量大小</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> capacityIncrement;</div></pre></td></tr></table></figure>
-<p>在构造方法中初始数组容量，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组容初始量</div><div class="line"> * <span class="doctag">@param</span> capacityIncrement 扩容增加的容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">int</span> capacityIncrement)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>();</div><div class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal Capacity: "</span>+</div><div class="line">                                           initialCapacity);</div><div class="line">    <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</div><div class="line">    <span class="keyword">this</span>.capacityIncrement = capacityIncrement;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过传入自定义的值来初始化数组</div><div class="line"> * <span class="doctag">@param</span> initialCapacity 数组初始容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(initialCapacity, <span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 构造方法初始化数组容量</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(<span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="push"><a href="#push" class="headerlink" title="push"></a>push</h4><p>入栈操作需要将数据存到数组里面，如有数组有初始化大小，所以每次入栈操作需要检查数组的大小，大小不够需要进行扩容操作，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 入栈</div><div class="line"> * <span class="doctag">@param</span> data</div><div class="line"> * <span class="doctag">@return</span> 入栈的数据</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E data)</span> </span>&#123;</div><div class="line">    addElement(data);</div><div class="line">    <span class="keyword">return</span> data;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里调用了<strong>addElement(data)</strong>方法，我们来看看代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 向栈顶添加元素</div><div class="line"> * <span class="doctag">@param</span> obj</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addElement</span><span class="params">(E obj)</span> </span>&#123;</div><div class="line">    ensureCapacity(elementCount + <span class="number">1</span>);</div><div class="line">    elementData[elementCount++] = obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在<strong>addElement(data)</strong>方法中调用ensureCapacity来检测数组的大小，扩容操作也是在这个方法中进行的，下面是方法的代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 确保栈容量，扩容</div><div class="line"> * <span class="doctag">@param</span> minCapacity </div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</div><div class="line">    <span class="comment">// 判断是否需要扩容</span></div><div class="line">    <span class="keyword">if</span> (oldCapacity &lt; minCapacity) &#123;</div><div class="line">        <span class="comment">// 指定要扩大多少，否则就扩容2倍</span></div><div class="line">        <span class="keyword">int</span> newCapacity = oldCapacity + (<span class="keyword">this</span>.capacityIncrement &gt; <span class="number">0</span> </div><div class="line">                ? <span class="keyword">this</span>.capacityIncrement : oldCapacity);</div><div class="line">        <span class="comment">// 将原数组的容量拷贝到扩容后的数组</span></div><div class="line">        elementData = Arrays.copyOf(elementData, newCapacity);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在这个方法中，首先判断当前的数组的大小够不够用，如果不够用，那么会根据传入的自定义扩容大小<strong>capacityIncrement</strong>来进行扩容操作，如果<strong>capacityIncrement</strong>小于0，那么容量就扩大2倍。最后将原来数组的数据拷贝到新数组中。</p>
-<h4 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h4><p>出栈是将栈顶的元素移除并返回，下面是代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 出栈，移除栈顶的元素</div><div class="line"> * <span class="doctag">@return</span> 被移除的元素</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">    E obj = peek();</div><div class="line">    <span class="keyword">if</span> (size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// 移除栈顶元素</span></div><div class="line">        elementData[elementCount - <span class="number">1</span>] = <span class="keyword">null</span>;</div><div class="line">        elementCount--;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在pop方法中，我们实则是调用了<strong>peek</strong>方法来获取栈顶元素，然后将栈顶元素移除下面来看<strong>peek</strong>的代码。</p>
-<h4 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h4><p>peek方法是获取栈顶的元素，代码比较简单</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 获取栈顶的元素，但不移除</div><div class="line"> * <span class="doctag">@return</span> 栈顶的元素</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">peek</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> len = size();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (len == <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</div><div class="line">    E obj = (E) elementData[elementCount - <span class="number">1</span>];</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="search"><a href="#search" class="headerlink" title="search"></a>search</h4><p>通过传入的元素来获取该元素第一次出现的位置，如果找不到返回-1，下面是代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 返回对象在堆栈中的位置，以 0 为基数。</div><div class="line"> * <span class="doctag">@param</span> element</div><div class="line"> * <span class="doctag">@return</span> 元素第一次出现的位置，找不到返回-1</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(Object element)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> z = elementCount - <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (element == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (elementData[i] == <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = z; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (element.equals(elementData[i])) &#123;</div><div class="line">                <span class="keyword">return</span> i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>由于栈可以存储null，所以需对null进行处理。</p>
-<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><p>本篇博客的完整代码</p>
-<p><a href="https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java" target="_blank" rel="external">https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;栈介绍&quot;&gt;&lt;a href=&quot;#栈介绍&quot; class=&quot;headerlink&quot; title=&quot;栈介绍&quot;&gt;&lt;/a&gt;栈介绍&lt;/h3&gt;&lt;p&gt;栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/Stack.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;主要操作&quot;&gt;&lt;a href=&quot;#主要操作&quot; class=&quot;headerlink&quot; title=&quot;主要操作&quot;&gt;&lt;/a&gt;主要操作&lt;/h3&gt;&lt;p&gt;栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;push 入栈，将元素压入栈顶&lt;/li&gt;
-&lt;li&gt;pop 出栈，获取栈顶元素并将其从栈中删除&lt;/li&gt;
-&lt;li&gt;peek 获取栈顶元素，但不删除&lt;/li&gt;
-&lt;li&gt;empty 判断栈是否为空&lt;/li&gt;
-&lt;li&gt;size 获取栈内元素的数量&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;下面来介绍一下实现这些方法的具体实现。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="数据结构" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-      <category term="栈" scheme="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%A0%88/"/>
-    
-    
-      <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-      <category term="栈" scheme="http://yoursite.com/tags/%E6%A0%88/"/>
     
   </entry>
   
@@ -1227,47 +1260,6 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ReentrantLock源码笔记 - 释放锁（JDK 1.8）</title>
-    <link href="http://yoursite.com/2017/11/12/ReentrantLock%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0%20-%20%E9%87%8A%E6%94%BE%E9%94%81/"/>
-    <id>http://yoursite.com/2017/11/12/ReentrantLock源码笔记 - 释放锁/</id>
-    <published>2017-11-11T16:00:00.000Z</published>
-    <updated>2018-03-26T14:48:07.153Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="ReentrantLock源码学习-释放锁（unlock）"><a href="#ReentrantLock源码学习-释放锁（unlock）" class="headerlink" title="ReentrantLock源码学习 - 释放锁（unlock）"></a>ReentrantLock源码学习 - 释放锁（unlock）</h2><hr>
-<p>上次谈到了利用ReentrantLock的非公平和公平加锁方式，那么接下来看看释放锁的流程</p>
-<p>首先调用ReentrantLock的unlock方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</div><div class="line">    sync.release(<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后会调用AbstractQueuedSynchronizer（AQS）的release方法，在这个方法中首先会调用ReentrantLock的Sync的tryRelease方法，来进行尝试释放锁，如果返回true，那么获取CLH队列的头结点，判断头结点不为空并且头结点的状态不为0（None），那么就调用AQS的unparkSuccessor方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (tryRelease(arg)) &#123;</div><div class="line">        Node h = head;</div><div class="line">        <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.waitStatus != <span class="number">0</span>)</div><div class="line">            unparkSuccessor(h);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在tryRelease方法里，首先让当前的state与传入的值（这里为1）进行相减，然后得到c，判断当前线程是不是获取独占锁的线程，如果不是，直接抛出异常；如果是，那么需要判断c是否为0，因为只有c为0时，才符合释放独占锁的条件，这是设置独占锁线程为null，最后设置下state的值（注意这里c为0不为0都会设置）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> c = getState() - releases;</div><div class="line">    <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">    <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">        free = <span class="keyword">true</span>;</div><div class="line">        setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    setState(c);</div><div class="line">    <span class="keyword">return</span> free;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接下来来看方法unparkSuccessor，该方法的作用就是为了释放node节点的后继结点。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * If status is negative (i.e., possibly needing signal) try</div><div class="line">     * to clear in anticipation of signalling.  It is OK if this</div><div class="line">     * fails or if status is changed by waiting thread.</div><div class="line">     */</div><div class="line">     <span class="comment">// 获取节点的状态</span></div><div class="line">    <span class="keyword">int</span> ws = node.waitStatus;</div><div class="line">    <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</div><div class="line">        compareAndSetWaitStatus(node, ws, <span class="number">0</span>); <span class="comment">// 利用CAS 将状态设置为0</span></div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">     * Thread to unpark is held in successor, which is normally</div><div class="line">     * just the next node.  But if cancelled or apparently null,</div><div class="line">     * traverse backwards from tail to find the actual</div><div class="line">     * non-cancelled successor.</div><div class="line">     */</div><div class="line">    <span class="comment">// 获取节点的后继节点</span></div><div class="line">    Node s = node.next;</div><div class="line">    <span class="comment">// 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED</span></div><div class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</div><div class="line">        s = <span class="keyword">null</span>; <span class="comment">// 将后继节点置为null</span></div><div class="line">        <span class="comment">// 从尾节点从后向前开始遍历知道节点为空或者当前节点为止</span></div><div class="line">        <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</div><div class="line">            <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>) <span class="comment">// 如果此时节点的状态小于等于0</span></div><div class="line">                s = t; <span class="comment">// 将此节点赋给传入节点的后继节点</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (s != <span class="keyword">null</span>)  <span class="comment">// 节点不为空，释放</span></div><div class="line">        LockSupport.unpark(s.thread);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://blog.csdn.net/luonanqin/article/details/41871909" target="_blank" rel="external">http://blog.csdn.net/luonanqin/article/details/41871909</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;ReentrantLock源码学习-释放锁（unlock）&quot;&gt;&lt;a href=&quot;#ReentrantLock源码学习-释放锁（unlock）&quot; class=&quot;headerlink&quot; title=&quot;ReentrantLock源码学习 - 释放锁（unlock）&quot;&gt;&lt;
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-      <category term="JUC" scheme="http://yoursite.com/categories/Java/JUC/"/>
-    
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-      <category term="Lock" scheme="http://yoursite.com/tags/Lock/"/>
-    
-      <category term="JUC" scheme="http://yoursite.com/tags/JUC/"/>
-    
-      <category term="ReentrantLock" scheme="http://yoursite.com/tags/ReentrantLock/"/>
     
   </entry>
   
