@@ -1131,9 +1131,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
     
@@ -1255,9 +1255,9 @@
       <category term="RabbitMQ" scheme="http://yoursite.com/categories/RabbitMQ/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
       <category term="Exchange Types" scheme="http://yoursite.com/tags/Exchange-Types/"/>
     
