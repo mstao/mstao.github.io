@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-29T03:40:25.979Z</updated>
+  <updated>2018-06-29T04:02:53.034Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2018/06/27/设计模式之装饰模式/</id>
     <published>2018-06-26T16:00:00.000Z</published>
-    <updated>2018-06-29T03:40:25.979Z</updated>
+    <updated>2018-06-29T04:02:53.034Z</updated>
     
     <content type="html"><![CDATA[<p>装饰模式作为常用的设计模式用到很多，比如在Java中，io包下的很多类就是典型的装饰者模式的体现，如下代码：</p>
 <a id="more"></a>
@@ -29,7 +29,7 @@
 <p>在实际应用中我们可能会有这样的需求，需要动态地为一个类增加一些功能，这些功能动态地撤销，继承虽然也可以对类进行功能扩展，但是静态的，为了扩展性和动态性，就需要引入装饰模式。</p>
 <p>装饰模式的定义是： 动态地给一些对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更加灵活。</p>
 <p>装饰模式的通用类图如下图所示：</p>
-<p><img src="./images/decorator.png" alt="image"></p>
+<p><img src="/images/decorator.png" alt="image"></p>
 <p>在类图中，有四个角色需要说明：</p>
 <ul>
 <li><p>抽象构件（Component） </p>
