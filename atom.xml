@@ -626,11 +626,11 @@
   </entry>
   
   <entry>
-    <title>Linux搭建Java Web环境（JDK8，Tomcat8.5, Nginx）</title>
-    <link href="http://yoursite.com/2018/01/01/Linux%E6%90%AD%E5%BB%BAJava%20Web%E7%8E%AF%E5%A2%83%EF%BC%88JDK8%EF%BC%8CTomcat8.5,%20Nginx%EF%BC%89/"/>
-    <id>http://yoursite.com/2018/01/01/Linux搭建Java Web环境（JDK8，Tomcat8.5, Nginx）/</id>
+    <title>Linux搭建Java Web环境(JDK8, Tomcat8.5, Nginx)</title>
+    <link href="http://yoursite.com/2018/01/01/Linux%E6%90%AD%E5%BB%BAJava%20Web%E7%8E%AF%E5%A2%83(JDK8,%20Tomcat8.5,%20Nginx)/"/>
+    <id>http://yoursite.com/2018/01/01/Linux搭建Java Web环境(JDK8, Tomcat8.5, Nginx)/</id>
     <published>2017-12-31T16:00:00.000Z</published>
-    <updated>2018-06-29T14:59:13.870Z</updated>
+    <updated>2018-06-29T15:09:15.668Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>首先下载jdk-8u172-linux-x64.tar.gz，然后上传到服务器<strong>/usr/local/java</strong>目录</p>
 <p>解压jdk-8u172-linux-x64.tar.gz</p>
