@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Git,rebase," />
+  <meta name="keywords" content="java,IllegalMonitorStateException," />
 
 
 
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。">
-<meta name="keywords" content="Git,rebase">
+<meta name="description" content="当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？">
+<meta name="keywords" content="java,IllegalMonitorStateException">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git合并多个commit">
-<meta property="og:url" content="http://yoursite.com/2018/03/26/Git合并多个commit/index.html">
+<meta property="og:title" content="IllegalMonitorStateException异常分析">
+<meta property="og:url" content="http://yoursite.com/2018/07/03/IllegalMonitorStateException异常分析/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。">
-<meta property="og:updated_time" content="2018-03-26T14:49:10.504Z">
+<meta property="og:description" content="当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？">
+<meta property="og:updated_time" content="2018-07-03T16:13:20.868Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Git合并多个commit">
-<meta name="twitter:description" content="在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。">
+<meta name="twitter:title" content="IllegalMonitorStateException异常分析">
+<meta name="twitter:description" content="当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/26/Git合并多个commit/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/03/IllegalMonitorStateException异常分析/"/>
 
 
 
 
 
-  <title>Git合并多个commit | Mingshan's Blog</title>
+  <title>IllegalMonitorStateException异常分析 | Mingshan's Blog</title>
   
 
 
@@ -288,7 +288,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/26/Git合并多个commit/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/03/IllegalMonitorStateException异常分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -305,7 +305,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Git合并多个commit</h2>
+          <h2 class="post-title" itemprop="name headline">IllegalMonitorStateException异常分析</h2>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-26T00:00:00+08:00">
-                2018-03-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-03T00:00:00+08:00">
+                2018-07-03
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -358,9 +358,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/26/Git合并多个commit/#comments" itemprop="discussionUrl">
+                <a href="/2018/07/03/IllegalMonitorStateException异常分析/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/03/26/Git合并多个commit/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/07/03/IllegalMonitorStateException异常分析/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,33 +385,26 @@
       
 
       
-        <p>在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。</p>
+        <p>当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？</p>
 <a id="more"></a>
-<p><strong>1. git log查看提交记录</strong></p>
-<p>首先我们利用<strong>git log</strong>查看当前分支提交的历史，最近提交在最上面，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">commit 2d6454c942f3961ad351caf145bedf29c4d3743c</div><div class="line"></div><div class="line">commit d059f47fd7ab863353cd98fb29c98ceb1fe97845</div><div class="line"></div><div class="line">commit 951522a48081b8ab4a529fee706d94c8fe3b16c8</div><div class="line"></div><div class="line">commit 1d85c5a75128b6127de90b9db367dc9d67bdd17a</div></pre></td></tr></table></figure>
-<p><strong>2. git rebase</strong></p>
-<p>这里用到了<strong>git rebase</strong>命令，这个命令主要用于更新代码和合并commit。假设你本地和服务器目前是同步的，然后你本地做了几次commit，其他人向服务器推送了commit。如果你希望同步服务器的commit，但是本地的commit又不想push到服务器的时候(比如你开发完某个功能，可能需要5个commit)。先fetch，然后rebase服务器的代码。</p>
-<p>这里想要合并 1~2的commit，有两种方式</p>
+<p>抛出该异常原因:在Java中，每一个对象（Object/Class）都有一个监视器，当在同步代码块中，当前线程不是此监视器的所有者，也就是要在当前线程锁定对象，才能用锁定的对象此行这些方法，需要用到synchronized ，锁定什么对象就用什么对象来执行notify(), notifyAll(),wait(), wait(long), wait(long, int)操作，否则就会报IllegalMonitorStateException异常，原因异常。</p>
+<p>下面这段代码就会抛出IllegalMonitorStateException异常，原因就是调用wait需要当前对象的监视器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ThreadTest.class.wait();</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"> </div><div class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">":"</span> + i);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> ThreadTest()).start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以对于synchronized的使用来说，通常这样使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">synchronized</span>(x) &#123;</div><div class="line">    x.notify();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体对于不同的监视对象而言，可以有以下几种考虑：</p>
 <ol>
-<li>从HEAD开始往后合并两次提交</li>
+<li>锁定方法所对应的对象实例</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i HEAD~2</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.notify();</div><div class="line">       <span class="comment">// 或者直接写notify();</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 <ol>
-<li>指定要合并的commit之前的版本号</li>
+<li>类锁</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i 951522a</div></pre></td></tr></table></figure>
-<p>此时951522a这个commit不参与合并</p>
-<p><strong>3. 选取要合并的提交</strong></p>
-<p>当输入完以上两个命令会弹出一个文本文件，内容前几行如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pick d059f47 add test.txt</div><div class="line">pick 2d6454c Update test.txt</div></pre></td></tr></table></figure>
-<p>此时将第二个pick改为squash或者s,之后保存并关闭文本编辑窗口即可。改完之后文本内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p d059f47 add test.txt</div><div class="line">s 2d6454c Update test.txt</div></pre></td></tr></table></figure>
-<p>保存后会弹出一个新文件，前面是你刚才要合并的两条 commit message，然后将这两条commit message删除，然后重新设置新的message，保存退出，如下： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># This is a combination of 2 commits.</div><div class="line"></div><div class="line"># This is the commit message #2:</div><div class="line"></div><div class="line">Add and update test.txt</div></pre></td></tr></table></figure>
-<p>最后就可以发现两条commit message 已经合并为一条了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">commit 9fff5fa09e09836ff2c535486ced2a66f8e4c19a</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 21:24:47 2018 +0800</div><div class="line"></div><div class="line">    Add and update test.txt</div><div class="line"></div><div class="line">commit 951522a48081b8ab4a529fee706d94c8fe3b16c8</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 21:03:29 2018 +0800</div><div class="line"></div><div class="line">    update  .gitignore</div><div class="line"></div><div class="line">commit 1d85c5a75128b6127de90b9db367dc9d67bdd17a</div><div class="line">Author: Juntao Han &lt;499445428@qq.com&gt;</div><div class="line">Date:   Mon Mar 26 20:59:13 2018 +0800</div><div class="line"></div><div class="line">    :octocat: Added .gitattributes &amp; .gitignore files</div></pre></td></tr></table></figure>
-<p>接下来推送到git服务器就好了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</div><div class="line">   <span class="keyword">synchronized</span>(xx.class) &#123;</div><div class="line">       xx.notify();</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>锁定其他对象</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> Class Test&#123;</div><div class="line">    <span class="keyword">public</span> Object lock = <span class="keyword">new</span> Object();</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> method（）&#123;</div><div class="line">      <span class="keyword">synchronized</span> (lock) &#123;</div><div class="line">         lock.notify();</div><div class="line">      &#125; </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -441,9 +434,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Git/" rel="tag"># Git</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
-            <a href="/tags/rebase/" rel="tag"># rebase</a>
+            <a href="/tags/IllegalMonitorStateException/" rel="tag"># IllegalMonitorStateException</a>
           
         </div>
       
@@ -456,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/15/关于git reabse的使用/" rel="next" title="关于git reabse的使用">
-                <i class="fa fa-chevron-left"></i> 关于git reabse的使用
+              <a href="/2018/07/01/理解ThreadLocal/" rel="next" title="理解ThreadLocal">
+                <i class="fa fa-chevron-left"></i> 理解ThreadLocal
               </a>
             
           </div>
@@ -465,10 +458,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/17/理解GC日志/" rel="prev" title="理解GC日志">
-                理解GC日志 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -756,9 +745,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/03/26/Git合并多个commit/';
-          this.page.identifier = '2018/03/26/Git合并多个commit/';
-          this.page.title = 'Git合并多个commit';
+          this.page.url = 'http://yoursite.com/2018/07/03/IllegalMonitorStateException异常分析/';
+          this.page.identifier = '2018/07/03/IllegalMonitorStateException异常分析/';
+          this.page.title = 'IllegalMonitorStateException异常分析';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
