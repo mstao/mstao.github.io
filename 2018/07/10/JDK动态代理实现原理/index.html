@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java,动态代理," />
+  <meta name="keywords" content="动态代理,java," />
 
 
 
@@ -96,14 +96,14 @@
 
 
 <meta name="description" content="平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。">
-<meta name="keywords" content="java,动态代理">
+<meta name="keywords" content="动态代理,java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK动态代理实现原理">
 <meta property="og:url" content="http://yoursite.com/2018/07/10/JDK动态代理实现原理/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/dynamic-proxy-vm-options.png?raw=true">
-<meta property="og:updated_time" content="2018-07-10T13:19:16.507Z">
+<meta property="og:updated_time" content="2018-07-10T13:24:16.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK动态代理实现原理">
 <meta name="twitter:description" content="平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。">
@@ -437,8 +437,7 @@
 <li>具体每个代理方法：逻辑都差不多就是<code>h.invoke</code>，主要是调用我们自定义的InvocatinoHandler逻辑，触发目标对象target上对应的方法;</li>
 <li>构造函数：从这里传入我们InvocationHandler逻辑</li>
 </ul>
-<p>参考：<br><br><a href="http://www.importnew.com/23168.html" target="_blank" rel="external">http://www.importnew.com/23168.html</a></p>
-<p><a href="https://www.cnblogs.com/MOBIN/p/5597215.html" target="_blank" rel="external">https://www.cnblogs.com/MOBIN/p/5597215.html</a></p>
+<p>参考：<br><br><a href="http://www.importnew.com/23168.html" target="_blank" rel="external">JDK动态代理详解</a><br><br><a href="https://www.cnblogs.com/MOBIN/p/5597215.html" target="_blank" rel="external">深度剖析JDK动态代理机制</a></p>
 
       
     </div>
@@ -468,9 +467,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
-          
             <a href="/tags/动态代理/" rel="tag"># 动态代理</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
