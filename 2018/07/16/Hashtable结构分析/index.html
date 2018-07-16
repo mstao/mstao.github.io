@@ -102,10 +102,12 @@
 <meta property="og:url" content="http://yoursite.com/2018/07/16/Hashtable结构分析/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。 哈希表的实现主要需要解决两个问题，哈希函数和冲突解决">
-<meta property="og:updated_time" content="2018-07-16T14:45:44.578Z">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true">
+<meta property="og:updated_time" content="2018-07-16T14:50:35.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hashtable结构分析">
 <meta name="twitter:description" content="哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。 哈希表的实现主要需要解决两个问题，哈希函数和冲突解决">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true">
 
 
 
@@ -407,7 +409,7 @@
 <h2 id="冲突解决"><a href="#冲突解决" class="headerlink" title="冲突解决"></a>冲突解决</h2><p>即使采用的哈希算法能够使键值均匀分布，但避免不了“碰撞”的出现，当两个不同的键值产生了相同值，这时就需要解决冲突。</p>
 <p>解决冲突有很多种方法，比如拉链法和开地址法，这里主要分析拉链法的具体实现。</p>
 <p>采用拉链法的哈希表，每个桶里都存放了一个链表。初始时所有链表均为空，当一个键被散列到一个桶时，这个键就成为相应桶中链表的首结点，之后若再有一个键被散列到这个桶（即发生碰撞），第二个键就会成为链表的第二个结点，以此类推。采用拉链法解决冲突的哈希表如下图所示：</p>
-<p>(<a href="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true" target="_blank" rel="external">https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true</a>)</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true" alt="image"></p>
 <h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>对于哈希表而言，主要有增，删，获取操作，我们先来定义一个接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Map</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K k,V v)</span></span>;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(K k)</span></span>;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">remove</span><span class="params">(K k)</span></span>;</div><div class="line"></div><div class="line">      <span class="class"><span class="keyword">interface</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;</span>&#123;</div><div class="line">          <span class="function"><span class="keyword">public</span> K <span class="title">getKey</span><span class="params">()</span></span>;</div><div class="line">          <span class="function"><span class="keyword">public</span> V <span class="title">getValue</span><span class="params">()</span></span>;</div><div class="line">      &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>在Map接口中，定义了三个方法<code>put</code>，<code>get</code>，<code>remove</code>三个方法，同时定义了一个内部接口Entry，用来表示key-value结构。</p>
 <p>接下来我们就采用拉链法来实现上面的接口。首先定义一下常量，成员变量以及在类的构造函数初始化一些数据代码如下：</p>

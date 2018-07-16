@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-16T14:45:44.578Z</updated>
+  <updated>2018-07-16T14:50:35.730Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/07/16/Hashtable%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2018/07/16/Hashtable结构分析/</id>
     <published>2018-07-15T16:00:00.000Z</published>
-    <updated>2018-07-16T14:45:44.578Z</updated>
+    <updated>2018-07-16T14:50:35.730Z</updated>
     
     <content type="html"><![CDATA[<p>哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。</p>
 <p>哈希表的实现主要需要解决两个问题，哈希函数和冲突解决。</p>
@@ -33,7 +33,7 @@
 <h2 id="冲突解决"><a href="#冲突解决" class="headerlink" title="冲突解决"></a>冲突解决</h2><p>即使采用的哈希算法能够使键值均匀分布，但避免不了“碰撞”的出现，当两个不同的键值产生了相同值，这时就需要解决冲突。</p>
 <p>解决冲突有很多种方法，比如拉链法和开地址法，这里主要分析拉链法的具体实现。</p>
 <p>采用拉链法的哈希表，每个桶里都存放了一个链表。初始时所有链表均为空，当一个键被散列到一个桶时，这个键就成为相应桶中链表的首结点，之后若再有一个键被散列到这个桶（即发生碰撞），第二个键就会成为链表的第二个结点，以此类推。采用拉链法解决冲突的哈希表如下图所示：</p>
-<p>(<a href="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true" target="_blank" rel="external">https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true</a>)</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/hashtable.png?raw=true" alt="image"></p>
 <h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>对于哈希表而言，主要有增，删，获取操作，我们先来定义一个接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Map</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K k,V v)</span></span>;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(K k)</span></span>;</div><div class="line">      <span class="function"><span class="keyword">public</span> V <span class="title">remove</span><span class="params">(K k)</span></span>;</div><div class="line"></div><div class="line">      <span class="class"><span class="keyword">interface</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;</span>&#123;</div><div class="line">          <span class="function"><span class="keyword">public</span> K <span class="title">getKey</span><span class="params">()</span></span>;</div><div class="line">          <span class="function"><span class="keyword">public</span> V <span class="title">getValue</span><span class="params">()</span></span>;</div><div class="line">      &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>在Map接口中，定义了三个方法<code>put</code>，<code>get</code>，<code>remove</code>三个方法，同时定义了一个内部接口Entry，用来表示key-value结构。</p>
 <p>接下来我们就采用拉链法来实现上面的接口。首先定义一下常量，成员变量以及在类的构造函数初始化一些数据代码如下：</p>
@@ -149,9 +149,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     
   </entry>
   
@@ -193,9 +193,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -972,6 +972,34 @@
   </entry>
   
   <entry>
+    <title>忽然之间</title>
+    <link href="http://yoursite.com/2017/12/24/%E5%BF%BD%E7%84%B6%E4%B9%8B%E9%97%B4/"/>
+    <id>http://yoursite.com/2017/12/24/忽然之间/</id>
+    <published>2017-12-23T16:00:00.000Z</published>
+    <updated>2018-03-26T14:48:07.166Z</updated>
+    
+    <content type="html"><![CDATA[<p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
+<a id="more"></a>
+<p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
+<p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
+<p>一晃眼从初中到大学毕业差不多十年过去了，时间还真是个无情的猎手，猎杀着世间容易消失的一切，那些存在着，消失的，以及后悔不后悔着的，或许都溶于自己的内心，再也看不到以前的样子了。</p>
+<p>忽然之间，天昏地暗。最后发现孤独的还是自己，痛苦和快乐着的还是自己。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
     <title>二叉搜索树结构分析</title>
     <link href="http://yoursite.com/2017/12/24/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/12/24/二叉搜索树结构分析/</id>
@@ -1049,34 +1077,6 @@
       <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
       <category term="二叉搜索树" scheme="http://yoursite.com/tags/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>忽然之间</title>
-    <link href="http://yoursite.com/2017/12/24/%E5%BF%BD%E7%84%B6%E4%B9%8B%E9%97%B4/"/>
-    <id>http://yoursite.com/2017/12/24/忽然之间/</id>
-    <published>2017-12-23T16:00:00.000Z</published>
-    <updated>2018-03-26T14:48:07.166Z</updated>
-    
-    <content type="html"><![CDATA[<p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
-<a id="more"></a>
-<p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
-<p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
-<p>一晃眼从初中到大学毕业差不多十年过去了，时间还真是个无情的猎手，猎杀着世间容易消失的一切，那些存在着，消失的，以及后悔不后悔着的，或许都溶于自己的内心，再也看不到以前的样子了。</p>
-<p>忽然之间，天昏地暗。最后发现孤独的还是自己，痛苦和快乐着的还是自己。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
