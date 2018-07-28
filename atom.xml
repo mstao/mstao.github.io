@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-28T15:01:09.236Z</updated>
+  <updated>2018-07-28T15:11:41.698Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/07/28/%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AATomcat%E7%9A%84Docker%E9%95%9C%E5%83%8F/"/>
     <id>http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/</id>
     <published>2018-07-27T16:00:00.000Z</published>
-    <updated>2018-07-28T15:01:09.236Z</updated>
+    <updated>2018-07-28T15:11:41.698Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。</p>
 <a id="more"></a>
@@ -59,6 +59,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#开放11001端口  permanent为永久开放</div><div class="line">firewall-cmd --zone=public --add-port=11001/tcp --permanent</div><div class="line">#重新读取配置</div><div class="line">firewall-cmd --reload</div><div class="line">#查看全部开放端口</div><div class="line">firewall-cmd --list-all</div></pre></td></tr></table></figure>
 <p>接下来就可在浏览器中看到Tomcat界面了，大功告成！</p>
 <p><img src="https://note.youdao.com/favicon.ico" alt="image"></p>
+<h3 id="镜像保存为本地离线文件"><a href="#镜像保存为本地离线文件" class="headerlink" title="镜像保存为本地离线文件"></a>镜像保存为本地离线文件</h3><p>将docker image保存为离线的本地文件，执行<code>docker save image_name &gt; ./save.tar</code>或者 <code>docker save -o filepath image_name</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@VM_0_6_centos docker-tocmat]# docker images</div><div class="line">REPOSITORY                                           TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">tomcat                                               test                a21030de3aac        2 hours ago         593 MB</div><div class="line">registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos   0.0.1               e1e65df66640        19 months ago       192 MB</div><div class="line">[root@VM_0_6_centos docker-tocmat]# docker save a21030de3aac &gt; ./up_tomcat.tar</div><div class="line">[root@VM_0_6_centos docker-tocmat]# ls</div><div class="line">Dockerfile  jdk  run.sh  tomcat  up_tomcat.tar</div></pre></td></tr></table></figure>
 <h3 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h3><ol>
 <li>停止容器</li>
 </ol>
