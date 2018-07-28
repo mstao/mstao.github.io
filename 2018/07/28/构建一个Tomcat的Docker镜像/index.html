@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://yoursite.com/images/docker-tomcat-folder.png">
 <meta property="og:image" content="http://yoursite.com/images/docker-tomcat-ps.png">
 <meta property="og:image" content="https://note.youdao.com/favicon.ico">
-<meta property="og:updated_time" content="2018-07-28T15:11:41.698Z">
+<meta property="og:updated_time" content="2018-07-28T15:21:21.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="构建一个Tomcat的Docker镜像">
 <meta name="twitter:description" content="最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。">
@@ -452,6 +452,11 @@
 </ol>
 <p>删除镜像需要先删除使用该镜像的容器，然后再删除镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rmi 3ae3626adcfa</div></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.jianshu.com/p/369e75f6303b" target="_blank" rel="external">https://www.jianshu.com/p/369e75f6303b</a></li>
+<li><a href="https://www.cnblogs.com/zhouyalei/p/6390963.html" target="_blank" rel="external">https://www.cnblogs.com/zhouyalei/p/6390963.html</a></li>
+<li><a href="http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2" target="_blank" rel="external">http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2</a></li>
+</ul>
 
       
     </div>
@@ -665,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">CentOS7 Docker 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备文件和构建环境"><span class="nav-number">2.</span> <span class="nav-text">准备文件和构建环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建docker镜像文件"><span class="nav-number">3.</span> <span class="nav-text">构建docker镜像文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动容器"><span class="nav-number">3.1.</span> <span class="nav-text">启动容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启端口"><span class="nav-number">3.2.</span> <span class="nav-text">开启端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像保存为本地离线文件"><span class="nav-number">3.3.</span> <span class="nav-text">镜像保存为本地离线文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他操作"><span class="nav-number">3.4.</span> <span class="nav-text">其他操作</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">CentOS7 Docker 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备文件和构建环境"><span class="nav-number">2.</span> <span class="nav-text">准备文件和构建环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建docker镜像文件"><span class="nav-number">3.</span> <span class="nav-text">构建docker镜像文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动容器"><span class="nav-number">3.1.</span> <span class="nav-text">启动容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启端口"><span class="nav-number">3.2.</span> <span class="nav-text">开启端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像保存为本地离线文件"><span class="nav-number">3.3.</span> <span class="nav-text">镜像保存为本地离线文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他操作"><span class="nav-number">3.4.</span> <span class="nav-text">其他操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>

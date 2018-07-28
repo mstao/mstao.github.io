@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-28T15:11:41.698Z</updated>
+  <updated>2018-07-28T15:21:21.344Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/07/28/%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AATomcat%E7%9A%84Docker%E9%95%9C%E5%83%8F/"/>
     <id>http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/</id>
     <published>2018-07-27T16:00:00.000Z</published>
-    <updated>2018-07-28T15:11:41.698Z</updated>
+    <updated>2018-07-28T15:21:21.344Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。</p>
 <a id="more"></a>
@@ -84,6 +84,11 @@
 </ol>
 <p>删除镜像需要先删除使用该镜像的容器，然后再删除镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rmi 3ae3626adcfa</div></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.jianshu.com/p/369e75f6303b" target="_blank" rel="external">https://www.jianshu.com/p/369e75f6303b</a></li>
+<li><a href="https://www.cnblogs.com/zhouyalei/p/6390963.html" target="_blank" rel="external">https://www.cnblogs.com/zhouyalei/p/6390963.html</a></li>
+<li><a href="http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2" target="_blank" rel="external">http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2</a></li>
+</ul>
 ]]></content>
     
     <summary type="html">
