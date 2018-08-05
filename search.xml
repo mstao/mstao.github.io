@@ -54,8 +54,8 @@
         <category>Java</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>动态代理</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -66,8 +66,8 @@
         <category>Java</category>
       </categories>
       <tags>
-        <tag>IllegalMonitorStateException</tag>
         <tag>java</tag>
+        <tag>IllegalMonitorStateException</tag>
       </tags>
   </entry>
   <entry>
