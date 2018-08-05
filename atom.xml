@@ -22,7 +22,7 @@
     <published>2018-08-04T16:00:00.000Z</published>
     <updated>2018-08-05T03:58:23.907Z</updated>
     
-    <content type="html"><![CDATA[<p>搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。</p>
 <a id="more"></a>
 <h2 id="安装Nexus3"><a href="#安装Nexus3" class="headerlink" title="安装Nexus3"></a>安装Nexus3</h2><p>拉取Nexus3的镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull sonatype/nexus3</div></pre></td></tr></table></figure>
@@ -83,7 +83,7 @@
     <published>2018-07-31T16:00:00.000Z</published>
     <updated>2018-08-02T16:12:12.212Z</updated>
     
-    <content type="html"><![CDATA[<p>半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。</p>
 <a id="more"></a>
 <p>2016年7月，我的好朋友给我打了个电话让我去武汉玩，从此我真切感受到世界的另一面。本来不想把这些东西写成文章记录下来，但一直在心中憋着，就像一团结在心中缠绕，勒得心中直疼。再加上最近另一个好朋友也遇到此事，自己却没帮上什么忙。虽说自己也不懂什么大道理，说不出让人顿悟警醒的话，但基本的做人做事原则我还是能说上两句。时隔两年，心中除了惆怅和遗憾，还多了些许的无助感。</p>
 <p>那么，2016年7月我遇到了什么事情呢？我遇到了所谓被称为传销的东西。传销这个词现在被人说烂了，我们没接触过的人听到这个词不会大惊小怪，新闻经常报道，即使是里面的人，直接会拿这个词给你说道说道，用他们的一套说辞来给你解释这个东西，直到你信以为真。千万不要小看这个让你信以为真的过程，这个过程被称为洗脑，这个词也是很常见，他们用所谓的大道理，所谓的说了一百遍都狗屁不是的话让你确认他们说的是真理，是赚钱迈向成功的一条猛路子，以便达到他们不可告人、见不得光的目地。很多事情在暗地里表面上看起来还是那么一回事，但真正剖析这件事的前因后果，可能发现原来多美好的一件事情，背后指不定有什么道道。虽然结果令人沮丧，但还是要认真面对，因为这是对你人生成长极大的考验，不得不头脑清醒些。</p>
@@ -112,7 +112,7 @@
     <published>2018-07-27T16:00:00.000Z</published>
     <updated>2018-07-28T15:25:40.938Z</updated>
     
-    <content type="html"><![CDATA[<p>最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。</p>
 <a id="more"></a>
 <p><img src="/images/docker.png" alt="image"></p>
 <h2 id="CentOS7-Docker-安装"><a href="#CentOS7-Docker-安装" class="headerlink" title="CentOS7 Docker 安装"></a>CentOS7 Docker 安装</h2><p>Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker。<br>通过 uname -r 命令查看你当前的内核版本 </p>
@@ -201,7 +201,7 @@
     <published>2018-07-15T16:00:00.000Z</published>
     <updated>2018-07-16T14:50:35.730Z</updated>
     
-    <content type="html"><![CDATA[<p>哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。</p>
 <p>哈希表的实现主要需要解决两个问题，哈希函数和冲突解决。</p>
 <a id="more"></a>
 <h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>在哈希表内部，使用桶（bucket）来保存键值对，数组索引即为桶号，哈希函数决定了给定的键存于散列表的哪个桶中，例如下面的函数：</p>
@@ -266,7 +266,7 @@
     <published>2018-07-09T16:00:00.000Z</published>
     <updated>2018-07-10T13:24:16.606Z</updated>
     
-    <content type="html"><![CDATA[<p>平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。</p>
 <a id="more"></a>
 <h3 id="动态代理Demo"><a href="#动态代理Demo" class="headerlink" title="动态代理Demo"></a>动态代理Demo</h3><p>先来看一下利用JDK动态代理写的Demo，下面会根据这个Demo进行分析</p>
 <p>首先定义一个接口</p>
@@ -341,7 +341,7 @@
     <published>2018-07-02T16:00:00.000Z</published>
     <updated>2018-07-03T16:13:20.868Z</updated>
     
-    <content type="html"><![CDATA[<p>当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？</p>
 <a id="more"></a>
 <p>抛出该异常原因:在Java中，每一个对象（Object/Class）都有一个监视器，当在同步代码块中，当前线程不是此监视器的所有者，也就是要在当前线程锁定对象，才能用锁定的对象此行这些方法，需要用到synchronized ，锁定什么对象就用什么对象来执行notify(), notifyAll(),wait(), wait(long), wait(long, int)操作，否则就会报IllegalMonitorStateException异常，原因异常。</p>
 <p>下面这段代码就会抛出IllegalMonitorStateException异常，原因就是调用wait需要当前对象的监视器。</p>
@@ -385,7 +385,7 @@
     <published>2018-06-30T16:00:00.000Z</published>
     <updated>2018-07-01T01:45:32.898Z</updated>
     
-    <content type="html"><![CDATA[<p>记得去年学习Spring MVC的时候自己学着写了一个小小的框架，用了一个AppContext来表示应用上下文，每个请求都应该有各自独立的AppContext，里面可以存储一些数据，比如数据库连接Connection等，此时考虑数据库的事务问题，即在一个线程内，一个事务的多个操作拿到的是一个Connection，该如何实现呢？此时就需要使用ThreadLocal来解决。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>记得去年学习Spring MVC的时候自己学着写了一个小小的框架，用了一个AppContext来表示应用上下文，每个请求都应该有各自独立的AppContext，里面可以存储一些数据，比如数据库连接Connection等，此时考虑数据库的事务问题，即在一个线程内，一个事务的多个操作拿到的是一个Connection，该如何实现呢？此时就需要使用ThreadLocal来解决。</p>
 <a id="more"></a>
 <h3 id="ThreadLocal介绍"><a href="#ThreadLocal介绍" class="headerlink" title="ThreadLocal介绍"></a>ThreadLocal介绍</h3><p><strong>ThreadLocal能干啥？</strong></p>
 <p>ThreadLocal是基于线程的一个本地变量的支持类，用户可以将对象与线程绑定，每一个线程都拥有一个自己的对象，例如对于上面的需求来说，可以将AppContext存入到ThreadLocal，代码如下：</p>
@@ -468,7 +468,7 @@
     <published>2018-06-26T16:00:00.000Z</published>
     <updated>2018-06-29T04:02:53.034Z</updated>
     
-    <content type="html"><![CDATA[<p>装饰模式作为常用的设计模式用到很多，比如在Java中，io包下的很多类就是典型的装饰者模式的体现，如下代码：</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>装饰模式作为常用的设计模式用到很多，比如在Java中，io包下的很多类就是典型的装饰者模式的体现，如下代码：</p>
 <a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> BufferedOutputStream(OutputStream out)</div><div class="line"><span class="keyword">new</span> BufferedInputStream(InputStream in);</div><div class="line"><span class="keyword">new</span> PrintWriter(OutputStream out)</div><div class="line"><span class="keyword">new</span> FilterReader(Reader in);</div></pre></td></tr></table></figure>
 <p>那么，什么是装饰模式呢？</p>
@@ -530,7 +530,7 @@
     <published>2018-06-24T16:00:00.000Z</published>
     <updated>2018-06-27T14:49:30.267Z</updated>
     
-    <content type="html"><![CDATA[<p>在我们日常生活中可以看到许多例子，例如我们的手机需要用充电器来充电，因为220v电压手机是承受不住的；笔记本电脑连接投影仪可以是HDMI，需要转接头等等例子，从这些例子中我们可以发现目标对象与源对象无法直接交互，需要一个中间层来作为一个桥梁达到让两者完美交互的效果，从这种就可以看到适配器模式的影子了。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在我们日常生活中可以看到许多例子，例如我们的手机需要用充电器来充电，因为220v电压手机是承受不住的；笔记本电脑连接投影仪可以是HDMI，需要转接头等等例子，从这些例子中我们可以发现目标对象与源对象无法直接交互，需要一个中间层来作为一个桥梁达到让两者完美交互的效果，从这种就可以看到适配器模式的影子了。</p>
 <a id="more"></a>
 <p>那么什么是适配器模式呢? 将一个类的接口转换成客户希望的另外一个接口。Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
 <p>适配器包含类适配器和对象适配器，类适配器是类间继承，对象适配器是类的关联关系，这是两者的区别。</p>
@@ -586,7 +586,7 @@
     <published>2018-06-21T16:00:00.000Z</published>
     <updated>2018-06-24T02:47:14.537Z</updated>
     
-    <content type="html"><![CDATA[<p>好久不写文章，只因这段时间太忙了，忙到忘记离别的日子已经逼在眼前，倒让人措手不及。当这些繁琐的流程到了末尾，离别的日子真是要到来了。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>好久不写文章，只因这段时间太忙了，忙到忘记离别的日子已经逼在眼前，倒让人措手不及。当这些繁琐的流程到了末尾，离别的日子真是要到来了。</p>
 <a id="more"></a>
 <p>大学是我目前人生中最充实的时光，回想以前的上学时代，也真让人怀念。十年回首，可喜可悲可叹其实现在也没有多深的记忆了，也或许都释怀了吧。释怀这个词不怎么靠谱，哪里有什么释怀不释怀的，只不过心里能够接受事情的好与坏，不需要过多纠结；明白人总是聚少离多，那些离开的人，可能一辈子也不会再见了。人因为情感变得复杂，也变得有趣。</p>
 <p>最近一直在看梁晓声的《中国人的日常》，印象十分深刻。他谈及自己的初恋，感觉充满一种令人羡慕的稚气与甜蜜，或许是那个时代特有的那种情感，也或许是每个人在经历初恋时都会有的这种感觉。稚气地认为，各自的心灵从此有了依靠，被自己感动，亦被对方感动。在那个年代，爱不可声张，甚至不敢承认，这对于热恋中的人来说是有多么压抑和煎熬。我们都向往纯真，向往无邪，当你向往这些的时候，说明这些早已远离于你，这些也只是虚幻想象的样子，真实早已消失。</p>
@@ -620,7 +620,7 @@
     <published>2018-05-22T16:00:00.000Z</published>
     <updated>2018-05-28T04:09:15.185Z</updated>
     
-    <content type="html"><![CDATA[<p>前段时间我在我的CentOS7服务器上安装了Redis，遇到了一些问题忘记记录下来了ヽ(￣▽￣)ﾉ，而且我参考网上的教程配置一些脚本的时候发现有错误，根据我对shell的简单理解会介绍一下，毕竟这个东西很常用。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>前段时间我在我的CentOS7服务器上安装了Redis，遇到了一些问题忘记记录下来了ヽ(￣▽￣)ﾉ，而且我参考网上的教程配置一些脚本的时候发现有错误，根据我对shell的简单理解会介绍一下，毕竟这个东西很常用。</p>
 <a id="more"></a>
 <h2 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h2><p>首先在<strong>/usr/local</strong>目录下创建services 文件夹和其子文件redis,然后进入该文件夹。</p>
 <p>下载redis可以通过wget，我这里下载的是<strong>redis-4.0.2</strong>版本</p>
@@ -700,7 +700,7 @@
     <published>2018-05-11T16:00:00.000Z</published>
     <updated>2018-05-13T01:28:39.581Z</updated>
     
-    <content type="html"><![CDATA[<p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
 <a id="more"></a>
 <h3 id="Zookeeper的安装"><a href="#Zookeeper的安装" class="headerlink" title="Zookeeper的安装"></a>Zookeeper的安装</h3><ol>
 <li>下载Zookeeper</li>
@@ -769,7 +769,7 @@
     <published>2018-05-07T16:00:00.000Z</published>
     <updated>2018-05-28T04:12:49.743Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="WebMagic介绍"><a href="#WebMagic介绍" class="headerlink" title="WebMagic介绍"></a>WebMagic介绍</h2><p>WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="WebMagic介绍"><a href="#WebMagic介绍" class="headerlink" title="WebMagic介绍"></a>WebMagic介绍</h2><p>WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。</p>
 <a id="more"></a>
 <p>WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件，并由Spider将它们彼此组织起来。这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能。WebMagic的总体架构图如下：</p>
 <p><img src="/images/webmagic.jpg" alt="image"></p>
@@ -824,7 +824,7 @@
     <published>2018-05-04T16:00:00.000Z</published>
     <updated>2018-05-09T01:24:23.899Z</updated>
     
-    <content type="html"><![CDATA[<p>我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码</p>
 <p>下面是操作步骤：</p>
 <a id="more"></a>
 <ol>
@@ -882,7 +882,7 @@
     <published>2018-04-16T16:00:00.000Z</published>
     <updated>2018-04-17T09:33:25.668Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="输出GC日志"><a href="#输出GC日志" class="headerlink" title="输出GC日志"></a>输出GC日志</h3><p>通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。<br>先来看一个简单的示例。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="输出GC日志"><a href="#输出GC日志" class="headerlink" title="输出GC日志"></a>输出GC日志</h3><p>通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。<br>先来看一个简单的示例。</p>
 <p>下面是GC日志：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">0.115: [GC (System.gc()) [PSYoungGen: 3020K-&gt;600K(38400K)] 3020K-&gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </div><div class="line">0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;554K(87552K)] 608K-&gt;554K(125952K), [Metaspace: 2773K-&gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] </div><div class="line">Heap</div><div class="line"> PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)</div><div class="line">  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)</div><div class="line">  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)</div><div class="line">  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)</div><div class="line"> ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)</div><div class="line">  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)</div><div class="line"> Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K</div></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -939,7 +939,7 @@
     <published>2018-03-25T16:00:00.000Z</published>
     <updated>2018-03-26T14:49:10.504Z</updated>
     
-    <content type="html"><![CDATA[<p>在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在我们做新功能的时候，我们可能需要自己新建一个分支，然后在这个分支上开发，由于功能复杂或者功能点很多，或者每改动一个重要的地方都要进行提交一次，这样自己在测试开发时方便回滚等操作，会产生多个临时的commit，这些临时commit其实才是一个功能点，在向团队开发分支合并代码的时候，我们为了避免太多的 commit 而造成版本控制的混乱，通常我们推荐将这些 commit 合并成一个。</p>
 <a id="more"></a>
 <p><strong>1. git log查看提交记录</strong></p>
 <p>首先我们利用<strong>git log</strong>查看当前分支提交的历史，最近提交在最上面，如下：</p>
@@ -990,7 +990,7 @@
     <published>2018-03-14T16:00:00.000Z</published>
     <updated>2018-03-26T14:48:07.161Z</updated>
     
-    <content type="html"><![CDATA[<p>由于在工作中用到了git rebase命令，所以记录一下。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于在工作中用到了git rebase命令，所以记录一下。</p>
 <p>比如当前在location-scan 分支做一个新功能，当新功能做完了，然后发pull request请求合并到develop分支，但在你提交pull request 之前，有人改动了develop分支的代码，导致你的代码与develop分支的代码发生了冲突， 由于有冲突，需要从develop分支将代码拉到location-scan 分支，进行代码的合并，然后再进行提交，此时的提交没有合并过的痕迹，所以此时我们就需要用到了git rebase命令了，具体的使用的流程：</p>
 <a id="more"></a>
 <ol>
@@ -1043,7 +1043,7 @@
     <published>2018-03-08T16:00:00.000Z</published>
     <updated>2018-03-26T14:48:07.182Z</updated>
     
-    <content type="html"><![CDATA[<p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>当我们在创建对象的时候，如果对象需要很多的参数，并且有些参数是可选的，有些是必选的，有的可能默认值，这个时候如果我们用构造器传参或者通过set方法进行属性值设置，那么这样就有很大的问题，比如别人在创建这个对象的时候，并不知道需要传哪些参数，哪些参数是必须传值的，而且调用也不方便，所有我们就可以用到Builder模式，这里就是所谓的链式调用。在Effective Java书中， 第2条就是遇到到多个构造器时要考虑用构造器，里面讲的比较详细。</p>
 <p>比如我们想这样创建一个对象</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> User.Builder(<span class="string">"Walker"</span>, <span class="string">"Han"</span>)</div><div class="line">        .age(<span class="number">20</span>)</div><div class="line">        .phone(<span class="string">"123456789"</span>)</div><div class="line">        .address(<span class="string">"166号"</span>)</div><div class="line">        .build();</div></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -1078,7 +1078,7 @@
     <published>2017-12-31T16:00:00.000Z</published>
     <updated>2018-06-29T15:09:15.668Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>首先下载jdk-8u172-linux-x64.tar.gz，然后上传到服务器<strong>/usr/local/java</strong>目录</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>首先下载jdk-8u172-linux-x64.tar.gz，然后上传到服务器<strong>/usr/local/java</strong>目录</p>
 <p>解压jdk-8u172-linux-x64.tar.gz</p>
 <a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar -zxvf jdk-8u172-linux-x64.tar.gz</div></pre></td></tr></table></figure>
@@ -1157,7 +1157,7 @@
     <published>2017-12-23T16:00:00.000Z</published>
     <updated>2018-03-26T14:48:07.166Z</updated>
     
-    <content type="html"><![CDATA[<p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
 <a id="more"></a>
 <p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
 <p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
