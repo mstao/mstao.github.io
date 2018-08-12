@@ -328,9 +328,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     
   </entry>
   
@@ -372,9 +372,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
