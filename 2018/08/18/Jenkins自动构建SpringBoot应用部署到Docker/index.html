@@ -110,7 +110,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="在开发SpringCloud微服务时，各个服务需要独立部署，手动部署比较麻烦，所以需要引入持续集成，Jenkins是一个非常好用的持续集成工具，十分好用。在使用Jenkins自动构建源码时，需要按照一定的步骤进行，步骤如下：">
 <meta property="og:image" content="http://yoursite.com/images/jenkins_springbootdemo_start.png">
-<meta property="og:updated_time" content="2018-08-18T09:03:17.115Z">
+<meta property="og:updated_time" content="2018-08-18T09:09:51.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins自动构建SpringBoot应用部署到Docker">
 <meta name="twitter:description" content="在开发SpringCloud微服务时，各个服务需要独立部署，手动部署比较麻烦，所以需要引入持续集成，Jenkins是一个非常好用的持续集成工具，十分好用。在使用Jenkins自动构建源码时，需要按照一定的步骤进行，步骤如下：">
@@ -449,7 +449,7 @@
 </ul>
 <p>说到SSH，不要忘了让jenkins服务器能够免密SSH访问目标机器，配置下authorized_key等信息。</p>
 <p>接下来就需要编写Jenkinsfile文件了，这个文件需要放在项目主目录下，构建源码时Jenkins会读取该文件，按照该文件配置的步骤进行源码构建。</p>
-<h3 id="编写Jenkinsfile文件"><a href="#编写Jenkinsfile文件" class="headerlink" title="编写Jenkinsfile文件"></a>编写Jenkinsfile文件</h3><p>在Jenkinsfile文件中，利用pipeline来编写步骤。pipeline支持将连续输送Pipeline实施和整合到Jenkins，所以我们可以将上面提到的流程写到pipeline中。这里主要分以下五部：</p>
+<h2 id="编写Jenkinsfile文件"><a href="#编写Jenkinsfile文件" class="headerlink" title="编写Jenkinsfile文件"></a>编写Jenkinsfile文件</h2><p>在Jenkinsfile文件中，利用pipeline来编写步骤。pipeline支持将连续输送Pipeline实施和整合到Jenkins，所以我们可以将上面提到的流程写到pipeline中。这里主要分以下五部：</p>
 <ul>
 <li>git clone</li>
 <li>check code</li>
@@ -692,7 +692,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Jenkins环境"><span class="nav-number">1.</span> <span class="nav-text">配置Jenkins环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建任务"><span class="nav-number">2.</span> <span class="nav-text">新建任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编写Jenkinsfile文件"><span class="nav-number">2.1.</span> <span class="nav-text">编写Jenkinsfile文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到Docker"><span class="nav-number">3.</span> <span class="nav-text">部署到Docker</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Jenkins环境"><span class="nav-number">1.</span> <span class="nav-text">配置Jenkins环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建任务"><span class="nav-number">2.</span> <span class="nav-text">新建任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写Jenkinsfile文件"><span class="nav-number">3.</span> <span class="nav-text">编写Jenkinsfile文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到Docker"><span class="nav-number">4.</span> <span class="nav-text">部署到Docker</span></a></li></ol></div>
             
 
           </div>
