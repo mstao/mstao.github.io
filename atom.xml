@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-05T03:58:23.907Z</updated>
+  <updated>2018-08-18T09:03:17.115Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,90 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Jenkins自动构建SpringBoot应用部署到Docker</title>
+    <link href="http://yoursite.com/2018/08/18/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BASpringBoot%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E5%88%B0Docker/"/>
+    <id>http://yoursite.com/2018/08/18/Jenkins自动构建SpringBoot应用部署到Docker/</id>
+    <published>2018-08-17T16:00:00.000Z</published>
+    <updated>2018-08-18T09:03:17.115Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在开发SpringCloud微服务时，各个服务需要独立部署，手动部署比较麻烦，所以需要引入持续集成，Jenkins是一个非常好用的持续集成工具，十分好用。在使用Jenkins自动构建源码时，需要按照一定的步骤进行，步骤如下：</p>
+<a id="more"></a>
+<ol>
+<li>从Git获取源代码</li>
+<li>代码审查</li>
+<li>编译代码</li>
+<li>打包文件</li>
+<li>部署到Docker</li>
+</ol>
+<p>以上步骤我们手动也可以完成，但我们都喜欢自动化，自己点一点就能搞定，干嘛还要一步步来呢。</p>
+<h2 id="配置Jenkins环境"><a href="#配置Jenkins环境" class="headerlink" title="配置Jenkins环境"></a>配置Jenkins环境</h2><p>我们直接使用Docker安装Jenkins，我是直接安装Jenkins每日更新的镜像，<a href="https://hub.docker.com/r/jenkinsci/jenkins/" target="_blank" rel="external">Jenkins地址</a>，操作如下：</p>
+<p>拉取镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull jenkinsci/jenkins</div></pre></td></tr></table></figure>
+<p>修改文件夹的归属者和组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chown -R 1000:1000 jenkins_home/</div></pre></td></tr></table></figure>
+<p>启动Jenkins容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -itd -p 8088:8080 -p 50000:50000 --name jenkins --privileged=true  -v /usr/jenkins_home:/var/jenkins_home docker.io/jenkinsci/jenkins</div></pre></td></tr></table></figure>
+<p>然后再配置一些个人信息和插件。</p>
+<h2 id="新建任务"><a href="#新建任务" class="headerlink" title="新建任务"></a>新建任务</h2><p>首先我们需要新建Jenkins任务，选择Pipeline类型的任务，如下</p>
+<p><img src="/images/jenkins_springbootdemo_start.png" alt="image"></p>
+<p>然后配置下git信息和构建参数信息</p>
+<p>构建参数主要有以下几个：</p>
+<ul>
+<li><strong>BRANCH_NAME</strong> 分支名称</li>
+<li><strong>ENV</strong> 环境</li>
+<li><strong>TARGET_MACHINE_IP</strong> 部署集群IP</li>
+<li><strong>SSH_PORT</strong> 部署机器SSH端口</li>
+<li><strong>TARGET_PORT</strong> 项目启动端口</li>
+</ul>
+<p>说到SSH，不要忘了让jenkins服务器能够免密SSH访问目标机器，配置下authorized_key等信息。</p>
+<p>接下来就需要编写Jenkinsfile文件了，这个文件需要放在项目主目录下，构建源码时Jenkins会读取该文件，按照该文件配置的步骤进行源码构建。</p>
+<h3 id="编写Jenkinsfile文件"><a href="#编写Jenkinsfile文件" class="headerlink" title="编写Jenkinsfile文件"></a>编写Jenkinsfile文件</h3><p>在Jenkinsfile文件中，利用pipeline来编写步骤。pipeline支持将连续输送Pipeline实施和整合到Jenkins，所以我们可以将上面提到的流程写到pipeline中。这里主要分以下五部：</p>
+<ul>
+<li>git clone</li>
+<li>check code</li>
+<li>build code</li>
+<li>release package</li>
+<li>deploy</li>
+</ul>
+<p>前两步就不提了，编译用Maven构建代码，release package这一步为打包代码，将一些脚本和编译好的jar文件打包成压缩文件，等待部署。deploy需要将打包的压缩文件拷贝到目标机器上，再执行部署脚本。</p>
+<p>详细的Jenkinsfile如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">pipeline &#123;</div><div class="line">    agent any</div><div class="line"></div><div class="line">    environment &#123;</div><div class="line">        REPOSITORY=&quot;https://github.com/mstao/spring-boot-learning.git&quot;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    stages &#123;</div><div class="line">        stage(&apos;git clone&apos;) &#123;</div><div class="line">            steps &#123;</div><div class="line">                echo &quot;&lt;&lt;&lt; Starting fetch code from git:$&#123;REPOSITORY&#125;&quot;</div><div class="line">                git credentialsId: &quot;bd8b65ce-7fd2-4e57-a9fe-45d4fe2924bf&quot;, url: &quot;$&#123;REPOSITORY&#125;&quot;, branch: &quot;$BRANCH_NAME&quot;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        stage(&apos;check code&apos;) &#123;</div><div class="line">            steps &#123;</div><div class="line">                // chek code</div><div class="line">                // Jenkins 集成 sonar 进行代码审查</div><div class="line">                echo &quot;&lt;&lt;&lt;Starting check and analytic code&quot;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        stage(&apos;build code&apos;) &#123;</div><div class="line">            steps &#123;</div><div class="line">                echo &quot;&lt;&lt;&lt; Starting build code and docker image&quot;</div><div class="line">                withMaven (</div><div class="line">                    maven: &apos;Maven 3.5.4&apos;,</div><div class="line">                    mavenLocalRepo: &apos;.repository&apos;) &#123;</div><div class="line">                        sh &apos;mvn clean package -Dmaven.test.skip=true&apos;</div><div class="line">                    &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        stage(&apos;release package&apos;) &#123;</div><div class="line">            steps &#123;</div><div class="line">                echo &quot;&lt;&lt;&lt; release package to /var/jenkins_home/release/demo/$ENV/$BRANCH_NAME&quot;</div><div class="line">                sh &apos;&apos;&apos;</div><div class="line">                    if [ -d target/demo ]</div><div class="line">                        then</div><div class="line">                        rm -rf target/demo</div><div class="line">                    fi</div><div class="line">                    mkdir -p target/demo</div><div class="line">                &apos;&apos;&apos;</div><div class="line">                sh &apos;&apos;&apos;</div><div class="line">                    cp target/*.jar target/demo/demo-api.jar</div><div class="line">                    cp deploy.sh target/demo/</div><div class="line">                    cp Dockerfile target/demo/</div><div class="line">                    cd target</div><div class="line">                    tar zcvf demo.tar.gz demo</div><div class="line">                    exit</div><div class="line">                &apos;&apos;&apos;</div><div class="line">                sh &apos;&apos;&apos;</div><div class="line">                    if [ ! -d /var/jenkins_home/release/demo/$ENV/$BRANCH_NAME ]</div><div class="line">                        then</div><div class="line">                        mkdir -p /var/jenkins_home/release/demo/$ENV/$BRANCH_NAME</div><div class="line">                    fi</div><div class="line">                &apos;&apos;&apos;</div><div class="line">                sh &apos;cp -f target/*.tar.gz /var/jenkins_home/release/demo/$ENV/$BRANCH_NAME&apos;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        stage(&apos;deploy&apos;) &#123;</div><div class="line">            steps &#123;</div><div class="line">                echo &quot;&lt;&lt;&lt; Starting deploy code to docker&quot;</div><div class="line">                 script &#123;</div><div class="line">                    try &#123;</div><div class="line">                        sh &apos;&apos;&apos;</div><div class="line">                            ssh -p $SSH_PORT -o StrictHostKeyChecking=no mingshan@$TARGET_MACHINE_IP rm -rf /app/tmp/demo/package</div><div class="line">                            ssh -p $SSH_PORT mingshan@$TARGET_MACHINE_IP mkdir -p /app/tmp/demo/package</div><div class="line">                        &apos;&apos;&apos;</div><div class="line">                    &#125;</div><div class="line">                    catch(e) &#123;</div><div class="line">                        echo e</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                sh &apos;&apos;&apos;</div><div class="line">                    scp -P $SSH_PORT /var/jenkins_home/release/demo/$ENV/$BRANCH_NAME/*.tar.gz mingshan@$TARGET_MACHINE_IP:/app/tmp/demo/package/</div><div class="line">                    ssh -p $SSH_PORT mingshan@$TARGET_MACHINE_IP &quot;tar -zxf /app/tmp/demo/package/demo.tar.gz -C /app/tmp/demo/package&quot;</div><div class="line">                    ssh -p $SSH_PORT mingshan@$TARGET_MACHINE_IP &quot;cd /app/tmp/demo/package/demo &amp;&amp; chmod +x * &amp;&amp; sh deploy.sh $TARGET_PORT&quot;</div><div class="line">                    exit</div><div class="line">                &apos;&apos;&apos;</div><div class="line">                echo &quot;deploy done&quot;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="部署到Docker"><a href="#部署到Docker" class="headerlink" title="部署到Docker"></a>部署到Docker</h2><p>由于需要将打包的文件部署到Docker，所以需要将部署脚本和压缩文件发送到目标机器，在目标机器上制作Docker镜像，然后运行Docker 容器。</p>
+<p>由于Docker需要root用户进行运行，而对于一些机器而言，拿不到root权限，所以需要进行一些操作，参考：<br><a href="https://blog.csdn.net/baidu_36342103/article/details/69357438" target="_blank" rel="external">免sudo使用docker命令</a></p>
+<p>在Jenkinsfile中deploy步骤中，执行了以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p $SSH_PORT mingshan@$TARGET_MACHINE_IP &quot;cd /app/tmp/demo/package/demo &amp;&amp; chmod +x * &amp;&amp; sh deploy.sh $TARGET_PORT&quot;</div></pre></td></tr></table></figure>
+<p>这是到目标机器上执行deploy.sh脚本，该脚本的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">port=11001</div><div class="line">image=demo</div><div class="line">name=demo-service</div><div class="line"></div><div class="line">if [ -z $1 ]; then</div><div class="line">    echo &quot;&lt;&lt;&lt; Using default port $port&quot;</div><div class="line">else</div><div class="line">    echo &quot;&lt;&lt;&lt; Set port to $1&quot;</div><div class="line">    $port=$1</div><div class="line">fi</div><div class="line"></div><div class="line">echo &quot;&lt;&lt;&lt; Fetch container id of $name&quot;</div><div class="line">CID=$(docker ps | grep &quot;demo-service&quot; | awk &apos;&#123;print $1&#125;&apos;)</div><div class="line"></div><div class="line">if [ &quot;$CID&quot; != &quot;&quot; ];then</div><div class="line">  echo &quot;&lt;&lt;&lt; Stop and remove old container for $name&quot;</div><div class="line">  docker stop $CID</div><div class="line">  docker rm $CID</div><div class="line">fi</div><div class="line"></div><div class="line">echo &quot;&lt;&lt;&lt; Remove old image $image&quot;</div><div class="line">docker rmi $image</div><div class="line"></div><div class="line">echo &quot;&lt;&lt;&lt; Start to build docker image $image&quot;</div><div class="line">docker build -t $image .</div><div class="line"></div><div class="line">echo &quot;&lt;&lt;&lt; Start new container port: $port for $name&quot;</div><div class="line">docker run -d -p $port:8080 --name $name $image</div></pre></td></tr></table></figure>
+<p>在<code>deploy.sh</code>脚本中，主要分为以下几步：</p>
+<ol>
+<li>停止和删除旧容器</li>
+<li>删除旧镜像</li>
+<li>构建新镜像</li>
+<li>运行容器</li>
+</ol>
+<p>这个脚本比较简单，按照上面的几步编写就行了。</p>
+<p>最后附上项目的Dockerfile，也没啥说的。</p>
+<p><strong>Dockerfile</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">FROM openjdk:8-jdk-alpine</div><div class="line">VOLUME /tmp</div><div class="line">ADD spring-boot-docker-0.0.1-SNAPSHOT.jar app.jar</div><div class="line">ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在开发SpringCloud微服务时，各个服务需要独立部署，手动部署比较麻烦，所以需要引入持续集成，Jenkins是一个非常好用的持续集成工具，十分好用。在使用Jenkins自动构建源码时，需要按照一定的步骤进行，步骤如下：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
+    
+    
+      <category term="Jenkins" scheme="http://yoursite.com/tags/Jenkins/"/>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>利用Docker搭建Nexus3私服</title>
@@ -1147,34 +1231,6 @@
     
     
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>忽然之间</title>
-    <link href="http://yoursite.com/2017/12/24/%E5%BF%BD%E7%84%B6%E4%B9%8B%E9%97%B4/"/>
-    <id>http://yoursite.com/2017/12/24/忽然之间/</id>
-    <published>2017-12-23T16:00:00.000Z</published>
-    <updated>2018-03-26T14:48:07.166Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。</p>
-<a id="more"></a>
-<p>从今年七月份开始就开始实习，感觉实习阶段对于刚踏入编程这个行业的人来说还是很重要的，因为这一年会让你知道你擅长哪个领域，应该深钻哪门编程语言(或许)，但并不是每个人都是如此，至少我不是，因为我实习主要用的语言并不是我喜欢的语言，对于一个自己不喜欢的语言当然不愿意花费过多的时间在上面，因为人的精力是有限的。随着编程的逐渐深入，会发现想要学好一门语言不是那么容易的，如果认为一门语言就简单使用语法和库，那么未免也太浅薄了。就拿我喜欢用的Java来说吧，才开始可能感觉会一些API和常用的框架就能做些东西，并不需要一些多么高深的东西，数据结构基本用不上，而且好用的工具一抓一大把，感觉编程是比较容易的，但事实上是这样的吗？显示不是，当你不满足于仅使用API和框架的时候，还想了解这些API的源码和框架的设计实现原理，你会发现许多问题都会迎面而来，而且大部分都是老问题，比如你想看集合的源码，想知道ArrayList和HashMap到底是怎么实现的，数据在其内部是如何进行存储的，这时候数据结构就派上用场了，如果你想自己造个轮子，也实现一把HashMap，你就需要对HashMap的数据结构了如指掌，这样的话当你再次使用HashMap的时候，其结构和实现原理就会在你大脑里飞转，想忘也忘不了。</p>
-<p>对于我这种初学者来说，深知自己学会造轮子的重要性，虽然说自己写的基本上没有现成的轮子好使，但这些轮子并不代表对你没用，反而作用很大。比如我看了Java的并发包的ArrayBlockingQueue的源码，那么我自己试试能不能写个功能差不多的类呢，如果实现原理知道的话，那么基本功能还是可以写出来的。这个时候还有一件非常重要的事需要考虑，那就是学习源码优秀的代码结构和设计，设计模式是必不可少的，只有掌握了这些，才能深刻的明白写代码是怎么一回事，现在算是初级小码农( ¨̮ )</p>
-<p>一晃眼从初中到大学毕业差不多十年过去了，时间还真是个无情的猎手，猎杀着世间容易消失的一切，那些存在着，消失的，以及后悔不后悔着的，或许都溶于自己的内心，再也看不到以前的样子了。</p>
-<p>忽然之间，天昏地暗。最后发现孤独的还是自己，痛苦和快乐着的还是自己。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;不知不觉，发现时间过得好快，出来实习的时间已经过去了大半年，毕业的日子马上就要来了，2017即将消逝，有必要写些什么。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
