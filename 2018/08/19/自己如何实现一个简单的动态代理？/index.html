@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JVM,GC," />
+  <meta name="keywords" content="动态代理,java," />
 
 
 
@@ -102,19 +102,19 @@
 
 
 
-<meta name="description" content="输出GC日志通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。先来看一个简单的示例。 下面是GC日志： 12345678910110.115: [GC (System.gc()) [PSYoungGen: 3020K-&amp;gt;600K(38400K)] 3020K-&amp;gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.0">
-<meta name="keywords" content="JVM,GC">
+<meta name="description" content="经过对JDK动态代理实现原理的解析，我们会对动态代理的实现流程有个根本的认识，具体分析过程参考JDK动态代理实现原理这篇文章，这里就不多谈了。这篇文章主要思考如何去实现一个简易的动态代理，以便加深对其的理解。">
+<meta name="keywords" content="动态代理,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解GC日志">
-<meta property="og:url" content="http://yoursite.com/2018/04/17/理解GC日志/index.html">
+<meta property="og:title" content="自己如何实现一个简单的动态代理？">
+<meta property="og:url" content="http://yoursite.com/2018/08/19/自己如何实现一个简单的动态代理？/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="输出GC日志通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。先来看一个简单的示例。 下面是GC日志： 12345678910110.115: [GC (System.gc()) [PSYoungGen: 3020K-&amp;gt;600K(38400K)] 3020K-&amp;gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.0">
-<meta property="og:image" content="http://yoursite.com/images/java-memory.jpg">
-<meta property="og:updated_time" content="2018-04-17T09:33:25.668Z">
+<meta property="og:description" content="经过对JDK动态代理实现原理的解析，我们会对动态代理的实现流程有个根本的认识，具体分析过程参考JDK动态代理实现原理这篇文章，这里就不多谈了。这篇文章主要思考如何去实现一个简易的动态代理，以便加深对其的理解。">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/my-dynamic-proxy-class.png?raw=true">
+<meta property="og:updated_time" content="2018-08-19T10:34:11.649Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解GC日志">
-<meta name="twitter:description" content="输出GC日志通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。先来看一个简单的示例。 下面是GC日志： 12345678910110.115: [GC (System.gc()) [PSYoungGen: 3020K-&amp;gt;600K(38400K)] 3020K-&amp;gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.0">
-<meta name="twitter:image" content="http://yoursite.com/images/java-memory.jpg">
+<meta name="twitter:title" content="自己如何实现一个简单的动态代理？">
+<meta name="twitter:description" content="经过对JDK动态代理实现原理的解析，我们会对动态代理的实现流程有个根本的认识，具体分析过程参考JDK动态代理实现原理这篇文章，这里就不多谈了。这篇文章主要思考如何去实现一个简易的动态代理，以便加深对其的理解。">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/my-dynamic-proxy-class.png?raw=true">
 
 
 
@@ -142,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/17/理解GC日志/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/19/自己如何实现一个简单的动态代理？/"/>
 
 
 
 
 
-  <title>理解GC日志 | Mingshan's Blog</title>
+  <title>自己如何实现一个简单的动态代理？ | Mingshan's Blog</title>
   
 
 
@@ -321,7 +321,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/理解GC日志/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/自己如何实现一个简单的动态代理？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -338,7 +338,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">理解GC日志</h2>
+          <h2 class="post-title" itemprop="name headline">自己如何实现一个简单的动态代理？</h2>
         
 
         <div class="post-meta">
@@ -350,8 +350,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-17T00:00:00+08:00">
-                2018-04-17
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-19T00:00:00+08:00">
+                2018-08-19
               </time>
             
 
@@ -373,19 +373,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM/" itemprop="url" rel="index">
-                    <span itemprop="name">JVM</span>
-                  </a>
-                </span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM/GC/" itemprop="url" rel="index">
-                    <span itemprop="name">GC</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -402,9 +391,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/04/17/理解GC日志/#comments" itemprop="discussionUrl">
+                <a href="/2018/08/19/自己如何实现一个简单的动态代理？/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/04/17/理解GC日志/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/08/19/自己如何实现一个简单的动态代理？/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -429,35 +418,32 @@
       
 
       
-        <h3 id="输出GC日志"><a href="#输出GC日志" class="headerlink" title="输出GC日志"></a>输出GC日志</h3><p>通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。<br>先来看一个简单的示例。</p>
-<p>下面是GC日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">0.115: [GC (System.gc()) [PSYoungGen: 3020K-&gt;600K(38400K)] 3020K-&gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </div><div class="line">0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;554K(87552K)] 608K-&gt;554K(125952K), [Metaspace: 2773K-&gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] </div><div class="line">Heap</div><div class="line"> PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)</div><div class="line">  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)</div><div class="line">  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)</div><div class="line">  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)</div><div class="line"> ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)</div><div class="line">  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)</div><div class="line"> Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K</div></pre></td></tr></table></figure>
+        <p>经过对JDK动态代理实现原理的解析，我们会对动态代理的实现流程有个根本的认识，具体分析过程参考<a href="http://mingshan.me/2018/07/10/JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/#more" target="_blank" rel="external">JDK动态代理实现原理</a>这篇文章，这里就不多谈了。这篇文章主要思考如何去实现一个简易的动态代理，以便加深对其的理解。</p>
 <a id="more"></a>
-<p>上面的GC日志是由下面的Java代码产生的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * GC 日志</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCLogDemo</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> _1m = <span class="number">1024</span> * <span class="number">1024</span>;</div><div class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[_1m];</div><div class="line">        <span class="comment">// 将data置为null即让它成为垃圾</span></div><div class="line">        data = <span class="keyword">null</span>;</div><div class="line">        <span class="comment">// 通知垃圾回收器回收垃圾（help gc）</span></div><div class="line">        System.gc();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在Eclipse中以运行配置方式运行上面的代码，并设置VM参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-XX:+PrintGCTimeStamps</div><div class="line">-XX:+PrintGCDetails</div></pre></td></tr></table></figure>
-<h3 id="GC日志说明："><a href="#GC日志说明：" class="headerlink" title="GC日志说明："></a>GC日志说明：</h3><p>先看这两行GC日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">0.115: [GC (System.gc()) [PSYoungGen: 3020K-&gt;600K(38400K)] 3020K-&gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </div><div class="line">0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;554K(87552K)] 608K-&gt;554K(125952K), [Metaspace: 2773K-&gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
-<p>通过观察这两行日志发现，它们的格式相同，下面是对其格式的描述：</p>
-<p>GC发生时间: [垃圾收集停顿类型: [GC发生区域: GC前该内存区域已使用容量 -&gt; GC后该内存区域已使用容量(该内存区域总容量)] 该内存区域GC所占用的时间] GC前Java堆已使用容量 -&gt; GC后Java堆已使用容量(Java堆总容量)] [user表示用户态消耗的CPU时间，sys表示内核态消耗的CPU时间，real表示操作从开始到结束所经过的墙钟时间]。</p>
-<h3 id="GC日志解读"><a href="#GC日志解读" class="headerlink" title="GC日志解读"></a>GC日志解读</h3><p>最前面的数字“0.115:”和“0.117:”代表GC发生的时间，是从Java虚拟机启动以来经过的秒数。</p>
-<p>GC日志开头的”[GC” 和”[Full GC”说明这个GC的停顿类型，而不是用来判断是新生代GC还是老年代GC，其中“[Full GC”说明发生了Stop-The-World。这里出现了“(System.gc())”，说明是调用了System.gc()方法所触发的搜集。</p>
-<p>接下来的“[PSYoungGen:”代表GC发生的区域，而且这里显示的区域名称与使用的GC收集器名称密切相关。PSYoungGen，表示新生代使用的是多线程垃圾收集器Parallel Scavenge。</p>
-<p>方括号内部的“3020K-&gt;600K(38400K)”代表“GC前该内存区域已使用容量 -&gt; GC后该内存区域已使用容量(该内存区域总容量)”。而在方括号外面的“3020K-&gt;608K(125952K)”表示”该内存区域GC所占用的时间] GC前Java堆已使用容量 -&gt; GC后Java堆已使用容量(Java堆总容量)”。</p>
-<p>再往后的“0.0012295 secs”代表该内存区域GC所占用的时间，单位为秒。后面的“[Times: user=0.00 sys=0.00, real=0.00 secs] ”为具体的时间信息。其中user表示用户态消耗的CPU时间，sys表示内核态消耗的CPU时间，real表示操作从开始到结束所经过的墙钟时间（Wall Clock Time）。钟时间包括各种非运算的等待耗时，如IO等待、线程阻塞。CPU时间不包括等待时间，当系统有多核或者多个CPU时，多线程操作会叠加这些CPU时间，所以user或sys时间会超过real时间。</p>
-<h3 id="堆详细信息解读："><a href="#堆详细信息解读：" class="headerlink" title="堆详细信息解读："></a>堆详细信息解读：</h3><p>下面是堆详细信息的日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Heap</div><div class="line"> PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)</div><div class="line">  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)</div><div class="line">  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)</div><div class="line">  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)</div><div class="line"> ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)</div><div class="line">  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)</div><div class="line"> Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K</div></pre></td></tr></table></figure>
-<p>先了解下Java memory划分：</p>
-<p>Java memory主要分heap memory 和 non-heap memory，如下图：</p>
-<p><img src="/images/java-memory.jpg" alt="image"></p>
-<p>第一行为新生代的大小，大小为38400K。而新生代又分为三个区域分别叫Eden，和俩个Survivor spaces。Eden用来存放新的对象，Survivor spaces用于 新对象 升级到 Tenured area时的 拷贝。默认的，Edem : from : to = 8 : 1 : 1 ( 可以通过参数 –XX:SurvivorRatio 来设定 )，即： Eden = 8/10 的新生代空间大小，from = to = 1/10 的新生代空间大小。</p>
-<p>默认的，新生代 ( Young ) 与老年代 ( Old ) 的比例的值为 1:2 ( 该值可以通过参数 –XX:NewRatio 来指定 )，即：新生代 ( Young ) = 1/3 的堆空间大小。老年代 ( Old ) = 2/3 的堆空间大小。其中，新生代 ( Young ) 被细分为 Eden 和 两个 Survivor 区域，这两个 Survivor 区域分别被命名为 from 和 to，以示区分。 </p>
-<p> ParOldGen 为老年代，大小为87552K，大约为PSYoungGen内存大小的2倍。 从JDK8开始，永久代(PermGen)的概念被废弃掉了，取而代之的是一个称为Metaspace的存储空间。Metaspace与PermGen之间最大的区别在于：Metaspace并不在虚拟机中，而是使用本地内存。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li>深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）</li>
-<li><a href="https://segmentfault.com/a/1190000012577387" target="_blank" rel="external">https://segmentfault.com/a/1190000012577387</a></li>
-</ol>
+<p>模仿着JDK动态代理，我们需要一个代理<code>Proxy</code>类，一个<code>InvocationHandler</code>接口，同时实现一个类加载器，下面为定义的类。</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/my-dynamic-proxy-class.png?raw=true" alt="image"></p>
+<p>具体实现流程为：</p>
+<p>首先定义一个<code>InvocationHandler</code>接口，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyInvocationHandler</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * proxy: 正在返回的代理对象，一般情况下，都不使用该对象</div><div class="line">     * method: 正在被调用的方法</div><div class="line">     * args: 调用方法时传入的参数</div><div class="line">     */</div><div class="line">    <span class="function">Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接口中有一个invoke方法，方法中有三个参数，分别是：</p>
+<ul>
+<li>proxy: 正在返回的代理对象，一般情况下，都不使用该对象</li>
+<li>method: 正在被调用的方法</li>
+<li>args: 调用方法时传入的参数</li>
+</ul>
+<p>下面就需要实现代理类<code>Proxy</code>，动态代理的核心就是在这个类中实现的，主要功能包括如下几点：</p>
+<ul>
+<li>动态生成代理类，类似<code>$Proxy0.java</code></li>
+<li>调用Java编译器，编译生成的代理类</li>
+<li>将生成的class文件利用类加载器加载到内存中，然后进行实例化</li>
+<li>调用自定义<code>InvocationHandler</code>的invoke方法</li>
+</ul>
+<p>详细代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *</div><div class="line"> * 定义自己的 Proxy代理</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProxy</span> </span>&#123;</div><div class="line">    <span class="keyword">protected</span> MyInvocationHandler h;</div><div class="line"></div><div class="line">    <span class="comment">// 定义回车键</span></div><div class="line">    <span class="keyword">static</span> String rt = <span class="string">"\r\t"</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 用户的当前工作目录,包含项目名</span></div><div class="line">    <span class="keyword">static</span> String workspace = System.getProperty(<span class="string">"user.dir"</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 当前类包名</span></div><div class="line">    <span class="keyword">static</span> String packageName = MyProxy.class.getPackage().getName();</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 私有构造器，该类禁止被实例化</div><div class="line">     */</div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">MyProxy</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 由于 MyProxy 内部从不直接调用构造函数，所以 protected 意味着只有子类可以调用</div><div class="line">     * <span class="doctag">@param</span> h</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">MyProxy</span><span class="params">(MyInvocationHandler h)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.h = h;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 在内存中创建$proxy0 的实例</div><div class="line">     * <span class="doctag">@param</span> loader</div><div class="line">     * <span class="doctag">@param</span> interfaces</div><div class="line">     * <span class="doctag">@param</span> h</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     * <span class="doctag">@throws</span> IllegalArgumentException</div><div class="line">     * <span class="doctag">@throws</span> IOException</div><div class="line">     */</div><div class="line">    <span class="meta">@SuppressWarnings</span>(&#123; <span class="string">"rawtypes"</span>, <span class="string">"resource"</span>, <span class="string">"unchecked"</span> &#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">createProxyInstance</span><span class="params">(ClassLoader loader,</span></span></div><div class="line">            Class interfaces,</div><div class="line">            MyInvocationHandler h) <span class="keyword">throws</span> IllegalArgumentException, IOException &#123;</div><div class="line"></div><div class="line">        Objects.requireNonNull(h);</div><div class="line"></div><div class="line">        <span class="comment">//实际运行这个动态类构造一个对象</span></div><div class="line">        System.out.println(<span class="string">"=====自定义:类构造一个代理类的java对象"</span>);</div><div class="line">        Method[] methods = interfaces.getMethods();</div><div class="line"></div><div class="line">        String proxyClassString = <span class="string">"package pers.han;"</span> + rt</div><div class="line">                + <span class="string">"import java.lang.reflect.Method;"</span> + rt</div><div class="line">                + <span class="string">"public class $Proxy0 implements "</span> + interfaces.getName() + <span class="string">"&#123;"</span> + rt</div><div class="line">                + <span class="string">"protected MyInvocationHandler h;"</span> + rt</div><div class="line">                + <span class="string">"public $Proxy0(MyInvocationHandler h)&#123;"</span> + rt</div><div class="line">                + <span class="string">"this.h=h;"</span> + rt + <span class="string">"&#125;"</span> + rt + getMethodString(methods,interfaces)</div><div class="line">                + rt + <span class="string">"&#125;"</span>;</div><div class="line"></div><div class="line">        <span class="comment">//我们将自定义的代理类转化为文件</span></div><div class="line">        String fileName = workspace+<span class="string">"/src/pers/han/$Proxy0.java"</span>;</div><div class="line">        File file = <span class="keyword">new</span> File(fileName);</div><div class="line"></div><div class="line">        <span class="comment">//向文件写内容</span></div><div class="line">        FileWriter fw = <span class="keyword">new</span> FileWriter(file);</div><div class="line">        fw.write(proxyClassString);</div><div class="line">        fw.flush();</div><div class="line">        <span class="comment">//编译这个文件</span></div><div class="line">        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">        System.out.println(<span class="string">"comiler-"</span> + compiler);</div><div class="line">        StandardJavaFileManager fileManager = compiler.getStandardFileManager(<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">        Iterable units = fileManager.getJavaFileObjects(fileName);</div><div class="line">        <span class="comment">//编译这个任务</span></div><div class="line">        CompilationTask compTask = compiler.getTask(<span class="keyword">null</span>, fileManager, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, units);</div><div class="line">        compTask.call();</div><div class="line">        fileManager.close();</div><div class="line">        <span class="comment">//编译完成后，是不是.java</span></div><div class="line">        file.delete();</div><div class="line">        <span class="comment">//编译后就是class文件，那么接下来就把这个class文件 加到内存</span></div><div class="line">        MyClassLoader classLoader = <span class="keyword">new</span> MyClassLoader(workspace + <span class="string">"/src/pers/han"</span>);</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Class&lt;?&gt; proxy0Class = classLoader.findClass(<span class="string">"$Proxy0"</span>);</div><div class="line">            <span class="comment">//等类加载完之后 ，删除</span></div><div class="line">            File classFile = <span class="keyword">new</span> File(workspace + <span class="string">"/src/pers/han/$Proxy0.class"</span>);</div><div class="line">            <span class="keyword">if</span> (classFile.exists()) &#123;</div><div class="line">                classFile.delete();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Constructor&lt;?&gt; m = proxy0Class.getConstructor(MyInvocationHandler.class);</div><div class="line">            Object object = m.newInstance(h);</div><div class="line">            <span class="keyword">return</span> object;</div><div class="line">        &#125; <span class="keyword">catch</span>(Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 实现的方法</div><div class="line">     * <span class="doctag">@param</span> methods</div><div class="line">     * <span class="doctag">@param</span> interfaces</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getMethodString</span><span class="params">(Method[] methods, Class&lt;?&gt; interfaces)</span> </span>&#123;</div><div class="line">        String proxyMe = <span class="string">""</span>;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (Method m : methods) &#123;</div><div class="line">            proxyMe += <span class="string">"public void "</span> + m.getName() + <span class="string">"() throws Throwable &#123;"</span> + rt</div><div class="line">                    + <span class="string">"Method md="</span> + interfaces.getName() + <span class="string">".class.getMethod(\""</span></div><div class="line">                    + m.getName() + <span class="string">"\", new Class[]&#123;&#125;);"</span> + rt</div><div class="line">                    + <span class="string">"this.h.invoke(this,md,null);"</span> + rt + <span class="string">"&#125;"</span> + rt;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> proxyMe;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将类加载到内存中需要自定义类加载器，这里继承<code>ClassLoader</code>类，然后重写<code>findClass</code>方法，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 自己的类加载器</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> File dir;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClassLoader</span><span class="params">(String path)</span> </span>&#123;</div><div class="line">        dir = <span class="keyword">new</span> File( path );</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (dir != <span class="keyword">null</span>) &#123;</div><div class="line">            File classFile = <span class="keyword">new</span> File(dir, name + <span class="string">".class"</span>);</div><div class="line">            <span class="keyword">if</span> (classFile.exists()) &#123;</div><div class="line">                FileInputStream input = <span class="keyword">null</span>;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    input = <span class="keyword">new</span> FileInputStream(classFile);</div><div class="line">                    ByteArrayOutputStream baos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">                    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">                    <span class="keyword">int</span> len;</div><div class="line">                    <span class="keyword">while</span> ((len=input.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">                        baos.write(buffer, <span class="number">0</span>, len);</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">return</span> defineClass(<span class="string">"pers.han."</span> + name, baos.toByteArray(), <span class="number">0</span>, baos.size());</div><div class="line">                &#125; <span class="keyword">catch</span>(Exception e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125; <span class="keyword">finally</span> &#123;</div><div class="line">                    <span class="keyword">if</span> (input != <span class="keyword">null</span>) &#123;</div><div class="line">                        <span class="keyword">try</span> &#123;</div><div class="line">                            input.close();</div><div class="line">                        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                            e.printStackTrace();</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>生成的代理类<code>$Proxy0.java</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">package pers.han;</div><div class="line">	import java.lang.reflect.Method;</div><div class="line">	public class $Proxy0 implements pers.han.Person&#123;</div><div class="line">	protected MyInvocationHandler h;</div><div class="line">	public $Proxy0(MyInvocationHandler h)&#123;</div><div class="line">	this.h=h;</div><div class="line">	&#125;</div><div class="line">	public void say() throws Throwable &#123;</div><div class="line">	Method md=pers.han.Person.class.getMethod(&quot;say&quot;, new Class[]&#123;&#125;);</div><div class="line">	this.h.invoke(this,md,null);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -487,9 +473,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JVM/" rel="tag"># JVM</a>
+            <a href="/tags/动态代理/" rel="tag"># 动态代理</a>
           
-            <a href="/tags/GC/" rel="tag"># GC</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -502,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/26/Git合并多个commit/" rel="next" title="Git合并多个commit">
-                <i class="fa fa-chevron-left"></i> Git合并多个commit
+              <a href="/2018/08/18/Jenkins自动构建SpringBoot应用部署到Docker/" rel="next" title="Jenkins自动构建SpringBoot应用部署到Docker">
+                <i class="fa fa-chevron-left"></i> Jenkins自动构建SpringBoot应用部署到Docker
               </a>
             
           </div>
@@ -511,10 +497,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/" rel="prev" title="在Linux(CentOS)下重置MySQL根(Root)密码">
-                在Linux(CentOS)下重置MySQL根(Root)密码 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -568,17 +550,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -666,22 +639,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#输出GC日志"><span class="nav-number">1.</span> <span class="nav-text">输出GC日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC日志说明："><span class="nav-number">2.</span> <span class="nav-text">GC日志说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC日志解读"><span class="nav-number">3.</span> <span class="nav-text">GC日志解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆详细信息解读："><span class="nav-number">4.</span> <span class="nav-text">堆详细信息解读：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -826,9 +783,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/04/17/理解GC日志/';
-          this.page.identifier = '2018/04/17/理解GC日志/';
-          this.page.title = '理解GC日志';
+          this.page.url = 'http://yoursite.com/2018/08/19/自己如何实现一个简单的动态代理？/';
+          this.page.identifier = '2018/08/19/自己如何实现一个简单的动态代理？/';
+          this.page.title = '自己如何实现一个简单的动态代理？';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
