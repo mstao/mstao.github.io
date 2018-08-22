@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-22T14:36:58.588Z</updated>
+  <updated>2018-08-22T14:41:07.837Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,10 @@
     <link href="http://yoursite.com/2018/08/22/Docker%E5%AE%B9%E5%99%A8%E5%90%AF%E7%94%A8Spring%20Profiles/"/>
     <id>http://yoursite.com/2018/08/22/Docker容器启用Spring Profiles/</id>
     <published>2018-08-21T16:00:00.000Z</published>
-    <updated>2018-08-22T14:36:58.588Z</updated>
+    <updated>2018-08-22T14:41:07.837Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下：</p>
+<a id="more"></a>
 <p><a href="https://stackoverflow.com/questions/46715072/passing-env-variables-to-docker-spring-boot" target="_blank" rel="external">Passing env variables to DOCKER Spring Boot</a></p>
 <p><strong>通过Dockerfile定义Spring Profile</strong></p>
 <p>通常在命令行中我们可以使用<code>java -jar</code> 运行 Spring Boot应用。<br>而Profiles信息可以作为额外参数传递，比如<code>-Dspring.profiles.active=dev</code></p>
@@ -39,7 +40,7 @@
     
     <summary type="html">
     
-      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla
+      &lt;p&gt;我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下：&lt;/p&gt;
     
     </summary>
     
@@ -94,9 +95,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     
   </entry>
   
@@ -186,9 +187,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="反射" scheme="http://yoursite.com/tags/%E5%8F%8D%E5%B0%84/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -589,9 +590,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="动态代理" scheme="http://yoursite.com/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     
   </entry>
   
