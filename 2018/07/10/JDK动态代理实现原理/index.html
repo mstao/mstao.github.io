@@ -110,7 +110,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/dynamic-proxy-vm-options.png?raw=true">
-<meta property="og:updated_time" content="2018-07-10T13:24:16.606Z">
+<meta property="og:updated_time" content="2018-08-22T15:20:13.232Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK动态代理实现原理">
 <meta name="twitter:description" content="平时接触动态代理比较多，例如Spring等框架如何使用了动态代理经常听到，本文主要介绍JDK动态代理的基本实现原理(JDK8版本)，当了解了这些实现细节后，再次使用动态代理就会十分容易和清楚，知其然也知其所以然。">
@@ -448,7 +448,7 @@
 <p>apply方法需要两个参数，类加载器和接口类型的数组。该方法包含验证类加载器和接口相关逻辑，包名的创建逻辑，调用<code>ProxyGenerator. generateProxyClass</code>生成代理类，把代理类字节码加载到JVM。</p>
 <ol>
 <li>包名默认是<code>com.sun.proxy</code>，如果被代理类是 non-public proxy interface ，则用和被代理类接口一样的包名，类名默认是$Proxy 加上一个自增的整数值，如$Proxy0，$Proxy1。</li>
-<li>包名类名准备好后，就是通过<code>ProxyGenerator. generateProxyClass</code>根据具体传入的接口创建代理字节码，<code>-Dsun.misc.ProxyGenerator.saveGeneratedFiles=true</code> 这个VM参数就是在该方法起到作用，如果为true则保存字节码到磁盘。代理类中，所有的代理方法逻辑都一样都是调用invocationHander的invoke方法，这个我们可以看后面具体代理反编译结果。</li>
+<li>包名类名准备好后，就是通过<code>ProxyGenerator.generateProxyClass</code>根据具体传入的接口创建代理字节码，<code>-Dsun.misc.ProxyGenerator.saveGeneratedFiles=true</code> 这个VM参数就是在该方法起到作用，如果为true则保存字节码到磁盘。代理类中，所有的代理方法逻辑都一样都是调用invocationHander的invoke方法，这个我们可以看后面具体代理反编译结果。</li>
 <li>把字节码通过传入的类加载器加载到JVM中: defineClass0(loader, proxyName,proxyClassFile, 0, proxyClassFile.length);。</li>
 </ol>
 <p>我们继续来看看<code>generateProxyClass</code>方法是如何实现的，下面是该类的源码</p>
