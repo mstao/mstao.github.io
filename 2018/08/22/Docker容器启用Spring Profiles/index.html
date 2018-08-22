@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Docker," />
 
 
 
@@ -102,15 +102,17 @@
 
 
 
-<meta name="description" content="一念开明，反身而诚">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mingshan&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/队列/index.html">
+<meta name="description" content="我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下： Passing env variables to DOCKER Spring Boot 通过Dockerfile定义Spring Profile 通常在命令行中我们可以使用java -ja">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker容器传递Spring Profile">
+<meta property="og:url" content="http://yoursite.com/2018/08/22/Docker容器启用Spring Profiles/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="一念开明，反身而诚">
+<meta property="og:description" content="我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下： Passing env variables to DOCKER Spring Boot 通过Dockerfile定义Spring Profile 通常在命令行中我们可以使用java -ja">
+<meta property="og:updated_time" content="2018-08-22T14:36:58.588Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mingshan&#39;s Blog">
-<meta name="twitter:description" content="一念开明，反身而诚">
+<meta name="twitter:title" content="Docker容器传递Spring Profile">
+<meta name="twitter:description" content="我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下： Passing env variables to DOCKER Spring Boot 通过Dockerfile定义Spring Profile 通常在命令行中我们可以使用java -ja">
 
 
 
@@ -138,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/队列/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/22/Docker容器启用Spring Profiles/"/>
 
 
 
 
 
-  <title>Tag: 队列 | Mingshan's Blog</title>
+  <title>Docker容器传递Spring Profile | Mingshan's Blog</title>
   
 
 
@@ -169,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -307,72 +309,193 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2>队列<small>Tag</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/链式队列结构分析/" itemprop="url">
-              
-                <span itemprop="name">链式队列结构分析</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T00:00:00+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/顺序队列结构分析/" itemprop="url">
-              
-                <span itemprop="name">顺序队列结构分析</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T00:00:00+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/Docker容器启用Spring Profiles/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Docker容器传递Spring Profile</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-22T00:00:00+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/22/Docker容器启用Spring Profiles/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/22/Docker容器启用Spring Profiles/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们在利用Docker启动SpringBoot应用时，需要在启动时指定Profile来确定运行环境，如果再需要指定其他参数，参数的传递就十分有必要了。下面是stackoverflow关于这方面的讨论，链接如下：</p>
+<p><a href="https://stackoverflow.com/questions/46715072/passing-env-variables-to-docker-spring-boot" target="_blank" rel="external">Passing env variables to DOCKER Spring Boot</a></p>
+<p><strong>通过Dockerfile定义Spring Profile</strong></p>
+<p>通常在命令行中我们可以使用<code>java -jar</code> 运行 Spring Boot应用。<br>而Profiles信息可以作为额外参数传递，比如<code>-Dspring.profiles.active=dev</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -jar app.jar</div></pre></td></tr></table></figure>
+<p>相似的，我们可以在Dockerfile中将Profile的信息作为参数传递进去，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">FROM openjdk:8-jdk-alpine</div><div class="line">VOLUME /tmp</div><div class="line">ADD spring-boot-docker-0.0.1-SNAPSHOT.jar app.jar</div><div class="line">ENTRYPOINT [&quot;java&quot;, &quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-Dspring.profiles.active=dev&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</div></pre></td></tr></table></figure>
+<p>需要注意最后的ENTRYPOINT一行，在这行中我们传递java命令以执行jar文件，所有需要的参数和值以逗号方式分隔传递。<br><code>-Dspring.profiles.active=dev</code> 是我们定义dev profile的地方，我们可以替换dev为任何需要的名字。</p>
+<p><strong>通过Docker run命令定义Spring Profile</strong></p>
+<p>可以将spring profile作为环境变量传递给docker run命令，使用 -e 标记。<br>例如<code>-e “SPRING_PROFILES_ACTIVE=dev”会将dev profile</code>传递给Docker容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 8080:8080 -e &quot;SPRING_PROFILES_ACTIVE=dev&quot; --name rest-api dockerImage:latest</div></pre></td></tr></table></figure>
+<p>Dockerfile中改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [&quot;java&quot;, &quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-Dspring.profiles.active=$&#123;SPRING_PROFILES_ACTIVE&#125;&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/19/自己如何实现一个简单的动态代理？/" rel="next" title="自己如何实现一个简单的动态代理？">
+                <i class="fa fa-chevron-left"></i> 自己如何实现一个简单的动态代理？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -380,6 +503,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -608,10 +742,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
-  
+
 
   
 
@@ -629,6 +763,18 @@
       <script id="dsq-count-scr" src="https://mingshan.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/22/Docker容器启用Spring Profiles/';
+          this.page.identifier = '2018/08/22/Docker容器启用Spring Profiles/';
+          this.page.title = 'Docker容器传递Spring Profile';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mingshan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
