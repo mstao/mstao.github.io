@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Nexus3," />
+  <meta name="keywords" content="java,SpringBoot," />
 
 
 
@@ -102,22 +102,17 @@
 
 
 
-<meta name="description" content="搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。">
-<meta name="keywords" content="Nexus3">
+<meta name="description" content="SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：">
+<meta name="keywords" content="java,SpringBoot">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用Docker搭建Nexus3私服">
-<meta property="og:url" content="http://yoursite.com/2018/08/05/利用Docker搭建Nexus3私服/index.html">
+<meta property="og:title" content="SpringBoot应用被系统Kill相关问题分析">
+<meta property="og:url" content="http://yoursite.com/2017/11/25/SpringBoot应用被系统Kill相关问题分析/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。">
-<meta property="og:image" content="http://yoursite.com/images/nexus3-dashboard.png">
-<meta property="og:image" content="http://yoursite.com/images/nexus3-repository.png">
-<meta property="og:image" content="http://yoursite.com/images/nexus3-repository-desc.png">
-<meta property="og:image" content="http://yoursite.com/images/nexus3-upload.png">
-<meta property="og:updated_time" content="2018-08-05T03:58:23.907Z">
+<meta property="og:description" content="SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：">
+<meta property="og:updated_time" content="2018-08-25T14:30:22.591Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用Docker搭建Nexus3私服">
-<meta name="twitter:description" content="搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。">
-<meta name="twitter:image" content="http://yoursite.com/images/nexus3-dashboard.png">
+<meta name="twitter:title" content="SpringBoot应用被系统Kill相关问题分析">
+<meta name="twitter:description" content="SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：">
 
 
 
@@ -145,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/05/利用Docker搭建Nexus3私服/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/25/SpringBoot应用被系统Kill相关问题分析/"/>
 
 
 
 
 
-  <title>利用Docker搭建Nexus3私服 | Mingshan's Blog</title>
+  <title>SpringBoot应用被系统Kill相关问题分析 | Mingshan's Blog</title>
   
 
 
@@ -324,7 +319,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/05/利用Docker搭建Nexus3私服/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/25/SpringBoot应用被系统Kill相关问题分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -341,7 +336,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">利用Docker搭建Nexus3私服</h2>
+          <h2 class="post-title" itemprop="name headline">SpringBoot应用被系统Kill相关问题分析</h2>
         
 
         <div class="post-meta">
@@ -353,8 +348,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-05T00:00:00+08:00">
-                2018-08-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-25T00:00:00+08:00">
+                2017-11-25
               </time>
             
 
@@ -376,8 +371,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -394,9 +389,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/05/利用Docker搭建Nexus3私服/#comments" itemprop="discussionUrl">
+                <a href="/2017/11/25/SpringBoot应用被系统Kill相关问题分析/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/05/利用Docker搭建Nexus3私服/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/11/25/SpringBoot应用被系统Kill相关问题分析/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -421,45 +416,19 @@
       
 
       
-        <p>搭建私服对于一个团队来说十分有必要，利用Nexus3搭建私服十分方便，结合Docker，那是相当快速。</p>
+        <p>SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：</p>
 <a id="more"></a>
-<h2 id="安装Nexus3"><a href="#安装Nexus3" class="headerlink" title="安装Nexus3"></a>安装Nexus3</h2><p>拉取Nexus3的镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull sonatype/nexus3</div></pre></td></tr></table></figure>
-<p>创建文件夹，挂载目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir /var/nexus-data &amp;&amp; chown -R 200 /var/nexus-data</div></pre></td></tr></table></figure></p>
-<p>启动容器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 8081:8081 --name nexus -v /var/nexus-data:/nexus-data --restart=always sonatype/nexus3</div></pre></td></tr></table></figure>
-<p>开启端口</p>
-<p>如果让外网访问的话，需要开放8081端口，在CentOS7中，可以利用firewall-cmd来开放端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#开放11001端口  permanent为永久开放</div><div class="line">firewall-cmd --zone=public --add-port=8081/tcp --permanent</div><div class="line">#重新读取配置</div><div class="line">firewall-cmd --reload</div><div class="line">#查看全部开放端口</div><div class="line">firewall-cmd --list-all</div></pre></td></tr></table></figure>
-<p>接下来在浏览器中输入以下网址，就可以看到Nexus3界面了如下图所示，用户名和密码默认为admin，admin123</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://ip:port</div></pre></td></tr></table></figure>
-<p><img src="/images/nexus3-dashboard.png" alt="image"></p>
-<h2 id="配置阿里云仓库"><a href="#配置阿里云仓库" class="headerlink" title="配置阿里云仓库"></a>配置阿里云仓库</h2><p>启动Nexus后，需要将中央仓库配置为阿里云仓库，提高国内的访问速度。Nexus的仓库如下：</p>
-<p><img src="/images/nexus3-repository.png" alt="image"></p>
-<p>由上图看出，Nexus的仓库分为这么几类：</p>
-<ul>
-<li>hosted 宿主仓库：主要用于部署无法从公共仓库获取的包以及自己或第三方的包；</li>
-<li>proxy 代理仓库：代理公共的远程仓库；</li>
-<li>group 仓库组：Nexus 通过仓库组的概念统一管理多个仓库，这样我们在项目中直接请求仓库组即可请求到仓库组管理的多个仓库。</li>
-</ul>
-<p>示意图如下：</p>
-<p><img src="/images/nexus3-repository-desc.png" alt="image"></p>
-<p>现在点击“Create Repository”按钮，来添加阿里云仓库，Recipe选择<code>maven2(proxy)</code>，在具体配置页面取名aliyun-repository，这里建议用a开头(估计按字母排序将它排第一位)，URL输入：<code>http://maven.aliyun.com/nexus/content/groups/public/</code>，其他默认值即可。</p>
-<h2 id="配置maven"><a href="#配置maven" class="headerlink" title="配置maven"></a>配置maven</h2><p>接下来我们需要配置maven，打开setting.xml文件，在mirrors节点下加入以下配置（根据自己的配置更改）：</p>
-<p>将<code>&lt;mirror&gt;&lt;url&gt;</code>标签内的地址修改成nexus服务的地址。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>nexus maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.mingzhiwen.cn:8081/repository/maven-public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>然后在services节点下加入以下配置，<code>&lt;servers&gt;</code>标签内填写nexus服务的账号密码，发布maven项目到nexus时，需要用到。<code>&lt;server&gt;&lt;id&gt;</code>下id需要跟<code>&lt;mirror&gt;&lt;id&gt;</code>一致。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">username</span>&gt;</span>admin<span class="tag">&lt;/<span class="name">username</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">password</span>&gt;</span>admin123<span class="tag">&lt;/<span class="name">password</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>最后在项目中的<code>pom.xml</code>文件加入以下配置：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span> </div><div class="line">	<span class="tag">&lt;<span class="name">repository</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>Releases<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">url</span>&gt;</span>http://&#123;your-nexus-ip&#125;:port/repository/maven-releases/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">repository</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>Snapshot<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">url</span>&gt;</span>http://&#123;your-nexus-ip&#125;:port/repository/maven-snapshots/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>运行maven命令，将编译好的Jar包上传到Nexus私服中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean deploy</div></pre></td></tr></table></figure>
-<p>上传效果如下图所示：</p>
-<p><img src="/images/nexus3-upload.png" alt="image"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://www.jianshu.com/p/dbeae430f29d" target="_blank" rel="external">https://www.jianshu.com/p/dbeae430f29d</a></li>
-<li><a href="https://github.com/sonatype/docker-nexus3" target="_blank" rel="external">https://github.com/sonatype/docker-nexus3</a></li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2018-08-23 07:53:25.231  INFO [isp-provider-weiyi-api,,,,] 1 --- [           main] cn.com.superv.provider.Application       : Started Application in 5.655 seconds (JVM running for 6.124)</div><div class="line">2018-08-23 07:55:02.080  INFO [isp-provider-weiyi-api,,,,] 1 --- [       Thread-3] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@19dfb72a: startup date [Thu Aug 23 07:53:20 GMT 2018]; root of context hierarchy</div><div class="line">2018-08-23 07:55:02.087  INFO [isp-provider-weiyi-api,,,,] 1 --- [       Thread-3] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 2147483647</div><div class="line">2018-08-23 07:55:02.087  INFO [isp-provider-weiyi-api,,,,] 1 --- [       Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown</div><div class="line">2018-08-23 07:55:02.088  INFO [isp-provider-weiyi-api,,,,] 1 --- [       Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans</div><div class="line">2018-08-23 07:55:02.099  INFO [isp-provider-weiyi-api,,,,] 1 --- [       Thread-3] com.alibaba.druid.pool.DruidDataSource   : &#123;dataSource-1&#125; closed</div></pre></td></tr></table></figure>
+<p>才开始我以为代码写错了，导致应用启动崩溃，但我这个应用在另一台Linux机器上跑的挺好的，没有出现上面的问题。其中log中有以下日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Unregistering JMX-exposed beans on shutdown</div><div class="line">Unregistering JMX-exposed beans</div></pre></td></tr></table></figure>
+<p>在网上查的信息说SpringBoot内嵌的Tomcat无法正常启动才导致这个错误，结合这个项目在其他机器上能运行，就排除了Tomcat的问题。后来我想想会不会是跟Linux内存有关系呢？我赶紧用<code>top</code>命令查看了服务器的内存的使用情况，我檫，16G的内存只剩下三百多兆了，看来是我项目运行的时候请求内存导致系统内存不足，被系统kill掉。这时可以用<code>jinfo -flags &lt;pid&gt;</code>命令来查看当前应用的JVM参数。运行 <code>dmesg | grep &quot;(java)&quot;</code>命令看看是不是操作系统把我的应用给干掉了，结果屏幕输入类似如下日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Out of memory: Kill process[PID] [process name] score</div></pre></td></tr></table></figure>
+<p>这又是什么意思呢？好像是内存溢出被操作系统干掉了，所以一查，还真是Out of memory 问题，这通常是因为某时刻应用程序大量请求内存导致系统内存不足造成的，这通常会触发 Linux 内核里的 Out of Memory (OOM) killer，OOM killer会杀掉某个进程以腾出内存留给系统用，不致于让系统立刻崩溃。详细原因分析参考：<a href="http://www.111cn.net/sys/CentOS/84755.htm" target="_blank" rel="external">linux 终端报错 Out of memory: Kill process[PID] [process name] score问题分析</a></p>
+<p>我在网上发现一哥们和我遇到了一样的问题，链接：<a href="https://blog.csdn.net/qq_35981283/article/details/62233725" target="_blank" rel="external">项目连续几天突然挂掉</a>，不过他的比较严重，可能刚开始没有整明白这个问题发生的原因，内心慌乱，其实仔细分析就可以查到问题发生的蛛丝马迹，从而解决问题。</p>
+<p>找到问题发生的原因，接下来就要思考如何解决了。既然是内存的问题，那我们来改变下JVM参数，将最大堆内存(<code>-Xmx</code>)调小点，并禁止伸缩，将<code>-Xms</code>和<code>-Xmx</code>设置一样大，项目就可以运行了，<code>-Xmx</code>和<code>-Xms</code>具体值根据服务器内存和项目运行占用内存进行优化设置。</p>
+<p>另外这个问题我在用Docker启动SpringBoot应用中也遇到过，利用<code>docker ps</code>命令可以发现该容器正在运行，但外界就是无法通过开放的端口来访问，利用命令<code>docker logs -f container-id</code>来查看容器启动的log，发现日志和上述的一样，所以也需要设置JVM参数, 命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -e JAVA_OPTS=&apos;-Xmx512m&apos; -p 8080:8080 -t springboot/spring-boot-docker</div></pre></td></tr></table></figure>
+<p>最后推荐一个JVM调优相关的网站： <a href="http://xxfox.perfma.com/" target="_blank" rel="external">一只懂JVM参数的狐狸</a>，非常好用，可以查看JVM参数介绍以及变迁，还可以根据机器生成推荐JVM参数，真好用啊^_^</p>
 
       
     </div>
@@ -489,7 +458,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Nexus3/" rel="tag"># Nexus3</a>
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
           
         </div>
       
@@ -502,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/01/像是昨天/" rel="next" title="像是昨天">
-                <i class="fa fa-chevron-left"></i> 像是昨天
+              <a href="/2017/11/20/RabbitMQ中四种Exchange Types的理解/" rel="next" title="RabbitMQ中四种Exchange Types的理解">
+                <i class="fa fa-chevron-left"></i> RabbitMQ中四种Exchange Types的理解
               </a>
             
           </div>
@@ -512,8 +483,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/18/Jenkins自动构建SpringBoot应用部署到Docker/" rel="prev" title="Jenkins自动构建SpringBoot应用部署到Docker">
-                Jenkins自动构建SpringBoot应用部署到Docker <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/25/SpringBoot与RabbitMQ结合使用/" rel="prev" title="SpringBoot与RabbitMQ结合使用">
+                SpringBoot与RabbitMQ结合使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -568,17 +539,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -666,22 +628,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Nexus3"><span class="nav-number">1.</span> <span class="nav-text">安装Nexus3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置阿里云仓库"><span class="nav-number">2.</span> <span class="nav-text">配置阿里云仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置maven"><span class="nav-number">3.</span> <span class="nav-text">配置maven</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -826,9 +772,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/08/05/利用Docker搭建Nexus3私服/';
-          this.page.identifier = '2018/08/05/利用Docker搭建Nexus3私服/';
-          this.page.title = '利用Docker搭建Nexus3私服';
+          this.page.url = 'http://yoursite.com/2017/11/25/SpringBoot应用被系统Kill相关问题分析/';
+          this.page.identifier = '2017/11/25/SpringBoot应用被系统Kill相关问题分析/';
+          this.page.title = 'SpringBoot应用被系统Kill相关问题分析';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
