@@ -310,9 +310,9 @@
     
       <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
     
-      <category term="Jenkins" scheme="http://yoursite.com/tags/Jenkins/"/>
-    
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+      <category term="Jenkins" scheme="http://yoursite.com/tags/Jenkins/"/>
     
   </entry>
   
