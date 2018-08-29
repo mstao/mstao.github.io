@@ -113,10 +113,10 @@
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_init.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_put.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_flip.png?raw=true">
-<meta property="og:image" content="https://note.youdao.com/favicon.ico">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_read.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_rewind.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_clear.png?raw=true">
-<meta property="og:updated_time" content="2018-08-29T14:20:50.932Z">
+<meta property="og:updated_time" content="2018-08-29T14:29:27.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NIO之Buffers">
 <meta name="twitter:description" content="Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^">
@@ -460,7 +460,7 @@
 <p>通过filp方法切换为读模式后，我们就可以从缓存区里面读取数据，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 从缓冲区读数据</span></div><div class="line"><span class="keyword">byte</span>[] dst=<span class="keyword">new</span> <span class="keyword">byte</span>[buffer.limit()];</div><div class="line">buffer.get(dst);</div><div class="line">System.out.println(<span class="string">"------读取数据-------"</span>);</div><div class="line">System.out.println(<span class="keyword">new</span> String(dst,<span class="number">0</span>,dst.length));</div><div class="line"></div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
 <p>此时position，limit，capacity位置如下图所示</p>
-<p><img src="https://note.youdao.com/favicon.ico" alt="image"></p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_read.png?raw=true" alt="image"></p>
 <p>从上图可以看出，position的位置变成了5，由于我们将缓存区里面的数据读完了，就是这个情况，所以读操作的时候，每读一个值，position 就自动加 1。在HeapByteBuffer源码中，就是增加一个offset的偏移量。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">ix</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> i + offset;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>重复读数据</strong></p>
