@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="java,NIO," />
 
 
 
@@ -102,15 +102,25 @@
 
 
 
-<meta name="description" content="一念开明，反身而诚">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mingshan&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/archives/2017/09/index.html">
+<meta name="description" content="Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^">
+<meta name="keywords" content="java,NIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NIO之Buffers">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/NIO~Buffers/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="一念开明，反身而诚">
+<meta property="og:description" content="Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/buffer_impl.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_init.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_put.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_flip.png?raw=true">
+<meta property="og:image" content="https://note.youdao.com/favicon.ico">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_rewind.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_clear.png?raw=true">
+<meta property="og:updated_time" content="2018-08-29T14:20:50.932Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mingshan&#39;s Blog">
-<meta name="twitter:description" content="一念开明，反身而诚">
+<meta name="twitter:title" content="NIO之Buffers">
+<meta name="twitter:description" content="Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/buffer_impl.png?raw=true">
 
 
 
@@ -138,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2017/09/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/NIO~Buffers/"/>
 
 
 
 
 
-  <title>Archive | Mingshan's Blog</title>
+  <title>NIO之Buffers | Mingshan's Blog</title>
   
 
 
@@ -169,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -307,65 +317,253 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-       
-        
-      Nice! 59 posts in total. Keep on posting.
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/NIO~Buffers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">NIO之Buffers</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T00:00:00+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/29/NIO~Buffers/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/29/NIO~Buffers/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p>Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^</p>
+<a id="more"></a>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/buffer_impl.png?raw=true" alt="image"></p>
+<p>其实核心是ByteBuffer，除了布尔类型，所有原始类型都有相应的Buffer实现，只是包装了一下ByteBuffer而已，我们使用最多的通常是ByteBuffer。</p>
+<p>我们应该将Buffer理解为一个数组，IntBuffer、CharBuffer、DoubleBuffer 等分别对应int[]、char[]、double[]等。</p>
+<p>上图没有包括MappedByteBuffer，该类用户内存映射文件，放到最后再说吧。</p>
+<p>Buffer有四个重要的属性，分别为：mark、position、limit、capacity，和两个重要方法分别为：flip和clear。Buffer的底层存储结构为数组。这四个属性有以下特点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mark &lt;= position &lt;= limit &lt;= capacity</div></pre></td></tr></table></figure>
+<p>那么这几个属性分别起着什么作用呢？下面的介绍都以ByteBuffer为例，来分析ByteBuffer的使用流程和原理。</p>
+<p>下面是这四个属性的简单介绍：</p>
+<ul>
+<li>capacity ：缓冲区的容量大小</li>
+<li>limit ：界限，表示缓冲区可以操作数据的大小。 （limit后数据不能进行读写）</li>
+<li>position: 位置，代表下一次的写入位置，初始值是 0，每往 Buffer 中写入一个值，position 就自动加 1</li>
+<li>mark : 标记，表示记录当前position 的位置可以通过reset()来恢复到 mark的位置，初始为 -1</li>
+</ul>
+<p>对ByteBuffer操作主要包括读和写，向缓冲区写入数据和从缓冲区读取数据会影响以上四个属性的值的变化，我们分别对读和写以及之间切换进行分析。</p>
+<p><strong>写操作</strong></p>
+<p>首先分配1024字节的缓冲区，然后向缓冲区放入5字节的字符串“abcde”，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">String str=&quot;abcde&quot;;</div><div class="line"></div><div class="line">// 分配一个指定大小的缓冲区</div><div class="line">ByteBuffer buffer=ByteBuffer.allocate(1024);</div><div class="line"></div><div class="line">System.out.println(&quot;---------allocate------&quot;);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div><div class="line"></div><div class="line">// 利用put() 向缓冲区放数据</div><div class="line">buffer.put(str.getBytes());</div><div class="line"></div><div class="line">System.out.println(&quot;--------放数据------&quot;);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>初始化position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_init.png?raw=true" alt="image"></p>
+<p>我们发现position为0，而limit和capacity均指向内存区域最大位置，代表此时缓存区内是空的，已放入capacity大小的数据。</p>
+<p>当我们向缓冲区放入5个字节的数据，position，limit，capacity位置发生了变化，如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_put.png?raw=true" alt="image"></p>
+<p>从上图可以看出，在写入数据后，position会向后移动5个位置，指向第六个位置，代表下次写数据的位置，limit和capacity没有改变。</p>
+<p><strong>切换到读操作</strong></p>
+<p>由写模式切换到读模式需要调用<code>flip</code>方法，这个方法是什么意思呢？在JDK源码中，此方法的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">flip</span><span class="params">()</span> </span>&#123;</div><div class="line">    limit = position;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从代码中我们可以清晰的看出，limit被设置为当前position的大小，position归0，mark还是为默认值-1，我们还是看图比较直观，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_flip.png?raw=true" alt="image"></p>
+<p>和上一张图片进行对比，我们可以发现limit替换了position的位置，代表当前可以操作的位置，在写的时候，limit的值代表最大的可写位置，在读的时候，limit的值代表最大的可读位置。很明显我们现在是要读数据，就代表最大可读位置。</p>
+<p><strong>读操作</strong></p>
+<p>通过filp方法切换为读模式后，我们就可以从缓存区里面读取数据，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 从缓冲区读数据</span></div><div class="line"><span class="keyword">byte</span>[] dst=<span class="keyword">new</span> <span class="keyword">byte</span>[buffer.limit()];</div><div class="line">buffer.get(dst);</div><div class="line">System.out.println(<span class="string">"------读取数据-------"</span>);</div><div class="line">System.out.println(<span class="keyword">new</span> String(dst,<span class="number">0</span>,dst.length));</div><div class="line"></div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://note.youdao.com/favicon.ico" alt="image"></p>
+<p>从上图可以看出，position的位置变成了5，由于我们将缓存区里面的数据读完了，就是这个情况，所以读操作的时候，每读一个值，position 就自动加 1。在HeapByteBuffer源码中，就是增加一个offset的偏移量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">ix</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> i + offset;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>重复读数据</strong></p>
+<p>上一步读数据的操作已经将position移动了limit的位置，我们想读数据就读不到了，但能不能重复读取数据呢？肯定可以呀，这时我们就可以用<code>rewind</code>方法来重复读写，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//rewind  可重复读数据</span></div><div class="line">buffer.rewind();</div><div class="line">System.out.println(<span class="string">"------重复读取数据-------"</span>);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_rewind.png?raw=true" alt="image"></p>
+<p>有没有发现和flip操作后一致，此时肯定要一样了，这样我们才可以重复读取。</p>
+<p><strong>清空缓冲区</strong></p>
+<p>此时我们不想要缓冲区的数据了，需要清空掉，可以用<code>clear</code>方法来操作，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 清空缓冲区，缓冲区的数据仍然存在，但处于被遗忘的状态，不能被读取</span></div><div class="line">buffer.clear();</div><div class="line">System.out.println(<span class="string">"------清空缓冲区-------"</span>);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_clear.png?raw=true" alt="image"></p>
+<p>注意缓冲区的数据仍然存在，但处于被遗忘的状态，不能被读取</p>
+<p><strong>mark() &amp; reset()</strong></p>
+<p>除了 position、limit、capacity 这三个基本的属性外，还有一个常用的属性就是 mark。</p>
+<p>mark 用于临时保存 position 的值，每次调用 mark() 方法都会将 mark 设值为当前的 position，便于后续需要的时候使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">mark</span><span class="params">()</span> </span>&#123;</div><div class="line">    mark = position;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那到底什么时候用呢？考虑以下场景，我们在 position 为 5 的时候，先 mark() 一下，然后继续往下读，读到第 10 的时候，我想重新回到 position 为 5 的地方重新来一遍，那只要调一下 reset() 方法，position 就回到 5 了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">reset</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> m = mark;</div><div class="line">    <span class="keyword">if</span> (m &lt; <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidMarkException();</div><div class="line">    position = m;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>rewind() &amp; clear() &amp; compact()</strong></p>
+<p>rewind()：会重置 position 为 0，通常用于重新从头读写 Buffer。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">rewind</span><span class="params">()</span> </span>&#123;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>clear()：有点重置 Buffer 的意思，相当于重新实例化了一样。</p>
+<p>通常，我们会先填充 Buffer，然后从 Buffer 读取数据，之后我们再重新往里填充新的数据，我们一般在重新填充之前先调用 clear()。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">clear</span><span class="params">()</span> </span>&#123;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    limit = capacity;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>compact()：和 clear() 一样的是，它们都是在准备往 Buffer 填充新的数据之前调用。</p>
+<p>前面说的 clear() 方法会重置几个属性，但是我们要看到，clear() 方法并不会将 Buffer 中的数据清空，只不过后续的写入会覆盖掉原来的数据，也就相当于清空了数据了。</p>
+<p>而 compact() 方法有点不一样，调用这个方法以后，会先处理还没有读取的数据，也就是 position 到 limit 之间的数据（还没有读过的数据），先将这些数据移到左边，然后在这个基础上再开始写入。很明显，此时 limit 还是等于 capacity，position 指向原来数据的右边。</p>
+<p><strong>参考：</strong></p>
+<ul>
+<li><a href="http://www.importnew.com/28007.html" target="_blank" rel="external">Java NIO：Buffer、Channel 和 Selector</a></li>
+<li><a href="https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html" target="_blank" rel="external">NIO API</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/NIO/" rel="tag"># NIO</a>
+          
         </div>
       
+
+      
+      
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/SpringBoot应用被系统Kill相关问题分析/" rel="next" title="SpringBoot应用被系统Kill相关问题分析">
+                <i class="fa fa-chevron-left"></i> SpringBoot应用被系统Kill相关问题分析
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/09/15/在Service层进行事务控制/" itemprop="url">
-              
-                <span itemprop="name">在Service层进行事务控制</span>
-              
-            </a>
-        
-      </h3>
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-15T00:00:00+08:00"
-              content="2017-09-15" >
-          09-15
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
-  </section>
-
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -373,6 +571,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -602,11 +811,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
@@ -625,6 +832,18 @@
       <script id="dsq-count-scr" src="https://mingshan.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/29/NIO~Buffers/';
+          this.page.identifier = '2018/08/29/NIO~Buffers/';
+          this.page.title = 'NIO之Buffers';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mingshan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

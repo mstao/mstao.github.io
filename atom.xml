@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-26T02:39:19.578Z</updated>
+  <updated>2018-08-29T14:20:50.932Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,101 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NIO之Buffers</title>
+    <link href="http://yoursite.com/2018/08/29/NIO~Buffers/"/>
+    <id>http://yoursite.com/2018/08/29/NIO~Buffers/</id>
+    <published>2018-08-28T16:00:00.000Z</published>
+    <updated>2018-08-29T14:20:50.932Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^</p>
+<a id="more"></a>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/buffer_impl.png?raw=true" alt="image"></p>
+<p>其实核心是ByteBuffer，除了布尔类型，所有原始类型都有相应的Buffer实现，只是包装了一下ByteBuffer而已，我们使用最多的通常是ByteBuffer。</p>
+<p>我们应该将Buffer理解为一个数组，IntBuffer、CharBuffer、DoubleBuffer 等分别对应int[]、char[]、double[]等。</p>
+<p>上图没有包括MappedByteBuffer，该类用户内存映射文件，放到最后再说吧。</p>
+<p>Buffer有四个重要的属性，分别为：mark、position、limit、capacity，和两个重要方法分别为：flip和clear。Buffer的底层存储结构为数组。这四个属性有以下特点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mark &lt;= position &lt;= limit &lt;= capacity</div></pre></td></tr></table></figure>
+<p>那么这几个属性分别起着什么作用呢？下面的介绍都以ByteBuffer为例，来分析ByteBuffer的使用流程和原理。</p>
+<p>下面是这四个属性的简单介绍：</p>
+<ul>
+<li>capacity ：缓冲区的容量大小</li>
+<li>limit ：界限，表示缓冲区可以操作数据的大小。 （limit后数据不能进行读写）</li>
+<li>position: 位置，代表下一次的写入位置，初始值是 0，每往 Buffer 中写入一个值，position 就自动加 1</li>
+<li>mark : 标记，表示记录当前position 的位置可以通过reset()来恢复到 mark的位置，初始为 -1</li>
+</ul>
+<p>对ByteBuffer操作主要包括读和写，向缓冲区写入数据和从缓冲区读取数据会影响以上四个属性的值的变化，我们分别对读和写以及之间切换进行分析。</p>
+<p><strong>写操作</strong></p>
+<p>首先分配1024字节的缓冲区，然后向缓冲区放入5字节的字符串“abcde”，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">String str=&quot;abcde&quot;;</div><div class="line"></div><div class="line">// 分配一个指定大小的缓冲区</div><div class="line">ByteBuffer buffer=ByteBuffer.allocate(1024);</div><div class="line"></div><div class="line">System.out.println(&quot;---------allocate------&quot;);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div><div class="line"></div><div class="line">// 利用put() 向缓冲区放数据</div><div class="line">buffer.put(str.getBytes());</div><div class="line"></div><div class="line">System.out.println(&quot;--------放数据------&quot;);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>初始化position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_init.png?raw=true" alt="image"></p>
+<p>我们发现position为0，而limit和capacity均指向内存区域最大位置，代表此时缓存区内是空的，已放入capacity大小的数据。</p>
+<p>当我们向缓冲区放入5个字节的数据，position，limit，capacity位置发生了变化，如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_put.png?raw=true" alt="image"></p>
+<p>从上图可以看出，在写入数据后，position会向后移动5个位置，指向第六个位置，代表下次写数据的位置，limit和capacity没有改变。</p>
+<p><strong>切换到读操作</strong></p>
+<p>由写模式切换到读模式需要调用<code>flip</code>方法，这个方法是什么意思呢？在JDK源码中，此方法的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">flip</span><span class="params">()</span> </span>&#123;</div><div class="line">    limit = position;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从代码中我们可以清晰的看出，limit被设置为当前position的大小，position归0，mark还是为默认值-1，我们还是看图比较直观，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_flip.png?raw=true" alt="image"></p>
+<p>和上一张图片进行对比，我们可以发现limit替换了position的位置，代表当前可以操作的位置，在写的时候，limit的值代表最大的可写位置，在读的时候，limit的值代表最大的可读位置。很明显我们现在是要读数据，就代表最大可读位置。</p>
+<p><strong>读操作</strong></p>
+<p>通过filp方法切换为读模式后，我们就可以从缓存区里面读取数据，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 从缓冲区读数据</span></div><div class="line"><span class="keyword">byte</span>[] dst=<span class="keyword">new</span> <span class="keyword">byte</span>[buffer.limit()];</div><div class="line">buffer.get(dst);</div><div class="line">System.out.println(<span class="string">"------读取数据-------"</span>);</div><div class="line">System.out.println(<span class="keyword">new</span> String(dst,<span class="number">0</span>,dst.length));</div><div class="line"></div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://note.youdao.com/favicon.ico" alt="image"></p>
+<p>从上图可以看出，position的位置变成了5，由于我们将缓存区里面的数据读完了，就是这个情况，所以读操作的时候，每读一个值，position 就自动加 1。在HeapByteBuffer源码中，就是增加一个offset的偏移量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">ix</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> i + offset;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>重复读数据</strong></p>
+<p>上一步读数据的操作已经将position移动了limit的位置，我们想读数据就读不到了，但能不能重复读取数据呢？肯定可以呀，这时我们就可以用<code>rewind</code>方法来重复读写，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//rewind  可重复读数据</span></div><div class="line">buffer.rewind();</div><div class="line">System.out.println(<span class="string">"------重复读取数据-------"</span>);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_rewind.png?raw=true" alt="image"></p>
+<p>有没有发现和flip操作后一致，此时肯定要一样了，这样我们才可以重复读取。</p>
+<p><strong>清空缓冲区</strong></p>
+<p>此时我们不想要缓冲区的数据了，需要清空掉，可以用<code>clear</code>方法来操作，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 清空缓冲区，缓冲区的数据仍然存在，但处于被遗忘的状态，不能被读取</span></div><div class="line">buffer.clear();</div><div class="line">System.out.println(<span class="string">"------清空缓冲区-------"</span>);</div><div class="line">System.out.println(buffer.position());</div><div class="line">System.out.println(buffer.limit());</div><div class="line">System.out.println(buffer.capacity());</div></pre></td></tr></table></figure>
+<p>此时position，limit，capacity位置如下图所示</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/bytebuffer_clear.png?raw=true" alt="image"></p>
+<p>注意缓冲区的数据仍然存在，但处于被遗忘的状态，不能被读取</p>
+<p><strong>mark() &amp; reset()</strong></p>
+<p>除了 position、limit、capacity 这三个基本的属性外，还有一个常用的属性就是 mark。</p>
+<p>mark 用于临时保存 position 的值，每次调用 mark() 方法都会将 mark 设值为当前的 position，便于后续需要的时候使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">mark</span><span class="params">()</span> </span>&#123;</div><div class="line">    mark = position;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那到底什么时候用呢？考虑以下场景，我们在 position 为 5 的时候，先 mark() 一下，然后继续往下读，读到第 10 的时候，我想重新回到 position 为 5 的地方重新来一遍，那只要调一下 reset() 方法，position 就回到 5 了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">reset</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> m = mark;</div><div class="line">    <span class="keyword">if</span> (m &lt; <span class="number">0</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidMarkException();</div><div class="line">    position = m;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>rewind() &amp; clear() &amp; compact()</strong></p>
+<p>rewind()：会重置 position 为 0，通常用于重新从头读写 Buffer。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">rewind</span><span class="params">()</span> </span>&#123;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>clear()：有点重置 Buffer 的意思，相当于重新实例化了一样。</p>
+<p>通常，我们会先填充 Buffer，然后从 Buffer 读取数据，之后我们再重新往里填充新的数据，我们一般在重新填充之前先调用 clear()。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Buffer <span class="title">clear</span><span class="params">()</span> </span>&#123;</div><div class="line">    position = <span class="number">0</span>;</div><div class="line">    limit = capacity;</div><div class="line">    mark = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>compact()：和 clear() 一样的是，它们都是在准备往 Buffer 填充新的数据之前调用。</p>
+<p>前面说的 clear() 方法会重置几个属性，但是我们要看到，clear() 方法并不会将 Buffer 中的数据清空，只不过后续的写入会覆盖掉原来的数据，也就相当于清空了数据了。</p>
+<p>而 compact() 方法有点不一样，调用这个方法以后，会先处理还没有读取的数据，也就是 position 到 limit 之间的数据（还没有读过的数据），先将这些数据移到左边，然后在这个基础上再开始写入。很明显，此时 limit 还是等于 capacity，position 指向原来数据的右边。</p>
+<p><strong>参考：</strong></p>
+<ul>
+<li><a href="http://www.importnew.com/28007.html" target="_blank" rel="external">Java NIO：Buffer、Channel 和 Selector</a></li>
+<li><a href="https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html" target="_blank" rel="external">NIO API</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Buffer？我们很容易想到缓冲区的概念，在NIO中，它是直接和Channel打交道的缓冲区，通常场景或是从Buffer写入Channel，或是从Channel读入Buffer。Buffer是一个抽象类，Java提供如下图的实现类，我是直接在Eclipse截出来的^_^&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="NIO" scheme="http://yoursite.com/tags/NIO/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringBoot应用被系统Kill相关问题分析</title>
@@ -46,9 +141,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
     
@@ -226,9 +321,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="反射" scheme="http://yoursite.com/tags/%E5%8F%8D%E5%B0%84/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -673,9 +768,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
     
   </entry>
   
@@ -1173,63 +1268,6 @@
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>理解GC日志</title>
-    <link href="http://yoursite.com/2018/04/17/%E7%90%86%E8%A7%A3GC%E6%97%A5%E5%BF%97/"/>
-    <id>http://yoursite.com/2018/04/17/理解GC日志/</id>
-    <published>2018-04-16T16:00:00.000Z</published>
-    <updated>2018-04-17T09:33:25.668Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="输出GC日志"><a href="#输出GC日志" class="headerlink" title="输出GC日志"></a>输出GC日志</h3><p>通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。<br>先来看一个简单的示例。</p>
-<p>下面是GC日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">0.115: [GC (System.gc()) [PSYoungGen: 3020K-&gt;600K(38400K)] 3020K-&gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </div><div class="line">0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;554K(87552K)] 608K-&gt;554K(125952K), [Metaspace: 2773K-&gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] </div><div class="line">Heap</div><div class="line"> PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)</div><div class="line">  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)</div><div class="line">  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)</div><div class="line">  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)</div><div class="line"> ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)</div><div class="line">  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)</div><div class="line"> Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>上面的GC日志是由下面的Java代码产生的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * GC 日志</div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCLogDemo</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> _1m = <span class="number">1024</span> * <span class="number">1024</span>;</div><div class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[_1m];</div><div class="line">        <span class="comment">// 将data置为null即让它成为垃圾</span></div><div class="line">        data = <span class="keyword">null</span>;</div><div class="line">        <span class="comment">// 通知垃圾回收器回收垃圾（help gc）</span></div><div class="line">        System.gc();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在Eclipse中以运行配置方式运行上面的代码，并设置VM参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-XX:+PrintGCTimeStamps</div><div class="line">-XX:+PrintGCDetails</div></pre></td></tr></table></figure>
-<h3 id="GC日志说明："><a href="#GC日志说明：" class="headerlink" title="GC日志说明："></a>GC日志说明：</h3><p>先看这两行GC日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">0.115: [GC (System.gc()) [PSYoungGen: 3020K-&gt;600K(38400K)] 3020K-&gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </div><div class="line">0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;554K(87552K)] 608K-&gt;554K(125952K), [Metaspace: 2773K-&gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
-<p>通过观察这两行日志发现，它们的格式相同，下面是对其格式的描述：</p>
-<p>GC发生时间: [垃圾收集停顿类型: [GC发生区域: GC前该内存区域已使用容量 -&gt; GC后该内存区域已使用容量(该内存区域总容量)] 该内存区域GC所占用的时间] GC前Java堆已使用容量 -&gt; GC后Java堆已使用容量(Java堆总容量)] [user表示用户态消耗的CPU时间，sys表示内核态消耗的CPU时间，real表示操作从开始到结束所经过的墙钟时间]。</p>
-<h3 id="GC日志解读"><a href="#GC日志解读" class="headerlink" title="GC日志解读"></a>GC日志解读</h3><p>最前面的数字“0.115:”和“0.117:”代表GC发生的时间，是从Java虚拟机启动以来经过的秒数。</p>
-<p>GC日志开头的”[GC” 和”[Full GC”说明这个GC的停顿类型，而不是用来判断是新生代GC还是老年代GC，其中“[Full GC”说明发生了Stop-The-World。这里出现了“(System.gc())”，说明是调用了System.gc()方法所触发的搜集。</p>
-<p>接下来的“[PSYoungGen:”代表GC发生的区域，而且这里显示的区域名称与使用的GC收集器名称密切相关。PSYoungGen，表示新生代使用的是多线程垃圾收集器Parallel Scavenge。</p>
-<p>方括号内部的“3020K-&gt;600K(38400K)”代表“GC前该内存区域已使用容量 -&gt; GC后该内存区域已使用容量(该内存区域总容量)”。而在方括号外面的“3020K-&gt;608K(125952K)”表示”该内存区域GC所占用的时间] GC前Java堆已使用容量 -&gt; GC后Java堆已使用容量(Java堆总容量)”。</p>
-<p>再往后的“0.0012295 secs”代表该内存区域GC所占用的时间，单位为秒。后面的“[Times: user=0.00 sys=0.00, real=0.00 secs] ”为具体的时间信息。其中user表示用户态消耗的CPU时间，sys表示内核态消耗的CPU时间，real表示操作从开始到结束所经过的墙钟时间（Wall Clock Time）。钟时间包括各种非运算的等待耗时，如IO等待、线程阻塞。CPU时间不包括等待时间，当系统有多核或者多个CPU时，多线程操作会叠加这些CPU时间，所以user或sys时间会超过real时间。</p>
-<h3 id="堆详细信息解读："><a href="#堆详细信息解读：" class="headerlink" title="堆详细信息解读："></a>堆详细信息解读：</h3><p>下面是堆详细信息的日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Heap</div><div class="line"> PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)</div><div class="line">  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)</div><div class="line">  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)</div><div class="line">  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)</div><div class="line"> ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)</div><div class="line">  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)</div><div class="line"> Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K</div></pre></td></tr></table></figure>
-<p>先了解下Java memory划分：</p>
-<p>Java memory主要分heap memory 和 non-heap memory，如下图：</p>
-<p><img src="/images/java-memory.jpg" alt="image"></p>
-<p>第一行为新生代的大小，大小为38400K。而新生代又分为三个区域分别叫Eden，和俩个Survivor spaces。Eden用来存放新的对象，Survivor spaces用于 新对象 升级到 Tenured area时的 拷贝。默认的，Edem : from : to = 8 : 1 : 1 ( 可以通过参数 –XX:SurvivorRatio 来设定 )，即： Eden = 8/10 的新生代空间大小，from = to = 1/10 的新生代空间大小。</p>
-<p>默认的，新生代 ( Young ) 与老年代 ( Old ) 的比例的值为 1:2 ( 该值可以通过参数 –XX:NewRatio 来指定 )，即：新生代 ( Young ) = 1/3 的堆空间大小。老年代 ( Old ) = 2/3 的堆空间大小。其中，新生代 ( Young ) 被细分为 Eden 和 两个 Survivor 区域，这两个 Survivor 区域分别被命名为 from 和 to，以示区分。 </p>
-<p> ParOldGen 为老年代，大小为87552K，大约为PSYoungGen内存大小的2倍。 从JDK8开始，永久代(PermGen)的概念被废弃掉了，取而代之的是一个称为Metaspace的存储空间。Metaspace与PermGen之间最大的区别在于：Metaspace并不在虚拟机中，而是使用本地内存。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li>深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）</li>
-<li><a href="https://segmentfault.com/a/1190000012577387" target="_blank" rel="external">https://segmentfault.com/a/1190000012577387</a></li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;输出GC日志&quot;&gt;&lt;a href=&quot;#输出GC日志&quot; class=&quot;headerlink&quot; title=&quot;输出GC日志&quot;&gt;&lt;/a&gt;输出GC日志&lt;/h3&gt;&lt;p&gt;通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。&lt;br&gt;先来看一个简单的示例。&lt;/p&gt;
-&lt;p&gt;下面是GC日志：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;0.115: [GC (System.gc()) [PSYoungGen: 3020K-&amp;gt;600K(38400K)] 3020K-&amp;gt;608K(125952K), 0.0012295 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;0.117: [Full GC (System.gc()) [PSYoungGen: 600K-&amp;gt;0K(38400K)] [ParOldGen: 8K-&amp;gt;554K(87552K)] 608K-&amp;gt;554K(125952K), [Metaspace: 2773K-&amp;gt;2773K(1056768K)], 0.0060759 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Heap&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; PSYoungGen      total 38400K, used 333K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  eden space 33280K, 1% used [0x00000000d5f00000,0x00000000d5f534a8,0x00000000d7f80000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  from space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  to   space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; ParOldGen       total 87552K, used 554K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c8aab8,0x0000000087180000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; Metaspace       used 2779K, capacity 4486K, committed 4864K, reserved 1056768K&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  class space    used 300K, capacity 386K, committed 512K, reserved 1048576K&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="JVM" scheme="http://yoursite.com/categories/JVM/"/>
-    
-      <category term="GC" scheme="http://yoursite.com/categories/JVM/GC/"/>
-    
-    
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
-    
-      <category term="GC" scheme="http://yoursite.com/tags/GC/"/>
     
   </entry>
   
