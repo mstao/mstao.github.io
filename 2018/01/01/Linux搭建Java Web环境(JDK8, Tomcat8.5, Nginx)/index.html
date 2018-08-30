@@ -109,7 +109,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/01/01/Linux搭建Java Web环境(JDK8, Tomcat8.5, Nginx)/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="安装JDK首先下载jdk-8u172-linux-x64.tar.gz，然后上传到服务器/usr/local/java目录 解压jdk-8u172-linux-x64.tar.gz">
-<meta property="og:updated_time" content="2018-06-29T15:09:15.668Z">
+<meta property="og:updated_time" content="2018-08-30T11:39:39.095Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux搭建Java Web环境(JDK8, Tomcat8.5, Nginx)">
 <meta name="twitter:description" content="安装JDK首先下载jdk-8u172-linux-x64.tar.gz，然后上传到服务器/usr/local/java目录 解压jdk-8u172-linux-x64.tar.gz">
@@ -460,18 +460,18 @@
 <p><strong>其他命令</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nginx -s reload ：修改配置后重新加载生效</div><div class="line">nginx -s reopen ：重新打开日志文件</div><div class="line">nginx -t -c /usr/local/nginx/conf/nginx.conf  测试nginx配置文件是否正确</div></pre></td></tr></table></figure>
 <p><strong>firewalld的基本使用</strong></p>
-<p>启动： systemctl start firewalld</p>
-<p>查看状态： systemctl status firewalld </p>
-<p>停止： systemctl disable firewalld</p>
-<p>禁用： systemctl stop firewalld</p>
+<p>启动： <code>systemctl start firewalld</code></p>
+<p>查看状态： <code>systemctl status firewalld</code></p>
+<p>停止： <code>systemctl disable firewalld</code></p>
+<p>禁用： <code>systemctl stop firewalld</code></p>
 <p><strong>查看firewall是否运行</strong></p>
-<p>systemctl status firewalld.service</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl status firewalld.service</div></pre></td></tr></table></figure>
 <p><strong>添加开放端口</strong></p>
-<p>firewall-cmd –zone=public –add-port=80/tcp –permanent    （–permanent永久生效，没有此参数重启后失效）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent    （--permanent永久生效，没有此参数重启后失效）</div></pre></td></tr></table></figure>
 <p><strong>查看所有打开的端口：</strong></p>
-<p>firewall-cmd –zone=public –list-ports</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --zone=public --list-ports</div></pre></td></tr></table></figure>
 <p><strong>更新防火墙规则：</strong></p>
-<p>firewall-cmd –reload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -514,8 +514,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/24/二叉搜索树结构分析/" rel="next" title="二叉搜索树结构分析">
-                <i class="fa fa-chevron-left"></i> 二叉搜索树结构分析
+              <a href="/2017/12/24/忽然之间/" rel="next" title="忽然之间">
+                <i class="fa fa-chevron-left"></i> 忽然之间
               </a>
             
           </div>
