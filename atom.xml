@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-29T14:29:27.880Z</updated>
+  <updated>2018-09-08T13:58:45.855Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,200 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Class类文件结构简单分析</title>
+    <link href="http://yoursite.com/2018/09/08/Class%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2018/09/08/Class类文件结构简单分析/</id>
+    <published>2018-09-07T16:00:00.000Z</published>
+    <updated>2018-09-08T13:58:45.855Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。</p>
+</blockquote>
+<p>在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。</p>
+<a id="more"></a>
+<h2 id="ClassFile的structure"><a href="#ClassFile的structure" class="headerlink" title="ClassFile的structure"></a>ClassFile的structure</h2><p>Class文件由一组8位字节为基础的二进制流。在最新的Java虚拟机规范中，Class文件由叫做ClassFile的structure组成。class文件结构在JVM占有重要地位，具体位于第四章，标题是“The class File Format”，总共五百多页的虚拟机规范，类文件结构就写了三百多页，是不是很可怕^_^</p>
+<p>那么这个东西长什么样呢？如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">ClassFile &#123;</div><div class="line">    u4 magic;</div><div class="line">    u2 minor_version;</div><div class="line">    u2 major_version;</div><div class="line">    u2 constant_pool_count;</div><div class="line">    cp_info constant_pool[constant_pool_count-1];</div><div class="line">    u2 access_flags;</div><div class="line">    u2 this_class;</div><div class="line">    u2 super_class;</div><div class="line">    u2 interfaces_count;</div><div class="line">    u2 interfaces[interfaces_count];</div><div class="line">    u2 fields_count;</div><div class="line">    field_info fields[fields_count];</div><div class="line">    u2 methods_count;</div><div class="line">    method_info methods[methods_count];</div><div class="line">    u2 attributes_count;</div><div class="line">    attribute_info attributes[attributes_count];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>咦？怎么这么像C语言的结构体呢，说的没错，虚拟机规范这是这么描述的(pseudostructures 伪结构)，刚才说了，它的真实结构是一组以8位字节为基础单位的二进制流，包含多个数据项，各个数据项严格按照顺序紧凑的排列在Class文件中（后面再进行分析）。下面我们来看看这个伪结构包含了什么。</p>
+<p>从上面的伪结构来看，u2、u4是什么鬼？后面的看着像是属性，那么u2、u4似乎是类型的样子，呃，，没错，这种东西被称为数据类型，而且在<strong>伪结构中只有两种数据类型，无符号数（unsigned quantity）和表（table）</strong>。</p>
+<p>无符号数属于基本的数据类型，u2、u4分别代表2个字节、4个字节的无符号数。无符号数可以用来描述数字、索引引用、数量值或者按照UTF-8编码的字符串。</p>
+<p>那么<code>cp_info</code>、<code>field_info</code>、<code>method_info</code>和<code>attribute_info</code>就是所谓的table了，可以看出都是以<code>_info</code>结尾，这些存些什么数据呢？在一个类中，总有字段吧，那么就存到<code>field_info</code>里面，总有些方法吧，存到<code>method_info</code>，或许还会有常量什么的，存到<code>cp_info</code>里面，在Class文件、字段表、方法表都可以携带自己的attribute_info，用于描述某些场景专有的信息。</p>
+<p>说完了伪结构的数据类型，uX和*_info后面那些类似字段名称的东西是什么意思呢？在虚拟机规范中，被称作<code>item</code>，原话这么说的：</p>
+<blockquote>
+<p> the contents of the structures describing the class file format are<br>referred to as items</p>
+</blockquote>
+<p>好吧，不知道叫啥，就叫item吧，大家知道就行了(￣.￣)。</p>
+<p>在介绍上面的<code>items</code>之前，我们先来一个简单的Java类编译后的Class的十六进制文件，源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">inc</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> i + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用<code>javac</code>编译后，我选择Hexpad这个编辑器来打开class文件，如下：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/class_16.png?raw=true" alt="image"></p>
+<h2 id="magic与class文件的版本"><a href="#magic与class文件的版本" class="headerlink" title="magic与class文件的版本"></a>magic与class文件的版本</h2><p><strong>magic</strong></p>
+<p>每个Class文件的头四个字节被称为魔数（Magic Number），默认值为<code>0xCAFEBABE</code>，用于确定一个文件是否能被JVM接受。</p>
+<p><strong>minor_version, major_version</strong></p>
+<p>紧接着四个字节就是<code>minor_version</code>和<code>major_version</code>，看着像是版本号的意思，没错，这四个字节存储的是Class文件的版本号，第5和6个字节存储的是次版本号（Minor Version），第7个和8个字节存储的是主版本号（Major Version）。由上面的图片可知，<code>minor_version</code>为0x0000，<code>major_version</code>为0x0036，转为是十进制为54，即我用JDK10编译的。下面为各个版本JVM能接受Class文件版本号的范围：</p>
+<table>
+<thead>
+<tr>
+<th>Java SE</th>
+<th>class file format version range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.2</td>
+<td>45.0 ≤ v ≤ 45.3</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>45.0 ≤ v ≤ 45.65535</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>45.0 ≤ v ≤ 46.0</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>45.0 ≤ v ≤ 47.0</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>45.0 ≤ v ≤ 48.0</td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>45.0 ≤ v ≤ 49.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>45.0 ≤ v ≤ 50.0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>45.0 ≤ v ≤ 51.0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>45.0 ≤ v ≤ 52.0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>45.0 ≤ v ≤ 53.0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>45.0 ≤ v ≤ 54.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="constant-pool-count，constant-pool"><a href="#constant-pool-count，constant-pool" class="headerlink" title="constant_pool_count，constant_pool[]"></a>constant_pool_count，constant_pool[]</h2><p><strong>constant_pool_count</strong></p>
+<p>接着主版本号之后是常量池容量计数值（constant_pool_count），由于常量池中常量的数量是不固定的，所以需要一个u2类型的数据来统计。注意该值计数从1开始而不是0。如上图所示，constant_pool_count值为0x0013，转为十进制为19，这就代表常量池中有18项常量，索引值范围为1~18（1 ~ constant_pool_count - 1）。</p>
+<p>可能此时会有疑问，为啥我一个常量没定义，常量池这么多常量呢？有这个疑问就对了，原因是常量池中不仅存放<code>static final</code>修饰的字段，这个被称作字面量（Literal），还包括符号引用（Symbolic References），在虚拟机规范中是这样写的：</p>
+<blockquote>
+<p>constants, class and interface names, field names, and other constants that are<br>referred to within the ClassFile structure and its substructures. </p>
+</blockquote>
+<p>符号引用具体包括哪些呢？如下：</p>
+<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+<h2 id="access-flags"><a href="#access-flags" class="headerlink" title="access_flags"></a>access_flags</h2><p>在常量池结束之后，紧接着2个字节表示访问标志（access_flags），这个标志用于识别一些类和接口层次的访问信息。具体列表如下：</p>
+<table>
+<thead>
+<tr>
+<th>Flag Name</th>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACC_PUBLIC</td>
+<td>0x0001</td>
+<td>Declared public; may be accessed from outside its package.</td>
+</tr>
+<tr>
+<td>ACC_FINAL</td>
+<td>0x0010</td>
+<td>Declared final; no subclasses allowed.</td>
+</tr>
+<tr>
+<td>ACC_SUPER</td>
+<td>0x0020</td>
+<td>Treat superclass methods specially when invoked by the invokespecial instruction.</td>
+</tr>
+<tr>
+<td>ACC_INTERFACE</td>
+<td>0x0200</td>
+<td>Is an interface, not a class.</td>
+</tr>
+<tr>
+<td>ACC_ABSTRACT</td>
+<td>0x0400</td>
+<td>Declared abstract; must not be instantiated.</td>
+</tr>
+<tr>
+<td>ACC_SYNTHETIC</td>
+<td>0x1000</td>
+<td>Declared synthetic; not present in the source code.</td>
+</tr>
+<tr>
+<td>ACC_ANNOTATION</td>
+<td>0x2000</td>
+<td>Declared as an annotation type.</td>
+</tr>
+<tr>
+<td>ACC_ENUM</td>
+<td>0x4000</td>
+<td>Declared as an enum type.</td>
+</tr>
+<tr>
+<td>ACC_MODULE</td>
+<td>0x8000</td>
+<td>Is a module, not a class or interface.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ACC_MODULE</strong></p>
+<p>需要注意ACC_MODULE，这个是新增的，ACC_MODULE标志表示这个Class文件定义了一个模块，而不是一个类或接口。</p>
+<p><strong>ACC_SUPER</strong></p>
+<p>在jdk1.02之前，有个叫invokenonvirtual的指令。在1.02后，这个指令被改名叫做invokespecial。invokenonvirtual的时候没有invokespecial那样只允许调用superclass、private方法或<init>方法。于是在所有的1.02后的class 都必须设置ACC_SUPER这个标志，来表明强加给invokespecial的新的约束必须要被遵守。</init></p>
+<h2 id="this-class-super-class-interfaces-count-interfaces"><a href="#this-class-super-class-interfaces-count-interfaces" class="headerlink" title="this_class, super_class, interfaces_count, interfaces[]"></a>this_class, super_class, interfaces_count, interfaces[]</h2><p>this_class（类索引）、super_class（父类索引）都是一个u2类型的数据，而interfaces（接口索引集合）是一组u2类型的数据集合。Class文件由这三项来确定这个类的继承关系。</p>
+<p><strong>this_class（类索引）和 super_class（父类索引）</strong></p>
+<p>类索引和父类索引表示，它们各自指向一个类型为CONSTANT_Class_info的类描述符常量，通过CONSTANT_Class_info类型的常量中的索引值可以找到定义在CONSTANT_Utf8_info类型的常量的全限定名字符串。大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this_class  -&gt;  CONSTANT_Class_info  -&gt; CONSTANT_Utf8_info</div></pre></td></tr></table></figure>
+<p><strong>interfaces_count（接口计数器）</strong></p>
+<p>这个项的值表示当前类或接口的直接超接口的数量。</p>
+<p><strong>interfaces[] （接口表）</strong></p>
+<p>就是这个类所实现的接口。里边同样是常量池的索引值。接口表里边的顺序和源代码的接口顺序是一致的。</p>
+<h2 id="fields-count，fields"><a href="#fields-count，fields" class="headerlink" title="fields_count，fields[]"></a>fields_count，fields[]</h2><p>field_info（字段表）用于描述接口或者类中声明的变量。fields表中只包含当前类或接口中的字段，不包含超类或super 接口中的字段，也不包括在方法内部声明的局部变量。</p>
+<h2 id="methods-count，methods"><a href="#methods-count，methods" class="headerlink" title="methods_count，methods[]"></a>methods_count，methods[]</h2><p>method_info用来表示当前类或接口中的某个方法的完整描述。</p>
+<h2 id="attributes-count-attributes"><a href="#attributes-count-attributes" class="headerlink" title="attributes_count, attributes[]"></a>attributes_count, attributes[]</h2><p>在Class文件、字段表、方法表都可以携带自己的attribute_info，用于描述某些场景专有的信息。</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://docs.oracle.com/javase/specs/jvms/se10/jvms10.pdf" target="_blank" rel="external">The Java® Virtual Machine Specification (Java SE 10 Edition)</a></li>
+<li>深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）</li>
+<li><a href="https://mp.weixin.qq.com/s/e3_5okrgFTctBTikRuJvhA" target="_blank" rel="external">来自JVM的一封ClassFile介绍信</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>NIO之Buffers</title>
@@ -115,7 +309,7 @@
     <link href="http://yoursite.com/2018/08/25/SpringBoot%E5%BA%94%E7%94%A8%E8%A2%AB%E7%B3%BB%E7%BB%9FKill%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2018/08/25/SpringBoot应用被系统Kill相关问题分析/</id>
     <published>2018-08-24T16:00:00.000Z</published>
-    <updated>2018-09-01T04:09:16.142Z</updated>
+    <updated>2018-09-01T04:31:44.244Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：</p>
 <a id="more"></a>
@@ -332,7 +526,7 @@
     <link href="http://yoursite.com/2018/08/18/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BASpringBoot%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E5%88%B0Docker/"/>
     <id>http://yoursite.com/2018/08/18/Jenkins自动构建SpringBoot应用部署到Docker/</id>
     <published>2018-08-17T16:00:00.000Z</published>
-    <updated>2018-08-18T09:11:49.316Z</updated>
+    <updated>2018-08-18T09:11:49.317Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在开发SpringCloud微服务时，各个服务需要独立部署，手动部署比较麻烦，所以需要引入持续集成，Jenkins是一个非常好用的持续集成工具，十分好用。在使用Jenkins自动构建源码时，需要按照一定的步骤进行，步骤如下：</p>
 <a id="more"></a>
@@ -477,7 +671,7 @@
     <link href="http://yoursite.com/2018/08/01/%E5%83%8F%E6%98%AF%E6%98%A8%E5%A4%A9/"/>
     <id>http://yoursite.com/2018/08/01/像是昨天/</id>
     <published>2018-07-31T16:00:00.000Z</published>
-    <updated>2018-08-02T16:12:12.212Z</updated>
+    <updated>2018-08-02T16:12:12.213Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。</p>
 <a id="more"></a>
@@ -595,7 +789,7 @@
     <link href="http://yoursite.com/2018/07/16/Hashtable%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2018/07/16/Hashtable结构分析/</id>
     <published>2018-07-15T16:00:00.000Z</published>
-    <updated>2018-07-16T14:50:35.730Z</updated>
+    <updated>2018-07-16T14:50:35.731Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>哈希表（Hash Table，也叫散列表），是存储键值对（key-value）的数据结构，主要利用hash算法将key映射到表中，以便加快查找速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。对于数组而言，查找数据容易，但添加删除数据比较慢；对于链表来说，添加删除数据容易，但查找数据比较慢，所以哈希表结合数据和链表来实现数据快速的存取。</p>
 <p>哈希表的实现主要需要解决两个问题，哈希函数和冲突解决。</p>
@@ -735,7 +929,7 @@
     <link href="http://yoursite.com/2018/07/03/IllegalMonitorStateException%E5%BC%82%E5%B8%B8%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2018/07/03/IllegalMonitorStateException异常分析/</id>
     <published>2018-07-02T16:00:00.000Z</published>
-    <updated>2018-07-03T16:13:20.868Z</updated>
+    <updated>2018-07-03T16:13:20.869Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>当调用wait()， notify()等相关方法时，可能会产生这个异常，那么这个异常是什么意思呢？</p>
 <a id="more"></a>
@@ -862,7 +1056,7 @@
     <link href="http://yoursite.com/2018/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2018/06/27/设计模式之装饰模式/</id>
     <published>2018-06-26T16:00:00.000Z</published>
-    <updated>2018-06-29T04:02:53.034Z</updated>
+    <updated>2018-06-29T04:02:53.035Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>装饰模式作为常用的设计模式用到很多，比如在Java中，io包下的很多类就是典型的装饰者模式的体现，如下代码：</p>
 <a id="more"></a>
@@ -924,7 +1118,7 @@
     <link href="http://yoursite.com/2018/06/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2018/06/25/设计模式之适配器模式/</id>
     <published>2018-06-24T16:00:00.000Z</published>
-    <updated>2018-06-27T14:49:30.267Z</updated>
+    <updated>2018-06-27T14:49:30.268Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在我们日常生活中可以看到许多例子，例如我们的手机需要用充电器来充电，因为220v电压手机是承受不住的；笔记本电脑连接投影仪可以是HDMI，需要转接头等等例子，从这些例子中我们可以发现目标对象与源对象无法直接交互，需要一个中间层来作为一个桥梁达到让两者完美交互的效果，从这种就可以看到适配器模式的影子了。</p>
 <a id="more"></a>
@@ -980,7 +1174,7 @@
     <link href="http://yoursite.com/2018/06/22/%E7%A6%BB%E4%BA%BA/"/>
     <id>http://yoursite.com/2018/06/22/离人/</id>
     <published>2018-06-21T16:00:00.000Z</published>
-    <updated>2018-06-24T02:47:14.537Z</updated>
+    <updated>2018-06-24T02:47:14.538Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>好久不写文章，只因这段时间太忙了，忙到忘记离别的日子已经逼在眼前，倒让人措手不及。当这些繁琐的流程到了末尾，离别的日子真是要到来了。</p>
 <a id="more"></a>
@@ -1094,7 +1288,7 @@
     <link href="http://yoursite.com/2018/05/12/CentOS7%20%E6%90%AD%E5%BB%BA%20Zookeeper-3.4.10%20%E5%8D%95%E6%9C%BA%E6%9C%8D%E5%8A%A1/"/>
     <id>http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/</id>
     <published>2018-05-11T16:00:00.000Z</published>
-    <updated>2018-05-13T01:28:39.581Z</updated>
+    <updated>2018-05-13T01:28:39.582Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
 <a id="more"></a>
@@ -1163,7 +1357,7 @@
     <link href="http://yoursite.com/2018/05/08/%E5%88%A9%E7%94%A8WebMagic%E6%9D%A5%E7%88%AC%E5%8F%96ZZULI%E7%9A%84%E9%80%9A%E7%9F%A5/"/>
     <id>http://yoursite.com/2018/05/08/利用WebMagic来爬取ZZULI的通知/</id>
     <published>2018-05-07T16:00:00.000Z</published>
-    <updated>2018-05-28T04:12:49.743Z</updated>
+    <updated>2018-05-28T04:12:49.744Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="WebMagic介绍"><a href="#WebMagic介绍" class="headerlink" title="WebMagic介绍"></a>WebMagic介绍</h2><p>WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。</p>
 <a id="more"></a>
@@ -1210,64 +1404,6 @@
       <category term="WebMagic" scheme="http://yoursite.com/tags/WebMagic/"/>
     
       <category term="爬虫" scheme="http://yoursite.com/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Linux(CentOS)下重置MySQL根(Root)密码</title>
-    <link href="http://yoursite.com/2018/05/05/%E5%9C%A8Linux(CentOS)%E4%B8%8B%E9%87%8D%E7%BD%AEMySQL%E6%A0%B9(Root)%E5%AF%86%E7%A0%81/"/>
-    <id>http://yoursite.com/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/</id>
-    <published>2018-05-04T16:00:00.000Z</published>
-    <updated>2018-05-09T01:24:23.899Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码</p>
-<p>下面是操作步骤：</p>
-<a id="more"></a>
-<ol>
-<li><p>首先输入“service mysqld status”查看当前mysql服务状态。</p>
-</li>
-<li><p>输入“killall -TERM mysqld”命令停止所有的mysqld进程。</p>
-</li>
-<li><p>输入“service mysqld stop”命令停止mysqld服务。</p>
-</li>
-<li><p>输入“mysqld_safe  –skip-grant-tables &amp;”命令以无密码方式进入MySQL安全模式。</p>
-</li>
-<li><p>输入“mysql -u root”并按回车键即可。</p>
-</li>
-<li><p>输入“use mysql;”挂载数据库。(注意：请勿忘记在最后输入分号（;）)</p>
-</li>
-<li><p>输入”update user set password=password(“admin”) where user=’root’;”将Root密码修改为admin。</p>
-</li>
-<li><p>输入”flush privileges;”更新权限。</p>
-</li>
-<li><p>输入“quit”并按回车键退出。(注意：此处不需输入分号。)</p>
-</li>
-<li><p>输入”service mysqld restart”重启mysqld服务。</p>
-</li>
-<li><p>输入“mysql -u root -p”并按回车键提示输入密码。</p>
-</li>
-<li><p>输入新密码admin并按回车键，提示已经成功登录。</p>
-</li>
-</ol>
-<p>下面是所有步骤运行截图：</p>
-<p><img src="/images/update_mysql_password.png" alt="image"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码&lt;/p&gt;
-&lt;p&gt;下面是操作步骤：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
-    
-      <category term="MySQL" scheme="http://yoursite.com/categories/Linux/MySQL/"/>
-    
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-      <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
     
   </entry>
   
