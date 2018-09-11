@@ -305,6 +305,96 @@
   </entry>
   
   <entry>
+    <title>NIO之Channels</title>
+    <link href="http://yoursite.com/2018/08/29/NIO~Channels/"/>
+    <id>http://yoursite.com/2018/08/29/NIO~Channels/</id>
+    <published>2018-08-28T16:00:00.000Z</published>
+    <updated>2018-09-11T05:52:22.418Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Channel介绍"><a href="#Channel介绍" class="headerlink" title="Channel介绍"></a>Channel介绍</h2><p>Channel? 我们在使用Buffer的时候，需要往Buffer中放数据，再从Buffer中取数据，那么在NIO体系中，与Buffer交互是什么呢，没错，就是Channel。所有的NIO的I/O操作都是从Channel 开始的，读操作的时候将Channel中的数据填充到Buffer 中，而写操作时将Buffer中的数据写入到Channel中。</p>
+<a id="more"></a>
+<p>下面Channel的官方解释：</p>
+<blockquote>
+<p>A channel represents an open connection to an entity such as a hardware device, a file, a network socket, or a program component that is capable of performing one or more distinct I/O operations, for example reading or writing. As specified in the Channel interface, channels are either open or closed, and they are both asynchronously closeable and interruptible.</p>
+</blockquote>
+<p>在官方文档中，Channels根据不同的使用场景实现不一样，官方文档Channels可以在以下场景使用：</p>
+<ul>
+<li>File channels</li>
+<li>Multiplexed, non-blocking I/O</li>
+<li>Asynchronous I/O</li>
+</ul>
+<p>FileChannel类支持从连接到文件的通道中读取字节和将字节写入到通道。</p>
+<p>多路复用、非阻塞I/O由<code>selector</code>、<code>selectable channels</code>和<code>SelectionKey</code>提供，它比阻塞I/O更具可伸缩性。</p>
+<p>异步通道是一种能够进行异步I/O操作的特殊通道。异步通道是非阻塞的，并定义方法来启动异步操作，返回表示每个操作的Future。</p>
+<p>目前使用较多Channel的实现类有：</p>
+<ul>
+<li>FileChannel：文件通道，用于文件的读和写</li>
+<li>DatagramChannel：用于 UDP 连接的接收和发送</li>
+<li>SocketChannel：TCP通道，用于TCP数据传输</li>
+<li>ServerSocketChannel：用于监听服务端某个端口进来的TCP请求</li>
+</ul>
+<h2 id="FileChannel"><a href="#FileChannel" class="headerlink" title="FileChannel"></a>FileChannel</h2><p>Java针对支持通道的类提供了<code>getChannel()</code>方法来获取<code>FileChannel</code>，<code>FileChannel</code>是一个用来写、读、映射和操作文件的通道。下面是利用<code>FileChannel</code>读写文件的一个例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">null</span>;</div><div class="line">FileOutputStream fos = <span class="keyword">null</span>;</div><div class="line">FileChannel inChannel = <span class="keyword">null</span>;</div><div class="line">FileChannel outChannel = <span class="keyword">null</span>;</div><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    fis = <span class="keyword">new</span> FileInputStream(<span class="string">"1.png"</span>);</div><div class="line">    fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"2.png"</span>);</div><div class="line">    <span class="comment">// 获取通道</span></div><div class="line">    inChannel = fis.getChannel();</div><div class="line">    outChannel = fos.getChannel();</div><div class="line">    <span class="comment">// 创建缓冲区</span></div><div class="line">    ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</div><div class="line">    <span class="keyword">while</span> (inChannel.read(buffer) != -<span class="number">1</span>) &#123;</div><div class="line">        <span class="comment">// 切换到读数据模式</span></div><div class="line">        buffer.flip();</div><div class="line">        <span class="comment">// 将缓冲区的内容写入通道</span></div><div class="line">        outChannel.write(buffer);</div><div class="line">        <span class="comment">// 清空缓冲区</span></div><div class="line">        buffer.clear();</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (inChannel != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            inChannel.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (outChannel != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            outChannel.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (fis != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            fis.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (fos != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            fos.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于FileChannel是抽象类，它的read、write和map通过其实现类FileChannelImpl实现，注意<br><a href="https://github.com/unofficial-openjdk/openjdk/blob/531ef5d0ede6d733b00c9bc1b6b3c14a0b2b3e81/src/java.base/share/classes/sun/nio/ch/FileChannelImpl.java" target="_blank" rel="external">FileChannelImpl</a>是在sun.nio.ch包中的，这里类需要在openjdk源码中看到，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">(ByteBuffer dst)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    ensureOpen();</div><div class="line">    <span class="keyword">if</span> (!readable)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NonReadableChannelException();</div><div class="line">    <span class="keyword">synchronized</span> (positionLock) &#123;</div><div class="line">        <span class="keyword">if</span> (direct)</div><div class="line">            Util.checkChannelPositionAligned(position(), alignment);</div><div class="line">        <span class="keyword">int</span> n = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> ti = -<span class="number">1</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            beginBlocking();</div><div class="line">            ti = threads.add();</div><div class="line">            <span class="keyword">if</span> (!isOpen())</div><div class="line">                <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">            <span class="keyword">do</span> &#123;</div><div class="line">                n = IOUtil.read(fd, dst, -<span class="number">1</span>, direct, alignment, nd);</div><div class="line">            &#125; <span class="keyword">while</span> ((n == IOStatus.INTERRUPTED) &amp;&amp; isOpen());</div><div class="line">            <span class="keyword">return</span> IOStatus.normalize(n);</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            threads.remove(ti);</div><div class="line">            endBlocking(n &gt; <span class="number">0</span>);</div><div class="line">            <span class="keyword">assert</span> IOStatus.check(n);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个方法中，会检测通道是否可用，如果操作position和size，会进行同步处理，加上对象锁，然后调用<a href="https://github.com/unofficial-openjdk/openjdk/blob/531ef5d0ede6d733b00c9bc1b6b3c14a0b2b3e81/src/java.base/share/classes/sun/nio/ch/IOUtil.java" target="_blank" rel="external">IOUtil</a>类的read方法，注意是while循环，条件IOStatus是INTERRUPTED（系统底层调用中断？），在<a href="https://github.com/unofficial-openjdk/openjdk/blob/531ef5d0ede6d733b00c9bc1b6b3c14a0b2b3e81/src/java.base/share/classes/sun/nio/ch/IOStatus.java" target="_blank" rel="external">IOStatus</a>类中，定义了一些常量，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> EOF = -<span class="number">1</span>;              <span class="comment">// End of file</span></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNAVAILABLE = -<span class="number">2</span>;      <span class="comment">// Nothing available (non-blocking)</span></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INTERRUPTED = -<span class="number">3</span>;      <span class="comment">// System call interrupted</span></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNSUPPORTED = -<span class="number">4</span>;      <span class="comment">// Operation not supported</span></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THROWN = -<span class="number">5</span>;           <span class="comment">// Exception thrown in JNI code</span></div><div class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNSUPPORTED_CASE = -<span class="number">6</span>; <span class="comment">// This case not supported</span></div></pre></td></tr></table></figure>
+<p>IOUtil的代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">static int read(FileDescriptor fd, ByteBuffer dst, long position,</div><div class="line">                    boolean directIO, int alignment, NativeDispatcher nd)</div><div class="line">        throws IOException</div><div class="line">    &#123;</div><div class="line">        if (dst.isReadOnly())</div><div class="line">            throw new IllegalArgumentException(&quot;Read-only buffer&quot;);</div><div class="line">        if (dst instanceof DirectBuffer)</div><div class="line">            return readIntoNativeBuffer(fd, dst, position, directIO, alignment, nd);</div><div class="line"></div><div class="line">        // Substitute a native buffer</div><div class="line">        ByteBuffer bb;</div><div class="line">        int rem = dst.remaining();</div><div class="line">        if (directIO) &#123;</div><div class="line">            Util.checkRemainingBufferSizeAligned(rem, alignment);</div><div class="line">            bb = Util.getTemporaryAlignedDirectBuffer(rem, alignment);</div><div class="line">        &#125; else &#123;</div><div class="line">            bb = Util.getTemporaryDirectBuffer(rem);</div><div class="line">        &#125;</div><div class="line">        try &#123;</div><div class="line">            int n = readIntoNativeBuffer(fd, bb, position, directIO, alignment,nd);</div><div class="line">            bb.flip();</div><div class="line">            if (n &gt; 0)</div><div class="line">                dst.put(bb);</div><div class="line">            return n;</div><div class="line">        &#125; finally &#123;</div><div class="line">            Util.offerFirstTemporaryDirectBuffer(bb);</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过上面的代码可以大致了解到，FileChannel读取数据过程如下：</p>
+<ol>
+<li>判断用户传入的buffer是否是DirectBuffer，如果是直接由readIntoNativeBuffer进行读取</li>
+<li>如果不是（directIO为false），申请一块和缓存同大小的DirectByteBuffer bb</li>
+<li>读取数据到缓存bb，底层由NativeDispatcher的read实现</li>
+<li>把bb的数据读取到dst（用户定义的ByteBuffer，在jvm中分配内存）</li>
+</ol>
+<p>其他方法的具体实现细节可参考openjdk的代码，就不再分析了。</p>
+<h2 id="ServerSocketChannel和SocketChannel"><a href="#ServerSocketChannel和SocketChannel" class="headerlink" title="ServerSocketChannel和SocketChannel"></a>ServerSocketChannel和SocketChannel</h2><p>ServerSocketChannel可以监听新进来的TCP连接，主要用于处理网络连接。对每一个新进来的连接都会创建一个SocketChannel。ServerSocketChannel可以被设置为阻塞或者非阻塞，</p>
+<p>如果设置为阻塞，那么通道的读写等操作是阻塞的，该线程被阻塞，直到有一些数据被读取或写入，该线程在此期间不能执行其他任务</p>
+<p>如果设置为非阻塞，那么读写请求并不会阻塞当前线程，在数据可读/写前当前线程可以继续做其它事情，所以一个单独的线程可以管理多个输入和输出通道。需要结合Selector使用。</p>
+<p>下面仅介绍阻塞式的写法，非阻塞在Selector中详细探讨下。代码如下：</p>
+<p>Server端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建通道</span></div><div class="line">ServerSocketChannel server = ServerSocketChannel.open();</div><div class="line"><span class="comment">// 绑定端口</span></div><div class="line">server.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">9898</span>));</div><div class="line">FileChannel outChannel = FileChannel.open(Paths.get(<span class="string">"2.png"</span>), StandardOpenOption.WRITE,StandardOpenOption.READ,StandardOpenOption.CREATE);</div><div class="line"></div><div class="line"><span class="comment">// 获取客户端连接的通道</span></div><div class="line">SocketChannel socketChannel = server.accept();</div><div class="line"><span class="comment">// 分配指定大小的缓冲区</span></div><div class="line">ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</div><div class="line"></div><div class="line"><span class="comment">// 接受客户端的数据，并保存到本地</span></div><div class="line"><span class="keyword">while</span>(socketChannel.read(buffer) != -<span class="number">1</span>)&#123;</div><div class="line">    buffer.flip();</div><div class="line">    outChannel.write(buffer);</div><div class="line">    buffer.clear();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 关闭通道</span></div><div class="line">socketChannel.close();</div><div class="line">outChannel.close();</div><div class="line">server.close();</div></pre></td></tr></table></figure>
+<p>通过上面代码我们可以总结下Server端的流程：</p>
+<ol>
+<li>创建ServerSocketChannel通道</li>
+<li>绑定ip地址和端口号</li>
+<li>通过ServerSocketChannel的accept()方法创建一个SocketChannel对象，用户从客户端读/写数据</li>
+<li>创建读数据/写数据缓冲区对象来读取客户端数据或向客户端发送数据</li>
+<li>关闭SocketChannel和ServerSocketChannel</li>
+</ol>
+<p>Client端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取通道</span></div><div class="line">SocketChannel client = SocketChannel.open(<span class="keyword">new</span> InetSocketAddress(<span class="string">"127.0.0.1"</span>, <span class="number">9898</span>));</div><div class="line"><span class="comment">// 获取文件</span></div><div class="line">FileChannel inChannel = FileChannel.open(Paths.get(<span class="string">"1.png"</span>), StandardOpenOption.READ);</div><div class="line">        </div><div class="line"><span class="comment">// 分配缓冲区</span></div><div class="line">ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</div><div class="line"></div><div class="line"><span class="comment">// 读取本地文件</span></div><div class="line"><span class="keyword">while</span> (inChannel.read(buffer) != -<span class="number">1</span>) &#123;</div><div class="line">    buffer.flip();</div><div class="line">    client.write(buffer);</div><div class="line">    buffer.clear();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 关闭</span></div><div class="line">inChannel.close();</div><div class="line">client.close();</div></pre></td></tr></table></figure>
+<p>总结下Client端的流程：</p>
+<ol>
+<li>获取SocketChannel，绑定ip和端口</li>
+<li>创建读数据/写数据缓冲区对象来读取服务端数据或向服务端发送数据</li>
+<li>关闭SocketChannel</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://docs.oracle.com/javase/10/docs/api/java/nio/channels/package-summary.html" target="_blank" rel="external">JDK API</a></li>
+<li><a href="https://segmentfault.com/a/1190000014869494" target="_blank" rel="external">Java NIO 之 Channel（通道）</a></li>
+<li><a href="https://www.jianshu.com/p/052035037297" target="_blank" rel="external">深入浅出NIO之Channel、Buffer</a></li>
+<li><a href="http://www.jasongj.com/java/nio_reactor/" target="_blank" rel="external">Java进阶（五）Java I/O模型从BIO到NIO和Reactor模式 </a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Channel介绍&quot;&gt;&lt;a href=&quot;#Channel介绍&quot; class=&quot;headerlink&quot; title=&quot;Channel介绍&quot;&gt;&lt;/a&gt;Channel介绍&lt;/h2&gt;&lt;p&gt;Channel? 我们在使用Buffer的时候，需要往Buffer中放数据，再从Buffer中取数据，那么在NIO体系中，与Buffer交互是什么呢，没错，就是Channel。所有的NIO的I/O操作都是从Channel 开始的，读操作的时候将Channel中的数据填充到Buffer 中，而写操作时将Buffer中的数据写入到Channel中。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="NIO" scheme="http://yoursite.com/tags/NIO/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SpringBoot应用被系统Kill相关问题分析</title>
     <link href="http://yoursite.com/2018/08/25/SpringBoot%E5%BA%94%E7%94%A8%E8%A2%AB%E7%B3%BB%E7%BB%9FKill%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2018/08/25/SpringBoot应用被系统Kill相关问题分析/</id>
@@ -465,9 +555,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="反射" scheme="http://yoursite.com/tags/%E5%8F%8D%E5%B0%84/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -962,9 +1052,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
     
   </entry>
   
@@ -1349,61 +1439,6 @@
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="Zookeeper" scheme="http://yoursite.com/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用WebMagic来爬取ZZULI的通知</title>
-    <link href="http://yoursite.com/2018/05/08/%E5%88%A9%E7%94%A8WebMagic%E6%9D%A5%E7%88%AC%E5%8F%96ZZULI%E7%9A%84%E9%80%9A%E7%9F%A5/"/>
-    <id>http://yoursite.com/2018/05/08/利用WebMagic来爬取ZZULI的通知/</id>
-    <published>2018-05-07T16:00:00.000Z</published>
-    <updated>2018-05-28T04:12:49.744Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="WebMagic介绍"><a href="#WebMagic介绍" class="headerlink" title="WebMagic介绍"></a>WebMagic介绍</h2><p>WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。</p>
-<a id="more"></a>
-<p>WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件，并由Spider将它们彼此组织起来。这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能。WebMagic的总体架构图如下：</p>
-<p><img src="/images/webmagic.jpg" alt="image"></p>
-<p>从上面的架构图中可以看出，我们在下载完页面后需要自己定义规则来抽取信息和发现链接，同时控制爬虫爬取深度，所以需要自定义PageProcessor来进行以上操作。而通过定制Pipeline，我们还可以实现保存结果到文件、数据库等一系列功能，所以我们可以根据自己的需求来自定义Pipeline。</p>
-<h2 id="爬虫实现"><a href="#爬虫实现" class="headerlink" title="爬虫实现"></a>爬虫实现</h2><h3 id="示例介绍"><a href="#示例介绍" class="headerlink" title="示例介绍"></a>示例介绍</h3><p>通过上面的分析，我们就可以来爬取特定页面的信息了。本次爬取的网站是<strong><a href="http://www.zzuli.edu.cn/s/12/t/1006/p/22/i/13/list.htm" target="_blank" rel="external">http://www.zzuli.edu.cn/s/12/t/1006/p/22/i/13/list.htm</a></strong>，我们需要爬取的页面主要是列表+详情的基本页面组合，有一个列表页，这个列表页以分页的形式展现，我们可以遍历这些分页找到所有目标页面。我们要从通知的详细界面，来抓取通知的标题、内容、日期等信息，也要从列表页抓取的链接等信息，从而获取这个通知的所有文章。</p>
-<h4 id="列表页"><a href="#列表页" class="headerlink" title="列表页"></a>列表页</h4><p> 列表页的格式如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www.zzuli.edu.cn/s/12/t/1006/p/22/i/13/list.htm</div></pre></td></tr></table></figure></p>
-<p>其中i后面的13是可变的，根据上一页和下一页的切换来改变这一个数字，页面如下：</p>
-<p><img src="/images/spide-list-page.png" alt="image"></p>
-<h4 id="详细页"><a href="#详细页" class="headerlink" title="详细页"></a>详细页</h4><p>详细页的格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://www.zzuli.edu.cn/s/12/t/1006/e8/ff/info190719.htm</div><div class="line">http://www.zzuli.edu.cn/s/12/t/1006/e5/65/info189797.htm</div></pre></td></tr></table></figure>
-<p>通过观察这两个url，可以发现1006后面的都是可以变的，所以可以根据这个来写正则抽取链接。</p>
-<p>详细页页面如下：<br><img src="/images/spide-detail-page.png" alt="image"></p>
-<h3 id="发现通知URL"><a href="#发现通知URL" class="headerlink" title="发现通知URL"></a>发现通知URL</h3><p>在这个爬虫需求中，我们需要知道这些详细通知的URL，所以如何抽取这些URL显得很重要，事实也是如此，也是我们要实现爬虫的第一步。我们可以先考虑用以下正则表达式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm</div></pre></td></tr></table></figure></p>
-<p>来过滤通知的详细界面，但这样未免太过宽泛，爬取效率也比较低，此时考虑到列表页中含有通知的详细界面的URL，所以我们必须从列表页中指定的区域获取URL。</p>
-<p>在这里，我们使用xpath //table[@id=\”newslist\”]选中所有区域，再使用links()获取所有链接，最后再使用正则表达式<a href="http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，" target="_blank" rel="external">http://www\\.zzuli\\.edu\\.cn/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm，</a> 对URL进行过滤，去掉一些其他无用的链接。于是，我们可以这样写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">page.addTargetRequests(page.getHtml().xpath(&quot;//table[@id=\&quot;newslist\&quot;]&quot;).links().regex(URL_POST).all());</div></pre></td></tr></table></figure>
-<p>同时，我们需要把所有找到的列表页也加到待下载的URL中去：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">page.addTargetRequests(page.getHtml().links().regex(URL_LIST).all());</div></pre></td></tr></table></figure>
-<h3 id="抽取内容"><a href="#抽取内容" class="headerlink" title="抽取内容"></a>抽取内容</h3><p>抽取页面所需要的信息对于爬虫应用来说是关键的一步，同时也是比较简单的，因为我们可以用xpath来解析html，定义好抽取表达式就可以了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">page.putField(<span class="string">"title"</span>, page.getHtml().xpath(<span class="string">"//h1[@class='arti-title']/text()"</span>));</div><div class="line">page.putField(<span class="string">"content"</span>, page.getHtml().xpath(<span class="string">"//div[@class='read']"</span>));</div><div class="line">page.putField(<span class="string">"date"</span>,</div><div class="line">        page.getHtml().xpath(<span class="string">"//div[@class='arti-metas']/table/tbody/tr/td[3]/span/text()"</span>).replace(<span class="string">"日期："</span>, <span class="string">""</span>));</div></pre></td></tr></table></figure>
-<h3 id="列表页和详细页"><a href="#列表页和详细页" class="headerlink" title="列表页和详细页"></a>列表页和详细页</h3><p>我们可以定义几个常量来定义列表页和详细页的URL：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DOMAIN = <span class="string">"http://www\\.zzuli\\.edu\\.cn"</span>;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL_LIST = DOMAIN + <span class="string">"/s/12/t/1006/p/22/i/\\d+/list\\.htm"</span>;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL_POST = DOMAIN + <span class="string">"/s/12/t/1006/\\w+/\\w+/info\\d+\\.htm"</span>;</div></pre></td></tr></table></figure>
-<p>我们可以根据URL_LIST和URL_POST来区别列表页和详细页的抽取。</p>
-<h3 id="保存信息"><a href="#保存信息" class="headerlink" title="保存信息"></a>保存信息</h3><p>我们可以自定义Pipeline来将抽取的结果保存在想要的地方，这里我直接将标题、内容、日期等信息封装为实体，然后放到List中，便于后续处理，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 自定义Pipeline，用来处理爬到的数据</div><div class="line"> * </div><div class="line"> * <span class="doctag">@author</span> mingshan</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoticePipeline</span> <span class="keyword">implements</span> <span class="title">Pipeline</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(ResultItems resultItems, Task task)</span> </span>&#123;</div><div class="line">        Notice notice = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            notice = <span class="keyword">new</span> Notice(resultItems.getAll());</div><div class="line">            notice.setLink(resultItems.getRequest().getUrl());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">return</span> ;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        NoticeList.addNotice(notice);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过以上的爬虫的实现，我们主要根据列表页来抽取所需要的通知详细页的URL，然后通过xpath来解析页面，获取特定的信息。如此简洁的逻辑和代码得益于WebMagic框架良好的封装，同时扩展性很强，推荐大家使用。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>主要参考WebMagic的官方文档和samples。</p>
-<p><a href="http://webmagic.io/docs/zh/" target="_blank" rel="external">http://webmagic.io/docs/zh/</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;WebMagic介绍&quot;&gt;&lt;a href=&quot;#WebMagic介绍&quot; class=&quot;headerlink&quot; title=&quot;WebMagic介绍&quot;&gt;&lt;/a&gt;WebMagic介绍&lt;/h2&gt;&lt;p&gt;WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开发流程，让开发者专注于逻辑功能的开发。最近项目有需求爬取某些网站的信息，考虑到WebMagic的爬虫实现十分精简和扩展性很高，所以爬虫模块就采用了WebMagic来爬取网站的一些信息。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="爬虫" scheme="http://yoursite.com/categories/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="WebMagic" scheme="http://yoursite.com/categories/%E7%88%AC%E8%99%AB/WebMagic/"/>
-    
-    
-      <category term="WebMagic" scheme="http://yoursite.com/tags/WebMagic/"/>
-    
-      <category term="爬虫" scheme="http://yoursite.com/tags/%E7%88%AC%E8%99%AB/"/>
     
   </entry>
   
