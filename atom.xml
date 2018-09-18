@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-11T05:55:07.741Z</updated>
+  <updated>2018-09-18T02:40:51.885Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,134 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Class类文件结构简单分析</title>
+    <link href="http://yoursite.com/2018/09/18/%E5%85%A8%E9%99%90%E5%AE%9A%E5%90%8D%E3%80%81%E7%AE%80%E5%8D%95%E5%90%8D%E7%A7%B0%E5%92%8C%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%98%AF%E4%BB%80%E4%B9%88%E4%B8%9C%E8%A5%BF%EF%BC%9F/"/>
+    <id>http://yoursite.com/2018/09/18/全限定名、简单名称和描述符是什么东西？/</id>
+    <published>2018-09-17T16:00:00.000Z</published>
+    <updated>2018-09-18T02:40:51.885Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在看Class文件的结构时，我们会遇到这样几个概念，全限定名（Fully Qualified Name）、简单名称（Simple Name）和描述符（Descriptor），那么这些是什么东东呢？</p>
+<a id="more"></a>
+<p>首先来说全限定名，一个类的全限定名是将类全名的<code>.</code>全部替换为<code>/</code>，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">me/mingshan/cglib/SampleClass</div></pre></td></tr></table></figure>
+<p>简单名称是指没有类型和参数修饰的方法或字段名称，比如一个类的test()方法，它的简单名称是<code>test</code>。</p>
+<p>那么描述符是什么呢？下面是JVM规范的定义：</p>
+<blockquote>
+<p>A descriptor is a string representing the type of a field or method. </p>
+</blockquote>
+<p>注意描述符的概念是针对Java字节码的。描述符的作用是用来描述字段的数据类型、方法的参数列表（包括数量、类型以及顺序）和返回值。在JVM规范中，定义了两种类型的描述符，Field Descriptors 和 Method Descriptors。</p>
+<p><strong>Field Descriptors</strong></p>
+<blockquote>
+<p>A field descriptor represents the type of a class, instance, or local variable.</p>
+</blockquote>
+<p>字段描述符包含BaseType、ObjectType、ArrayType三部分，对于基本数据类型(byte、char、double、float、int、long、short、boolean)都用一个大写字母来表示，而对象用字符L加对象的全限定名和<code>；</code>来表示，具体表示如下：</p>
+<table>
+<thead>
+<tr>
+<th>FieldType term</th>
+<th>Type</th>
+<th>Interpretation </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>byte</td>
+<td>signed byte</td>
+</tr>
+<tr>
+<td>C</td>
+<td>char</td>
+<td>Unicode character code point in the Basic Multilingual Plane, encoded with UTF-16</td>
+</tr>
+<tr>
+<td>D</td>
+<td>double</td>
+<td>double-precision floating-point value</td>
+</tr>
+<tr>
+<td>F</td>
+<td>float</td>
+<td>single-precision floating-point value</td>
+</tr>
+<tr>
+<td>I</td>
+<td>int</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>J</td>
+<td>long</td>
+<td>long integer</td>
+</tr>
+<tr>
+<td>L ClassName ;</td>
+<td>reference</td>
+<td>an instance of class ClassName</td>
+</tr>
+<tr>
+<td>S</td>
+<td>short</td>
+<td>signed short</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>boolean</td>
+<td>true or false</td>
+</tr>
+<tr>
+<td>[</td>
+<td>reference</td>
+<td>one array dimension</td>
+</tr>
+</tbody>
+</table>
+<p>对于数组类型，每一个维度使用一个前置的<code>[</code>来描述，如一个定义为java.lang.String[][]类型的二维数组，将被记录为<code>[[Ljava/lang/String;</code>，一个double型数组<code>double[][][]</code>将被记录为<code>[[[D</code>。</p>
+<p><strong>Method Descriptors</strong></p>
+<blockquote>
+<p>A method descriptor contains zero or more parameter descriptors, representing the types of parameters that the method takes, and a return descriptor, representing the type of the value (if any) that the method returns.</p>
+</blockquote>
+<p>方法描述符用来描述方法，一个方法既有参数，又有返回值，那么在用描述符描述方法时，按照先参数列表，后返回值的顺序描述。参数列表按照参数的严格顺序放在一组小括号<code>()</code>内，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">( &#123;ParameterDescriptor&#125; ) ReturnDescriptor</div></pre></td></tr></table></figure>
+<p>注意如果返回值为void，那么就是一个大写字母<code>V</code>表示。</p>
+<p>例如，一个方法的定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Object m(int i, double d, Thread t) &#123;...&#125;</div></pre></td></tr></table></figure>
+<p>那么它的描述符就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(IDLjava/lang/Thread;)Ljava/lang/Object;</div></pre></td></tr></table></figure>
+<p>又如方法的参数列表和返回值为空，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void test()</div></pre></td></tr></table></figure>
+<p>它的描述符为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">()V</div></pre></td></tr></table></figure>
+<p><strong>最后上代码分析一波</strong></p>
+<p>我们新建Test类，包含一个成员变量和方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> me.mingshan.cglib;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> a;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">inc</span><span class="params">(<span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> c = a + b;</div><div class="line">        <span class="keyword">return</span> c + <span class="string">"666"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>利用<code>javap -c Test</code>来查看字节码，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class me.mingshan.cglib.Test &#123;</div><div class="line">  public me.mingshan.cglib.Test();</div><div class="line">    Code:</div><div class="line">       0: aload_0</div><div class="line">       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</div><div class="line">       4: return</div><div class="line"></div><div class="line">  public java.lang.String inc(int);</div><div class="line">    Code:</div><div class="line">       0: aload_0</div><div class="line">       1: getfield      #2                  // Field a:I</div><div class="line">       4: iload_1</div><div class="line">       5: iadd</div><div class="line">       6: istore_2</div><div class="line">       7: iload_2</div><div class="line">       8: invokedynamic #3,  0              // InvokeDynamic #0:makeConcatWithConstants:(I)Ljava/lang/String;</div><div class="line">      13: areturn</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到<code>Field a:I</code>和<code>(I)Ljava/lang/String;</code>， 没什么错^_^</p>
+<p><strong>参考：</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/javase/specs/jls/se10/html/jls-6.html#jls-6.7" target="_blank" rel="external">jls</a></li>
+<li><a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.3" target="_blank" rel="external">JVM Descriptor</a></li>
+<li>深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在看Class文件的结构时，我们会遇到这样几个概念，全限定名（Fully Qualified Name）、简单名称（Simple Name）和描述符（Descriptor），那么这些是什么东东呢？&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="jvm" scheme="http://yoursite.com/tags/jvm/"/>
+    
+  </entry>
   
   <entry>
     <title>NIO之Channels</title>
@@ -555,9 +683,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="反射" scheme="http://yoursite.com/tags/%E5%8F%8D%E5%B0%84/"/>
-    
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="反射" scheme="http://yoursite.com/tags/%E5%8F%8D%E5%B0%84/"/>
     
   </entry>
   
@@ -1052,9 +1180,9 @@
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
       <category term="IllegalMonitorStateException" scheme="http://yoursite.com/tags/IllegalMonitorStateException/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -1370,75 +1498,6 @@
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7 搭建 Zookeeper-3.4.10 单机服务</title>
-    <link href="http://yoursite.com/2018/05/12/CentOS7%20%E6%90%AD%E5%BB%BA%20Zookeeper-3.4.10%20%E5%8D%95%E6%9C%BA%E6%9C%8D%E5%8A%A1/"/>
-    <id>http://yoursite.com/2018/05/12/CentOS7 搭建 Zookeeper-3.4.10 单机服务/</id>
-    <published>2018-05-11T16:00:00.000Z</published>
-    <updated>2018-05-13T01:28:39.582Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。</p>
-<a id="more"></a>
-<h3 id="Zookeeper的安装"><a href="#Zookeeper的安装" class="headerlink" title="Zookeeper的安装"></a>Zookeeper的安装</h3><ol>
-<li>下载Zookeeper</li>
-</ol>
-<p>下载最新版本的ZooKeeper，这里有两个镜像可以选择</p>
-<blockquote>
-<p>清华镜像:<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/</a></p>
-<p>阿里镜像:<a href="https://mirrors.aliyun.com/apache/zookeeper/" target="_blank" rel="external">https://mirrors.aliyun.com/apache/zookeeper/</a></p>
-</blockquote>
-<p>我就选择阿里镜像进行安装。</p>
-<p>首先在<strong>/usr/local</strong>目录下创建<strong>services</strong> 文件夹和其子文件<strong>zookeeper</strong>,然后进入该文件夹，<br>最后用wget进行下载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /usr/local/services/zookeeper</div><div class="line"></div><div class="line">cd /usr/local/services/zookeeper</div><div class="line"></div><div class="line">wget --no-check-certificate  https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</div></pre></td></tr></table></figure>
-<ol>
-<li>提取tar文件</li>
-</ol>
-<p>接下来解压<strong>zookeeper-3.4.10.tar.gz</strong>， 首先进入到该文件夹, 然后进行解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/services/zookeeper</div><div class="line"></div><div class="line">tar -zxf  zookeeper-3.4.10.tar.gz</div><div class="line"></div><div class="line">cd zookeeper-3.4.10</div></pre></td></tr></table></figure>
-<p>进入到解压后的文件夹后，创建<strong>data</strong>文件夹 用于存储数据文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir data</div></pre></td></tr></table></figure>
-<p>创建<strong>logs</strong>文件夹 用于存储日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir logs</div></pre></td></tr></table></figure>
-<ol>
-<li>创建配置文件</li>
-</ol>
-<p>使用命令 vim conf/zoo.cfg 创建配置文件并打开, 其实该文件夹下有了一个zoo_sample.cfg示例配置文件，我们还是新创建一个吧。</p>
-<p>编辑内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tickTime = 2000</div><div class="line">dataDir = /usr/local/services/zookeeper/zookeeper-3.4.10/data</div><div class="line">dataLogDir = /usr/local/services/zookeeper/zookeeper-3.4.10/logs</div><div class="line">tickTime = 2000</div><div class="line">clientPort = 2181</div><div class="line">initLimit = 5</div><div class="line">syncLimit = 2</div></pre></td></tr></table></figure>
-<h3 id="Zookeeper服务"><a href="#Zookeeper服务" class="headerlink" title="Zookeeper服务"></a>Zookeeper服务</h3><ol>
-<li>启动服务</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh start</div></pre></td></tr></table></figure>
-<ol>
-<li>连接服务</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkCli.sh</div></pre></td></tr></table></figure>
-<ol>
-<li>查看服务状态</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh status</div></pre></td></tr></table></figure>
-<ol>
-<li>停止服务</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/services/zookeeper/zookeeper-3.4.10/bin/zkServer.sh stop</div></pre></td></tr></table></figure>
-<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="https://segmentfault.com/a/1190000010791627" target="_blank" rel="external">https://segmentfault.com/a/1190000010791627</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;由于项目用到了Dubbo,而Dubbo的服务的注册与发现我用了Zookeeper，所以我在部署Dubbo服务的时候，就必须安装Zookeeper,本文记录下我在CentOS7 搭建 Zookeeper-3.4.10 单机服务的过程。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-      <category term="Zookeeper" scheme="http://yoursite.com/tags/Zookeeper/"/>
     
   </entry>
   
