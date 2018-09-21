@@ -110,7 +110,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="Arthas 是Alibaba开源的Java诊断工具，可以查看Java进程的一些信息，例如运行情况、JVM相关参数、线程等信息，采用命令行交互模式，在Linux用着十分方便。">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/arthas-start.png?raw=true">
-<meta property="og:updated_time" content="2018-09-21T04:31:55.236Z">
+<meta property="og:updated_time" content="2018-09-21T04:44:03.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Arthas的使用并对JVM监控">
 <meta name="twitter:description" content="Arthas 是Alibaba开源的Java诊断工具，可以查看Java进程的一些信息，例如运行情况、JVM相关参数、线程等信息，采用命令行交互模式，在Linux用着十分方便。">
@@ -422,7 +422,7 @@
 <a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在Linux系统中，首先创建一个文件下，然后在该文件下执行如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L https://alibaba.github.io/arthas/install.sh | sh</div></pre></td></tr></table></figure>
-<p>该命令会下载<code>as.sh</code>脚本，执行该脚本的用户需要和目标进程具有相同的权限。比如以admin用户来执行： sudo su admin &amp;&amp; ./as.sh 或 sudo -u admin -EH ./as.sh。 详细的启动脚本说明，请参考这里。 如果attatch不上目标进程，可以查看~/logs/arthas/ 目录下的日志。</p>
+<p>该命令会下载<code>as.sh</code>脚本，执行该脚本的用户需要和目标进程具有相同的权限。比如以admin用户来执行： sudo su admin &amp;&amp; ./as.sh 或 sudo -u admin -EH ./as.sh。 详细的启动脚本说明，请参考<a href="https://alibaba.github.io/arthas/start-arthas.html" target="_blank" rel="external">这里</a>。 如果attatch不上目标进程，可以查看~/logs/arthas/ 目录下的日志。</p>
 <h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>接下来就需要执行<code>/as.sh</code>脚本，注意后面传入java 进程</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@ubuntu:/usr/soft/arthas# ./as.sh 2616</div></pre></td></tr></table></figure>
 <p>启动画面如下图所示：</p>
