@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
 
@@ -10,15 +10,9 @@
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
 
 
-
-  
-  
-    
-    
-  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -43,36 +37,11 @@
 
 
 
+
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
@@ -81,7 +50,22 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
 
 
   <meta name="keywords" content="java,RESTful-API,Swagger,SpringMVC," />
@@ -89,13 +73,6 @@
 
 
 
-
-  <link rel="alternate" href="/atom.xml" title="Mingshan's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -109,6 +86,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="认识RESTful APIRESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。 参考RESTful API规范下面是两篇文章讲解RESTful API的，推荐：  RESTful API 设计指南 RESTfu">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="https://ip.freep.cn/590836/snipaste20171008_163312.png">
 <meta property="og:image" content="https://ip.freep.cn/590836/snipaste20171008_163351.png">
 <meta property="og:updated_time" content="2018-03-26T14:48:07.162Z">
@@ -124,9 +102,11 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    motion: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
       author: 'Author'
@@ -159,12 +139,6 @@
 
 
 
-
-
-
-
-
-
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -174,7 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -220,32 +194,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             About
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
           </a>
         </li>
       
@@ -259,45 +213,31 @@
           </a>
         </li>
       
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            Search
+            Categories
           </a>
         </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
       
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -321,7 +261,11 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,6 +348,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
           
 
@@ -413,6 +362,9 @@
       </header>
     
 
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -422,8 +374,8 @@
         <h2 id="认识RESTful-API"><a href="#认识RESTful-API" class="headerlink" title="认识RESTful API"></a>认识RESTful API</h2><p>RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。</p>
 <h2 id="参考RESTful-API规范"><a href="#参考RESTful-API规范" class="headerlink" title="参考RESTful API规范"></a>参考RESTful API规范</h2><p>下面是两篇文章讲解RESTful API的，推荐：</p>
 <ol>
-<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">RESTful API 设计指南</a></li>
-<li><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API" target="_blank" rel="external">RESTful API 设计最佳实践</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener">RESTful API 设计指南</a></li>
+<li><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API" target="_blank" rel="noopener">RESTful API 设计最佳实践</a></li>
 </ol>
 <h2 id="SpringMVC实现RESTful-API"><a href="#SpringMVC实现RESTful-API" class="headerlink" title="SpringMVC实现RESTful API"></a>SpringMVC实现RESTful API</h2><p>SpringMVC提供了一些注解来实现RESTful API, 例如<strong>@RestController</strong>，同时我们用Swagger来生成API文档，这样更加利于测试API。</p>
 <h3 id="常见swagger注解一览与使用"><a href="#常见swagger注解一览与使用" class="headerlink" title="常见swagger注解一览与使用"></a>常见swagger注解一览与使用</h3><p><strong>最常用的5个注解</strong></p>
@@ -433,50 +385,56 @@
 <p><strong>其中@ApiOperation和@ApiParam参数说明</strong></p>
 <p>@ApiOperation和@ApiParam为添加的API相关注解，参数说明如下：<br>@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；<br>@ApiParam(required = “是否必须参数”, name = “参数名称”, value = “参数具体描述”</p>
 <h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>首先在pom.xml文件中添加swagger依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- swagger --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mangofactory<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger-springmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="Swagger-UI配置"><a href="#Swagger-UI配置" class="headerlink" title="Swagger-UI配置"></a>Swagger-UI配置</h3><p>首先从<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="external">Swagger-UI下载地址</a>下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。</p>
-<p>修改swagger/index.html文件，默认是从连接<a href="http://petstore.swagger.io/v2/swagger.json获取" target="_blank" rel="external">http://petstore.swagger.io/v2/swagger.json获取</a> API 的JSON，这里需要将url值修改为<a href="http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs" target="_blank" rel="external">http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：http://localhost:8080/lightblog/api-docs</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- swagger --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mangofactory<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger-springmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Swagger-UI配置"><a href="#Swagger-UI配置" class="headerlink" title="Swagger-UI配置"></a>Swagger-UI配置</h3><p>首先从<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="noopener">Swagger-UI下载地址</a>下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。</p>
+<p>修改swagger/index.html文件，默认是从连接<a href="http://petstore.swagger.io/v2/swagger.json获取" target="_blank" rel="noopener">http://petstore.swagger.io/v2/swagger.json获取</a> API 的JSON，这里需要将url值修改为http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：<a href="http://localhost:8080/lightblog/api-docs" target="_blank" rel="noopener">http://localhost:8080/lightblog/api-docs</a></p>
 <h3 id="编写swagger配置文件"><a href="#编写swagger配置文件" class="headerlink" title="编写swagger配置文件"></a>编写swagger配置文件</h3><p>配置完Swagger-UI后，我们需要配置Swagger，并将其交给Spring进行管理。<br><a id="more"></a><br>SwaggerConfig类代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.lightblog.swagger;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.configuration.SpringSwaggerConfig;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.models.dto.ApiInfo;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.EnableSwagger;</div><div class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.EnableWebMvc;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@Description</span>:</div><div class="line"> * <span class="doctag">@Author</span>: Minsghan</div><div class="line"> * <span class="doctag">@Date</span>: Created in 16:40 2017/10/3</div><div class="line"> * <span class="doctag">@Modified</span> By:</div><div class="line"> */</div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableWebMvc</span><span class="comment">//如果没加这个会报错</span></div><div class="line"><span class="meta">@EnableSwagger</span><span class="comment">//上面三个注释都是必要的</span></div><div class="line"><span class="meta">@ComponentScan</span>(basePackages=<span class="string">"com.lightblog.controller"</span>)<span class="comment">//添加这个注释，会自动扫描该类中的每一个方法自动生成api文档</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> SpringSwaggerConfig springSwaggerConfig;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Required to autowire SpringSwaggerConfig</div><div class="line">     */</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSpringSwaggerConfig</span><span class="params">(SpringSwaggerConfig springSwaggerConfig)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">this</span>.springSwaggerConfig = springSwaggerConfig;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Every SwaggerSpringMvcPlugin bean is picked up by the swagger-mvc</div><div class="line">     * framework - allowing for multiple swagger groups i.e. same code base</div><div class="line">     * multiple swagger resource listings.</div><div class="line">     */</div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> SwaggerSpringMvcPlugin <span class="title">customImplementation</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SwaggerSpringMvcPlugin(<span class="keyword">this</span>.springSwaggerConfig)</div><div class="line">                .apiInfo(apiInfo())</div><div class="line">                .includePatterns(<span class="string">".*?"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        ApiInfo apiInfo = <span class="keyword">new</span> ApiInfo(</div><div class="line">                <span class="string">"springmvc搭建swagger"</span>,</div><div class="line">                <span class="string">"spring-API swagger测试"</span>,</div><div class="line">                <span class="string">"My Apps API terms of service"</span>,</div><div class="line">                <span class="string">"499445428@qq.com"</span>,</div><div class="line">                <span class="string">"web app"</span>,</div><div class="line">                <span class="string">"My Apps API License URL"</span>);</div><div class="line">        <span class="keyword">return</span> apiInfo;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lightblog.swagger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mangofactory.swagger.configuration.SpringSwaggerConfig;</span><br><span class="line"><span class="keyword">import</span> com.mangofactory.swagger.models.dto.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.EnableSwagger;</span><br><span class="line"><span class="keyword">import</span> com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.EnableWebMvc;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Minsghan</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Created in 16:40 2017/10/3</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> By:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span><span class="comment">//如果没加这个会报错</span></span><br><span class="line"><span class="meta">@EnableSwagger</span><span class="comment">//上面三个注释都是必要的</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages=<span class="string">"com.lightblog.controller"</span>)<span class="comment">//添加这个注释，会自动扫描该类中的每一个方法自动生成api文档</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> SpringSwaggerConfig springSwaggerConfig;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Required to autowire SpringSwaggerConfig</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSpringSwaggerConfig</span><span class="params">(SpringSwaggerConfig springSwaggerConfig)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.springSwaggerConfig = springSwaggerConfig;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Every SwaggerSpringMvcPlugin bean is picked up by the swagger-mvc</span></span><br><span class="line"><span class="comment">     * framework - allowing for multiple swagger groups i.e. same code base</span></span><br><span class="line"><span class="comment">     * multiple swagger resource listings.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SwaggerSpringMvcPlugin <span class="title">customImplementation</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SwaggerSpringMvcPlugin(<span class="keyword">this</span>.springSwaggerConfig)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .includePatterns(<span class="string">".*?"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ApiInfo apiInfo = <span class="keyword">new</span> ApiInfo(</span><br><span class="line">                <span class="string">"springmvc搭建swagger"</span>,</span><br><span class="line">                <span class="string">"spring-API swagger测试"</span>,</span><br><span class="line">                <span class="string">"My Apps API terms of service"</span>,</span><br><span class="line">                <span class="string">"499445428@qq.com"</span>,</span><br><span class="line">                <span class="string">"web app"</span>,</span><br><span class="line">                <span class="string">"My Apps API License URL"</span>);</span><br><span class="line">        <span class="keyword">return</span> apiInfo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>将 springSwaggerConfig加载到spring容器，配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 将 springSwaggerConfig加载到spring容器 --&gt;</div><div class="line">&lt;bean class=&quot;com.mangofactory.swagger.configuration.SpringSwaggerConfig&quot; /&gt;</div><div class="line">&lt;!-- 将自定义的swagger配置类加载到spring容器 --&gt;</div><div class="line">&lt;bean class=&quot;com.lightblog.swagger.SwaggerConfig&quot; /&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 将 springSwaggerConfig加载到spring容器 --&gt;</span><br><span class="line">&lt;bean class=&quot;com.mangofactory.swagger.configuration.SpringSwaggerConfig&quot; /&gt;</span><br><span class="line">&lt;!-- 将自定义的swagger配置类加载到spring容器 --&gt;</span><br><span class="line">&lt;bean class=&quot;com.lightblog.swagger.SwaggerConfig&quot; /&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="Controller实现REST-API以及与Swagger集成"><a href="#Controller实现REST-API以及与Swagger集成" class="headerlink" title="Controller实现REST API以及与Swagger集成"></a>Controller实现REST API以及与Swagger集成</h3><p>在Controller中，我们不需要返回页面了，而是要返回json格式的数据</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.lightblog.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.lightblog.model.User;</div><div class="line"><span class="keyword">import</span> com.lightblog.service.UserService;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.Api;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiOperation;</div><div class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiParam;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpHeaders;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.MediaType;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</div><div class="line"><span class="keyword">import</span> org.springframework.web.util.UriComponentsBuilder;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@Description</span>: The api of user.</div><div class="line"> * <span class="doctag">@Author</span>: Minsghan</div><div class="line"> * <span class="doctag">@Date</span>: Created in 15:27 2017/10/3</div><div class="line"> * <span class="doctag">@Modified</span> By:</div><div class="line"> */</div><div class="line"><span class="meta">@Api</span>(value=<span class="string">"user"</span>)</div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/api/user"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> UserService userService;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Get list of user.</div><div class="line">     * <span class="doctag">@param</span>:  null</div><div class="line">     * <span class="doctag">@Date</span>: 15:16 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.GET)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取所有用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get users"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; listAllUsers() &#123;</div><div class="line">        List&lt;User&gt; users = userService.findAll();</div><div class="line">        <span class="keyword">if</span>(users.isEmpty())&#123;</div><div class="line">            <span class="comment">// You many decide to return HttpStatus.NOT_FOUND</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(HttpStatus.NO_CONTENT);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(users, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Get information of user by id.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> id</div><div class="line">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get user by id"</span>, response=User.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">getUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</div><div class="line">        logger.info(<span class="string">"Fetching User with id "</span> + id);</div><div class="line">        User user = userService.findById(id);</div><div class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(user, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Create a user.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.POST)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"新增用户"</span>, httpMethod=<span class="string">"POST"</span>, notes=<span class="string">"Create user"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">createUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户信息"</span>,name=<span class="string">"User"</span>)</span></span></div><div class="line">                                               @RequestBody User user, UriComponentsBuilder ucBuilder) &#123;</div><div class="line">        logger.info(<span class="string">"Creating User "</span> + user.getName());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (userService.isUserExist(user)) &#123;</div><div class="line">            System.out.println(<span class="string">"A User with name "</span> + user.getName() + <span class="string">" already exist"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.CONFLICT);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        userService.insert(user);</div><div class="line"></div><div class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</div><div class="line">        headers.setLocation(ucBuilder.path(<span class="string">"/user/&#123;id&#125;"</span>).buildAndExpand(user.getId()).toUri());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(headers, HttpStatus.CREATED);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Update a user.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:33 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.PUT)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"更新用户信息"</span>, httpMethod=<span class="string">"PUT"</span>, notes=<span class="string">"Update user"</span>, response=User.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">updateUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id,</span></div><div class="line">                                           @RequestBody User user) &#123;</div><div class="line">        logger.info(<span class="string">"Updating User "</span> + id);</div><div class="line"></div><div class="line">        User currentUser = userService.findById(id);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (currentUser == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        currentUser.setName(user.getName());</div><div class="line">        currentUser.setAge(user.getAge());</div><div class="line"></div><div class="line">        userService.update(currentUser);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(currentUser, HttpStatus.OK);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@Author</span>: Mingshan</div><div class="line">     * <span class="doctag">@Description</span>: Delete a user by id.</div><div class="line">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</div><div class="line">     * <span class="doctag">@Date</span>: 15:32 2017/10/3</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.DELETE)</div><div class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"删除用户"</span>, httpMethod=<span class="string">"DELETE"</span>, notes=<span class="string">"Delete user by id"</span>, response=ResponseEntity.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">deleteUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</div><div class="line">        logger.info(<span class="string">"Fetching &amp; Deleting User with id "</span> + id);</div><div class="line"></div><div class="line">        User user = userService.findById(id);</div><div class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</div><div class="line">            logger.info(<span class="string">"Unable to delete. User with id "</span> + id + <span class="string">" not found"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NOT_FOUND);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        userService.delete(id);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NO_CONTENT);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lightblog.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.lightblog.model.User;</span><br><span class="line"><span class="keyword">import</span> com.lightblog.service.UserService;</span><br><span class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.Api;</span><br><span class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiOperation;</span><br><span class="line"><span class="keyword">import</span> com.wordnik.swagger.annotations.ApiParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpHeaders;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.MediaType;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.util.UriComponentsBuilder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: The api of user.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Minsghan</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Created in 15:27 2017/10/3</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> By:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Api</span>(value=<span class="string">"user"</span>)</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/api/user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Author</span>: Mingshan</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: Get list of user.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:  null</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Date</span>: 15:16 2017/10/3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取所有用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get users"</span>, response=ResponseEntity.class)</span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; listAllUsers() &#123;</span><br><span class="line">        List&lt;User&gt; users = userService.findAll();</span><br><span class="line">        <span class="keyword">if</span>(users.isEmpty())&#123;</span><br><span class="line">            <span class="comment">// You many decide to return HttpStatus.NOT_FOUND</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(HttpStatus.NO_CONTENT);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;List&lt;User&gt;&gt;(users, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Author</span>: Mingshan</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: Get information of user by id.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"获取用户信息"</span>, httpMethod=<span class="string">"GET"</span>, notes=<span class="string">"Get user by id"</span>, response=User.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">getUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"Fetching User with id "</span> + id);</span><br><span class="line">        User user = userService.findById(id);</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(user, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Author</span>: Mingshan</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: Create a user.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Date</span>: 15:34 2017/10/3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"新增用户"</span>, httpMethod=<span class="string">"POST"</span>, notes=<span class="string">"Create user"</span>, response=ResponseEntity.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">createUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户信息"</span>,name=<span class="string">"User"</span>)</span></span></span><br><span class="line"><span class="function">                                               @RequestBody User user, UriComponentsBuilder ucBuilder) </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"Creating User "</span> + user.getName());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (userService.isUserExist(user)) &#123;</span><br><span class="line">            System.out.println(<span class="string">"A User with name "</span> + user.getName() + <span class="string">" already exist"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.CONFLICT);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        userService.insert(user);</span><br><span class="line"></span><br><span class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">        headers.setLocation(ucBuilder.path(<span class="string">"/user/&#123;id&#125;"</span>).buildAndExpand(user.getId()).toUri());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(headers, HttpStatus.CREATED);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Author</span>: Mingshan</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: Update a user.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Date</span>: 15:33 2017/10/3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.PUT)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"更新用户信息"</span>, httpMethod=<span class="string">"PUT"</span>, notes=<span class="string">"Update user"</span>, response=User.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title">updateUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id,</span></span><br><span class="line"><span class="function">                                           @RequestBody User user) </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"Updating User "</span> + id);</span><br><span class="line"></span><br><span class="line">        User currentUser = userService.findById(id);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (currentUser == <span class="keyword">null</span>) &#123;</span><br><span class="line">            logger.info(<span class="string">"User with id "</span> + id + <span class="string">" not found"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(HttpStatus.NOT_FOUND);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        currentUser.setName(user.getName());</span><br><span class="line">        currentUser.setAge(user.getAge());</span><br><span class="line"></span><br><span class="line">        userService.update(currentUser);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;User&gt;(currentUser, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Author</span>: Mingshan</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: Delete a user by id.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>:  * <span class="doctag">@param</span> null</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Date</span>: 15:32 2017/10/3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.DELETE)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value=<span class="string">"删除用户"</span>, httpMethod=<span class="string">"DELETE"</span>, notes=<span class="string">"Delete user by id"</span>, response=ResponseEntity.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">deleteUser</span><span class="params">(@ApiParam(required=<span class="keyword">true</span>,value=<span class="string">"用户ID"</span>,name=<span class="string">"id"</span>)</span>@<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">long</span> id) </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"Fetching &amp; Deleting User with id "</span> + id);</span><br><span class="line"></span><br><span class="line">        User user = userService.findById(id);</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">            logger.info(<span class="string">"Unable to delete. User with id "</span> + id + <span class="string">" not found"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NOT_FOUND);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        userService.delete(id);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Void&gt;(HttpStatus.NO_CONTENT);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="运行截图"><a href="#运行截图" class="headerlink" title="运行截图"></a>运行截图</h3><p><img src="https://ip.freep.cn/590836/snipaste20171008_163312.png" alt="image"><br><img src="https://ip.freep.cn/590836/snipaste20171008_163351.png" alt="image"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="http://blog.csdn.net/fansunion/article/details/51923720" target="_blank" rel="external">http://blog.csdn.net/fansunion/article/details/51923720</a></li>
-<li><a href="http://blog.csdn.net/w605283073/article/details/51338765" target="_blank" rel="external">http://blog.csdn.net/w605283073/article/details/51338765</a></li>
+<li><a href="http://blog.csdn.net/fansunion/article/details/51923720" target="_blank" rel="noopener">http://blog.csdn.net/fansunion/article/details/51923720</a></li>
+<li><a href="http://blog.csdn.net/w605283073/article/details/51338765" target="_blank" rel="noopener">http://blog.csdn.net/w605283073/article/details/51338765</a></li>
 </ol>
-<p>官网：<a href="http://swagger.io/" target="_blank" rel="external">http://swagger.io/</a></p>
+<p>官网：<a href="http://swagger.io/" target="_blank" rel="noopener">http://swagger.io/</a></p>
 <p>GitHub：</p>
-<p>swagger-springmvc:<a href="https://github.com/martypitt/swagger-springmvc" target="_blank" rel="external">https://github.com/martypitt/swagger-springmvc</a></p>
-<p>swagger-ui:<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="external">https://github.com/swagger-api/swagger-ui</a></p>
-<p>swagger-core:<a href="https://github.com/swagger-api/swagger-core" target="_blank" rel="external">https://github.com/swagger-api/swagger-core</a></p>
-<p>swagger-spec：<a href="https://github.com/swagger-api/swagger-spec" target="_blank" rel="external">https://github.com/swagger-api/swagger-spec</a></p>
+<p>swagger-springmvc:<a href="https://github.com/martypitt/swagger-springmvc" target="_blank" rel="noopener">https://github.com/martypitt/swagger-springmvc</a></p>
+<p>swagger-ui:<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="noopener">https://github.com/swagger-api/swagger-ui</a></p>
+<p>swagger-core:<a href="https://github.com/swagger-api/swagger-core" target="_blank" rel="noopener">https://github.com/swagger-api/swagger-core</a></p>
+<p>swagger-spec：<a href="https://github.com/swagger-api/swagger-spec" target="_blank" rel="noopener">https://github.com/swagger-api/swagger-spec</a></p>
 
       
     </div>
+    
+    
+    
 
-    <div>
-      
-        
+    
 
-      
-    </div>
+    
 
-    <div>
-      
-        
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mingshan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/" title="利用SpringMVC实现RESTful API，并与Swagger集成生成API文档">http://yoursite.com/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
+      </div>
+    
 
     <footer class="post-footer">
       
@@ -522,6 +480,10 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -537,16 +499,19 @@
 
 
           
-  <div class="comments" id="comments">
-    
+
+  
+    <div class="comments" id="comments">
       <div id="disqus_thread">
         <noscript>
           Please enable JavaScript to view the
           <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
         </noscript>
       </div>
-    
-  </div>
+    </div>
+
+  
+
 
 
         </div>
@@ -562,108 +527,101 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
             Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Mingshan" />
-          <p class="site-author-name" itemprop="name">Mingshan</p>
-           
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Mingshan" />
+            
+              <p class="site-author-name" itemprop="name">Mingshan</p>
               <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">63</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
           </div>
-        
 
-        <div class="links-of-author motion-element">
-          
+          <nav class="site-state motion-element">
+
             
-              <span class="links-of-author-item">
-                <a href="https://github.com/mstao" target="_blank" title="github">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  github
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
-              </span>
+              </div>
             
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/u/5388127605" target="_blank" title="weibo">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  weibo
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">categories</span>
                 </a>
-              </span>
+              </div>
             
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
           
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/mstao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:mingshanme@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
+          
+
         </div>
-
-        
-        
-
-        
-        
-
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
-        
-
       </section>
 
       
@@ -696,37 +654,56 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-<div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Mingshan</span>
+
+  
 </div>
 
 
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-&nbsp; | &nbsp;
-<div id="busuanzi_container_site_pv">
-   <span id="busuanzi_value_site_pv"></span> times
 
-</div>
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
 
         
       </div>
@@ -737,6 +714,8 @@
         <i class="fa fa-arrow-up"></i>
         
       </div>
+    
+
     
 
   </div>
@@ -771,46 +750,58 @@
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
   
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
 
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
@@ -854,333 +845,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 
@@ -1193,11 +867,13 @@
   
 
   
-
   
 
   
 
   
+
+  
+
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/miku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
 </html>

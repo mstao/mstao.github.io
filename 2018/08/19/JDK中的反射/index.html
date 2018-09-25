@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
 
@@ -10,15 +10,9 @@
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
 
 
-
-  
-  
-    
-    
-  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -43,36 +37,11 @@
 
 
 
+
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
@@ -81,7 +50,22 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
 
 
   <meta name="keywords" content="java,反射," />
@@ -89,13 +73,6 @@
 
 
 
-
-  <link rel="alternate" href="/atom.xml" title="Mingshan's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -109,6 +86,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/08/19/JDK中的反射/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="反射是Java语言中一个比较重要的特性，它允许对正在运行的Java进行观测，甚至动态修改程序，即在运行态，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性。">
+<meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2018-08-19T14:19:33.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK中的反射">
@@ -121,9 +99,11 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    motion: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
       author: 'Author'
@@ -156,12 +136,6 @@
 
 
 
-
-
-
-
-
-
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -171,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,32 +191,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             About
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
           </a>
         </li>
       
@@ -256,45 +210,31 @@
           </a>
         </li>
       
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            Search
+            Categories
           </a>
         </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
       
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -318,7 +258,11 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/JDK中的反射/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,6 +345,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
           
 
@@ -410,6 +359,9 @@
       </header>
     
 
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -427,22 +379,22 @@
 <p>例如，Integer.TYPE 指向 int.class。对于数组类型来说，可以使用类名 +“[ ].class”来访问，如 int[ ].class。</p>
 <p>除此之外，Class 类和 java.lang.reflect 包中还提供了许多返回 Class 对象的方法。例如，对于数组类的 Class 对象，调用 Class.getComponentType() 方法可以获得数组元素的类型。</p>
 <p>我们还可以利用自定义Classloader来加载我们的类，然后可以获取到该类的Class对象。类似于下面的代码，注意代码可能会抛出异常。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">MyClassLoader classLoader = <span class="keyword">new</span> MyClassLoader(workspace + <span class="string">"/src/me/mingshan"</span>);</div><div class="line">Class&lt;?&gt; proxy0Class = classLoader.findClass(<span class="string">"$Proxy0"</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyClassLoader classLoader = <span class="keyword">new</span> MyClassLoader(workspace + <span class="string">"/src/me/mingshan"</span>);</span><br><span class="line">Class&lt;?&gt; proxy0Class = classLoader.findClass(<span class="string">"$Proxy0"</span>);</span><br></pre></td></tr></table></figure>
 <h3 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h3><p>拿到Class对象后，我们可以进行很多操作，比如生成该类的实例，访问字段的值，调用方法等。</p>
 <h4 id="生成类的实例"><a href="#生成类的实例" class="headerlink" title="生成类的实例"></a>生成类的实例</h4><p>通过类的Class对象可以生成类的实例，有两种方式</p>
 <ol>
 <li>调用的是无参数的构造函数进行实例化</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clazz.newInstance();</div></pre></td></tr></table></figure>
-<ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clazz.newInstance();</span><br></pre></td></tr></table></figure>
+<ol start="2">
 <li>可以选择调用哪个构造函数进行实例化，获取构造器可以传入参数来选择</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Constructor c = clazz.getConstructor();</div><div class="line">Object obj = c.newInstance();</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Constructor c = clazz.getConstructor();</span><br><span class="line">Object obj = c.newInstance();</span><br></pre></td></tr></table></figure>
 <h4 id="访问类的成员"><a href="#访问类的成员" class="headerlink" title="访问类的成员"></a>访问类的成员</h4><p>通过调用<code>getFiles()/getgetConstructors()/getMethods()</code>来访问该类的成员。同时我们会发现有些方法会带上Declared，这表示调用该方法不会返回父类的成员。</p>
 <p>当然我们也可以直接获取类的某个成员，比如成员和方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取字段</span></div><div class="line">Field field = clazz.getField(<span class="string">"name"</span>);</div><div class="line"></div><div class="line"><span class="comment">// 获取方法</span></div><div class="line">Method method=clazz.getMethod(<span class="string">"studyHard"</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取字段</span></span><br><span class="line">Field field = clazz.getField(<span class="string">"name"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取方法</span></span><br><span class="line">Method method=clazz.getMethod(<span class="string">"studyHard"</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;);</span><br></pre></td></tr></table></figure>
 <p>还有一点，我们可以获取该类实现的接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取该类所实现的所有接口</span></div><div class="line">Class&lt;?&gt; interfaces[] = clazz.getInterfaces();</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取该类所实现的所有接口</span></span><br><span class="line">Class&lt;?&gt; interfaces[] = clazz.getInterfaces();</span><br></pre></td></tr></table></figure>
 <h5 id="对类成员操作"><a href="#对类成员操作" class="headerlink" title="对类成员操作"></a>对类成员操作</h5><p>当获取到类成员后，我们可以进行下一步操作。</p>
 <ul>
 <li>使用 Constructor/Field/Method.setAccessible(true) 来绕开 Java 语言的访问限制。</li>
@@ -452,31 +404,31 @@
 </ul>
 <h3 id="获取泛型"><a href="#获取泛型" class="headerlink" title="获取泛型"></a>获取泛型</h3><p>在Java中泛型有擦除机制，那么我们在运行时可不可以获取泛型的具体类型呢？答案是可以的。原因是Class类文件结构中有一个叫Signature的属性。它的作用是存储一个方法在字节码层面的特征签名。这个属性中保存的参数参数类型并不是原生类型，而是包括了参数化类型的信息。</p>
 <h4 id="获取成员变量的泛型信息"><a href="#获取成员变量的泛型信息" class="headerlink" title="获取成员变量的泛型信息"></a>获取成员变量的泛型信息</h4><p>比如在一个类Test中，有一个成员变量list，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> List&lt;String&gt; list;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;String&gt; list;</span><br></pre></td></tr></table></figure>
 <p>现在我想直接想获取List的泛型，怎么获取呢？实现代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Type t = Test.class.getDeclaredField(<span class="string">"list"</span>).getGenericType();  </div><div class="line"><span class="keyword">if</span> (ParameterizedType.class.isAssignableFrom(t.getClass())) &#123;</div><div class="line">    <span class="keyword">for</span> (Type t1 : ((ParameterizedType) t).getActualTypeArguments()) &#123;</div><div class="line">        System.out.print(t1 + <span class="string">","</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Type t = Test.class.getDeclaredField(<span class="string">"list"</span>).getGenericType();  </span><br><span class="line"><span class="keyword">if</span> (ParameterizedType.class.isAssignableFrom(t.getClass())) &#123;</span><br><span class="line">    <span class="keyword">for</span> (Type t1 : ((ParameterizedType) t).getActualTypeArguments()) &#123;</span><br><span class="line">        System.out.print(t1 + <span class="string">","</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>由于可能会有多个泛型参数，例如Map，所以返回是一个数组。</p>
 <h4 id="获取类的泛型信息"><a href="#获取类的泛型信息" class="headerlink" title="获取类的泛型信息"></a>获取类的泛型信息</h4><p>一个类是泛型类，在该类中我们可能需要获取这个泛型到底是啥，然后继续进行下面的逻辑，一个应用是Hibernate动态拼接HQL，需要知道泛型信息。<br>那么如何操作？代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 通过反射获取泛型实例</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Genericity</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</div><div class="line">    <span class="keyword">protected</span> Class clazz;</div><div class="line"></div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">    <span class="comment">/**</span></div><div class="line">	 * 把泛型的参数提取出来的过程放入到构造函数中写，因为</div><div class="line">	 * 当子类创建对象的时候，直接调用父类的构造函数</div><div class="line">	 */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Genericity</span><span class="params">()</span> </span>&#123;</div><div class="line">    	<span class="comment">// 通过反射机制获取子类传递过来的实体类的类型信息</span></div><div class="line">        ParameterizedType type = (ParameterizedType) <span class="keyword">this</span>.getClass().getGenericSuperclass();</div><div class="line">        <span class="comment">//得到t的实际类型</span></div><div class="line">        clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[<span class="number">0</span>];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 获取指定实例的所有属性名及对应值的Map实例 </div><div class="line">     * <span class="doctag">@param</span> entity 实例</div><div class="line">     * <span class="doctag">@return</span> 字段名及对应值的Map实例</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title">getFieldValueMap</span><span class="params">(T entity)</span> </span>&#123;</div><div class="line">        <span class="comment">// key是属性名，value是对应值</span></div><div class="line">        Map&lt;String, Object&gt; fieldValueMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</div><div class="line"></div><div class="line">        <span class="comment">// 获取当前加载的实体类中所有属性</span></div><div class="line">        Field[] fields = <span class="keyword">this</span>.clazz.getDeclaredFields();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fields.length; i++) &#123;</div><div class="line">            Field f = fields[i];</div><div class="line">            <span class="comment">// 属性名 </span></div><div class="line">            String key = f.getName();</div><div class="line">            <span class="comment">//属性值 </span></div><div class="line">            Object value = <span class="keyword">null</span>; </div><div class="line">            <span class="comment">// 忽略序列化版本ID号</span></div><div class="line">            <span class="keyword">if</span> (! <span class="string">"serialVersionUID"</span>.equals(key)) &#123;</div><div class="line">            	<span class="comment">// 取消Java语言访问检查</span></div><div class="line">            	f.setAccessible(<span class="keyword">true</span>);</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    value =f.get(entity);</div><div class="line">                &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">                fieldValueMap.put(key, value);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> fieldValueMap;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过反射获取泛型实例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Genericity</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</span><br><span class="line">    <span class="keyword">protected</span> Class clazz;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 把泛型的参数提取出来的过程放入到构造函数中写，因为</span></span><br><span class="line"><span class="comment">	 * 当子类创建对象的时候，直接调用父类的构造函数</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Genericity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	<span class="comment">// 通过反射机制获取子类传递过来的实体类的类型信息</span></span><br><span class="line">        ParameterizedType type = (ParameterizedType) <span class="keyword">this</span>.getClass().getGenericSuperclass();</span><br><span class="line">        <span class="comment">//得到t的实际类型</span></span><br><span class="line">        clazz = (Class&lt;T&gt;) type.getActualTypeArguments()[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取指定实例的所有属性名及对应值的Map实例 </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> entity 实例</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 字段名及对应值的Map实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title">getFieldValueMap</span><span class="params">(T entity)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// key是属性名，value是对应值</span></span><br><span class="line">        Map&lt;String, Object&gt; fieldValueMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取当前加载的实体类中所有属性</span></span><br><span class="line">        Field[] fields = <span class="keyword">this</span>.clazz.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">            Field f = fields[i];</span><br><span class="line">            <span class="comment">// 属性名 </span></span><br><span class="line">            String key = f.getName();</span><br><span class="line">            <span class="comment">//属性值 </span></span><br><span class="line">            Object value = <span class="keyword">null</span>; </span><br><span class="line">            <span class="comment">// 忽略序列化版本ID号</span></span><br><span class="line">            <span class="keyword">if</span> (! <span class="string">"serialVersionUID"</span>.equals(key)) &#123;</span><br><span class="line">            	<span class="comment">// 取消Java语言访问检查</span></span><br><span class="line">            	f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    value =f.get(entity);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                fieldValueMap.put(key, value);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fieldValueMap;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的代码中，<code>this.getClass().getGenericSuperclass()</code>返回表示此 Class 所表示的实体（类、接口、基本类型或 void）的直接超类的Type，然后将其转换<code>ParameterizedType</code>。<br><code>getActualTypeArguments()</code>返回表示此类型实际类型参数的 Type 对象的数组。</p>
 <h3 id="反射Array相关API"><a href="#反射Array相关API" class="headerlink" title="反射Array相关API"></a>反射Array相关API</h3><p>reflect.Array类位于java.lang.reflect包下,它是个反射工具包，全是静态方法。我们可以利用这个类来对数组进行操作。</p>
 <p>调用Class.getComponentType()获取数组元素的类型，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">Class&lt;?&gt; c = arr.getClass().getComponentType();</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">Class&lt;?&gt; c = arr.getClass().getComponentType();</span><br></pre></td></tr></table></figure>
 <p>假设我们需要获取数组长度，用Array的静态方法获取：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> len = Array.getLength(arr);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len = Array.getLength(arr);</span><br></pre></td></tr></table></figure>
 <p>当然我们可以用Array类来创建数组，向数组添加元素，修改元素等，具体可以参考官方API。</p>
-<p>最后推荐一个<a href="https://github.com/Blankj/AndroidUtilCode/blob/4b5d0852f8274583968a7fb36db3b25bf92aaa22/utilcode/src/main/java/com/blankj/utilcode/util/ReflectUtils.java" target="_blank" rel="external">反射工具类</a>，可以参考参考。</p>
+<p>最后推荐一个<a href="https://github.com/Blankj/AndroidUtilCode/blob/4b5d0852f8274583968a7fb36db3b25bf92aaa22/utilcode/src/main/java/com/blankj/utilcode/util/ReflectUtils.java" target="_blank" rel="noopener">反射工具类</a>，可以参考参考。</p>
 <p><strong>反射API参考：</strong></p>
 <ul>
-<li><p><a href="https://docs.oracle.com/javase/tutorial/reflect/" target="_blank" rel="external">https://docs.oracle.com/javase/tutorial/reflect/</a></p>
+<li><p><a href="https://docs.oracle.com/javase/tutorial/reflect/" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/reflect/</a></p>
 </li>
-<li><p><a href="http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l80" target="_blank" rel="external">http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l80</a></p>
+<li><p><a href="http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l80" target="_blank" rel="noopener">http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l80</a></p>
 </li>
-<li><p><a href="http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l78" target="_blank" rel="external">http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l78</a></p>
+<li><p><a href="http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l78" target="_blank" rel="noopener">http://hg.openjdk.java.net/jdk10/jdk10/jdk/file/777356696811/src/java.base/share/classes/jdk/internal/reflect/ReflectionFactory.java#l78</a></p>
 </li>
-<li><p><a href="https://docs.oracle.com/javase/tutorial/reflect/class/classMembers.html" target="_blank" rel="external">https://docs.oracle.com/javase/tutorial/reflect/class/classMembers.html</a></p>
+<li><p><a href="https://docs.oracle.com/javase/tutorial/reflect/class/classMembers.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/reflect/class/classMembers.html</a></p>
 </li>
-<li><p><a href="https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/package-summary.html" target="_blank" rel="external">https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/package-summary.html</a></p>
+<li><p><a href="https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/package-summary.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/package-summary.html</a></p>
 </li>
 </ul>
 <p><strong>文章参考：</strong></p>
@@ -487,27 +439,33 @@
 
       
     </div>
+    
+    
+    
 
-    <div>
-      
-        
+    
 
-      
-    </div>
+    
 
-    <div>
-      
-        
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mingshan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2018/08/19/JDK中的反射/" title="JDK中的反射">http://yoursite.com/2018/08/19/JDK中的反射/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
+      </div>
+    
 
     <footer class="post-footer">
       
@@ -549,6 +507,10 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -564,16 +526,19 @@
 
 
           
-  <div class="comments" id="comments">
-    
+
+  
+    <div class="comments" id="comments">
       <div id="disqus_thread">
         <noscript>
           Please enable JavaScript to view the
           <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
         </noscript>
       </div>
-    
-  </div>
+    </div>
+
+  
+
 
 
         </div>
@@ -589,108 +554,101 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
             Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Mingshan" />
-          <p class="site-author-name" itemprop="name">Mingshan</p>
-           
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Mingshan" />
+            
+              <p class="site-author-name" itemprop="name">Mingshan</p>
               <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">63</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
           </div>
-        
 
-        <div class="links-of-author motion-element">
-          
+          <nav class="site-state motion-element">
+
             
-              <span class="links-of-author-item">
-                <a href="https://github.com/mstao" target="_blank" title="github">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  github
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
-              </span>
+              </div>
             
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/u/5388127605" target="_blank" title="weibo">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  weibo
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">categories</span>
                 </a>
-              </span>
+              </div>
             
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
           
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/mstao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:mingshanme@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
+          
+
         </div>
-
-        
-        
-
-        
-        
-
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
-        
-
       </section>
 
       
@@ -723,37 +681,56 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-<div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Mingshan</span>
+
+  
 </div>
 
 
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-&nbsp; | &nbsp;
-<div id="busuanzi_container_site_pv">
-   <span id="busuanzi_value_site_pv"></span> times
 
-</div>
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
 
         
       </div>
@@ -764,6 +741,8 @@
         <i class="fa fa-arrow-up"></i>
         
       </div>
+    
+
     
 
   </div>
@@ -798,46 +777,58 @@
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
   
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
 
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
@@ -881,333 +872,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 
@@ -1220,11 +894,13 @@
   
 
   
-
   
 
   
 
   
+
+  
+
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/miku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
 </html>

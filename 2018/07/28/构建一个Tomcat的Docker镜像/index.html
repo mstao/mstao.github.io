@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
 
@@ -10,15 +10,9 @@
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
 
 
-
-  
-  
-    
-    
-  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -43,36 +37,11 @@
 
 
 
+
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
@@ -81,7 +50,22 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
 
 
   <meta name="keywords" content="Docker," />
@@ -89,13 +73,6 @@
 
 
 
-
-  <link rel="alternate" href="/atom.xml" title="Mingshan's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -109,6 +86,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="最近在看Docker，对一个事物由陌生到熟悉需要一个过程，而这个过程需要从动手实践开始，下面记录一下我从零开始构建centos7+jdk8+tomcat8.5的docker镜像。">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/docker.png">
 <meta property="og:image" content="http://yoursite.com/images/docker-tomcat-folder.png">
 <meta property="og:image" content="http://yoursite.com/images/docker-tomcat-ps.png">
@@ -126,9 +104,11 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    motion: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
       author: 'Author'
@@ -161,12 +141,6 @@
 
 
 
-
-
-
-
-
-
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -176,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -222,32 +196,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             About
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
           </a>
         </li>
       
@@ -261,45 +215,31 @@
           </a>
         </li>
       
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            Search
+            Categories
           </a>
         </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
       
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -323,7 +263,11 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -406,6 +350,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
           
 
@@ -415,6 +364,9 @@
       </header>
     
 
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -426,92 +378,98 @@
 <p><img src="/images/docker.png" alt="image"></p>
 <h2 id="CentOS7-Docker-安装"><a href="#CentOS7-Docker-安装" class="headerlink" title="CentOS7 Docker 安装"></a>CentOS7 Docker 安装</h2><p>Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker。<br>通过 uname -r 命令查看你当前的内核版本 </p>
 <p>利用yum安装docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install docker-io</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker-io</span><br></pre></td></tr></table></figure>
 <p>安装完成后，启动docker服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service docker start</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service docker start</span><br></pre></td></tr></table></figure>
 <p>测试一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run hello-world</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
 <h2 id="准备文件和构建环境"><a href="#准备文件和构建环境" class="headerlink" title="准备文件和构建环境"></a>准备文件和构建环境</h2><p>本次需要构建Tomcat的Docker镜像，所以需要Tomcat和JDK安装包，版本分别是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">apache-tomcat-8.5.32.tar.gz</div><div class="line"></div><div class="line">jdk-8u172-linux-x64.tar.gz</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apache-tomcat-8.5.32.tar.gz</span><br><span class="line"></span><br><span class="line">jdk-8u172-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
 <p>创建<code>/usr/docker-tomcat</code>文件夹，将以上两个文件解压到该文件夹中，分别重命名为tomcat和jdk文件夹。</p>
 <p>创建<code>Dockerfile</code>和<code>run.sh</code>两个文件，最终<code>/usr/docker-tomcat</code>文件夹内容如下图所示：</p>
 <p><img src="/images/docker-tomcat-folder.png" alt="image"></p>
 <p>编辑<code>Dockerfile</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim Dockerfile</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim Dockerfile</span><br></pre></td></tr></table></figure>
 <p>向该文件添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># 设置继承的镜像</div><div class="line">FROM registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos:0.0.1</div><div class="line"></div><div class="line"># 创建者信息</div><div class="line">MAINTAINER mingshan &quot;walkerhan@126.com&quot;</div><div class="line"></div><div class="line"># 设置环境变量，所有操作都是非交互式的</div><div class="line">ENV DEBIAN_FRONTEND noninteractive</div><div class="line"></div><div class="line"># 设置tomcat的环境变量</div><div class="line">ENV CATALINA_HOME /tomcat</div><div class="line">ENV JAVA_HOME /jdk</div><div class="line"></div><div class="line"># 复制tomcat和jdk文件到镜像中</div><div class="line">ADD apache-tomcat /tomcat</div><div class="line">ADD jdk /jdk</div><div class="line"></div><div class="line"># 复制启动脚本至镜像，并赋予脚本可执行权限</div><div class="line">ADD run.sh /run.sh</div><div class="line">RUN chmod +x /*.sh</div><div class="line">RUN chmod +x /tomcat/bin/*.sh</div><div class="line"></div><div class="line"># 暴露接口8080，这是我的tomcat接口，默认为8080</div><div class="line">EXPOSE 8080</div><div class="line"></div><div class="line"># 设置自启动命令</div><div class="line">CMD [&quot;/run.sh&quot;]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># 设置继承的镜像</span><br><span class="line">FROM registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos:0.0.1</span><br><span class="line"></span><br><span class="line"># 创建者信息</span><br><span class="line">MAINTAINER mingshan &quot;walkerhan@126.com&quot;</span><br><span class="line"></span><br><span class="line"># 设置环境变量，所有操作都是非交互式的</span><br><span class="line">ENV DEBIAN_FRONTEND noninteractive</span><br><span class="line"></span><br><span class="line"># 设置tomcat的环境变量</span><br><span class="line">ENV CATALINA_HOME /tomcat</span><br><span class="line">ENV JAVA_HOME /jdk</span><br><span class="line"></span><br><span class="line"># 复制tomcat和jdk文件到镜像中</span><br><span class="line">ADD apache-tomcat /tomcat</span><br><span class="line">ADD jdk /jdk</span><br><span class="line"></span><br><span class="line"># 复制启动脚本至镜像，并赋予脚本可执行权限</span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod +x /*.sh</span><br><span class="line">RUN chmod +x /tomcat/bin/*.sh</span><br><span class="line"></span><br><span class="line"># 暴露接口8080，这是我的tomcat接口，默认为8080</span><br><span class="line">EXPOSE 8080</span><br><span class="line"></span><br><span class="line"># 设置自启动命令</span><br><span class="line">CMD [&quot;/run.sh&quot;]</span><br></pre></td></tr></table></figure>
 <p>保存后，然后编辑<code>run.sh</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim run.sh</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim run.sh</span><br></pre></td></tr></table></figure>
 <p>添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"># 启动tomcat</div><div class="line">exec $&#123;CATALINA_HOME&#125;/bin/catalina.sh run</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># 启动tomcat</span><br><span class="line">exec $&#123;CATALINA_HOME&#125;/bin/catalina.sh run</span><br></pre></td></tr></table></figure>
 <p>保存后接下来就开始构建docker镜像文件</p>
 <h2 id="构建docker镜像文件"><a href="#构建docker镜像文件" class="headerlink" title="构建docker镜像文件"></a>构建docker镜像文件</h2><p>我们可以利用<code>docker build</code>来构建Docker镜像，<br>-t 设置tag名称, 命名规则registry/image:tag<br>. 表示使用当前目录下的Dockerfile文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker build -t tomcat:test .</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t tomcat:test .</span><br></pre></td></tr></table></figure>
 <p>执行该命令后，Docker就会按照Dockerfile文件顺序执行，会有很多步骤，下面是输出日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">Sending build context to Docker daemon 403.1 MB</div><div class="line">Step 1/12 : FROM registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos:0.0.1</div><div class="line"> ---&gt; e1e65df66640</div><div class="line">Step 2/12 : MAINTAINER mingshan &quot;walkerhan@126.com&quot;</div><div class="line"> ---&gt; Using cache</div><div class="line"> ---&gt; f030a7c09868</div><div class="line">Step 3/12 : ENV DEBIAN_FRONTEND noninteractive</div><div class="line"> ---&gt; Using cache</div><div class="line"> ---&gt; ef3f61db3034</div><div class="line">Step 4/12 : ENV CATALINA_HOME /tomcat</div><div class="line"> ---&gt; Running in 5145fe0de0d1</div><div class="line"> ---&gt; 9a4af98c3434</div><div class="line">Removing intermediate container 5145fe0de0d1</div><div class="line">Step 5/12 : ENV JAVA_HOME /jdk</div><div class="line"> ---&gt; Running in 8bac05b87945</div><div class="line"> ---&gt; f5b7eb8d180e</div><div class="line">Removing intermediate container 8bac05b87945</div><div class="line">Step 6/12 : ADD tomcat /tomcat</div><div class="line"> ---&gt; d68a1754c19e</div><div class="line">Removing intermediate container 29f7625a6b95</div><div class="line">Step 7/12 : ADD jdk /jdk</div><div class="line"> ---&gt; df1669bd68de</div><div class="line">Removing intermediate container dc7de6c936fa</div><div class="line">Step 8/12 : ADD run.sh /run.sh</div><div class="line"> ---&gt; 90a13284ec01</div><div class="line">Removing intermediate container 5bf2c6666a03</div><div class="line">Step 9/12 : RUN chmod +x /*.sh</div><div class="line"> ---&gt; Running in 7f22e7927ffb</div><div class="line"></div><div class="line"> ---&gt; 10fff91bfa16</div><div class="line">Removing intermediate container 7f22e7927ffb</div><div class="line">Step 10/12 : RUN chmod +x /tomcat/bin/*.sh</div><div class="line"> ---&gt; Running in 163f103fcc0a</div><div class="line"></div><div class="line"> ---&gt; da593ceeaa49</div><div class="line">Removing intermediate container 163f103fcc0a</div><div class="line">Step 11/12 : EXPOSE 8080</div><div class="line"> ---&gt; Running in d66d686928fe</div><div class="line"> ---&gt; e2d7f915335a</div><div class="line">Removing intermediate container d66d686928fe</div><div class="line">Step 12/12 : CMD /run.sh</div><div class="line"> ---&gt; Running in a7f9d1e9c9a0</div><div class="line"> ---&gt; a21030de3aac</div><div class="line">Removing intermediate container a7f9d1e9c9a0</div><div class="line">Successfully built a21030de3aac</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon 403.1 MB</span><br><span class="line">Step 1/12 : FROM registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos:0.0.1</span><br><span class="line"> ---&gt; e1e65df66640</span><br><span class="line">Step 2/12 : MAINTAINER mingshan &quot;walkerhan@126.com&quot;</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; f030a7c09868</span><br><span class="line">Step 3/12 : ENV DEBIAN_FRONTEND noninteractive</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; ef3f61db3034</span><br><span class="line">Step 4/12 : ENV CATALINA_HOME /tomcat</span><br><span class="line"> ---&gt; Running in 5145fe0de0d1</span><br><span class="line"> ---&gt; 9a4af98c3434</span><br><span class="line">Removing intermediate container 5145fe0de0d1</span><br><span class="line">Step 5/12 : ENV JAVA_HOME /jdk</span><br><span class="line"> ---&gt; Running in 8bac05b87945</span><br><span class="line"> ---&gt; f5b7eb8d180e</span><br><span class="line">Removing intermediate container 8bac05b87945</span><br><span class="line">Step 6/12 : ADD tomcat /tomcat</span><br><span class="line"> ---&gt; d68a1754c19e</span><br><span class="line">Removing intermediate container 29f7625a6b95</span><br><span class="line">Step 7/12 : ADD jdk /jdk</span><br><span class="line"> ---&gt; df1669bd68de</span><br><span class="line">Removing intermediate container dc7de6c936fa</span><br><span class="line">Step 8/12 : ADD run.sh /run.sh</span><br><span class="line"> ---&gt; 90a13284ec01</span><br><span class="line">Removing intermediate container 5bf2c6666a03</span><br><span class="line">Step 9/12 : RUN chmod +x /*.sh</span><br><span class="line"> ---&gt; Running in 7f22e7927ffb</span><br><span class="line"></span><br><span class="line"> ---&gt; 10fff91bfa16</span><br><span class="line">Removing intermediate container 7f22e7927ffb</span><br><span class="line">Step 10/12 : RUN chmod +x /tomcat/bin/*.sh</span><br><span class="line"> ---&gt; Running in 163f103fcc0a</span><br><span class="line"></span><br><span class="line"> ---&gt; da593ceeaa49</span><br><span class="line">Removing intermediate container 163f103fcc0a</span><br><span class="line">Step 11/12 : EXPOSE 8080</span><br><span class="line"> ---&gt; Running in d66d686928fe</span><br><span class="line"> ---&gt; e2d7f915335a</span><br><span class="line">Removing intermediate container d66d686928fe</span><br><span class="line">Step 12/12 : CMD /run.sh</span><br><span class="line"> ---&gt; Running in a7f9d1e9c9a0</span><br><span class="line"> ---&gt; a21030de3aac</span><br><span class="line">Removing intermediate container a7f9d1e9c9a0</span><br><span class="line">Successfully built a21030de3aac</span><br></pre></td></tr></table></figure>
 <p>构建完成后，就可以启动容器啦</p>
 <h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><p>我们利用<code>docker run</code>来新建并启动容器，这个命令有很多参数，-d: 后台运行容器，并返回容器ID；-p: 端口映射，格式为：主机(宿主)端口:容器端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 11001:8080 tomcat:test</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 11001:8080 tomcat:test</span><br></pre></td></tr></table></figure>
 <p>然后使用 <code>docker ps</code> 命令查看正在运行的容器，如下图所示：</p>
 <p><img src="/images/docker-tomcat-ps.png" alt="image"></p>
 <h3 id="开启端口"><a href="#开启端口" class="headerlink" title="开启端口"></a>开启端口</h3><p>如果让外网访问的话，需要开放11001端口，在CentOS7中，可以利用firewall-cmd来开放端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#开放11001端口  permanent为永久开放</div><div class="line">firewall-cmd --zone=public --add-port=11001/tcp --permanent</div><div class="line">#重新读取配置</div><div class="line">firewall-cmd --reload</div><div class="line">#查看全部开放端口</div><div class="line">firewall-cmd --list-all</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#开放11001端口  permanent为永久开放</span><br><span class="line">firewall-cmd --zone=public --add-port=11001/tcp --permanent</span><br><span class="line">#重新读取配置</span><br><span class="line">firewall-cmd --reload</span><br><span class="line">#查看全部开放端口</span><br><span class="line">firewall-cmd --list-all</span><br></pre></td></tr></table></figure>
 <p>接下来就可在浏览器中看到Tomcat界面了，大功告成！</p>
 <p><img src="/images/docke-tomcat-showpage.png" alt="image"></p>
 <h3 id="镜像保存为本地离线文件"><a href="#镜像保存为本地离线文件" class="headerlink" title="镜像保存为本地离线文件"></a>镜像保存为本地离线文件</h3><p>将docker image保存为离线的本地文件，执行<code>docker save image_name &gt; ./save.tar</code>或者 <code>docker save -o filepath image_name</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@VM_0_6_centos docker-tocmat]# docker images</div><div class="line">REPOSITORY                                           TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">tomcat                                               test                a21030de3aac        2 hours ago         593 MB</div><div class="line">registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos   0.0.1               e1e65df66640        19 months ago       192 MB</div><div class="line">[root@VM_0_6_centos docker-tocmat]# docker save a21030de3aac &gt; ./up_tomcat.tar</div><div class="line">[root@VM_0_6_centos docker-tocmat]# ls</div><div class="line">Dockerfile  jdk  run.sh  tomcat  up_tomcat.tar</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_6_centos docker-tocmat]# docker images</span><br><span class="line">REPOSITORY                                           TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">tomcat                                               test                a21030de3aac        2 hours ago         593 MB</span><br><span class="line">registry.cn-hangzhou.aliyuncs.com/repos_zyl/centos   0.0.1               e1e65df66640        19 months ago       192 MB</span><br><span class="line">[root@VM_0_6_centos docker-tocmat]# docker save a21030de3aac &gt; ./up_tomcat.tar</span><br><span class="line">[root@VM_0_6_centos docker-tocmat]# ls</span><br><span class="line">Dockerfile  jdk  run.sh  tomcat  up_tomcat.tar</span><br></pre></td></tr></table></figure>
 <h3 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h3><ol>
 <li>停止容器</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop tomcat:test</div></pre></td></tr></table></figure>
-<ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop tomcat:test</span><br></pre></td></tr></table></figure>
+<ol start="2">
 <li>启动容器</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker start tomcat:test</div></pre></td></tr></table></figure>
-<ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start tomcat:test</span><br></pre></td></tr></table></figure>
+<ol start="3">
 <li>删除容器</li>
 </ol>
-<p>删除一个容器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rm 278636f577a6</div></pre></td></tr></table></figure></p>
+<p>删除一个容器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 278636f577a6</span><br></pre></td></tr></table></figure></p>
 <p>停用全部运行中的容器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop $(docker ps -q)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop $(docker ps -q)</span><br></pre></td></tr></table></figure>
 <p>删除全部容器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rm $(docker ps -aq)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm $(docker ps -aq)</span><br></pre></td></tr></table></figure>
 <p>一条命令实现停用并删除容器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)</div></pre></td></tr></table></figure>
-<ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)</span><br></pre></td></tr></table></figure>
+<ol start="4">
 <li>删除镜像</li>
 </ol>
 <p>删除镜像需要先删除使用该镜像的容器，然后再删除镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker rmi 3ae3626adcfa</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi 3ae3626adcfa</span><br></pre></td></tr></table></figure>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><a href="https://www.jianshu.com/p/369e75f6303b" target="_blank" rel="external">https://www.jianshu.com/p/369e75f6303b</a></li>
-<li><a href="https://www.cnblogs.com/zhouyalei/p/6390963.html" target="_blank" rel="external">https://www.cnblogs.com/zhouyalei/p/6390963.html</a></li>
-<li><a href="http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2" target="_blank" rel="external">http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2</a></li>
+<li><a href="https://www.jianshu.com/p/369e75f6303b" target="_blank" rel="noopener">https://www.jianshu.com/p/369e75f6303b</a></li>
+<li><a href="https://www.cnblogs.com/zhouyalei/p/6390963.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhouyalei/p/6390963.html</a></li>
+<li><a href="http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2" target="_blank" rel="noopener">http://www.dockerinfo.net/docker%e5%ae%b9%e5%99%a8-2</a></li>
 </ul>
 
       
     </div>
+    
+    
+    
 
-    <div>
-      
-        
+    
 
-      
-    </div>
+    
 
-    <div>
-      
-        
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mingshan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/" title="构建一个Tomcat的Docker镜像">http://yoursite.com/2018/07/28/构建一个Tomcat的Docker镜像/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
+      </div>
+    
 
     <footer class="post-footer">
       
@@ -551,6 +509,10 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -566,16 +528,19 @@
 
 
           
-  <div class="comments" id="comments">
-    
+
+  
+    <div class="comments" id="comments">
       <div id="disqus_thread">
         <noscript>
           Please enable JavaScript to view the
           <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
         </noscript>
       </div>
-    
-  </div>
+    </div>
+
+  
+
 
 
         </div>
@@ -591,108 +556,101 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
             Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Mingshan" />
-          <p class="site-author-name" itemprop="name">Mingshan</p>
-           
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Mingshan" />
+            
+              <p class="site-author-name" itemprop="name">Mingshan</p>
               <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">63</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
           </div>
-        
 
-        <div class="links-of-author motion-element">
-          
+          <nav class="site-state motion-element">
+
             
-              <span class="links-of-author-item">
-                <a href="https://github.com/mstao" target="_blank" title="github">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  github
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
-              </span>
+              </div>
             
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/u/5388127605" target="_blank" title="weibo">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  weibo
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">categories</span>
                 </a>
-              </span>
+              </div>
             
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
           
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/mstao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:mingshanme@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
+          
+
         </div>
-
-        
-        
-
-        
-        
-
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
-        
-
       </section>
 
       
@@ -725,37 +683,56 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-<div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Mingshan</span>
+
+  
 </div>
 
 
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-&nbsp; | &nbsp;
-<div id="busuanzi_container_site_pv">
-   <span id="busuanzi_value_site_pv"></span> times
 
-</div>
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
 
         
       </div>
@@ -766,6 +743,8 @@
         <i class="fa fa-arrow-up"></i>
         
       </div>
+    
+
     
 
   </div>
@@ -800,46 +779,58 @@
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
   
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
 
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
@@ -883,333 +874,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 
@@ -1222,11 +896,13 @@
   
 
   
-
   
 
   
 
   
+
+  
+
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/miku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
 </html>
