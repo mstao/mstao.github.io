@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-01T04:09:22.526Z">
+<meta property="og:updated_time" content="2018-10-01T04:11:39.053Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CAS小窥">
 <meta name="twitter:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
@@ -369,6 +369,7 @@
 
       
         <p>在JDK 1.5之后Java提供了并发包（<code>java.util.concurrent</code>）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在<code>java.util.concurrent.atomic</code>包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它包含取值、相加与赋值三步操作，所以整体不是原子操作。</p>
+<a id="more"></a>
 <p>CAS是Java中所谓lock-free的基础。CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。CAS的描述如下（返回布尔值是为了让调用者知道是否更新成功）：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">compareAndSwap</span><span class="params">(<span class="keyword">int</span> destValue, <span class="keyword">int</span> expectedValue, <span class="keyword">int</span> newValue)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (destValue == expectedValue) &#123;  </span><br><span class="line">        destValue = newValue;  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>那么在JDK源码中是如何使用CAS的呢？我们先来看看AtomicInteger(JDK10)的源码实现。在JDK10版本中，CAS这部分操作是在<code>jdk.internal.misc.Unsafe</code>这个类中提供的，所以在AtomicInteger源码中，自增一是调用了Unsafe 的 getAndAddInt 方法。代码如下：</p>
