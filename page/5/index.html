@@ -262,6 +262,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/12/04/恢复被Reset掉的提交/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/04/恢复被Reset掉的提交/" itemprop="url">恢复被Reset掉的提交</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-04T00:00:00+08:00">
+                2017-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/04/恢复被Reset掉的提交/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/04/恢复被Reset掉的提交/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>记得有一次我用github的桌面客户端提交代码时，提交了我不想提交的内容，于是我就点了Revert按钮，进行了<strong>Revert</strong>操作，这个操作会撤销一个提交的同时会新建一个提交，这也不是我想要的效果，所以我就用了Reset命令，最后操作失误，提交的代码都丢了，这让我很忧伤，但我之前进行提交操作了，git会有提交记录，所以我查了查命令，发现了<strong>git reflog</strong>命令，这个命令用于记录对git仓库进行的各种操作，输入命令显示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">D:\code\LightBlog [master ≡ +0 ~2 -0 !]&gt; git reflog</span><br><span class="line">4ca2fb7 HEAD@&#123;0&#125;: commit: Add spring-redis for cache</span><br><span class="line">ddcc61a HEAD@&#123;1&#125;: commit: Add light blog ui template</span><br><span class="line">1e9f0b9 HEAD@&#123;2&#125;: pull --progress --prune origin master: Fast-forward</span><br><span class="line">93d6519 HEAD@&#123;3&#125;: commit: Add encryption util with MD5</span><br><span class="line">1d158ff HEAD@&#123;4&#125;: commit: fIX(#2) HttpStatus 204 -&gt;no content</span><br><span class="line">ef8cb50 HEAD@&#123;5&#125;: revert: Revert &quot;Refine exception handler&quot;</span><br><span class="line">51a7b00 HEAD@&#123;6&#125;: rebase: updating HEAD</span><br><span class="line">51a7b00 HEAD@&#123;7&#125;: rebase: aborting</span><br><span class="line">e20b30f HEAD@&#123;8&#125;: pull --progress --rebase --prune origin master: checkout e20b30f0a282cb4b1229a5ebcf220422d3685c40</span><br><span class="line">51a7b00 HEAD@&#123;9&#125;: commit: Refine exception handler</span><br><span class="line">294b1e3 HEAD@&#123;10&#125;: pull --progress --prune origin master: Merge made by the &apos;recursive&apos; strategy.</span><br><span class="line">927ff21 HEAD@&#123;11&#125;: commit: Add exception handler for RESTful</span><br><span class="line">4e2592c HEAD@&#123;12&#125;: commit: Add authorization for web with redis.</span><br></pre></td></tr></table></figure>
+<p>可以看见每次操作都会有记录的（没有全部贴出来），这是我们可以用<strong>git reset ID</strong>来恢复内容，ID指的第一列的东西，比如<strong>4ca2fb7</strong>，这样我们就可以找回丢失的内容了。</p>
+<p>下面是我常用的一套命令，用来更新本地代码，这也是我经过好几次拉取远程代码冲突一大片得到的经验，<strong>git mergetool</strong>指的是当发生代码冲突时，输入此命令就会进行冲突的解决，由于我用的VS，输入此命令后就会跳到VS中来解决冲突了，对于一个文件如果冲突实在是太多，推荐<strong>winmerge</strong>工具，一个轻量且免费的冲突合并工具，我平时也用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br><span class="line"></span><br><span class="line">git commit -m &apos;temp commit&apos;</span><br><span class="line"></span><br><span class="line">git stash save appconfig</span><br><span class="line"></span><br><span class="line">git log</span><br><span class="line"></span><br><span class="line">git pull -r origin develop</span><br><span class="line"></span><br><span class="line">git mergetool(回车合并冲突)</span><br><span class="line"></span><br><span class="line">git reset HEAD~</span><br><span class="line"></span><br><span class="line">git stash apply</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/11/25/SpringBoot与RabbitMQ结合使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1875,170 +2032,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/09/15/在Service层进行事务控制/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mingshan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/15/在Service层进行事务控制/" itemprop="url">在Service层进行事务控制</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-15T00:00:00+08:00">
-                2017-09-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/15/在Service层进行事务控制/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/15/在Service层进行事务控制/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="利用接口回调实现JDBCTemplate"><a href="#利用接口回调实现JDBCTemplate" class="headerlink" title="利用接口回调实现JDBCTemplate"></a>利用接口回调实现JDBCTemplate</h2><ol>
-<li><p>设计一个回调接口JDBCCallback<t>, 用来设置参数和获取结果集, 代码如下：<br></t></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JDBCCallback</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">T <span class="title">rsToObject</span><span class="params">(ResultSet rs)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setParams</span><span class="params">(PreparedStatement pstmt)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设计一个抽象类JDBCAbstractCallBack<t>，该类实现JDBCCallback<t>接口，重写接口中的两个方法，<br> 不需要具体实现，只需要重写一下就可以了，这样在DAO层用的时候不用这两个方法全部都要实现，代码如下：</t></t></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDBC abstract callback class, implements &#123;<span class="doctag">@link</span> JDBCCallback&#125; interface.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mingshan</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">JDBCAbstractCallBack</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">JDBCCallback</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">rsToObject</span><span class="params">(ResultSet rs)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParams</span><span class="params">(PreparedStatement pstmt)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		<span class="comment">// NOOP</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设计一个JDBCTemplate类，该类实现增删改查的基本方法，把公共的代码抽取出来，以便DAO层去调用JDBCTemplate来实现具体的业务，部分代码如下：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/15/在Service层进行事务控制/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2093,7 +2086,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2115,7 +2108,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

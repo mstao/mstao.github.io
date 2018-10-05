@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-01T04:11:39.053Z">
+<meta property="og:updated_time" content="2018-10-05T02:21:47.814Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CAS小窥">
 <meta name="twitter:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
@@ -388,7 +388,7 @@
 <p><code>weakCompareAndSetInt</code>最终调用<code>compareAndSetInt</code>方法，注意该方法为本地方法，如下。该方法有四个参数，分别是对象（这里是AtomicInteger）、对象的偏移地址、预期值、修改值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@HotSpotIntrinsicCandidate</span><br><span class="line">public final native boolean compareAndSetInt(Object o, long offset,</span><br><span class="line">                                             int expected,</span><br><span class="line">                                             int x);</span><br></pre></td></tr></table></figure>
 <p>该方法根据操作系统的不同有不同的实现。在openjdk调用的c++代码为：<a href="https://github.com/unofficial-openjdk/openjdk/blob/4fb6d169db9c9732929ebbd5df01075b29105275/src/hotspot/share/prims/unsafe.cpp#L907" target="_blank" rel="noopener">unsafe.cpp</a>。。我也看不懂</p>
-<p><strong>ABA问题</strong>我也看不懂</p>
+<p><strong>ABA问题</strong></p>
 <p>从上面的分析可以看出，CAS涉及到修改值操作，如果一个值先被修改然后再修改为原值，那么就出现了ABA问题。具体流程如下：</p>
 <ol>
 <li>线程P1读取指定内存的值为A</li>
@@ -471,8 +471,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/02/Use MethodHandles to invoke/" rel="prev" title="Use MethodHandles to invoke">
-                Use MethodHandles to invoke <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/01/用Variable Handles来替换Unsafe/" rel="prev" title="用Variable Handles来替换Unsafe">
+                用Variable Handles来替换Unsafe <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -555,7 +555,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -577,7 +577,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
