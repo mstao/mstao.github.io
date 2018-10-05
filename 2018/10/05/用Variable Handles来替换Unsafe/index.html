@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,MethodHandles," />
+  <meta name="keywords" content="java,VarHandle," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在Java中，我们想在程序运行时调用其方法，可以用JDK提供的反射相关API来实现，代码如下： 1234Class clazz = Demo.class;Method method = clazz.getMethod(&quot;studyHard&quot;, new Class[]&amp;#123;String.class&amp;#125;);Demo demo = clazz.newInstance();method.in">
-<meta name="keywords" content="java,MethodHandles">
+<meta name="description" content="在JDK9中，包含了一个叫Variable Handles的新功能，下面是该功能的描述：">
+<meta name="keywords" content="java,VarHandle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Use MethodHandles to invoke">
-<meta property="og:url" content="http://mingshan.me/2018/10/02/Use MethodHandles to invoke/index.html">
+<meta property="og:title" content="用Variable Handles来替换Unsafe">
+<meta property="og:url" content="http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="在Java中，我们想在程序运行时调用其方法，可以用JDK提供的反射相关API来实现，代码如下： 1234Class clazz = Demo.class;Method method = clazz.getMethod(&quot;studyHard&quot;, new Class[]&amp;#123;String.class&amp;#125;);Demo demo = clazz.newInstance();method.in">
+<meta property="og:description" content="在JDK9中，包含了一个叫Variable Handles的新功能，下面是该功能的描述：">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-02T10:16:29.318Z">
+<meta property="og:updated_time" content="2018-10-05T06:07:32.654Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Use MethodHandles to invoke">
-<meta name="twitter:description" content="在Java中，我们想在程序运行时调用其方法，可以用JDK提供的反射相关API来实现，代码如下： 1234Class clazz = Demo.class;Method method = clazz.getMethod(&quot;studyHard&quot;, new Class[]&amp;#123;String.class&amp;#125;);Demo demo = clazz.newInstance();method.in">
+<meta name="twitter:title" content="用Variable Handles来替换Unsafe">
+<meta name="twitter:description" content="在JDK9中，包含了一个叫Variable Handles的新功能，下面是该功能的描述：">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://mingshan.me/2018/10/02/Use MethodHandles to invoke/"/>
+  <link rel="canonical" href="http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/"/>
 
 
 
 
 
-  <title>Use MethodHandles to invoke | Mingshan's Blog</title>
+  <title>用Variable Handles来替换Unsafe | Mingshan's Blog</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/10/02/Use MethodHandles to invoke/">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Use MethodHandles to invoke</h2>
+          <h2 class="post-title" itemprop="name headline">用Variable Handles来替换Unsafe</h2>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-02T00:00:00+08:00">
-                2018-10-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-05T00:00:00+08:00">
+                2018-10-05
               </time>
             
 
@@ -333,9 +333,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/02/Use MethodHandles to invoke/#comments" itemprop="discussionUrl">
+                <a href="/2018/10/05/用Variable Handles来替换Unsafe/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/10/02/Use MethodHandles to invoke/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/10/05/用Variable Handles来替换Unsafe/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -368,25 +368,54 @@
       
 
       
-        <p>在Java中，我们想在程序运行时调用其方法，可以用JDK提供的反射相关API来实现，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Demo.class;</span><br><span class="line">Method method = clazz.getMethod(<span class="string">"studyHard"</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;);</span><br><span class="line">Demo demo = clazz.newInstance();</span><br><span class="line">method.invoke(demo, <span class="string">"哈哈"</span>);</span><br></pre></td></tr></table></figure>
+        <p>在JDK9中，包含了一个叫Variable Handles的新功能，下面是该功能的描述：</p>
 <a id="more"></a>
-<p>这样的代码看起来也挺简洁，不过在JDK7之后，提供了<code>java.lang.invoke.MethodHandle</code>，它的功能与反射相似，下面是一个例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">test1</span><span class="params">(<span class="keyword">int</span> a, String b)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"test1 -&gt; "</span> + a + b);</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">test2</span><span class="params">(<span class="keyword">int</span> a, String b)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"test2 -&gt; "</span> + a + b);</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        Class&lt;?&gt; clazz = Demo.class;</span><br><span class="line">        MethodType signature = MethodType.methodType(String.class, <span class="keyword">int</span>.class, String.class);</span><br><span class="line">        MethodHandle mh = MethodHandles.lookup().findVirtual(clazz, <span class="string">"test1"</span>, signature);</span><br><span class="line"></span><br><span class="line">        Object obj = clazz.getConstructor().newInstance();</span><br><span class="line">        System.out.println(mh.bindTo(obj).invoke(<span class="number">1</span>, <span class="string">"2"</span>));</span><br><span class="line">        System.out.println((String)mh.bindTo(obj).invokeExact(<span class="number">1</span>, <span class="string">"2"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//--------------静态方法</span></span><br><span class="line">        MethodHandle mh2 = MethodHandles.lookup().findStatic(clazz, <span class="string">"test2"</span>, signature);</span><br><span class="line">        System.out.println(mh.bindTo(obj).invoke(<span class="number">1</span>, <span class="string">"2"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从例子可以看出，我们先要通过<code>MethodType</code>来生成方法的签名，比如方法的参数类型，方法的返回值类型等。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MethodType signature = MethodType.methodType(String.class, <span class="keyword">int</span>.class, String.class);</span><br></pre></td></tr></table></figure>
-<p>有了方法的签名，我们就可以利用方法签名、方法名称以及该方法所在的类来获取方法句柄（MethodHandle），代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MethodHandle mh = MethodHandles.lookup().findVirtual(clazz, <span class="string">"test1"</span>, signature);</span><br></pre></td></tr></table></figure>
-<p>此时需要MethodHandles.lookup()静态方法来查找上下文对象，查找上下文对象有一些以“find”开头的方法，例如，findVirtual()、findSpecial()、findStatic()等。这些方法将会返回实际的方法句柄。</p>
-<p>MethodHandle要先bindTo到某个对象实例上，然后调用invoke方法，传入参数就可以调用了。注意还有一个invokeExact方法，该方法与invoke方法的区别是方法参数、返回值匹配非常严格，调用时如果有数值参数隐式转换（如short转int/子类转父类）、装箱拆箱，会直接抛异常。比如函数返回值没有强制转换为String类型，就会抛异常：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.invoke.WrongMethodTypeException: expected (<span class="keyword">int</span>,String)<span class="function">String but <span class="title">found</span> <span class="params">(<span class="keyword">int</span>,String)</span>Object</span></span><br><span class="line"><span class="function">	at java.base/java.lang.invoke.Invokers.<span class="title">newWrongMethodTypeException</span><span class="params">(Unknown Source)</span></span></span><br><span class="line"><span class="function">	at java.base/java.lang.invoke.Invokers.<span class="title">checkExactType</span><span class="params">(Unknown Source)</span></span></span><br><span class="line"><span class="function">	at MethodHandles/me.mingshan.demo.Demo.<span class="title">main</span><span class="params">(Demo.java:<span class="number">26</span>)</span></span></span><br></pre></td></tr></table></figure>
-<p>从目前接触到的API来看，似乎和以前用的反射区别并不大，其实不然，上面的特性包含在<a href="https://jcp.org/en/jsr/detail?id=292" target="_blank" rel="noopener">JSR 292</a>中，提供了比反射API更加强大的动态方法调用能力，并且新增了一个java虚拟机指令<code>invokedynamic</code>，<code>invokedynamic</code>指令通过引导方法（bootstrap method，BSM）机制来使用方法句柄。有关该指令更详细的信息可以参考Java虚拟机规范。</p>
-<p>另外，在JDK9中新增了<code>Variable Handles</code>（变量句柄）相关功能，主要是用来取代<code>java.util.concurrent.atomic</code>包以及<code>sun.misc.Unsafe</code>类的功能，在Lookup类中，新增了<code>findVarHandle</code>方法来获取变量句柄，提供了各种细粒度的原子或有序性操作，更加安全和性能更高，毕竟<code>sun.misc.Unsafe</code>以后不推荐使用了，不安全。</p>
+<blockquote>
+<p>Define a standard means to invoke the equivalents of various java.util.concurrent.atomic and sun.misc.Unsafe operations upon object fields and array elements, a standard set of fence operations for fine-grained control of memory ordering, and a standard reachability-fence operation to ensure that a referenced object remains strongly reachable.</p>
+</blockquote>
+<p>从这段官方描述中我们可以得知，Variable Handles主要是提供<code>java.util.concurrent.atomic</code> 和 <code>sun.misc.Unsafe</code>相似的功能，但会更加安全和易用，并且在并发方面提高了性能。在Java并发包中，由于包中的类大量调用<code>sun.misc.Unsafe</code>提供的功能，官方现在已不推荐再使用<code>sun.misc.Unsafe</code>这个类了，所以看看这个功能十分有必要，例如在<code>AtomicIntegerArray</code>这个类中已经用Variable Handles替换了<code>sun.misc.Unsafe</code>，并且在CAS中也会用到。</p>
+<p>说到CAS的应用，我们需要对某一字段进行原子更新，可能会用到以下几种方式：</p>
+<ol>
+<li>使用AtomicInteger类来更新，但会带来额外的内存消耗以及因引用替换带来的新的并发问题；</li>
+<li>使用Atomic*FieldUpdater类来完成字段的原子更新，其是基于反射来实现的，对字段和包装类型有一定的限制，操作开销比较大；</li>
+<li>使用<code>sun.misc.Unsafe</code>提供的JVM内置函数API，这个类提供不安全的操作，损害安全性和移植性，官方不允许开发者使用，以后也会被替代掉。</li>
+</ol>
+<p>变量句柄是对变量的类型化引用，它支持在各种访问模式下对变量的读写访问。支持的变量类型包括实例字段、静态字段和数组元素。下面我们来看看它的基础API如何使用。</p>
+<p>创建VarHandle需要通过<code>MethodHandles</code>这个类调用其静态方法来实现，根据要访问类的不同类型的成员变量调用不同的静态方法：</p>
+<ul>
+<li><code>MethodHandles.lookup</code> 访问类非私有属性</li>
+<li><code>MethodHandles.privateLookupIn</code> 访问类的私有属性</li>
+<li><code>MethodHandles.arrayElementVarHandle</code> 访问类中的数组</li>
+</ul>
+<p>获取到Lookup，然后通过调用<code>findVarHandle</code>方法来获取<code>VarHandle</code>实例，在JDK9中，</p>
+<ul>
+<li><code>findVarHandle</code>：用于创建对象中非静态字段的VarHandle。接收参数有三个，第一个为接收者的Class对象，第二个是字段名称，第三个是字段类型。</li>
+<li><code>findStaticVarHandle</code>：用于创建对象中静态字段的VarHandle，接收参数与findVarHandle一致。</li>
+<li><code>unreflectVarHandle</code>：通过反射字段创建VarHandle。</li>
+</ul>
+<p>为了保证效率，VarHandle类的实例通常需要被声明为static final变量（其实就是常量），这样可以在编译期对它进行优化。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> VarHandle VH_TEST_FIELD_I;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> VarHandle VH_TEST_ARRAY;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> VarHandle VH_TEST_FIELD_J;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        VH_TEST_FIELD_I = MethodHandles.lookup()</span><br><span class="line">                .in(Test.class)</span><br><span class="line">                .findVarHandle(Test.class, <span class="string">"i"</span>, <span class="keyword">int</span>.class);</span><br><span class="line"></span><br><span class="line">        VH_TEST_ARRAY = MethodHandles.arrayElementVarHandle(<span class="keyword">int</span>[].class);</span><br><span class="line"></span><br><span class="line">        VH_TEST_FIELD_J = MethodHandles.privateLookupIn(Test.class, MethodHandles.lookup())</span><br><span class="line">                .findVarHandle(Test.class, <span class="string">"j"</span>, <span class="keyword">int</span>.class);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ReflectiveOperationException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Error(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取到了<code>VarHandle</code>实例，接下来可以做些什么呢？<code>VarHandle</code>提供了几种访问模式（access modes）：</p>
+<ol>
+<li>read access modes, such as reading a variable with volatile memory ordering effects;</li>
+<li>write access modes, such as updating a variable with release memory ordering effects;</li>
+<li>atomic update access modes, such as a compare-and-set on a variable with volatile memory order effects for both read and writing;</li>
+<li>numeric atomic update access modes, such as get-and-add with plain memory order effects for writing and acquire memory order effects for reading.</li>
+<li>bitwise atomic update access modes, such as get-and-bitwise-and with release memory order effects for writing and plain memory order effects for reading.</li>
+</ol>
+<p>后面三个访问模式被称为 <code>read-modify-write</code>。从上面5个访问模式来看，主要包括普通变量读写、volatile变量读写和CAS操作。示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// read</span></span><br><span class="line">    System.out.println(VH_this_FIELD_I.get(<span class="keyword">this</span>)); <span class="comment">// 1</span></span><br><span class="line">    System.out.println(VH_this_ARRAY.get(arr, <span class="number">2</span>)); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// write</span></span><br><span class="line">    VH_this_FIELD_I.set(<span class="keyword">this</span>, <span class="number">99</span>);</span><br><span class="line">    System.out.println(VH_this_FIELD_I.get(<span class="keyword">this</span>)); <span class="comment">// 99</span></span><br><span class="line"></span><br><span class="line">    VH_this_ARRAY.set(arr, <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">    System.out.println(VH_this_ARRAY.get(arr, <span class="number">2</span>)); <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// CAS</span></span><br><span class="line">    System.out.println(VH_this_FIELD_I.compareAndSet(<span class="keyword">this</span>, <span class="number">99</span>, <span class="number">3</span>)); <span class="comment">// true</span></span><br><span class="line">    System.out.println(VH_this_FIELD_I.get(<span class="keyword">this</span>)); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">    System.out.println(VH_this_ARRAY.compareAndSet(arr, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>)); <span class="comment">// true</span></span><br><span class="line">    System.out.println(VH_this_ARRAY.get(arr, <span class="number">2</span>)); <span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Numeric Atomic Update</span></span><br><span class="line">    System.out.println(VH_this_FIELD_I.getAndAdd(<span class="keyword">this</span>, <span class="number">6</span>)); <span class="comment">// 3</span></span><br><span class="line">    System.out.println(VH_this_FIELD_I.get(<span class="keyword">this</span>)); <span class="comment">// 9</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了上面的五中访问模式外，在<a href="http://openjdk.java.net/jeps/193" target="_blank" rel="noopener">JEP 193</a>的描述中，还提供了一组内存屏障（Memory fences）方法，为内存排序提供更细粒度的控制。其中涉及到<code>memory order</code>的概念，与最近的c++ 11内存模型一致，详情请参考其相关概念。</p>
+<p>在想要利用CAS去实现我们的逻辑，首先推荐使用VarHandle来实现，它提供了精细粒度的API，更加安全，相信在以后的产品中应用会非常广泛。</p>
 <p>参考：</p>
 <ul>
-<li><a href="https://jcp.org/en/jsr/detail?id=292" target="_blank" rel="noopener">JSR 292</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/28124632" target="_blank" rel="noopener">Invokedynamic：Java的秘密武器</a></li>
-<li><a href="https://www.infoq.com/articles/Invokedynamic-Javas-secret-weapon" target="_blank" rel="noopener">Invokedynamic - Java’s Secret Weapon</a></li>
+<li><a href="http://openjdk.java.net/jeps/193" target="_blank" rel="noopener">JEP 193: Variable Handles</a></li>
+<li><a href="https://docs.oracle.com/javase/9/docs/api/java/lang/invoke/VarHandle.html" target="_blank" rel="noopener">VarHandle Doc</a></li>
+<li><a href="https://www.jianshu.com/p/e231042a52dd" target="_blank" rel="noopener">Java 9 变量句柄-VarHandle</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1005903" target="_blank" rel="noopener">当我们在谈论 memory order 的时候，我们在谈论什么</a></li>
+<li>杨晓峰，AtomicInteger底层实现原理是什么？如何在自己的产品代码中应用CAS操作？</li>
+<li><a href="http://ifeve.com/memory-barriers-or-fences/" target="_blank" rel="noopener">内存屏障</a></li>
+<li><a href="https://zh.cppreference.com/w/cpp/atomic/memory_order" target="_blank" rel="noopener">memory_order</a></li>
 </ul>
 
       
@@ -408,7 +437,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://mingshan.me/2018/10/02/Use MethodHandles to invoke/" title="Use MethodHandles to invoke">http://mingshan.me/2018/10/02/Use MethodHandles to invoke/</a>
+    <a href="http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/" title="用Variable Handles来替换Unsafe">http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -425,7 +454,7 @@
           
             <a href="/tags/java/" rel="tag"># java</a>
           
-            <a href="/tags/MethodHandles/" rel="tag"># MethodHandles</a>
+            <a href="/tags/VarHandle/" rel="tag"># VarHandle</a>
           
         </div>
       
@@ -438,8 +467,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/01/CAS小窥/" rel="next" title="CAS小窥">
-                <i class="fa fa-chevron-left"></i> CAS小窥
+              <a href="/2018/10/02/Use MethodHandles to invoke/" rel="next" title="Use MethodHandles to invoke">
+                <i class="fa fa-chevron-left"></i> Use MethodHandles to invoke
               </a>
             
           </div>
@@ -447,10 +476,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/05/用Variable Handles来替换Unsafe/" rel="prev" title="用Variable Handles来替换Unsafe">
-                用Variable Handles来替换Unsafe <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -771,9 +796,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://mingshan.me/2018/10/02/Use MethodHandles to invoke/';
-          this.page.identifier = '2018/10/02/Use MethodHandles to invoke/';
-          this.page.title = 'Use MethodHandles to invoke';
+          this.page.url = 'http://mingshan.me/2018/10/05/用Variable Handles来替换Unsafe/';
+          this.page.identifier = '2018/10/05/用Variable Handles来替换Unsafe/';
+          this.page.title = '用Variable Handles来替换Unsafe';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
