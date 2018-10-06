@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,Optional," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Optional类是在JDK8引入的比较有用的一个类，主要用来解决空指针（NullPointerException）问题，我们知道在平时写代码的时候，首先就要避免代码中出现空指针异常，如下面的代码：">
+<meta name="keywords" content="java,Optional">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Optional使用姿势">
+<meta property="og:url" content="http://mingshan.me/2018/10/06/Optional使用姿势/index.html">
+<meta property="og:site_name" content="Mingshan&#39;s Blog">
+<meta property="og:description" content="Optional类是在JDK8引入的比较有用的一个类，主要用来解决空指针（NullPointerException）问题，我们知道在平时写代码的时候，首先就要避免代码中出现空指针异常，如下面的代码：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/Optionals-api.png?raw=true">
+<meta property="og:updated_time" content="2018-10-06T13:37:24.963Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Optional使用姿势">
+<meta name="twitter:description" content="Optional类是在JDK8引入的比较有用的一个类，主要用来解决空指针（NullPointerException）问题，我们知道在平时写代码的时候，首先就要避免代码中出现空指针异常，如下面的代码：">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/Optionals-api.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mingshan.me/2018/10/06/Optional使用姿势/"/>
+
+
+
+
+
+  <title>Optional使用姿势 | Mingshan's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mingshan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一念开明，反身而诚</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/10/06/Optional使用姿势/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Optional使用姿势</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-06T00:00:00+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/06/Optional使用姿势/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/06/Optional使用姿势/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Optional类是在JDK8引入的比较有用的一个类，主要用来解决空指针（NullPointerException）问题，我们知道在平时写代码的时候，首先就要避免代码中出现空指针异常，如下面的代码：</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Blog&gt; blogs = ...;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> (blogs != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (Blog blog : blogs) &#123;</span><br><span class="line">        List&lt;Image&gt; images = blog.getImages();</span><br><span class="line">        <span class="keyword">if</span> (images != <span class="keyword">null</span>) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当代码层数多的时候，这种代码看着是极其难受的，所在就引入了Optional，该类结合函数式编程进行链式调用，用着那是十分爽的^_^</p>
+<p>首先来看看Optional类的API，截图如下：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/Optionals-api.png?raw=true" alt="image"></p>
+<p>我们先来关心这个类暴露的API，下面列举出该类常用的方法的签名，如下：</p>
+<ul>
+<li>public<u> Optional<u> map(Function&lt;? super T, ? extends U&gt; mapper)</u></u></li>
+<li>public T orElse(T other)</li>
+<li>public T orElseGet(Supplier&lt;? extends T&gt; other)</li>
+<li>public void ifPresent(Consumer&lt;? super T&gt; consumer)</li>
+<li>public Optional<t> filter(Predicate&lt;? super T&gt; predicate)</t></li>
+<li>public<u> Optional<u> flatMap(Function&lt;? super T, Optional<u>&gt; mapper)</u></u></u></li>
+<li>public <x extends="" throwable=""> T orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier) throws X</x></li>
+<li>public Stream<t> stream()</t></li>
+<li>public void ifPresentOrElse(Consumer&lt;? super T&gt; action, Runnable emptyAction) </li>
+<li>public Optional<t> or(Supplier&lt;? extends Optional&lt;? extends T&gt;&gt; supplier)</t></li>
+</ul>
+<p>看到<code>Function</code>、<code>Supplier</code>、<code>Consumer</code>，如果对函数式编程熟悉的话就会知道Optional这个类的大部分方法支持lambda表达式，该类是经过官方精心设计的，目的是简化代码，优雅编程，哈哈，我们来看看该怎么用。</p>
+<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><p>要使用Optional，首先就要有一个Optional的实例，现在有三种方法获得该类的实例，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;User&gt; user = Optional.empty()</span><br><span class="line">Optional&lt;User&gt; user = Optional.of(user)</span><br><span class="line">Optional&lt;User&gt; user = Optional.ofNullable(user)</span><br></pre></td></tr></table></figure>
+<p>在该类的源码中，调用<code>empty()</code>方法会返回一个不带值的Optional实例。可以使用<code>of()</code> 和 <code>ofNullable()</code> 方法创建包含值的 Optional，区别是如果传入的值是<code>null</code>，<code>of()</code>方法会抛出空指针异常（NullPointerException），而<code>ofNullable()</code>会调用<code>empty()</code>方法，返回一个不带值的Optional实例。</p>
+<p>看到这我们会有疑惑，该类不是要解决空指针异常吗，为什么还要向外暴露<code>of()</code>方法呢？官方把这个方法暴露出来可能考虑到使用者已经确定传入的参数不可能为<code>null</code>，但又想使用该类的其他的API；或者使用者想提前处理空指针异常，不想让空指针异常藏匿于Optional中，这也是一种设计上的考虑，只不过使用者要注意两个方法的异同，不要使用错误即可。</p>
+<h2 id="orElse-orElseGet-orElseThrow"><a href="#orElse-orElseGet-orElseThrow" class="headerlink" title="orElse / orElseGet / orElseThrow"></a>orElse / orElseGet / orElseThrow</h2><p>现在我们有了Optional实例，接下来我们可以通过<code>get()</code>访问Optional实例的值，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional.of(user).get();</span><br></pre></td></tr></table></figure>
+<p>我们也可以利用<code>ifPresent()</code>来判断Optional实例所携带的值是否为<code>null</code>，我们一拍脑袋，就可以能写出如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;User&gt; user = Optional.ofNullable(user);</span><br><span class="line"><span class="keyword">if</span> (user.isPresent()) &#123;</span><br><span class="line">    User result = user.get();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码貌似没什么问题，但仔细思考一下，这样写和直接进行空值判断有什么区别？答案是没区别，因为这样用完全没有体现到Optional的特性，JDK的作者肯定也不希望你这样用。所以<code>orElse</code> 和 <code>orElseGet</code>这两个方法就出现了，将上面的代码改写下，如果传入的值为<code>null</code>，就返回一个自己传入的值，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">User u = createNewUser();</span><br><span class="line"><span class="comment">// 使用orElse</span></span><br><span class="line">User result = Optional.ofNullable(user).orElse(u);</span><br><span class="line">assertEquals(u, result);</span><br><span class="line"><span class="comment">// 使用orElseGet</span></span><br><span class="line">User result2 = Optional.ofNullable(user).orElseGet(() -&gt; createNewUser());</span><br><span class="line">assertEquals(user, result2);</span><br></pre></td></tr></table></figure>
+<p>这里有一点要注意，无论传入的值是否为<code>null</code>，<code>orElse</code>都会执行，但<code>orElseGet</code>只有在传入的值为<code>null</code>时才会执行，这也是两者大的区别，在执行相对耗时的任务时，注意不要用错，否则这个差异会对性能产生重大影响。</p>
+<p>如果传入的值为<code>null</code>时还有抛出其他异常的需要，就可以使用<code>orElseThrow</code>，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">User result = Optional.ofNullable(user)</span><br><span class="line">        .orElseThrow(() -&gt; <span class="keyword">new</span> IllegalArgumentException());</span><br></pre></td></tr></table></figure>
+<h2 id="map-flatMap-转换值"><a href="#map-flatMap-转换值" class="headerlink" title="map / flatMap 转换值"></a>map / flatMap 转换值</h2><p>现在我们已经可以根据传入值是否为<code>null</code>来返回不同的值了，而且没有空指针异常，但像下面的代码，我们需要对值进行多层转换，这时我们就需要用到<code>map</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(user != <span class="keyword">null</span>) &#123;</span><br><span class="line">    String name = user.getName();</span><br><span class="line">    <span class="keyword">if</span> (name != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> name.toLowerCase();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码经过转换后，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">return Optional.ofNullable(user)</span><br><span class="line">        .map(u -&gt; u.getName())</span><br><span class="line">        .map(name -&gt; name.toLowerCase())</span><br><span class="line">        .orElse(null);</span><br></pre></td></tr></table></figure>
+<p>是不是既简洁又很帅？<code>map</code>方法通过传入的lambda表达式对值进行处理，然后将返回的值包装在 Optional 中，所以<code>map</code>方法可以多次调用，真的很好用。</p>
+<p><code>map</code>方法是把结果自动封装成一个Optional，但是<code>flatmap</code>方法需要你自己去封装，这是两者的区别，<code>flatmap</code>方法相对来说比较灵活。</p>
+<h2 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter 过滤"></a>filter 过滤</h2><p>Optional提供过滤值功能，调用<code>filter</code>方法时传入过滤条件，返回测试结果为true的值。如果测试结果为false，会返回一个空的Optional。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">new</span> User(<span class="number">22</span>, <span class="string">"walker"</span>);</span><br><span class="line">Optional&lt;User&gt; result = Optional.ofNullable(user)</span><br><span class="line">        .filter(u -&gt; u.getName().contains(<span class="string">"w"</span>) &amp;&amp; u.getAge() &gt; <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">assertTrue(result.isPresent());</span><br></pre></td></tr></table></figure>
+<h2 id="Java-SE-9-Optional类改进"><a href="#Java-SE-9-Optional类改进" class="headerlink" title="Java SE 9:Optional类改进"></a>Java SE 9:Optional类改进</h2><p>在JDK9中，对Optional类进行增强，增加了如下几个方法：</p>
+<ul>
+<li>stream()</li>
+<li>ifPresentOrElse()</li>
+<li>or()</li>
+</ul>
+<h3 id="stream"><a href="#stream" class="headerlink" title="stream"></a>stream</h3><p>现在Optional可以直接转为stream 流来进行处理，这样我们就可以利用Stream对象强大丰富的API来实现我们的逻辑，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">new</span> User(<span class="number">22</span>, <span class="string">"walker"</span>);</span><br><span class="line">User user2 = <span class="keyword">new</span> User(<span class="number">19</span>, <span class="string">"walker2"</span>);</span><br><span class="line">List&lt;User&gt; users = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">users.add(user);</span><br><span class="line">users.add(user2);</span><br><span class="line"></span><br><span class="line">List&lt;String&gt; names = Optional.ofNullable(users)</span><br><span class="line">    .stream()</span><br><span class="line">    .flatMap(x -&gt; x.stream())</span><br><span class="line">    .filter(u -&gt; u.getName().contains(<span class="string">"w"</span>) &amp;&amp; u.getAge() &gt; <span class="number">19</span>)</span><br><span class="line">    .map(u -&gt; u.getName())</span><br><span class="line">    .collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">names.stream().forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<h3 id="ifPresentOrElse"><a href="#ifPresentOrElse" class="headerlink" title="ifPresentOrElse()"></a>ifPresentOrElse()</h3><p><code>ifPresentOrElse()</code>方法需要两个参数：一个 Consumer 和一个 Runnable。如果对象包含值，会执行 Consumer 的动作，否则运行 Runnable。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">Optional.ofNullable(user)</span><br><span class="line">    .ifPresentOrElse(u -&gt; System.out.print(u), () -&gt; System.out.println(<span class="string">"User not found"</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="or"><a href="#or" class="headerlink" title="or()"></a>or()</h3><p><code>or()</code> 方法与 <code>orElse()</code> 和 <code>orElseGet()</code> 类似，它们都在传入值为空的时候提供了替代情况。但<code>or()</code>的返回值是由 Supplier 参数产生的另一个 Optional 对象。示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">null</span>;</span><br><span class="line">User result = Optional.ofNullable(user)</span><br><span class="line">    .or(() -&gt; Optional.of(<span class="keyword">new</span> User(<span class="number">23</span>, <span class="string">"xcc"</span>))).get();</span><br><span class="line">assertEquals(<span class="number">23</span>, result.getAge());</span><br></pre></td></tr></table></figure>
+<h2 id="使用注意"><a href="#使用注意" class="headerlink" title="使用注意"></a>使用注意</h2><ol>
+<li>调用<code>get()</code>注意要用<code>isPresent()</code>方法进行检测，否则会抛出异常</li>
+<li>不要将Optional 类型用作属性或是方法参数，Optional 类型不可被序列化, 用作字段类型会出问题的</li>
+<li>尽量进行链式调用，这也是简化我们代码的利器。</li>
+</ol>
+<p>参考：</p>
+<ul>
+<li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" target="_blank" rel="noopener">Optional Doc</a></li>
+<li><a href="https://www.nurkiewicz.com/2013/08/optional-in-java-8-cheat-sheet.html" target="_blank" rel="noopener">Optional in Java 8 cheat sheet</a></li>
+<li><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">理解、学习与使用 JAVA 中的 OPTIONAL</a></li>
+<li><a href="https://yanbin.blog/proper-ways-of-using-java8-optional/" target="_blank" rel="noopener">使用 Java8 Optional 的正确姿势</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mingshan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://mingshan.me/2018/10/06/Optional使用姿势/" title="Optional使用姿势">http://mingshan.me/2018/10/06/Optional使用姿势/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/Optional/" rel="tag"># Optional</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/05/用Variable Handles来替换Unsafe/" rel="next" title="用Variable Handles来替换Unsafe">
+                <i class="fa fa-chevron-left"></i> 用Variable Handles来替换Unsafe
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Mingshan" />
+            
+              <p class="site-author-name" itemprop="name">Mingshan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/mstao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:mingshanme@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Optional实例"><span class="nav-number">1.</span> <span class="nav-text">创建Optional实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orElse-orElseGet-orElseThrow"><span class="nav-number">2.</span> <span class="nav-text">orElse / orElseGet / orElseThrow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map-flatMap-转换值"><span class="nav-number">3.</span> <span class="nav-text">map / flatMap 转换值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter-过滤"><span class="nav-number">4.</span> <span class="nav-text">filter 过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SE-9-Optional类改进"><span class="nav-number">5.</span> <span class="nav-text">Java SE 9:Optional类改进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#stream"><span class="nav-number">5.1.</span> <span class="nav-text">stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifPresentOrElse"><span class="nav-number">5.2.</span> <span class="nav-text">ifPresentOrElse()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#or"><span class="nav-number">5.3.</span> <span class="nav-text">or()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用注意"><span class="nav-number">6.</span> <span class="nav-text">使用注意</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mingshan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://mingshan.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://mingshan.me/2018/10/06/Optional使用姿势/';
+          this.page.identifier = '2018/10/06/Optional使用姿势/';
+          this.page.title = 'Optional使用姿势';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mingshan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/miku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
