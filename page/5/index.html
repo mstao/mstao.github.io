@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/12/17/双向链表结构分析/">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/12/17/栈结构分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -281,7 +281,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/17/双向链表结构分析/" itemprop="url">双向链表结构分析</a></h2>
+                <a class="post-title-link" href="/2017/12/17/栈结构分析/" itemprop="url">栈结构分析</a></h2>
         
 
         <div class="post-meta">
@@ -329,8 +329,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/链表/" itemprop="url" rel="index">
-                    <span itemprop="name">链表</span>
+                  <a href="/categories/数据结构/栈/" itemprop="url" rel="index">
+                    <span itemprop="name">栈</span>
                   </a>
                 </span>
 
@@ -347,9 +347,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/17/双向链表结构分析/#comments" itemprop="discussionUrl">
+                <a href="/2017/12/17/栈结构分析/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/12/17/双向链表结构分析/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/12/17/栈结构分析/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -378,14 +378,20 @@
 
       
         
-          <h3 id="双向链表描述"><a href="#双向链表描述" class="headerlink" title="双向链表描述"></a>双向链表描述</h3><p>双向链表也叫双链表，它的每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，双向链表的图示如下：</p>
-<p><img src="/images/DoubleLinkedList.png" alt="image"></p>
-<p>从图片可以看出，双链表的头结点的前驱结点和尾结点的后继结点为空，这一点要注意，对双链表的操作要检查这两种情况。</p>
-<h3 id="双向链表结构"><a href="#双向链表结构" class="headerlink" title="双向链表结构"></a>双向链表结构</h3><p>每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，我们先来定义一个数据结点的结构：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 内部Node，用于存储链表的结点</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> mingshan</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 存储节点的值</span></span><br><span class="line">    E item;</span><br><span class="line">    <span class="comment">// 指向节点的前驱结点</span></span><br><span class="line">    Node next;</span><br><span class="line">    <span class="comment">// 指向节点的后继结点</span></span><br><span class="line">    Node prev;</span><br><span class="line"></span><br><span class="line">    Node(Node prev, E element, Node next) &#123;</span><br><span class="line">        <span class="keyword">this</span>.item = element;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">        <span class="keyword">this</span>.prev = prev;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="栈介绍"><a href="#栈介绍" class="headerlink" title="栈介绍"></a>栈介绍</h3><p>栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：</p>
+<p><img src="/images/Stack.png" alt="image"></p>
+<h3 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h3><p>栈主要有入栈和出栈操作，但要实现完整的栈操作，我们需要定义一些方法</p>
+<ul>
+<li>push 入栈，将元素压入栈顶</li>
+<li>pop 出栈，获取栈顶元素并将其从栈中删除</li>
+<li>peek 获取栈顶元素，但不删除</li>
+<li>empty 判断栈是否为空</li>
+<li>size 获取栈内元素的数量</li>
+</ul>
+<p>下面来介绍一下实现这些方法的具体实现。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/17/双向链表结构分析/#more" rel="contents">
+            <a class="btn" href="/2017/12/17/栈结构分析/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
