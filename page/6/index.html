@@ -262,6 +262,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/10/08/谈谈基于ZooKeeper的分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/" itemprop="url">谈谈基于ZooKeeper的分布式锁</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-08T00:00:00+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/08/谈谈基于ZooKeeper的分布式锁/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>分布式锁可以基于以下几种方式实现：</p>
+<ul>
+<li>基于数据库的乐观锁，用于分布式锁</li>
+<li>基于缓存(Redis, memcached)实现分布式锁</li>
+<li>基于ZooKeeper实现分布式锁</li>
+</ul>
+<p>在这篇文章中，主要讲讲ZooKeeper以及分布式锁的实现，通过了解基于ZooKeeper分布式锁实现的原理，我们会对ZooKeeper有一个基本的了解。</p>
+<h2 id="ZooKeeper介绍"><a href="#ZooKeeper介绍" class="headerlink" title="ZooKeeper介绍"></a>ZooKeeper介绍</h2><p>首先谈谈ZooKeeper，ZooKeeper是一种为分布式应用所设计的高可用、高性能且一致的开源协调服务，它提供了一项基本服务：分布式锁服务。由于ZooKeeper的开源特性，后来我们的开发者在分布式锁的基础上，摸索了出了其他的使用方法：配置维护、组服务、分布式消息队列、分布式通知/协调等。</p>
+<p>在ZooKeeper中，有一个被称为ZNode的节点，在该节点可以存储同步相关的数据，并且多个ZNode节点可以形成类似下图的结构。</p>
+<p><img src="/images/zookeeper.png" alt="image"></p>
+<h3 id="基本命令："><a href="#基本命令：" class="headerlink" title="基本命令："></a>基本命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1. 查看节点</span><br><span class="line">    ls /</span><br><span class="line">2. 创建节点</span><br><span class="line">    create /zk myData</span><br><span class="line">3. 查看节点</span><br><span class="line">    get /zk</span><br><span class="line">4. 设置节点</span><br><span class="line">    set /zk myData2</span><br><span class="line">5. 删除节点</span><br><span class="line">    delete /zk</span><br><span class="line">6. 创建临时节点</span><br><span class="line">    create -e /han data</span><br><span class="line">7. 创建顺序节点</span><br><span class="line">    create -s /han/ data</span><br><span class="line">8. 创建顺序临时节点</span><br><span class="line">    create -s -e /han/ data</span><br></pre></td></tr></table></figure>
+<h3 id="ZNode"><a href="#ZNode" class="headerlink" title="ZNode"></a>ZNode</h3><p>客户端可以在一个ZNode上设置一个监视器（Watch），如果该ZNode数据发生变更，ZooKeeper会通知客户端，从而触发监视器中实现的逻辑的执行。其中ZNode有以下几种类型：</p>
+<ul>
+<li>PERSISTENT</li>
+<li>PERSISTENT_SEQUENTIAL</li>
+<li>EPHEMERAL</li>
+<li>EPHEMERAL_SEQUENTIAL</li>
+</ul>
+<p>下面分别解释一下：</p>
+<ol>
+<li>PERSISTENT为持久节点，持久节点是指在节点创建后，就一直存在，直到有删除操作来主动清除这个节点——不会因为创建该节点的客户端会话失效而消失。<br>ZooKeeper命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /zk myData</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>PERSISTENT_SEQUENTIAL为持久顺序节点，基本特性与持久节点一致，但每个父节点会为他的第一级子节点维护一份时序，会记录每个子节点创建的先后顺序。命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s /han/ data</span><br></pre></td></tr></table></figure>
+<p>用这条命令的话，需要先创建/han节点，节点类型为PERSISTENT。</p>
+<ol start="3">
+<li>EPHEMERAL为临时节点，客户端会话失效或连接关闭后，该节点会被自动删除，且不能在临时节点下面创建子节点，命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -e /han</span><br></pre></td></tr></table></figure>
+<p>如果在临时节点下面还要创建子节点，那么zk就会提示：Ephemerals cannot have children</p>
+<ol start="4">
+<li>EPHEMERAL_SEQUENTIAL为临时顺序节点，该节点的除了不是持久性节点，其他特性与持久顺序节点一致。命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s -e /han/ data</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/08/谈谈基于ZooKeeper的分布式锁/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1782,161 +1986,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mingshan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="url">利用uploadify插件上传文件时java后台获取不到当前session问题</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-10T00:00:00+08:00">
-                2017-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/10/利用uploadify插件上传文件时java后台获取不到当前session问题/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我在利用uploadify插件上传文件时发现java后台获取不到当前用户的session值，即当前的用户的session保存的信息失效，导致拦截器将上传请求拦截，这里的拦截器主要对登录的信息进行拦截验证，正因为此原因，导致上传文件失败，后来在利用firebug查找请求的时候，发现uploadify插件会自动生成一个新的session，导致原来的session失效，解决方法是将jsessionid通过url传到后台，这样后台就能识别当前session，问题也就解决了。代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#uploadify"</span>).uploadify(&#123;</span><br><span class="line">	debug			: <span class="literal">false</span>,</span><br><span class="line">	swf 			:  CTPPATH+<span class="string">'/admin/static/uploadify/js/uploadify.swf'</span>,	<span class="comment">//swf文件路径</span></span><br><span class="line">	method			: <span class="string">'get'</span>,	<span class="comment">// 提交方式</span></span><br><span class="line">	uploader		:  CTPPATH+<span class="string">'/processUpload.ado;jsessionid=$&#123;pageContext.session.id&#125;'</span>, <span class="comment">// 服务器端处理该上传请求的程序(servlet, struts2-Action)   )&#125;;</span></span><br></pre></td></tr></table></figure>
-<p>  代码中有许多属性这里没有贴出来，这里主要看uploader属性，uploader属性为CTPPATH+’/processUpload.ado;jsessionid=${pageContext.session.id}’，即在请求url中附上<br>;jsessionid=${pageContext.session.id}，这样上传就没问题了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1991,7 +2040,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2002,7 +2051,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
