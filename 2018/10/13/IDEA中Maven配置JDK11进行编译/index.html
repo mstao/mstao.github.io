@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="随笔," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -79,18 +79,24 @@
 
 
 
-<meta name="description" content="半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。">
-<meta name="keywords" content="随笔">
+<meta name="description" content="前几天JDK发布了不是，所以赶紧下载体验一番，我用的是IDEA编辑器(IntelliJ IDEA 2018.2.4 x64)，注意IDEA也要更新到最新版，用Maven编译的话需要进行相关配置，在此记录一下。">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="像是昨天">
-<meta property="og:url" content="http://mingshan.me/2018/08/01/像是昨天/index.html">
+<meta property="og:title" content="IDEA中Maven配置JDK11进行编译">
+<meta property="og:url" content="http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。">
+<meta property="og:description" content="前几天JDK发布了不是，所以赶紧下载体验一番，我用的是IDEA编辑器(IntelliJ IDEA 2018.2.4 x64)，注意IDEA也要更新到最新版，用Maven编译的话需要进行相关配置，在此记录一下。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-02T16:12:12.213Z">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-version.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-project-structure.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-maven-settings.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-build-output.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-class-version.png?raw=true">
+<meta property="og:updated_time" content="2018-10-13T08:06:02.161Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="像是昨天">
-<meta name="twitter:description" content="半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。">
+<meta name="twitter:title" content="IDEA中Maven配置JDK11进行编译">
+<meta name="twitter:description" content="前几天JDK发布了不是，所以赶紧下载体验一番，我用的是IDEA编辑器(IntelliJ IDEA 2018.2.4 x64)，注意IDEA也要更新到最新版，用Maven编译的话需要进行相关配置，在此记录一下。">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-version.png?raw=true">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://mingshan.me/2018/08/01/像是昨天/"/>
+  <link rel="canonical" href="http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/"/>
 
 
 
 
 
-  <title>像是昨天 | Mingshan's Blog</title>
+  <title>IDEA中Maven配置JDK11进行编译 | Mingshan's Blog</title>
   
 
 
@@ -263,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/08/01/像是昨天/">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -280,7 +286,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">像是昨天</h2>
+          <h2 class="post-title" itemprop="name headline">IDEA中Maven配置JDK11进行编译</h2>
         
 
         <div class="post-meta">
@@ -294,8 +300,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
-                2018-08-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-13T00:00:00+08:00">
+                2018-10-13
               </time>
             
 
@@ -317,8 +323,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -335,9 +341,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/01/像是昨天/#comments" itemprop="discussionUrl">
+                <a href="/2018/10/13/IDEA中Maven配置JDK11进行编译/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/01/像是昨天/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/10/13/IDEA中Maven配置JDK11进行编译/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -370,13 +376,20 @@
       
 
       
-        <p>半夜醒来，想起前尘往事，遂成比文。我一写东西大多是唠叨，夹杂着些许不成熟的想法，姑且记录下来吧。</p>
+        <p>前几天JDK发布了不是，所以赶紧下载体验一番，我用的是IDEA编辑器(IntelliJ IDEA 2018.2.4 x64)，注意IDEA也要更新到最新版，用Maven编译的话需要进行相关配置，在此记录一下。</p>
 <a id="more"></a>
-<p>2016年7月，我的好朋友给我打了个电话让我去武汉玩，从此我真切感受到世界的另一面。本来不想把这些东西写成文章记录下来，但一直在心中憋着，就像一团结在心中缠绕，勒得心中直疼。再加上最近另一个好朋友也遇到此事，自己却没帮上什么忙。虽说自己也不懂什么大道理，说不出让人顿悟警醒的话，但基本的做人做事原则我还是能说上两句。时隔两年，心中除了惆怅和遗憾，还多了些许的无助感。</p>
-<p>那么，2016年7月我遇到了什么事情呢？我遇到了所谓被称为传销的东西。传销这个词现在被人说烂了，我们没接触过的人听到这个词不会大惊小怪，新闻经常报道，即使是里面的人，直接会拿这个词给你说道说道，用他们的一套说辞来给你解释这个东西，直到你信以为真。千万不要小看这个让你信以为真的过程，这个过程被称为洗脑，这个词也是很常见，他们用所谓的大道理，所谓的说了一百遍都狗屁不是的话让你确认他们说的是真理，是赚钱迈向成功的一条猛路子，以便达到他们不可告人、见不得光的目地。很多事情在暗地里表面上看起来还是那么一回事，但真正剖析这件事的前因后果，可能发现原来多美好的一件事情，背后指不定有什么道道。虽然结果令人沮丧，但还是要认真面对，因为这是对你人生成长极大的考验，不得不头脑清醒些。</p>
-<p>才去的时候挺开心的，毕竟暑假没事在家待着无聊，出去转转散散心也挺好。当我好朋友带我去听人生中第一堂洗脑课时，整个人瞬间一愣，这是在讲什么，这么短时间就能赚这么多钱，不会是传销吧，这时我意识到我朋友可能被人拉进了传销。不过整个过程我十分镇定，依然笑容满面，谈笑风生，一点也没让人看出我内心的慌乱和翻腾。其实我内心早已翻江倒海了，我知道我是清醒的，我在听些什么，但我不确定我朋友内心此时是怎么想的，或者说我已经知道朋友内心是怎么想的，不过这是我最不愿看到的。但事实就是那么残酷，越不想相信的事情，现实就会逼着你去相信。但我看到我朋友坚定的眼神，决心似乎很大，这让我不由得担心起来了。我想劝劝我朋友，早日脱离苦海，但我们终是凡人，谁又能成了佛。</p>
-<p>我接触了很多年纪轻轻的从业者，我始终相信他们是善良的，他们是被那些心中怀着鬼胎的垃圾利用了，被那些人操纵着思想，给他们一个光明的目标，他们就以为看到了太阳的曙光。不过他们又有什么错呢？他们只是想赚钱，或许是凭借着自己的“努力”吧，可惜努力用错了地方，光明也不是纯粹的光明。以前我最痛恨的是利用他人的无知来谋取利益，现在呢？把你思想先改变了，再利用你来赚钱，这是最无耻的，也是悄无声息的，所以很多人不知不觉走上了这样的道路，真是可惜可叹。</p>
-<p>我不想发那么多的牢骚，因为没什么意思，但我还是愿意不厌其烦地告诫那么不愿意脚踏实地的同学，天下没那么多好事，不要以为自己走了好运而沾沾自喜，那很有可能是别人挖好了坑等着你跳。我们还太年轻，虽说吃点亏不算什么，但不能因为这个坑而改变了自己的所有。人时有穷尽，力所不能及，还是多想想吧。</p>
+<p>首先需要配置JDK的环境变量，配置好了显示如下：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-version.png?raw=true" alt="image"></p>
+<p>然后进入到IDEA中，配置项目使用的JDK版本，依次点击<code>File -&gt; Project Structure</code>，然后找到<code>Project SDK</code>选项，配置如下：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-project-structure.png?raw=true" alt="image"></p>
+<p>接下来配置Maven的JDK版本，点击<code>File -&gt; Settings -&gt; Build, Execution, Deployment -&gt; Build Tools -&gt; Maven</code>，然后选择<code>Runner</code>，配置Maven使用的JDK版本，配置页面如下：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-maven-settings.png?raw=true" alt="image"></p>
+<p>最后配置下maven的pom.xml文件，将目标编译版本改为JDK11，配置如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>java11-tutorial<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>11<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>11<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>刷新maven项目，试着编译下，可以看到已经使用JDK11编译了：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-build-output.png?raw=true" alt="image"></p>
+<p>看下编译后的字节码的大小版本号，利用HexPad编辑器打开class文件，如下。可以看到minor_version为 0x0000, major_version为0x0037，而0x0037的十进制表示为55，即用jdk11编译的，准确无误。</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-class-version.png?raw=true" alt="image"></p>
 
       
     </div>
@@ -397,7 +410,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://mingshan.me/2018/08/01/像是昨天/" title="像是昨天">http://mingshan.me/2018/08/01/像是昨天/</a>
+    <a href="http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/" title="IDEA中Maven配置JDK11进行编译">http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -412,7 +425,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -425,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/28/构建一个Tomcat的Docker镜像/" rel="next" title="构建一个Tomcat的Docker镜像">
-                <i class="fa fa-chevron-left"></i> 构建一个Tomcat的Docker镜像
+              <a href="/2018/10/07/读过几本书，还是菜/" rel="next" title="读过几本书，还是菜">
+                <i class="fa fa-chevron-left"></i> 读过几本书，还是菜
               </a>
             
           </div>
@@ -434,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/05/利用Docker搭建Nexus3私服/" rel="prev" title="利用Docker搭建Nexus3私服">
-                利用Docker搭建Nexus3私服 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -760,9 +769,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://mingshan.me/2018/08/01/像是昨天/';
-          this.page.identifier = '2018/08/01/像是昨天/';
-          this.page.title = '像是昨天';
+          this.page.url = 'http://mingshan.me/2018/10/13/IDEA中Maven配置JDK11进行编译/';
+          this.page.identifier = '2018/10/13/IDEA中Maven配置JDK11进行编译/';
+          this.page.title = 'IDEA中Maven配置JDK11进行编译';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';

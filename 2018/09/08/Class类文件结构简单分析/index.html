@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。">
+<meta name="description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。（JDK11）">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Class类文件结构简单分析">
 <meta property="og:url" content="http://mingshan.me/2018/09/08/Class类文件结构简单分析/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。">
+<meta property="og:description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。（JDK11）">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/class_16.png?raw=true">
-<meta property="og:updated_time" content="2018-09-08T13:58:45.855Z">
+<meta property="og:updated_time" content="2018-10-13T08:08:07.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Class类文件结构简单分析">
-<meta name="twitter:description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。">
+<meta name="twitter:description" content="代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。  在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。（JDK11）">
 <meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/class_16.png?raw=true">
 
 
@@ -375,7 +375,7 @@
         <blockquote>
 <p>代码编译的结果从本地机器码转变为字节码，是存储格式发展的一小步，却是编程语言的一大步。</p>
 </blockquote>
-<p>在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。</p>
+<p>在Java平台中，实现语言无关性基础是虚拟机和存储格式。Java虚拟机不和Java等运行在其上的语言绑定，它只是与Class文件这种特殊的字节码文件所关联，每一个类文件包含单个类、接口或模块的定义。（JDK11）</p>
 <a id="more"></a>
 <h2 id="ClassFile的structure"><a href="#ClassFile的structure" class="headerlink" title="ClassFile的structure"></a>ClassFile的structure</h2><p>Class文件由一组8位字节为基础的二进制流。在最新的Java虚拟机规范中，Class文件由叫做ClassFile的structure组成。class文件结构在JVM占有重要地位，具体位于第四章，标题是“The class File Format”，总共五百多页的虚拟机规范，类文件结构就写了三百多页，是不是很可怕^_^</p>
 <p>那么这个东西长什么样呢？如下：</p>
@@ -448,6 +448,10 @@
 <tr>
 <td>10</td>
 <td>45.0 ≤ v ≤ 54.0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>45.0 ≤ v ≤ 55.0</td>
 </tr>
 </tbody>
 </table>
@@ -537,7 +541,7 @@
 <h2 id="attributes-count-attributes"><a href="#attributes-count-attributes" class="headerlink" title="attributes_count, attributes[]"></a>attributes_count, attributes[]</h2><p>在Class文件、字段表、方法表都可以携带自己的attribute_info，用于描述某些场景专有的信息。</p>
 <p>参考：</p>
 <ul>
-<li><a href="https://docs.oracle.com/javase/specs/jvms/se10/jvms10.pdf" target="_blank" rel="noopener">The Java® Virtual Machine Specification (Java SE 10 Edition)</a></li>
+<li><a href="https://docs.oracle.com/javase/specs/jvms/se11/jvms11.pdf" target="_blank" rel="noopener">The Java® Virtual Machine Specification (Java SE 11 Edition)</a></li>
 <li>深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）</li>
 <li><a href="https://mp.weixin.qq.com/s/e3_5okrgFTctBTikRuJvhA" target="_blank" rel="noopener">来自JVM的一封ClassFile介绍信</a></li>
 </ul>
@@ -692,7 +696,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
