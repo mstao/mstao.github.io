@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CAS,java,JUC," />
+  <meta name="keywords" content="java,JUC,CAS," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
-<meta name="keywords" content="CAS,java,JUC">
+<meta name="keywords" content="java,JUC,CAS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CAS小窥">
 <meta property="og:url" content="http://mingshan.me/2018/10/01/CAS小窥/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-13T13:50:57.287Z">
+<meta property="og:updated_time" content="2018-10-19T14:49:45.329Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CAS小窥">
 <meta name="twitter:description" content="在JDK 1.5之后Java提供了并发包（java.util.concurrent）,加强对并发的支持。该包下的类大量使用 CAS（Compare and Swap）来实现原子操作、锁优化等。在java.util.concurrent.atomic包中，提供了对基本类型的原子封装，比如AtomicInteger，用来原子性访问和更新。我们十分熟悉的++i操作，在多线程环境下并非是线程安全的，因为它">
@@ -394,9 +394,9 @@
 <ol>
 <li>假设现在有两个线程同时进入getAndAddInt方法, 主内存的value假设为2，根据Java内存模型，线程A和线程B各自持有一份value的副本，值为2；</li>
 <li>线程A 执行<code>getIntVolatile(o, offset)</code>方法，拿到value值为2，线程A被挂起了；</li>
-<li>线程B执行<code>getIntVolatile(o, offset)</code>方法，拿到value值为2， 接着执行<code>weakCompareAndSetInt(o, offset, v, v + delta))</code>方法，发现内存值和获取的值都是2，成功修改value的值为1；</li>
-<li>线程A继续执行<code>weakCompareAndSetInt(o, offset, v, v + delta))</code>方法，发现自己获取的值2和内存中的值1不一样了，修改失败，继续循环执行</li>
-<li>继续上面同样的操作，由于value被volatile修饰，所以此时线程A的value的副本就为1了，执行<code>getIntVolatile(o, offset)</code>方法，获取的值也为1，最后执行<code>weakCompareAndSetInt(o, offset, v, v + delta))</code>，直至成功修改value的值。</li>
+<li>线程B执行<code>getIntVolatile(o, offset)</code>方法，拿到value值为2， 接着执行<code>weakCompareAndSetInt(o, offset, v, v + delta)</code>方法，发现内存值和获取的值都是2，成功修改value的值为1；</li>
+<li>线程A继续执行<code>weakCompareAndSetInt(o, offset, v, v + delta)</code>方法，发现自己获取的值2和内存中的值1不一样了，修改失败，继续循环执行</li>
+<li>继续上面同样的操作，由于value被volatile修饰，所以此时线程A的value的副本就为1了，执行<code>getIntVolatile(o, offset)</code>方法，获取的值也为1，最后执行<code>weakCompareAndSetInt(o, offset, v, v + delta)</code>，直至成功修改value的值。</li>
 </ol>
 <p><code>weakCompareAndSetInt</code>最终调用<code>compareAndSetInt</code>方法，注意该方法为本地方法，如下。该方法有四个参数，分别是对象（这里是AtomicInteger）、对象的偏移地址、预期值、修改值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@HotSpotIntrinsicCandidate</span><br><span class="line">public final native boolean compareAndSetInt(Object o, long offset,</span><br><span class="line">                                             int expected,</span><br><span class="line">                                             int x);</span><br></pre></td></tr></table></figure>
@@ -414,6 +414,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用版本号解决CAS中的ABA问题。</span></span><br><span class="line"><span class="comment"> * 每一次修改都记录下版本号, 此版本号+1.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicStampedReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicStampedReference&lt;Integer&gt; atomicStampedRef =</span><br><span class="line">            <span class="keyword">new</span> AtomicStampedReference&lt;Integer&gt;(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Thread main = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"操作线程"</span> + Thread.currentThread() +<span class="string">", 初始值 a = "</span> </span><br><span class="line">                    + atomicStampedRef.getReference());</span><br><span class="line">            <span class="comment">// 获取当前Stamp</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> stamp = atomicStampedRef.getStamp();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 等待2秒 ，以便让干扰线程执行</span></span><br><span class="line">                Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 此时stamp已经被修改了, 所以CAS失败</span></span><br><span class="line">            <span class="keyword">boolean</span> isCASSuccess = atomicStampedRef.compareAndSet(<span class="number">1</span>, <span class="number">2</span>, stamp, stamp + <span class="number">1</span>);</span><br><span class="line">            System.out.println(<span class="string">"操作线程"</span> + Thread.currentThread() +<span class="string">", CAS操作结果: "</span> + isCASSuccess);</span><br><span class="line">        &#125;, <span class="string">"主操作线程"</span>);</span><br><span class="line"></span><br><span class="line">        Thread other = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 干扰线程让出自己的cpu时间片，回到Runnable状态，让自己或主操作线程先执行</span></span><br><span class="line">            Thread.yield();</span><br><span class="line">            <span class="comment">// 加一</span></span><br><span class="line">            atomicStampedRef.compareAndSet(<span class="number">1</span>, <span class="number">2</span>, </span><br><span class="line">                    atomicStampedRef.getStamp(),atomicStampedRef.getStamp() + <span class="number">1</span>);</span><br><span class="line">            System.out.println(<span class="string">"操作线程"</span> + Thread.currentThread() + <span class="string">", 【increment】, Reference = "</span> </span><br><span class="line">                    + atomicStampedRef.getReference() + <span class="string">", Stamp = "</span> + atomicStampedRef.getStamp());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 然后减一</span></span><br><span class="line">            atomicStampedRef.compareAndSet(<span class="number">2</span>, <span class="number">1</span>, atomicStampedRef.getStamp(), </span><br><span class="line">                    atomicStampedRef.getStamp() + <span class="number">1</span>);</span><br><span class="line">            System.out.println(<span class="string">"操作线程"</span> + Thread.currentThread() + <span class="string">", 【decrement】, Reference = "</span> </span><br><span class="line">                    + atomicStampedRef.getReference() + <span class="string">", Stamp = "</span> + atomicStampedRef.getStamp());</span><br><span class="line">        &#125;, <span class="string">"干扰线程"</span>);</span><br><span class="line"></span><br><span class="line">        main.start();</span><br><span class="line">        other.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>执行结果为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">操作线程Thread[主操作线程,5,main], 初始值 a = 1</span><br><span class="line">操作线程Thread[干扰线程,5,main], 【increment】, Reference = 2, Stamp = 1</span><br><span class="line">操作线程Thread[干扰线程,5,main], 【decrement】, Reference = 1, Stamp = 2</span><br><span class="line">操作线程Thread[主操作线程,5,main], CAS操作结果: false</span><br></pre></td></tr></table></figure>
+<p><strong>Variable Handles</strong> </p>
+<p>在JDK9之前，JDK源码中在进行CAS操作时需要调用<code>sun.misc.Unsafe</code>类native修饰的方法，该类由于涉及到底层操作被JDK视为不安全，不推荐使用，在以后的版本中会被逐渐替代，所以在JDK9引入了Variable Handles（变量句柄）这个概念，主要提供<code>java.util.concurrent.atomic</code> 和 <code>sun.misc.Unsafe</code>相似的功能，但会更加安全和易用，并且在并发方面提高了性能。详细参考<a href="https://github.com/ZZULI-TECH/interview/blob/master/source/java/base/VariableHandles.md" target="_blank" rel="noopener">Variable Handles（变量句柄）</a></p>
 <p>参考：</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Non-blocking_algorithm" target="_blank" rel="noopener">Non-blocking algorithm</a></li>
@@ -459,11 +461,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CAS/" rel="tag"># CAS</a>
-          
             <a href="/tags/java/" rel="tag"># java</a>
           
             <a href="/tags/JUC/" rel="tag"># JUC</a>
+          
+            <a href="/tags/CAS/" rel="tag"># CAS</a>
           
         </div>
       
