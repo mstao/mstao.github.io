@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JVM," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mingshan's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，命令行工具和GUI工具，这些工具在平时的开发中用到的频率非常高，我们一起来">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java虚拟机的监控及诊断工具（命令行）">
+<meta property="og:url" content="http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/index.html">
+<meta property="og:site_name" content="Mingshan&#39;s Blog">
+<meta property="og:description" content="对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，命令行工具和GUI工具，这些工具在平时的开发中用到的频率非常高，我们一起来">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-10-21T15:45:09.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java虚拟机的监控及诊断工具（命令行）">
+<meta name="twitter:description" content="对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，命令行工具和GUI工具，这些工具在平时的开发中用到的频率非常高，我们一起来">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/"/>
+
+
+
+
+
+  <title>Java虚拟机的监控及诊断工具（命令行） | Mingshan's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mingshan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一念开明，反身而诚</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Java虚拟机的监控及诊断工具（命令行）</h2>
+        
+
+        <div class="post-meta">
+          
+
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T00:00:00+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/21/Java虚拟机的监控及诊断工具（命令行）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，<strong>命令行工具</strong>和<strong>GUI工具</strong>，这些工具在平时的开发中用到的频率非常高，我们一起来总结了解下。</p>
+<a id="more"></a>
+<p>常用的命令行工具以及作用：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>主要作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jps</td>
+<td>JVM Process Status Tool,  列出指定系统内正在运行的虚拟机进程</td>
+</tr>
+<tr>
+<td>jstat</td>
+<td>JVM Statistics Monitoring Tool，允许用户查看目标 Java 进程的类加载、即时编译以及垃圾回收相关信息。常用来检测垃圾回收及内存泄露问题。</td>
+</tr>
+<tr>
+<td>jinfo</td>
+<td>打印目标 Java 进程的配置参数，并能够改动其中 manageabe 的参数。</td>
+</tr>
+<tr>
+<td>jmap</td>
+<td>统计用户统计目标 Java 进程的堆中存放的 Java 对象，生成堆转储快照（heapdump文件）</td>
+</tr>
+<tr>
+<td>jstack</td>
+<td>打印目标 Java 进程中各个线程的栈轨迹、线程状态、锁状况等信息，它还将自动检测死锁。</td>
+</tr>
+<tr>
+<td>jcmd</td>
+<td>实现前面除了jstat之外所有命令的功能</td>
+</tr>
+</tbody>
+</table>
+<h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>jps命令（<a href="https://docs.oracle.com/en/java/javase/11/tools/jps.html#GUID-6EB65B96-F9DD-4356-B825-6146E9EEC81E" target="_blank" rel="noopener">帮助文档</a>）用于列出正在运行的虚拟机进程信息，它的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jps [ -q ] [ -mlvV ][hostid ]</span><br><span class="line">jps [ -help ]</span><br></pre></td></tr></table></figure>
+<p>在默认情况下，jps的输出信息包括 Java 进程的进程ID以及主类名。jps还提供一些参数用于打印详细的信息。</p>
+<p>其中 <code>-q</code>仅显示虚拟机的进程id， <code>-mlvV</code> 的意义如下：</p>
+<ul>
+<li><code>-m</code> 将打印传递给主类的参数</li>
+<li><code>-l</code> 将打印模块名以及包名</li>
+<li><code>-v</code> 将打印传递给虚拟机的参数</li>
+<li><code>-V</code> 将打印传递给主类的参数、jar文件名等</li>
+</ul>
+<p>具体jps示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ jps -l</span><br><span class="line">11988</span><br><span class="line">48932</span><br><span class="line">32696 org.jetbrains.idea.maven.server.RemoteMavenServer</span><br><span class="line">26140 jdk.jcmd/sun.tools.jps.Jps</span><br></pre></td></tr></table></figure>
+<p>添加<code>-mlvV</code>打印更加详细的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ jps -mlvV</span><br><span class="line">32696 org.jetbrains.idea.maven.server.RemoteMavenServer -Djava.awt.headless=true -Didea.version==2018.2.5 -Xmx768m -Didea.maven.embedder.version=3.5.4 -Dfile.encoding=GBK</span><br><span class="line">26924 jdk.jcmd/sun.tools.jps.Jps -mlvV -Dapplication.home=F:\develope\Java\Java11 -Xms8m -Djdk.module.main=jdk.jcmd</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><p><code>jstat</code>（<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html#GUID-5F72A7F9-5D5A-4486-8201-E1D1BA8ACCB5" target="_blank" rel="noopener">帮助文档</a>）是用于监视虚拟机各种运行状态信息的命令行工具，它可以显示本地或者远程虚拟机进程中的类装载、内存、垃圾收集等信息，它的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jstat generalOptions</span><br><span class="line">jstat -outputOptions [ -t] [-hlines] vmid [interval [count] ]</span><br></pre></td></tr></table></figure>
+<p>其中<code>vmid</code>全称是Virtual Machine Identifier，就是<code>jps</code>命令显示的进程id，如果是远程虚拟机进程，<code>vmid</code>的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[protocol:][//]lvmid[@hostname[:port]/servername]</span><br></pre></td></tr></table></figure>
+<p><code>jstat</code>命令包含很多的子命令，主要分为3类：</p>
+<ul>
+<li>类加载（<code>-class</code>）</li>
+<li>即时编译（<code>-compiler</code>和<code>-printcompilation</code>）</li>
+<li>垃圾回收（<code>-gc*</code>）</li>
+</ul>
+<p>输入<code>jstat -options</code>显示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ jstat -options</span><br><span class="line">-class</span><br><span class="line">-compiler</span><br><span class="line">-gc</span><br><span class="line">-gccapacity</span><br><span class="line">-gccause</span><br><span class="line">-gcmetacapacity</span><br><span class="line">-gcnew</span><br><span class="line">-gcnewcapacity</span><br><span class="line">-gcold</span><br><span class="line">-gcoldcapacity</span><br><span class="line">-gcutil</span><br><span class="line">-printcompilation</span><br></pre></td></tr></table></figure>
+<p>参数<code>interval</code>和<code>count</code>代表查询间隔和次数，如果省略，默认查询一次。</p>
+<p>现在我们要查询进程id 为26792的垃圾收集情况，并且是每隔2秒打印一次，共打印2次，命令和输出示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ jstat -gc 26792 2s 2</span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT    CGC    CGCT     GCT</span><br><span class="line">5120.0 5120.0  0.0   5095.1 33280.0  30033.1   87552.0     2573.4   15232.0 14724.4 1920.0 1782.4      3    0.027   1      0.032   -          -    0.059</span><br><span class="line">5120.0 5120.0  0.0   5095.1 33280.0  30033.1   87552.0     2573.4   15232.0 14724.4 1920.0 1782.4      3    0.027   1      0.032   -          -    0.059</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，输出了一大堆东西，那么这些是什么意思呢？前面说了，<code>jstat</code>有很多的关于垃圾回收的子命令，每个子命令的输出结果也不一样，具体可参考（<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html#GUID-5F72A7F9-5D5A-4486-8201-E1D1BA8ACCB5" target="_blank" rel="noopener">帮助文档</a>）。我们知道JVM堆是分代的，前四个 表示Survivor 区的容量（Capacity）和已使用量（Utilization），EC表示当前Eden的容量，剩下的就不说了。</p>
+<p>在翻阅文档的时候，发现没有CGC 和 CGCT的解释，它们分别代表并发 GC Stop-The-World 的次数和时间。</p>
+<p><code>-t</code> 参数会显示时间戳列作为输出的第一列，它将在每行数据之前打印目标 Java 进程的启动以来的时间，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ jstat -gc -t 26792 2s 2</span><br><span class="line">Timestamp        S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT    CGC    CGCT     GCT</span><br><span class="line">         1949.1 5120.0 5120.0  0.0   5095.1 33280.0  31206.1   87552.0     2573.4   15232.0 14724.4 1920.0 1782.4      3    0.027   1      0.032   -          -   0.059</span><br><span class="line">         1951.1 5120.0 5120.0  0.0   5095.1 33280.0  31206.1   87552.0     2573.4   15232.0 14724.4 1920.0 1782.4      3    0.027   1      0.032   -          -   0.059</span><br></pre></td></tr></table></figure>
+<h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><p><code>jmap</code>命令（<a href="https://docs.oracle.com/en/java/javase/11/tools/jmap.html#GUID-D2340719-82BA-4077-B0F3-2803269B7F41" target="_blank" rel="noopener">帮助文档</a>）用于生成堆转储快照，用于分析Java虚拟机堆中的对象。</p>
+<p>它的命令格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap [options] pid</span><br></pre></td></tr></table></figure>
+<p><code>jmap</code>命令的参数选项也包括很多种，具体如下：</p>
+<p><strong>1. -clstats</strong></p>
+<p>连接到正在运行的进程并打印Java堆被加载类的统计信息</p>
+<p><strong>2. -finalizerinfo</strong></p>
+<p>连接到正在运行的进程并打印所有待 finalize 的对象。</p>
+<p><strong>3. -histo[:live]</strong></p>
+<p>连接到正在运行的进程并统计各个类的实例数目以及占用内存，并按照内存使用量从多至少的顺序排列。此外，-histo:live只统计堆中还在存活的对象。</p>
+<p><strong>4. -dump</strong></p>
+<p>连接到正在运行的进程并导出Java虚拟机堆内存的快照。该子命令该包含如下参数：</p>
+<ul>
+<li>live  只保存堆中存活的对象</li>
+<li>format=b 将使jmap导出与hprof（在 Java 9 中已被移除）-XX:+HeapDumpAfterFullGC、-XX:+HeapDumpOnOutOfMemoryError格式一样的文件</li>
+<li>file=filename 指定导出堆内存快照的位置</li>
+</ul>
+<p>综合以上参数，示例命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -dump:live,format=b,file=heap.bin pid</span><br></pre></td></tr></table></figure>
+<h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><p><code>jinfo</code>命令（<a href="https://docs.oracle.com/en/java/javase/11/tools/jinfo.html#GUID-69246B58-28C4-477D-B375-278F5F9830A5" target="_blank" rel="noopener">帮助文档</a>）用来实时地查看和调整虚拟机的各项参数。我们可以使用<code>jps -v</code>来查看传递给虚拟机的参数，即<code>System.getProperty</code>获取的<code>-D</code>参数，现在我们可以利用<code>jinfo</code>命令来获取了。</p>
+<p>它的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jinfo [option] pid</span><br></pre></td></tr></table></figure>
+<p>它也包括了许多子命令，具体如下：</p>
+<p><strong>1. -flag name</strong></p>
+<p>打印指定的虚拟机参数的名称和值</p>
+<p><strong>2. -flag [+|-]name</strong></p>
+<p>用来修改目标 Java 进程的“manageable”虚拟机参数。其中<code>+</code>代表开启，<code>-</code>代表关闭。</p>
+<p>输入<code>java -XX:+PrintFlagsFinal -version | grep manageable</code>来查看“manageable”虚拟机参数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ java -XX:+PrintFlagsFinal -version | grep manageable</span><br><span class="line">     intx CMSAbortablePrecleanWaitMillis           = 100                                    &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     intx CMSTriggerInterval                       = -1                                     &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     intx CMSWaitDuration                          = 2000                                   &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     bool HeapDumpAfterFullGC                      = false                                  &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     bool HeapDumpBeforeFullGC                     = false                                  &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     bool HeapDumpOnOutOfMemoryError               = false                                  &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">    ccstr HeapDumpPath                             =                                        &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">    uintx MaxHeapFreeRatio                         = 70                                     &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">    uintx MinHeapFreeRatio                         = 40                                     &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     bool PrintClassHistogram                      = false                                  &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">     bool PrintConcurrentLocks                     = false                                  &#123;manageable&#125; &#123;default&#125;</span><br><span class="line">java version &quot;11&quot; 2018-09-25</span><br><span class="line">Java(TM) SE Runtime Environment 18.9 (build 11+28)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11+28, mixed mode)</span><br></pre></td></tr></table></figure>
+<p><strong>3. -flag name=value</strong></p>
+<p>设置指定的虚拟机参数的值</p>
+<p><strong>4. -flags</strong></p>
+<p>打印全部的虚拟机参数，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ jinfo -flags 26792</span><br><span class="line">VM Flags:</span><br><span class="line">-XX:CICompilerCount=3 -XX:InitialHeapSize=134217728 -XX:MaxHeapSize=805306368 -XX:MaxNewSize=268435456 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=44564480 -XX:OldSize=89653248 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC</span><br></pre></td></tr></table></figure>
+<p><strong>5. -sysprops</strong></p>
+<p>打印java系统参数（Java System Properties）</p>
+<h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><p><code>jstack</code>命令（<a href="https://docs.oracle.com/en/java/javase/11/tools/jstack.html#GUID-721096FC-237B-473C-A461-DBBBB79E4F6A" target="_blank" rel="noopener">帮助文档</a>）可以用来打印目标 Java 进程中各个线程的栈轨迹，以及这些线程所持有的锁。通过线程的栈轨迹可以定位线程长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致长时间等待等。</p>
+<p>它的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack [options] pid</span><br></pre></td></tr></table></figure>
+<p>它也有子命令：</p>
+<p><strong>-l</strong></p>
+<p>输出关于锁的附加信息，例如属于java.util.concurrent的ownable synchronizers列表</p>
+<p>下面是一个示例，如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ jstack -l 42680</span><br><span class="line">2018-10-21 23:09:17</span><br><span class="line">Full thread dump OpenJDK 64-Bit Server VM (25.152-b19 mixed mode):</span><br><span class="line"></span><br><span class="line">&quot;ApplicationImpl pooled thread 35&quot; #142 daemon prio=4 os_prio=-1 tid=0x0000000018422000 nid=0xafe8 waiting on condition [0x00000000458bf000]</span><br><span class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</span><br><span class="line">        at sun.misc.Unsafe.park(Native Method)</span><br><span class="line">        - parking to wait for  &lt;0x00000000e1506488&gt; (a java.util.concurrent.SynchronousQueue$TransferStack)</span><br><span class="line">        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)</span><br><span class="line">        at java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:460)</span><br><span class="line">        at java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:362)</span><br><span class="line">        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1066)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1127)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:745)</span><br><span class="line"></span><br><span class="line">   Locked ownable synchronizers:</span><br><span class="line">        - None</span><br></pre></td></tr></table></figure>
+<p>在输出的信息中，会包含线程的状态，下面是常见的线程状态：</p>
+<ol>
+<li>RUNNABLE，线程处于执行中</li>
+<li>BLOCKED，线程被阻塞</li>
+<li>WAITING，线程正在等待</li>
+<li>TIMED_WAITING 超时等待</li>
+</ol>
+<h2 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h2><p><code>jcmd</code>命令（<a href="https://docs.oracle.com/en/java/javase/11/tools/jcmd.html#GUID-59153599-875E-447D-8D98-0078A5778F05" target="_blank" rel="noopener">帮助文档</a>）可以向运行中的Java虚拟机(JVM)发送诊断命令。</p>
+<p>它的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jcmd &lt;pid | main class&gt; &lt;command ... | PerfCounter.print | -f  file&gt;</span><br><span class="line">jcmd -l</span><br><span class="line">jcmd -h</span><br></pre></td></tr></table></figure>
+<p><strong>pid</strong></p>
+<p>虚拟机的进程id</p>
+<p><strong>main class</strong></p>
+<p>接收诊断命令请求的进程的main类。</p>
+<p><strong>command</strong></p>
+<p>该命令必须是针对所选JVM的有效jcmd命令。jcmd的可用命令列表是通过运行help命令(jcmd pid help)获得的，其中pid是运行Java进程的进程ID。如果pid为0，命令将被发送到所有的Java进程。main class参数将用于部分或完全匹配用于启动Java的类。如果没有提供任何选项，它会列出正在运行的Java进程标识符以及用于启动进程的主类和命令行参数(与使用-l相同)。</p>
+<p><strong>Perfcounter.print</strong></p>
+<p>打印目标Java进程上可用的性能计数器。性能计数器的列表可能会随着Java进程的不同而产生变化。</p>
+<p><strong>-f file</strong></p>
+<p>从文件file中读取命令，然后在目标Java进程上调用这些命令。</p>
+<p><strong>-l</strong></p>
+<p>查看所有的进程列表信息。</p>
+<p><strong>-h</strong><br>查看帮助信息。（同 -help）</p>
+<p>jcmd的可用命令列表如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ jcmd 26792 help</span><br><span class="line">26792:</span><br><span class="line">The following commands are available:</span><br><span class="line">VM.native_memory</span><br><span class="line">ManagementAgent.stop</span><br><span class="line">ManagementAgent.start_local</span><br><span class="line">ManagementAgent.start</span><br><span class="line">GC.rotate_log</span><br><span class="line">Thread.print</span><br><span class="line">GC.class_stats</span><br><span class="line">GC.class_histogram</span><br><span class="line">GC.heap_dump</span><br><span class="line">GC.run_finalization</span><br><span class="line">GC.run</span><br><span class="line">VM.uptime</span><br><span class="line">VM.flags</span><br><span class="line">VM.system_properties</span><br><span class="line">VM.command_line</span><br><span class="line">VM.version</span><br><span class="line">help</span><br><span class="line"></span><br><span class="line">For more information about a specific command use &apos;help &lt;command&gt;&apos;.</span><br></pre></td></tr></table></figure>
+<p>PS: 以后用到了再详细补充。。</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://docs.oracle.com/en/java/javase/11/tools/monitoring-tools-and-commands.html" target="_blank" rel="noopener">Monitoring Tools and Commands</a></li>
+<li><a href="https://docs.oracle.com/en/java/javase/11/tools/troubleshooting-tools-and-commands.html" target="_blank" rel="noopener">Troubleshooting Tools and Commands</a></li>
+<li><a href="https://time.geekbang.org/column/article/40520" target="_blank" rel="noopener">Java虚拟机的监控及诊断工具（命令行篇）</a></li>
+<li>周志明，深入理解Java虚拟机:JVM高级特性与最佳实践（第二版）</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mingshan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/" title="Java虚拟机的监控及诊断工具（命令行）">http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/19/ForkJoin实践及JMH基准测试其性能/" rel="next" title="ForkJoin实践及JMH基准测试其性能">
+                <i class="fa fa-chevron-left"></i> ForkJoin实践及JMH基准测试其性能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Mingshan" />
+            
+              <p class="site-author-name" itemprop="name">Mingshan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/mstao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:mingshanme@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=610820&auto=0&height=66"></iframe>
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jps"><span class="nav-number">1.</span> <span class="nav-text">jps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat"><span class="nav-number">2.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jmap"><span class="nav-number">3.</span> <span class="nav-text">jmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jinfo"><span class="nav-number">4.</span> <span class="nav-text">jinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstack"><span class="nav-number">5.</span> <span class="nav-text">jstack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jcmd"><span class="nav-number">6.</span> <span class="nav-text">jcmd</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mingshan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+<span><img src="https://licensebuttons.net/l/by-nc-sa/3.0/cn/80x15.png" style="display:inline;top:3px;position:relative;"/></span>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://mingshan.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://mingshan.me/2018/10/21/Java虚拟机的监控及诊断工具（命令行）/';
+          this.page.identifier = '2018/10/21/Java虚拟机的监控及诊断工具（命令行）/';
+          this.page.title = 'Java虚拟机的监控及诊断工具（命令行）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mingshan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/miku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
