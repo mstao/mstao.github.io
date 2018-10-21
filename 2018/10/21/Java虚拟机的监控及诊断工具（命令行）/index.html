@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
 <meta property="og:description" content="对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，命令行工具和GUI工具，这些工具在平时的开发中用到的频率非常高，我们一起来">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-21T15:45:09.091Z">
+<meta property="og:updated_time" content="2018-10-21T15:51:31.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java虚拟机的监控及诊断工具（命令行）">
 <meta name="twitter:description" content="对于普通的开发人员来说，可以阅读帮助文档或者源码来对JDK的设计以及JVM的内存管理获取一定的了解，但对于线上运行的程序，如何对程序进行监控和诊断呢？比如一个程序挂了，怎么通过分析堆栈信息、GC日志、线程快照等信息来快速定位问题？JDK的大佬早就为我们考虑到这一点，所以在JDK中包含了许多用于监控及诊断的工具，主要分为两类，命令行工具和GUI工具，这些工具在平时的开发中用到的频率非常高，我们一起来">
@@ -423,7 +423,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ jps -l</span><br><span class="line">11988</span><br><span class="line">48932</span><br><span class="line">32696 org.jetbrains.idea.maven.server.RemoteMavenServer</span><br><span class="line">26140 jdk.jcmd/sun.tools.jps.Jps</span><br></pre></td></tr></table></figure>
 <p>添加<code>-mlvV</code>打印更加详细的信息：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ jps -mlvV</span><br><span class="line">32696 org.jetbrains.idea.maven.server.RemoteMavenServer -Djava.awt.headless=true -Didea.version==2018.2.5 -Xmx768m -Didea.maven.embedder.version=3.5.4 -Dfile.encoding=GBK</span><br><span class="line">26924 jdk.jcmd/sun.tools.jps.Jps -mlvV -Dapplication.home=F:\develope\Java\Java11 -Xms8m -Djdk.module.main=jdk.jcmd</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><p><code>jstat</code>（<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html#GUID-5F72A7F9-5D5A-4486-8201-E1D1BA8ACCB5" target="_blank" rel="noopener">帮助文档</a>）是用于监视虚拟机各种运行状态信息的命令行工具，它可以显示本地或者远程虚拟机进程中的类装载、内存、垃圾收集等信息，它的命令格式如下：</p>
+<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><p><code>jstat</code>（<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html#GUID-5F72A7F9-5D5A-4486-8201-E1D1BA8ACCB5" target="_blank" rel="noopener">帮助文档</a>）是用于监视虚拟机各种运行状态信息的命令行工具，它可以显示本地或者远程虚拟机进程中的类加载、内存、垃圾回收等信息，它的命令格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jstat generalOptions</span><br><span class="line">jstat -outputOptions [ -t] [-hlines] vmid [interval [count] ]</span><br></pre></td></tr></table></figure>
 <p>其中<code>vmid</code>全称是Virtual Machine Identifier，就是<code>jps</code>命令显示的进程id，如果是远程虚拟机进程，<code>vmid</code>的格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[protocol:][//]lvmid[@hostname[:port]/servername]</span><br></pre></td></tr></table></figure>
