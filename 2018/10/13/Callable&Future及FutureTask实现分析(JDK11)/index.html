@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/FutureTask_class.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/FutureTask_state_transitions.png?raw=true">
-<meta property="og:updated_time" content="2018-10-19T14:50:56.795Z">
+<meta property="og:updated_time" content="2018-10-22T14:05:22.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Callable&amp;Future及FutureTask实现分析(JDK11)">
 <meta name="twitter:description" content="Callable在Java中我们知道创建一个线程可以继承Thread类或者实现Runnable接口，JDK1.5之后在java.util.concurrent提供了Callable接口，该接口设计类似Runnable接口，不过Callable接口可以返回任务执行的结果，并且在执行任务过程中可能会抛出异常，而Runnable却不会。下面是Callable接口的定义：">
@@ -472,7 +472,7 @@
 <li>如果在，计算剩余时间，挂起当前线程，让当前线程等待剩下的时间</li>
 </ul>
 </li>
-<li>未设置等待时间，直接进行线程挂起操作，进入阻塞。</li>
+<li>未设置等待时间，直接进行线程挂起操作，线程状态变为等待。</li>
 </ol>
 <p>当线程被解除挂起，或计算已经完成后，在<code>get</code>方法中将会调用<code>report</code>方法返回结果，其实现如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns result or throws exception for completed task.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> s completed state value</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line"><span class="function"><span class="keyword">private</span> V <span class="title">report</span><span class="params">(<span class="keyword">int</span> s)</span> <span class="keyword">throws</span> ExecutionException </span>&#123;</span><br><span class="line">    Object x = outcome;</span><br><span class="line">    <span class="keyword">if</span> (s == NORMAL)</span><br><span class="line">        <span class="keyword">return</span> (V)x;</span><br><span class="line">    <span class="keyword">if</span> (s &gt;= CANCELLED)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CancellationException();</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ExecutionException((Throwable)x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -548,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/13/IDEA中Maven配置JDK11进行编译/" rel="next" title="IDEA中Maven配置JDK11进行编译">
-                <i class="fa fa-chevron-left"></i> IDEA中Maven配置JDK11进行编译
+              <a href="/2018/10/07/读过几本书，还是菜/" rel="next" title="读过几本书，还是菜">
+                <i class="fa fa-chevron-left"></i> 读过几本书，还是菜
               </a>
             
           </div>
@@ -558,8 +558,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/19/ForkJoin实践及JMH基准测试其性能/" rel="prev" title="ForkJoin实践及JMH基准测试其性能">
-                ForkJoin实践及JMH基准测试其性能 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/13/IDEA中Maven配置JDK11进行编译/" rel="prev" title="IDEA中Maven配置JDK11进行编译">
+                IDEA中Maven配置JDK11进行编译 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
