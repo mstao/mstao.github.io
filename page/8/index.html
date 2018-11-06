@@ -264,6 +264,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/06/15/javaweb下载文件时IE浏览器下报错问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/javaweb下载文件时IE浏览器下报错问题/" itemprop="url">javaweb下载文件时IE浏览器下报错问题</a></h2>
+        
+
+        <div class="post-meta">
+          
+
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T00:00:00+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/15/javaweb下载文件时IE浏览器下报错问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/06/15/javaweb下载文件时IE浏览器下报错问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近做的网站的一个下载功能出现了问题，在firefox浏览器以及360浏览器下下载均正常，也能将中文正常转换，但在IE浏览器下却出现了问题，当点击下载链接的时候，后台直接报错：<br><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/1999726111.png" alt="2017-03-17_113722.png"><br>后台我怎么兼容也不能解决问题，我下载的部分java代码：</p>
+<p><img src="http://www.mingzhiwen.cn/usr/uploads/2017/03/95431087.png" alt="QQ图片20170317113901.png"></p>
+<p>进过我仔细查找，发现我前台通过get方式提交的文件名包含一下字符，导致浏览器解析url不一致，所以需要将url通过javascript进行转码，即用encodeURIComponent函数进行编码，代码如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:location.href='$&#123;pageContext.request.contextPath&#125;/download.do?realname='+encodeURIComponent('$&#123;file_list.real_name&#125;')+'&amp;filename='+encodeURIComponent('$&#123;file_list.file_name&#125;');"</span> <span class="attr">class</span>=<span class="string">"file-name"</span>&gt;</span>$&#123;file_list.file_name&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过将文件名编码之后就能解决问题了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/06/08/javaee 配置Tomcat数据源问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -963,7 +1122,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -985,7 +1144,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
