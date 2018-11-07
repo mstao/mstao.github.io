@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/pack.png?raw=true">
 <meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/saga-demo-result.png?raw=true">
-<meta property="og:updated_time" content="2018-11-06T16:12:52.378Z">
+<meta property="og:updated_time" content="2018-11-07T13:36:18.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Apache ServiceComb Saga分布式事务框架体验">
 <meta name="twitter:description" content="Apache ServiceComb (incubating) Saga 是一个微服务应用的数据最终一致性解决方案。">
@@ -402,7 +402,7 @@
 <p>然后启动car服务：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dserver.port=8082 -Dalpha.cluster.address=127.0.0.1:8080 -jar car-0.3.0-SNAPSHOT-exec.jar</span><br></pre></td></tr></table></figure>
 <p>最后启动booking服务：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dserver.port=8083 -Dalpha.cluster.address=127.0.0.1:8080 -Dcar.service.address=127.0.0.1:8082 -Dhotel.service.address=127.0.0.1:8081 -jar booking-0.3.0-SNAPSHOT-exec.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dserver.port=8083 -Dalpha.cluster.address=127.0.0.1:8080 -Dcar.service.address=http://127.0.0.1:8082 -Dhotel.service.address=http://127.0.0.1:8081 -jar booking-0.3.0-SNAPSHOT-exec.jar</span><br></pre></td></tr></table></figure>
 <p>三个服务启动后，首先预定2个车和2个房间，用curl或者postman发送请求：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://127.0.0.1:8083/booking/test/2/2</span><br></pre></td></tr></table></figure>
 <p>结果会预定成功，分别查询car 和 hotel 均会返回预定成功：</p>
@@ -429,9 +429,19 @@
 <li>在子事务处添加 <code>@Compensable</code> 的注解并指明其对应的补偿方法。注意这里两个子事务都要加。</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Compensable</span>(compensationMethod = <span class="string">"cancel"</span>)</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">order</span><span class="params">(CarBooking booking)</span> </span>&#123;</span><br><span class="line">    booking.confirm();</span><br><span class="line">    bookings.put(booking.getId(), booking);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cancel</span><span class="params">(CarBooking booking)</span> </span>&#123;</span><br><span class="line">    Integer id = booking.getId();</span><br><span class="line">    <span class="keyword">if</span> (bookings.containsKey(id)) &#123;</span><br><span class="line">      bookings.get(id).cancel();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong> 实现的服务和补偿必须满足幂等的条件。</p>
-<p><strong>注意:</strong> 默认情况下，超时设置需要显式声明才生效。</p>
-<p><strong>注意:</strong> 若全局事务起点与子事务起点重合，需同时声明 <code>@SagaStart</code> 和 <code>@Compensable</code> 的注解。</p>
+<p><strong>注意:</strong> </p>
+<ol>
+<li>实现的服务和补偿必须满足幂等的条件。</li>
+<li>默认情况下，超时设置需要显式声明才生效。</li>
+<li>若全局事务起点与子事务起点重合，需同时声明 <code>@SagaStart</code> 和 <code>@Compensable</code> 的注解。</li>
+</ol>
+<p><strong>对于<code>@Compensable</code>方法及<code>compenstation</code>方法的要求</strong></p>
+<ol>
+<li>这两个方法的参数列表完全一致。</li>
+<li>这两个方法在写在同一个类中。</li>
+<li>参数要能够序列化。</li>
+<li>这两个方法是可交换的，即如果参数相同，这两个方法无论以什么顺序执行结果都是一样的</li>
+</ol>
 <h2 id="设计思路和运行机制"><a href="#设计思路和运行机制" class="headerlink" title="设计思路和运行机制"></a>设计思路和运行机制</h2><p>后面再深入研究(￣▽￣)~*</p>
 <p>参考：</p>
 <ul>
