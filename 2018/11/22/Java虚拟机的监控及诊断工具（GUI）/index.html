@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,MySQL," />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,20 +81,29 @@
 
 
 
-<meta name="description" content="我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码 下面是操作步骤：">
-<meta name="keywords" content="Linux,MySQL">
+<meta name="description" content="前面我们总结了Java虚拟机的监控及诊断工具(命令行)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。Eclipse MAT 和 Java Mission Control(JMC) 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。">
+<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在Linux(CentOS)下重置MySQL根(Root)密码">
-<meta property="og:url" content="http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/index.html">
+<meta property="og:title" content="Java虚拟机的监控及诊断工具（GUI）">
+<meta property="og:url" content="http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/index.html">
 <meta property="og:site_name" content="Mingshan&#39;s Blog">
-<meta property="og:description" content="我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码 下面是操作步骤：">
+<meta property="og:description" content="前面我们总结了Java虚拟机的监控及诊断工具(命令行)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。Eclipse MAT 和 Java Mission Control(JMC) 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://mingshan.me/images/update_mysql_password.png">
-<meta property="og:updated_time" content="2018-05-09T01:24:23.900Z">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_acquire_heap_dump.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_overview.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_shallow_retained.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_histogram.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_histogram_inspector.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/gc_root.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_path_to_gc_roots.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree_merge.png?raw=true">
+<meta property="og:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree_merge_result.png?raw=true">
+<meta property="og:updated_time" content="2018-11-22T15:54:16.434Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在Linux(CentOS)下重置MySQL根(Root)密码">
-<meta name="twitter:description" content="我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码 下面是操作步骤：">
-<meta name="twitter:image" content="http://mingshan.me/images/update_mysql_password.png">
+<meta name="twitter:title" content="Java虚拟机的监控及诊断工具（GUI）">
+<meta name="twitter:description" content="前面我们总结了Java虚拟机的监控及诊断工具(命令行)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。Eclipse MAT 和 Java Mission Control(JMC) 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。">
+<meta name="twitter:image" content="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_acquire_heap_dump.png?raw=true">
 
 
 
@@ -124,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/"/>
+  <link rel="canonical" href="http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/"/>
 
 
 
 
 
-  <title>在Linux(CentOS)下重置MySQL根(Root)密码 | Mingshan's Blog</title>
+  <title>Java虚拟机的监控及诊断工具（GUI） | Mingshan's Blog</title>
   
 
 
@@ -267,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mingshan">
@@ -284,7 +293,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">在Linux(CentOS)下重置MySQL根(Root)密码</h2>
+          <h2 class="post-title" itemprop="name headline">Java虚拟机的监控及诊断工具（GUI）</h2>
         
 
         <div class="post-meta">
@@ -298,8 +307,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-05T00:00:00+08:00">
-                2018-05-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-22T00:00:00+08:00">
+                2018-11-22
               </time>
             
 
@@ -321,19 +330,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
                   </a>
                 </span>
 
@@ -350,9 +348,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/#comments" itemprop="discussionUrl">
+                <a href="/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/11/22/Java虚拟机的监控及诊断工具（GUI）/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,37 +383,56 @@
       
 
       
-        <p>我的CentOS服务器的mysql密码忘了，记录一下如何重置mysql的root密码</p>
-<p>下面是操作步骤：</p>
+        <p>前面我们总结了<a href="http://mingshan.me/2018/10/21/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E7%9B%91%E6%8E%A7%E5%8F%8A%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%89/">Java虚拟机的监控及诊断工具(命令行)</a>相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。<code>Eclipse MAT</code> 和 <code>Java Mission Control(JMC)</code> 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。</p>
 <a id="more"></a>
-<ol>
-<li><p>首先输入“service mysqld status”查看当前mysql服务状态。</p>
-</li>
-<li><p>输入“killall -TERM mysqld”命令停止所有的mysqld进程。</p>
-</li>
-<li><p>输入“service mysqld stop”命令停止mysqld服务。</p>
-</li>
-<li><p>输入“mysqld_safe  –skip-grant-tables &amp;”命令以无密码方式进入MySQL安全模式。</p>
-</li>
-<li><p>输入“mysql -u root”并按回车键即可。</p>
-</li>
-<li><p>输入“use mysql;”挂载数据库。(注意：请勿忘记在最后输入分号（;）)</p>
-</li>
-<li><p>输入”update user set password=password(“admin”) where user=’root’;”将Root密码修改为admin。</p>
-</li>
-<li><p>输入”flush privileges;”更新权限。</p>
-</li>
-<li><p>输入“quit”并按回车键退出。(注意：此处不需输入分号。)</p>
-</li>
-<li><p>输入”service mysqld restart”重启mysqld服务。</p>
-</li>
-<li><p>输入“mysql -u root -p”并按回车键提示输入密码。</p>
-</li>
-<li><p>输入新密码admin并按回车键，提示已经成功登录。</p>
-</li>
-</ol>
-<p>下面是所有步骤运行截图：</p>
-<p><img src="/images/update_mysql_password.png" alt="image"></p>
+<h2 id="Eclipse-MAT"><a href="#Eclipse-MAT" class="headerlink" title="Eclipse MAT"></a>Eclipse MAT</h2><p>在命令行那篇，我们已经知道可以用<code>jmap</code> 命令来生成Java虚拟机堆dump文件，那么我们就可以用Eclipse的<a href="https://www.eclipse.org/mat/" target="_blank" rel="noopener">Memory Analyzer (MAT)</a>工具来解析了。</p>
+<p>MAT 支持自己获取dump 文件，它是利用<code>jps</code>命令来列出正在运行的虚拟机进程信息，然后进行选择将要分析的虚拟机进程，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_acquire_heap_dump.png?raw=true" alt="image"></p>
+<p>我们来选择刚启动的SpringBoot应用，点击对应的选项后，MAT会加载堆快照信息，完成后主界面将会有一个饼状图，列举占据的 <code>Retained heap</code> 最多的几个对象。如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_overview.png?raw=true" alt="image"></p>
+<p><code>Retained heap</code>是什么意思，感觉好陌生啊。。不慌，我们来查一下，在Eclipse documentation的Memory Analyzer章节中，介绍了MAT计算内存占用的两种方式，<a href="https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fshallowretainedheap.html&amp;cp=46_2_1" target="_blank" rel="noopener">Shallow Heap 和 Retained Heap</a>，简单地了解下：</p>
+<p><strong>Shallow Heap</strong></p>
+<p>Shallow Heap 是一个对象所占用的内存，不包括它所引用对象的内存，根据32/64位操作系统的不同，该值的计算结果可能有所不同。</p>
+<p><strong>Retained Heap</strong></p>
+<p>Retained Heap 是一个对象不再被引用时，GC所能回收的总内存，包括对象自身占用的内存，以及仅能通过该对象引用的其他对象所占据的内存。即一些对象需要依赖该对象而存活，GC Roots 不直接引用。下面放一张官方介绍的图解析一下（如下图所示），由于H还被F直接引用，所以E的Retaned Set 只包括E 和 G，不包括H，其他同理。上面饼状图所显示的就是Retained Heap。</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_shallow_retained.png?raw=true" alt="image"></p>
+<p>Mat包含了几种比较重要的视图，<code>Histogram</code>（直方图）和<code>dominator tree</code>（支配树），也提供了线程总览视图。</p>
+<p><strong><code>Histogram</code>（直方图）</strong></p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_histogram.png?raw=true" alt="image"></p>
+<p>点击直方图按钮，样式如上图所示。包含各类的对象数量以及Shallow Heap的大小，还统计了Retained Heap的大小，只不过该值为近似值。支持对图中的四个列进行排序，默认是Shallow Heap。</p>
+<p>当我们点击具体的类名时，在下面的Inspector面板显示该类的相关信息，比如包名、类名、类加载等信息，如下图所示：<br><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_histogram_inspector.png?raw=true" alt="image"></p>
+<p><strong><code>dominator tree</code>（支配树）</strong></p>
+<p>下面讨论一下支配树视图，说这个之前首先要知道在Java中是通过可达性分析（Reachability Analysis）来判定对象是否存活的。这个算法是基于被称为“GC Roots”的对象作为起点，从这些节点开始向下搜索，所走过的路径被称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链，则这个对象是不可用的。这种概念源自于图论。如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/gc_root.png?raw=true" alt="image"></p>
+<p>在Java语言中，可以作为GC Roots的对象有以下几种：</p>
+<ul>
+<li>所有Java线程当前活跃的栈帧里指向GC堆里的对象的引用；换句话说，当前所有正在被调用的方法的引用类型的参数/局部变量/临时值。</li>
+<li>VM的一些静态数据结构里指向GC堆里的对象的引用，例如说HotSpot VM里的Universe里有很多这样的引用。</li>
+<li>JNI handles，包括global handles和local handles</li>
+<li>（看情况）所有当前被加载的Java类</li>
+<li>（看情况）Java类的引用类型静态变量</li>
+<li>（看情况）Java类的运行时常量池里的引用类型常量（String或Class类型）</li>
+<li>（看情况）String常量池（StringTable）里的引用</li>
+</ul>
+<p>好了，掌握了这么多姿势，来看看支配树的样子，MAT 将默认按照每个对象 Retained heap 的大小排列支配树，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree.png?raw=true" alt="image"></p>
+<p>从图中可以看出，对象的引用呈链式引用，垃圾回收器回收第一个对象，那么处于链式引用的对象也可以被回收。</p>
+<p><strong>定位溢出源</strong></p>
+<p>我们还可以利用MAT 提供 的 <code>Path To GC Roots</code>功能来反推出该对象到GC Roots的引用路径，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_path_to_gc_roots.png?raw=true" alt="image"></p>
+<p>MAT 还提供了<code>Merge Shortest Paths to GC Roots</code> 来显示GC根节点到选中对象的引用路径，如下图所示：</p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree_merge.png?raw=true" alt="image"></p>
+<p><img src="https://github.com/ZZULI-TECH/interview/blob/master/images/mat/mat_dominator_tree_merge_result.png?raw=true" alt="image"></p>
+<p><code>exclude all phantom/weak/soft etc. reference</code> 意思是排除虚引用、弱引用和软引用，即只剩下强引用，因为除了强引用之外，其他的引用都可以被JVM GC掉，如果一个对象始终无法被GC，就说明有强引用存在，从而导致在GC的过程中一直得不到回收，最终就内存溢出了。</p>
+<p>MAT 还提供查询等功能，简直是强大，有空要好好用下，嘻嘻~</p>
+<h2 id="Java-Mission-Control"><a href="#Java-Mission-Control" class="headerlink" title="Java Mission Control"></a>Java Mission Control</h2><h2 id="jvisualvm"><a href="#jvisualvm" class="headerlink" title="jvisualvm"></a>jvisualvm</h2><p>Java VisualVM（<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/" target="_blank" rel="noopener">帮助文档</a>）在JDK11中已被移除</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fshallowretainedheap.html&amp;cp=46_2_1" target="_blank" rel="noopener">Shallow vs. Retained Heap</a></li>
+<li><a href="https://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fgcroots.html&amp;cp=37_2_3" target="_blank" rel="noopener">Garbage Collection Roots</a></li>
+<li><a href="https://www.zhihu.com/question/53613423/answer/135743258" target="_blank" rel="noopener">java的gc为什么要分代？ - RednaxelaFX的回答 - 知乎</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/" target="_blank" rel="noopener">Java VisualVM</a></li>
+</ul>
 
       
     </div>
@@ -436,7 +453,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/" title="在Linux(CentOS)下重置MySQL根(Root)密码">http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/</a>
+    <a href="http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/" title="Java虚拟机的监控及诊断工具（GUI）">http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -451,9 +468,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
       
@@ -466,8 +481,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/17/理解GC日志/" rel="next" title="理解GC日志">
-                <i class="fa fa-chevron-left"></i> 理解GC日志
+              <a href="/2018/11/07/Apache ServiceComb Saga分布式事务框架体验/" rel="next" title="Apache ServiceComb Saga分布式事务框架体验">
+                <i class="fa fa-chevron-left"></i> Apache ServiceComb Saga分布式事务框架体验
               </a>
             
           </div>
@@ -475,10 +490,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/08/利用WebMagic来爬取ZZULI的通知/" rel="prev" title="利用WebMagic来爬取ZZULI的通知">
-                利用WebMagic来爬取ZZULI的通知 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -540,8 +551,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -628,6 +648,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Eclipse-MAT"><span class="nav-number">1.</span> <span class="nav-text">Eclipse MAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Mission-Control"><span class="nav-number">2.</span> <span class="nav-text">Java Mission Control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jvisualvm"><span class="nav-number">3.</span> <span class="nav-text">jvisualvm</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -813,9 +849,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://mingshan.me/2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/';
-          this.page.identifier = '2018/05/05/在Linux(CentOS)下重置MySQL根(Root)密码/';
-          this.page.title = '在Linux(CentOS)下重置MySQL根(Root)密码';
+          this.page.url = 'http://mingshan.me/2018/11/22/Java虚拟机的监控及诊断工具（GUI）/';
+          this.page.identifier = '2018/11/22/Java虚拟机的监控及诊断工具（GUI）/';
+          this.page.title = 'Java虚拟机的监控及诊断工具（GUI）';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://mingshan.disqus.com/embed.js';
