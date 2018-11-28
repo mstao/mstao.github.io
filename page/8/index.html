@@ -264,6 +264,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/07/09/网站消息推送之long polling（长轮询）初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/" itemprop="url">网站消息推送之long polling（长轮询）初探</a></h2>
+        
+
+        <div class="post-meta">
+          
+
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-09T00:00:00+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/09/网站消息推送之long polling（长轮询）初探/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/09/网站消息推送之long polling（长轮询）初探/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>网站的消息推送功能应用很广泛，比如论坛，问答网站等等都需要推送消息，那么采用什么样的推送方式更加便捷，更加节省服务器资源呢，这个需要根据网站的流量和规模来决定，因为long polling是我最先接触到的，我就来谈谈它吧。</p>
+<p>长轮询初看像是轮流查询的意思，其实不是，它是客户端通过ajax发出请求，然后客户端挂起，等待服务器端响应，服务器端会检测有无新消息，如果有消息，服务器端会将新消息推送给客户端，结束本次请求，如果在有效请求期内没有新消息出现，那么会一直检测有无新消息出现。连接会保持一段时间周期直到数据或状态改变或者时间过期，通过这种机制来减少无效的客户端和服务器间的交互。</p>
+<p>虽然长轮循比传统的轮询性能会有些提高，但在服务器端数据变化非常频繁的情况下，两者的性能并不能差多少，因为都是客户端先请求，服务器再响应，只是两者服务器端响应的机制不同。<br>下面来说说代码，服务器端我用的是php，客户端用的是jQuery</p>
+<p>服务器端代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@desc</span> ajax长轮询 来获取通知消息信息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 通知信息数量&gt;o</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">longPolling</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!$_GET[<span class="string">'timed'</span>]) <span class="keyword">exit</span>();</span><br><span class="line">    date_default_timezone_set(<span class="string">"PRC"</span>);</span><br><span class="line">    session_write_close(); <span class="comment">//防止session访问互斥问题</span></span><br><span class="line">    set_time_limit(<span class="number">0</span>);<span class="comment">//无限请求超时时间</span></span><br><span class="line">    $timed = $_GET[<span class="string">'timed'</span>];</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        sleep(<span class="number">3</span>); <span class="comment">// 休眠3秒</span></span><br><span class="line">        <span class="comment">//判断有无新通知出现</span></span><br><span class="line">         $no_count=D(<span class="string">'Notifications'</span>)-&gt;getNotificationsCount(<span class="keyword">$this</span>-&gt;uid);</span><br><span class="line">         <span class="keyword">if</span> ($no_count&gt;<span class="number">0</span>) &#123;</span><br><span class="line">            $responseTime = time();</span><br><span class="line">            <span class="comment">// 返回数据信息，请求时间、返回数据时间、耗时</span></span><br><span class="line">            $content=<span class="keyword">array</span>(</span><br><span class="line">                <span class="string">'result'</span>         =&gt;$no_count,</span><br><span class="line">                <span class="string">'reponse_time'</span>   =&gt;$responseTime,</span><br><span class="line">                <span class="string">'request_time'</span>   =&gt;$timed,</span><br><span class="line">                <span class="string">'use_time'</span>       =&gt;($responseTime - $timed)</span><br><span class="line">            );</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;ajaxReturn($content);</span><br><span class="line">            <span class="keyword">exit</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 模拟没有数据变化，将休眠 hold住连接</span></span><br><span class="line">            sleep(<span class="number">13</span>);</span><br><span class="line">            <span class="keyword">exit</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/09/网站消息推送之long polling（长轮询）初探/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/07/01/php  json_encode函数使用遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1283,7 +1446,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1294,7 +1457,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1305,7 +1468,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

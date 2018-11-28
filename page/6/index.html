@@ -264,6 +264,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/12/12/单链表结构分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mingshan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingshan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/12/单链表结构分析/" itemprop="url">单链表结构分析</a></h2>
+        
+
+        <div class="post-meta">
+          
+
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-12T00:00:00+08:00">
+                2017-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/12/单链表结构分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/12/单链表结构分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="单链表描述"><a href="#单链表描述" class="headerlink" title="单链表描述"></a>单链表描述</h3><p>单链表又为单向链表，由数据域(Data)和结点域(Node)组成，数据域代表该结点所存储的元素，结点域指向下一个节点，单链表的图示如下：</p>
+<p><img src="/images/SingleLinkedList.png" alt="image"></p>
+<h3 id="单链表结构"><a href="#单链表结构" class="headerlink" title="单链表结构"></a>单链表结构</h3><p>我们先定义一下单链表一个结点的结构，一个Node类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    E item;</span><br><span class="line">    Node next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.item = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/12/单链表结构分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/12/04/恢复被Reset掉的提交/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1878,182 +2051,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mingshan.me/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mingshan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mingshan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/" itemprop="url">利用SpringMVC实现RESTful API，并与Swagger集成生成API文档</a></h2>
-        
-
-        <div class="post-meta">
-          
-
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-01T00:00:00+08:00">
-                2017-10-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="认识RESTful-API"><a href="#认识RESTful-API" class="headerlink" title="认识RESTful API"></a>认识RESTful API</h2><p>RESTful API是目前比较成熟的API设计理论，它通过统一的API接口来对外提供服务，这样对其他调用者来说比较友好，更加容易实现前后端分离。那么如果要使用RESTful API来写我们的代码，那么就需要先知道RESTful API规范。</p>
-<h2 id="参考RESTful-API规范"><a href="#参考RESTful-API规范" class="headerlink" title="参考RESTful API规范"></a>参考RESTful API规范</h2><p>下面是两篇文章讲解RESTful API的，推荐：</p>
-<ol>
-<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener">RESTful API 设计指南</a></li>
-<li><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API" target="_blank" rel="noopener">RESTful API 设计最佳实践</a></li>
-</ol>
-<h2 id="SpringMVC实现RESTful-API"><a href="#SpringMVC实现RESTful-API" class="headerlink" title="SpringMVC实现RESTful API"></a>SpringMVC实现RESTful API</h2><p>SpringMVC提供了一些注解来实现RESTful API, 例如<strong>@RestController</strong>，同时我们用Swagger来生成API文档，这样更加利于测试API。</p>
-<h3 id="常见swagger注解一览与使用"><a href="#常见swagger注解一览与使用" class="headerlink" title="常见swagger注解一览与使用"></a>常见swagger注解一览与使用</h3><p><strong>最常用的5个注解</strong></p>
-<p>@Api：修饰整个类，描述Controller的作用<br>@ApiOperation：描述一个类的一个方法，或者说一个接口<br>@ApiParam：单个参数描述<br>@ApiModel：用对象来接收参数<br>@ApiProperty：用对象接收参数时，描述对象的一个字段</p>
-<p><strong>其它若干</strong></p>
-<p>@ApiResponse：HTTP响应其中1个描述<br>@ApiResponses：HTTP响应整体描述<br>@ApiClass<br>@ApiError<br>@ApiErrors<br>@ApiParamImplicit<br>@ApiParamsImplicit</p>
-<p><strong>其中@ApiOperation和@ApiParam参数说明</strong></p>
-<p>@ApiOperation和@ApiParam为添加的API相关注解，参数说明如下：<br>@ApiOperation(value = “接口说明”, httpMethod = “接口请求方式”, response = “接口返回参数类型”, notes = “接口发布说明”；其他参数可参考源码；<br>@ApiParam(required = “是否必须参数”, name = “参数名称”, value = “参数具体描述”</p>
-<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>首先在pom.xml文件中添加swagger依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- swagger --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mangofactory<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger-springmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="Swagger-UI配置"><a href="#Swagger-UI配置" class="headerlink" title="Swagger-UI配置"></a>Swagger-UI配置</h3><p>首先从<a href="https://github.com/swagger-api/swagger-ui" target="_blank" rel="noopener">Swagger-UI下载地址</a>下载Swagger-UI文件，然后将其拷贝到webapp目录下，我这里新建了一个swagger文件夹，然后解压后的文件拷贝到这个文件夹里面了。</p>
-<p>修改swagger/index.html文件，默认是从连接<a href="http://petstore.swagger.io/v2/swagger.json获取" target="_blank" rel="noopener">http://petstore.swagger.io/v2/swagger.json获取</a> API 的JSON，这里需要将url值修改为http://{ip}:{port}/{projectName}/api-docs的形式，{}中的值根据自身情况填写。比如我的url值为：<a href="http://localhost:8080/lightblog/api-docs" target="_blank" rel="noopener">http://localhost:8080/lightblog/api-docs</a></p>
-<h3 id="编写swagger配置文件"><a href="#编写swagger配置文件" class="headerlink" title="编写swagger配置文件"></a>编写swagger配置文件</h3><p>配置完Swagger-UI后，我们需要配置Swagger，并将其交给Spring进行管理。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/01/利用SpringMVC实现RESTful API，并与Swagger集成生成API文档/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2108,7 +2105,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2119,7 +2116,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -2130,7 +2127,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
