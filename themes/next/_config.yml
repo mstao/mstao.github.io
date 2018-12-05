@@ -360,7 +360,7 @@ han: false
 
 # Disqus
 disqus:
-  enable: true
+  enable: false
   shortname: mingshan
   count: true
 
@@ -378,12 +378,12 @@ changyan:
 # You can get your appid and appkey from https://leancloud.cn
 # more info please open https://valine.js.org
 valine:
-  enable: false
-  appid:  # your leancloud application appid
-  appkey:  # your leancloud application appkey
+  enable: true
+  appid: GTNaw6V4PVq5Q9zMVf2jjnDq-gzGzoHsz
+  appkey: 4JAz8SGjTq8opeLn7h6lVQvx
   notify: false # mail notifier , https://github.com/xCss/Valine/wiki
   verify: false # Verification code
-  placeholder: Just go go # comment box placeholder
+  placeholder: (>﹏<) Just show your thinking~ # comment box placeholder
   avatar: mm # gravatar style
   guest_info: nick,mail,link # custom comment header
   pageSize: 10 # pagination size
