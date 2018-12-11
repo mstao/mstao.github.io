@@ -118,3 +118,9 @@ leancloud_visitors:
   enable: true
   app_id: F7XN3gBwwPv7rTg1ngBw8Gda-gzGzoHsz
   app_key: OdVdIC6ojy9RbWmR4ijCkO8k
+
+# 自动生成sitemap
+sitemap: 
+  path: sitemap.xml
+baidusitemap: 
+  path: baidusitemap.xml
