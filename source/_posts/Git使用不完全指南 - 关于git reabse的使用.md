@@ -1,5 +1,5 @@
 ---
-title: 关于git reabse的使用
+title: Git使用不完全指南 - 关于git reabse的使用
 categories: Git
 tags: [Git, rebase]
 author: Mingshan
