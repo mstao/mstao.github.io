@@ -120,7 +120,7 @@ Remote | 我们从服务器将上一次提交拉到本地的文件
 
 接下来把代码提交到远程仓库就可以了。
 
-## Refreneces:
+## References：
 
 - [BC version 4](http://www.scootersoftware.com/support.php?zz=kb_vcs#gitwindows)
 - [冲突部分Beyond Compare如何解决](http://www.beyondcompare.cc/jiqiao/chongtu-bufen.html)
