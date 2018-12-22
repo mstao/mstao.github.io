@@ -12,7 +12,7 @@ date: 2018-12-22
 
 ## 配置 Git mergetool & difftool 
 
-首先下载[Beyond Compare 4](https://www.scootersoftware.com/download.php) )的Windows的中文版本，选择一个目录安装，完成后需要将Beyond Compare 4作为git的difftool 和 mergetool，配置如下：
+首先下载[Beyond Compare 4](https://www.scootersoftware.com/download.php)的Windows的中文版本，选择一个目录安装，完成后需要将Beyond Compare 4作为git的difftool 和 mergetool，配置如下：
 
 ```
 #difftool 配置
