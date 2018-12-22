@@ -1,5 +1,5 @@
 ---
-title: Git使用不完全指南 - Git合并多个commit
+title: Git不完全使用指南 - Git合并多个commit
 categories: Git
 tags: [Git, rebase]
 author: Mingshan

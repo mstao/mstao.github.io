@@ -1,5 +1,5 @@
 ---
-title: Git使用不完全指南 - 恢复被Reset掉的提交
+title: Git不完全使用指南 - 恢复被Reset掉的提交
 categories: Git
 tags: Git
 author: Mingshan

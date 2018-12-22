@@ -1,18 +1,18 @@
 ---
-title: Git使用不完全指南 - 合并冲突(mergetool)
+title: Git不完全使用指南 - 合并冲突(mergetool)
 categories: Git
 tags: [Git, mergetool]
 author: Mingshan
 date: 2018-12-22
 ---
 
-对于刚开始使用Git的小伙伴来说，看到冲突的代码手就会莫名的抖一下，心里会很紧张。不过代码冲突是比较正常的，特别是多人合作开发的时候，所以遇到代码冲突不要慌张，选择顺手的工具合并代码也是很快的，下面[`Beyond Compare 4`](https://www.scootersoftware.com/download.php)为例来合并冲突。 
+对于刚开始使用Git的小伙伴来说，看到冲突的代码手就会莫名的抖一下，心里会很紧张。不过代码冲突是比较正常的，特别是多人合作开发的时候，所以遇到代码冲突不要慌张，选择顺手的工具合并代码也是很快的（GUI 推荐使用Sourcetree），下面以[`Beyond Compare 4`](https://www.scootersoftware.com/download.php)为例来合并冲突。 
 
 <!-- more -->
 
 ## 配置 Git mergetool & difftool 
 
-首先下载[Beyond Compare 4]((https://www.scootersoftware.com/download.php) )的Windows的中文版本，选择一个目录安装，完成后需要将Beyond Compare 4作为git的difftool 和 mergetool，配置如下：
+首先下载[Beyond Compare 4](https://www.scootersoftware.com/download.php) )的Windows的中文版本，选择一个目录安装，完成后需要将Beyond Compare 4作为git的difftool 和 mergetool，配置如下：
 
 ```
 #difftool 配置
