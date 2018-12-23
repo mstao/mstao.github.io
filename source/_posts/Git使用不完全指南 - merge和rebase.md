@@ -105,7 +105,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 ```
 $ git mergetool
 ```
-然后进入到解决冲突的GUI界面（具体操作细节参考：[Git不完全使用指南 - 合并冲突(mergetool)](https://mingshan.fun/2018/12/22/git%E4%B8%8D%E5%AE%8C%E5%85%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%20-%20%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81(mergetool)/)）：
+然后进入到解决冲突的GUI界面（具体操作细节参考：[Git不完全使用指南 - 合并冲突(mergetool)](https://mingshan.fun/2018/12/22/git%E4%B8%8D%E5%AE%8C%E5%85%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%20-%20%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81%28mergetool%29/)）：
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/git/bc_overview2.png?raw=true)
 
