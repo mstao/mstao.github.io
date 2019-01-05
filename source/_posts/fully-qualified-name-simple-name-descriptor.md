@@ -1,8 +1,8 @@
 ---
 title: 全限定名、简单名称和描述符是什么东西？
-tags: [java,jvm]
 author: Mingshan
-categories: [Java]
+tags: JVM
+categories: JVM
 date: 2018-9-18
 ---
 
