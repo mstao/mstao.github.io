@@ -254,6 +254,12 @@ OpenJDK Runtime Environment (build 11-internal+0-adhoc.root.jdk11)
 
 终于编译成功，花费两晚上，中间遇到了几个错误，折腾了点时间。完美，撒花花(〃’▽’〃)
 
+jdk11源码及jdk-10_linux-x64_bin_ri.tar.gz我已放在百度云上了，可以直接下载体验编译JDK11~
+
+>链接：https://pan.baidu.com/s/1QH9rkJbRshhIJestr-LWXg 
+>提取码：rkk5 
+
+
 ## References：
 
 - [Ubuntu环境编辑OpenJDK11源码](https://blog.csdn.net/boling_cavalry/article/details/83303317)
