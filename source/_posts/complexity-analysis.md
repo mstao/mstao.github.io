@@ -4,6 +4,7 @@ tags: [数据结构]
 author: Mingshan
 categories: [数据结构]
 date: 2019-1-14
+mathjax: true
 ---
 
 # 复杂度分析
