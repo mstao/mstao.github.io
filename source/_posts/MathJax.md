@@ -9,6 +9,8 @@ mathjax: true
 
 用Markdown写博客的时候，有时需要用到[Latex](https://www.latex-project.org/)来写数学公式，通过使用[MathJax](https://www.mathjax.org)，我们可以让Markdown解析Latex数学表达式，同时Next主题也支持MathJax，所以了解一下Latex语法是十分有必要的。
 
+<!-- more -->
+
 ## 基础语法
 
 ### 公式标记
