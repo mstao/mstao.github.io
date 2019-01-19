@@ -301,8 +301,8 @@ public static TailRecursion<Long> factorialTailRecursion(final long n, final lon
 函数式编程有一个概念，叫做柯里化（currying），意思是将多参数的函数转换成单参数的形式。这里也可以使用柯里化。
 
 ```Java
-public static long factorial(final long number) {
-    return factorialTailRecursion(number, 1).invoke();
+public static long factorial(final long n) {
+    return factorialTailRecursion(n, 1).invoke();
 }
 ```
 
