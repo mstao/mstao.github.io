@@ -1,5 +1,5 @@
 ---
-title: Git使用不完全指南 - merge和rebase
+title: Git不完全使用指南 - merge和rebase
 categories: Git
 tags: [Git, merge, rebase]
 author: Mingshan
