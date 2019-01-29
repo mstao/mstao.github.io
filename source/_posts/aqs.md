@@ -8,8 +8,6 @@ date: 2019-1-25
 
 我们在使用ReentrantLock进行加锁和释放锁时可能会有好奇，这种加锁释放锁的操作和synchronized有什么区别，所以就会去翻源码，一翻源码才发现这里面的知识别有洞天，因为涉及到并发编程最基础最难理解的部分，其中AbstractQueuedSynchronizer这个类是java.util.concurrent的核心，被称为AQS，是一个同步器框架，Doug Lea大神专门写了一篇[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)来介绍该框架。那么在Java世界中，同步器是一个什么概念呢？在并发世界里，涉及到对共享资源的同步操作，加锁释放锁是非常常用的，此外还需要对锁进行细粒度的控制，比如加锁时间控制、共享锁的需求等，这些复杂的需求synchronized都没有提供，那么Doug Lea就给我们提供了，而且代码写的十分优美，值得每一个Java程序员阅读和探究一番。好吧，我们开始阅读源码！在阅读源码前请先学习[链式队列](https://mingshan.fun/2017/12/21/link-queue-structure/)和[CAS](https://mingshan.fun/2018/10/01/cas)的有关知识。（**本文基于JDK11版本**）
 
-<!-- more -->
-
 ## 同步器的概念
 
 上面提到同步器（Synchronizer），似乎很玄乎，不知道包含哪些内容。我们直接来阅读Doug Lea的[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)，在论文的INTRODUCTION
@@ -249,7 +247,7 @@ Condition队列中的结点被转移进CLH队列并且状态变为0。
 
 总结来说，Node是CLH队列的一个节点，相信对队列这种数据结构熟悉的同学都不会很陌生，只不过加入了一些与锁有关的属性和方法，简化来说就是thread + waitStatus + pre + next 这几个属性和利用CAS改变这几个属性的方法而已，其具体作用在后面的源码分析中会逐渐凸显出来。
 
-### 互斥模式
+### 独占模式
 
 首先我们来分析互斥模式，互斥模式作为最常用的模式使用范围很广，比如ReentrantLock，加锁和释放锁就是使用互斥模式来实现的，下面我们就以一个使用了AbstractQueuedSynchronizer来实现的互斥锁的例子来一步步地阅读互斥模式实现的源码，互斥锁代码如下：
 
@@ -788,6 +786,23 @@ private void unparkSuccessor(Node node) {
 
 ### 总结
 
+上面说了这么多，看起来云里雾里，下面就整张流程图吧，看到比较清晰：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_exclusive.png?raw=true)
+
+**CLH流程：**
+
+现在我们就可以梳理一下互斥锁获取锁时CLH队列的变化。假设现在有一个线程通过tryAcquire直接获取了锁，并未进CLH队列，所以CLH队列尚未初始化。当线程还未释放锁（unlock），线程1来获取锁了，此时就需要初始化CLH队列（new Node()）：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_acquire_flow_step1.png?raw=true)
+
+初始化CLH后，就会将线程1包装成Node节点，入队至队尾，此时Head的节点变更为线程1的Node节点，此时的 waitStatus 没有设置， java 默认会设置为 0，但是到 shouldParkAfterFailedAcquire 这个方法的时候，线程1 会把前驱节点，也就是head的waitStatus设置为-1。
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_acquire_flow_step2.png?raw=true)
+
+如果再有一个线程2获取锁，同样也会入队，同时将前驱节点即线程1的Node节点的waitStatus设置为-1。
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_acquire_flow_step3.png?raw=true)
 
 ## 释放资源
 
