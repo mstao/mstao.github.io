@@ -8,6 +8,8 @@ date: 2019-1-25
 
 我们在使用ReentrantLock进行加锁和释放锁时可能会有好奇，这种加锁释放锁的操作和synchronized有什么区别，所以就会去翻源码，一翻源码才发现这里面的知识别有洞天，因为涉及到并发编程最基础最难理解的部分，其中AbstractQueuedSynchronizer这个类是java.util.concurrent的核心，被称为AQS，是一个同步器框架，Doug Lea大神专门写了一篇[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)来介绍该框架。那么在Java世界中，同步器是一个什么概念呢？在并发世界里，涉及到对共享资源的同步操作，加锁释放锁是非常常用的，此外还需要对锁进行细粒度的控制，比如加锁时间控制、共享锁的需求等，这些复杂的需求synchronized都没有提供，那么Doug Lea就给我们提供了，而且代码写的十分优美，值得每一个Java程序员阅读和探究一番。好吧，我们开始阅读源码！在阅读源码前请先学习[链式队列](https://mingshan.fun/2017/12/21/link-queue-structure/)和[CAS](https://mingshan.fun/2018/10/01/cas)的有关知识。（**本文基于JDK11版本**）
 
+<!-- more -->
+
 ## 同步器的概念
 
 上面提到同步器（Synchronizer），似乎很玄乎，不知道包含哪些内容。我们直接来阅读Doug Lea的[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)，在论文的INTRODUCTION
