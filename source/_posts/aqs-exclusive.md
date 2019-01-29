@@ -12,8 +12,7 @@ date: 2019-1-25
 
 ## 同步器的概念
 
-上面提到同步器（Synchronizer），似乎很玄乎，不知道包含哪些内容。我们直接来阅读Doug Lea的[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)，在论文的INTRODUCTION
-中，是这样描述的：
+上面提到同步器（Synchronizer），似乎很玄乎，不知道包含哪些内容。我们直接来阅读Doug Lea的[论文](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)，在论文的INTRODUCTION中，是这样描述的：
 
 > Among these components are a set of synchronizers –
 abstract data type (ADT) classes that maintain an internal
