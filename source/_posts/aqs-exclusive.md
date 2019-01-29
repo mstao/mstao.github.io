@@ -1,5 +1,5 @@
 ---
-title: AQS源码分析
+title: AQS源码分析-独占模式
 categories: [Java, JUC]
 tags: [java, JUC, AQS]
 author: Mingshan
@@ -781,7 +781,7 @@ private void unparkSuccessor(Node node) {
             if (p.waitStatus <= 0) // 如果此时节点的状态小于等于0
                 s = p; // 将此节点赋给传入节点的后继节点
     }
-    if (s != null) // 节点不为空，取消挂起s的线程
+    if (s != null) // 节点不为空，唤醒s的线程
         LockSupport.unpark(s.thread);
 }
 ```
@@ -790,7 +790,7 @@ private void unparkSuccessor(Node node) {
 
 上面说了这么多，看起来云里雾里，下面就整张流程图吧，看到比较清晰：
 
-![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_exclusive.png?raw=true)
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_exclusive_acquire.png?raw=true)
 
 **CLH流程：**
 
@@ -808,32 +808,79 @@ private void unparkSuccessor(Node node) {
 
 ## 释放资源
 
-### 共享模式
+前面获取到资源后，必须释放已获得的资源。
 
-```
-public class BooleanLatch {
-    private static class Sync extends AbstractQueuedSynchronizer {
-        boolean isSignalled() { return getState() != 0; }
+独占模式下首先执行AbstractQueuedSynchronizer（AQS）的release方法，在这个方法中首先会调用子类的Sync的tryRelease方法，来进行尝试释放锁，如果返回true，那么获取CLH队列的头结点，判断头结点不为空并且头结点的状态不为0（None），那么就调用AQS的unparkSuccessor方法。
 
-        protected int tryAcquireShared(int ignore) {
-            return isSignalled() ? 1 : -1;
-        }
-
-        protected boolean tryReleaseShared(int ignore) {
-            setState(1);
-            return true;
-        }
+```Java
+public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null && h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
     }
-
-    private final Sync sync = new Sync();
-    public boolean isSignalled() { return sync.isSignalled(); }
-    public void signal()         { sync.releaseShared(1); }
-    public void await() throws InterruptedException {
-        sync.acquireSharedInterruptibly(1);
-    }
+    return false;
 }
 ```
 
+在tryRelease方法里，判断当前线程是不是获取独占锁的线程，如果不是，直接抛出异常；如果是，设置独占锁线程为null，最后设置下state的值（注意这里c为0不为0都会设置）
+
+```
+// Releases the lock by setting state to zero
+protected boolean tryRelease(int releases) {
+    assert releases == 1; // Otherwise unused
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+    setExclusiveOwnerThread(null);
+    setState(0);
+    return true;
+}
+```
+
+接下来来看方法unparkSuccessor，该方法的作用就是为了唤醒node节点的后继结点。
+
+```Java
+/**
+ * Wakes up node's successor, if one exists.
+ *
+ * @param node the node
+ */
+private void unparkSuccessor(Node node) {
+    /*
+     * If status is negative (i.e., possibly needing signal) try
+     * to clear in anticipation of signalling.  It is OK if this
+     * fails or if status is changed by waiting thread.
+     */
+    // 获取节点的状态
+    int ws = node.waitStatus;
+    if (ws < 0)
+        node.compareAndSetWaitStatus(ws, 0);// 利用CAS 将状态设置为0
+
+    /*
+     * Thread to unpark is held in successor, which is normally
+     * just the next node.  But if cancelled or apparently null,
+     * traverse backwards from tail to find the actual
+     * non-cancelled successor.
+     */
+    // 获取节点的后继节点
+    Node s = node.next;
+    // 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED
+    if (s == null || s.waitStatus > 0) { // 如果为空或已取消
+        s = null; // 将后继节点置为null
+        // 从尾节点从后向前开始遍历知道节点为空或者当前节点为止
+        for (Node p = tail; p != node && p != null; p = p.prev)
+            if (p.waitStatus <= 0)// 如果此时节点的状态小于等于0
+                s = p;// 将此节点赋给传入节点的后继节点
+    }
+    if (s != null) // 节点不为空，唤醒节点的线程
+        LockSupport.unpark(s.thread);
+}
+```
+
+释放资源流程图如下：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_exclusive_release.png?raw=true)
 
 ## References：
 
@@ -849,3 +896,5 @@ public class BooleanLatch {
 - [CAS小窥](https://mingshan.fun/2018/10/01/cas)
 - 翟陆续 薛宾田，《Java并发编程之美》
 - [Primitive Data Types](http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
+- [AQS同步器源码分析-独占模式-获取资源](https://www.processon.com/view/link/5c4ed7e8e4b03334b512ae91)
+- [AQS同步器源码分析-独占模式-释放资源](https://www.processon.com/view/link/5af3fa59e4b05f390c6b59f4)
