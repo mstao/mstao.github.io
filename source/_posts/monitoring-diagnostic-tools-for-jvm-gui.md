@@ -5,7 +5,7 @@ tags: JVM
 categories: JVM
 ---
 
-前面我们总结了[Java虚拟机的监控及诊断工具(命令行)](http://mingshan.me/2018/10/21/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E7%9B%91%E6%8E%A7%E5%8F%8A%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%89/)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。`eclipse MAT` 和 ` Java Mission Control` 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。
+前面我们总结了[Java虚拟机的监控及诊断工具(命令行)](https://mingshan.fun/2018/10/21/monitoring-diagnostic-tools-for-jvm-cmd/)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。`eclipse MAT` 和 ` Java Mission Control` 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。
 
 <!-- more -->
 
