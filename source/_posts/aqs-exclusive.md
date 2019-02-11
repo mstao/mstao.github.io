@@ -867,7 +867,7 @@ private void unparkSuccessor(Node node) {
     // 判断后继节点是否为空 或者 后者后继节点的状态为CANCELLED
     if (s == null || s.waitStatus > 0) { // 如果为空或已取消
         s = null; // 将后继节点置为null
-        // 从尾节点从后向前开始遍历知道节点为空或者当前节点为止
+        // 从尾节点从后向前开始遍历直到节点为空或者当前节点为止
         for (Node p = tail; p != node && p != null; p = p.prev)
             if (p.waitStatus <= 0)// 如果此时节点的状态小于等于0
                 s = p;// 将此节点赋给传入节点的后继节点
@@ -881,6 +881,38 @@ private void unparkSuccessor(Node node) {
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/aqs_exclusive_release.png?raw=true)
 
+
+## 疑点总结
+
+1. acquireInterruptibly 和 acquire 方法，带`Interruptibly`后缀区别？
+
+在AQS源码中，带`Interruptibly`后缀的方法会响应线程中断，即如果当前被中断了，就会抛出`InterruptedException`，而不带`Interruptibly`后缀的方法不会响应线程中断，仅是设置线程中断标志
+
+2. unparkSuccessor 方法为何要从后往前遍历？
+
+在上面的释放资源的源码中，我们注意到unparkSuccessor方法是从后向前遍历CLH队列的，来寻找满足唤醒条件的线程，这样做的目的是当线程进入CLH队列时，需要进行前驱与后继的绑定，在addWaiter方法中，如下所示：
+
+```Java
+private Node addWaiter(Node mode) {
+    Node node = new Node(mode);
+
+    for (;;) {
+        Node oldTail = tail;
+        if (oldTail != null) {
+            node.setPrevRelaxed(oldTail);
+            if (compareAndSetTail(oldTail, node)) {
+                oldTail.next = node;
+                return node;
+            }
+        } else {
+            initializeSyncQueue();
+        }
+    }
+}
+```
+
+首先会执行`node.setPrevRelaxed(oldTail)`，这个是当前节点设置前驱节点为上一个节点，这个操作不会出问题，下面的`compareAndSetTail(oldTail, node)`是一个CAS操作，用来设置CLH队列的尾节点，如果设置成功了，才会将当前节点的上一个节点的next字段设置为当前节点，否则还会进行for循环，直至设置成功为止。试想如果从前往后遍历CLH队列来进行唤醒操作，可能会出现无法扫描到当前最新节点的问题，从尾部扫描则不会有这个问题。
+
 ## References：
 
 - [Java Concurrency Constructs](http://gee.cs.oswego.edu/dl/cpj/mechanics.html)
@@ -888,6 +920,7 @@ private void unparkSuccessor(Node node) {
 - [A Java Fork/Join Framework](http://gee.cs.oswego.edu/dl/papers/fj.pdf)
 - [AQS等待队列流程图](https://processon.com/view/58eb4330e4b0a578cd63bb1b)
 - [一行一行源码分析清楚AbstractQueuedSynchronizer](https://javadoop.com/post/AbstractQueuedSynchronizer)
+- [Java 并发之AbstractQueuedSynchronizer(AQS)操作图解细节](https://www.jianshu.com/p/282bdb57e343)
 - [AQS深入理解与实战----基于JDK1.8](https://www.cnblogs.com/awakedreaming/p/9510021.html)
 - [Java并发之AQS详解](https://www.cnblogs.com/waterystone/p/4920797.html)
 - [ReentrantLock源码笔记 - 获取锁（JDK 1.8）](https://mingshan.fun/2017/11/10/reentrantlock-get-lock/)
