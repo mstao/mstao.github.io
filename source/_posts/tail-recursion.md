@@ -107,7 +107,7 @@ public static int fib2(int n) {
 }
 ```
 
-## 尾调用（tail cal）与尾递归（tail recursion）
+## 尾调用（tail call）与尾递归（tail recursion）
 
 在了解尾递归之前，我们先了解下什么是尾调用？在阮一峰的[尾调用优化](http://www.ruanyifeng.com/blog/2015/04/tail-call.html)这篇文章中详细描述了尾调用，尾调用就是指某个函数的最后一步是调用另一个函数，如下所示：
 
