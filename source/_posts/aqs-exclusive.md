@@ -61,7 +61,7 @@ AQS支持两种模式：
 
 注意，阻塞队列不包含Head节点，不存储线程及锁相关信息，上面的Node节点代表AQS内部Node的内部静态类。
 
-在AQS内部，维护了一个volatile修饰的整形变量state，该变量具有[volatile](https://en.wikipedia.org/wiki/Volatile_(computer_programming)#In_Java)语义，这是比较关键的一点（保证线程间该值的可见性）。该变量代表共享资源的共享状态，在QAS内部采用CAS更新该变量的值。代码声明如下：
+在AQS内部，维护了一个volatile修饰的整形变量state，该变量具有[volatile](https://en.wikipedia.org/wiki/Volatile_(computer_programming)#In_Java)语义，这是比较关键的一点（保证线程间该值的可见性）。该变量代表共享资源的共享状态，在AQS内部采用CAS更新该变量的值。代码声明如下：
 
 ```Java
 /**
