@@ -433,3 +433,6 @@ public class Test {
 - [高性能队列——Disruptor](https://tech.meituan.com/2016/11/18/disruptor.html)
 - [剖析Disruptor:为什么会这么快？（二）神奇的缓存行填充](http://ifeve.com/disruptor-cacheline-padding/)
 - [disruptor 高性能之道](https://www.cnblogs.com/xiangnanl/p/9955714.html)
+
+
+[向本文提出修改或勘误建议](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/producer-consumer.md)
