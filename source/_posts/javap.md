@@ -421,3 +421,6 @@ StackMapTable: number_of_entries = 3
 - [全限定名、简单名称和描述符是什么东西？](https://mingshan.fun/2018/09/18/fully-qualified-name-simple-name-descriptor/)
 - [The Java Virtual Machine Instruction Set](https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5)
 - 深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/javap.md)

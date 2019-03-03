@@ -305,3 +305,6 @@ AQS共享模式获取资源、释放资源流程图如下：
 - [AQS源码分析-独占模式](https://mingshan.fun/2019/01/25/aqs-exclusive/AQS源码分析-独占模式)
 - [AQS深入理解与实战----基于JDK1.8](https://www.cnblogs.com/awakedreaming/p/9510021.html)
 - [深入浅出java同步器AQS](https://www.jianshu.com/p/d8eeb31bee5c)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/aqs-shared.md)

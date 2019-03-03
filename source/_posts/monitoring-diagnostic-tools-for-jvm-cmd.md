@@ -342,3 +342,6 @@ PS: 以后用到了再详细补充。。
 - [Troubleshooting Tools and Commands](https://docs.oracle.com/en/java/javase/11/tools/troubleshooting-tools-and-commands.html)
 - [Java虚拟机的监控及诊断工具（命令行篇）](https://time.geekbang.org/column/article/40520)
 - 周志明，深入理解Java虚拟机:JVM高级特性与最佳实践（第二版）
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/monitoring-diagnostic-tools-for-jvm-cmd.md)

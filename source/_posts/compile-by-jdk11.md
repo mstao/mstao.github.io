@@ -62,3 +62,6 @@ date: 2018-10-13
 看下编译后的字节码的大小版本号，利用HexPad编辑器打开class文件，如下。可以看到minor_version为 0x0000, major_version为0x0037，而0x0037的十进制表示为55，即用jdk11编译的，准确无误。
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/jdk11-class-version.png?raw=true)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/compile-by-jdk11.md)

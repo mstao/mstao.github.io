@@ -485,3 +485,6 @@ public boolean cancel(boolean mayInterruptIfRunning) {
 
 - [Callable DOC](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Callable.html)
 - [深入学习 FutureTask](http://www.importnew.com/25286.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/callable-future-futuretask.md)

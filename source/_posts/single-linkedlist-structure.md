@@ -342,10 +342,7 @@ public void reverse() {
 }
 ```
 
-### 完整代码
-本篇博客的完整代码
+[本篇博客的完整代码](https://github.com/mstao/data-structures/blob/master/LinkedList/src/pers/mingshan/linkedlist/SingleLinkedList.java)
 
-https://github.com/mstao/data-structures/blob/master/LinkedList/src/pers/mingshan/linkedlist/SingleLinkedList.java
 
-### 参考
-http://blog.csdn.net/feliciafay/article/details/6841115
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/single-linkedlist-structure.md)

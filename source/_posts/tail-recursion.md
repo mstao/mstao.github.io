@@ -320,3 +320,6 @@ public static long factorial(final long n) {
 - [[Java 8] (7) 利用Stream类型的"懒"操作](https://blog.csdn.net/dm_vincent/article/details/40503685)
 - [[Java 8] (8) Lambda表达式对递归的优化(上) - 使用尾递归](https://blog.csdn.net/dm_vincent/article/details/40581859)
 - [Stream](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/package-summary.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/tail-recursion.md)

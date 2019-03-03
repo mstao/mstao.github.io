@@ -505,3 +505,6 @@ Test.test3  thrpt   25  17.366 ± 0.902  ops/s
 - [Code Tools: jmh](http://openjdk.java.net/projects/code-tools/jmh/)
 - [基准测试框架JMH（上）](https://time.geekbang.org/column/article/40275)
 - [基准测试框架JMH（下）](https://time.geekbang.org/column/article/40281)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/forkjoin-jmh-benchmarking.md)

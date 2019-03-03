@@ -930,3 +930,6 @@ private Node addWaiter(Node mode) {
 - [Primitive Data Types](http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
 - [AQS同步器源码分析-独占模式-获取资源](https://www.processon.com/view/link/5c4ed7e8e4b03334b512ae91)
 - [AQS同步器源码分析-独占模式-释放资源](https://www.processon.com/view/link/5af3fa59e4b05f390c6b59f4)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/aqs-exclusive.md)

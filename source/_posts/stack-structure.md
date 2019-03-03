@@ -191,10 +191,9 @@ public int search(Object element) {
 ```
 由于栈可以存储null，所以需对null进行处理。
 
-### 完整代码
-本篇博客的完整代码
 
-https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java
+[本篇博客的完整代码](https://github.com/mstao/data-structures/blob/master/Stack/src/pers/mingshan/stack/Stack.java)
 
 
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/stack-structure.md)
 

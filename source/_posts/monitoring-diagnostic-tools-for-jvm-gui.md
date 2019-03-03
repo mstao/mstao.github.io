@@ -165,3 +165,5 @@ Java VisualVM（[帮助文档](https://docs.oracle.com/javase/8/docs/technotes/g
 - [ Java Mission Control User's Guide](https://docs.oracle.com/javacomponents/jmc-5-5/jmc-user-guide/)
 - [Java VisualVM](https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/)
 
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/monitoring-diagnostic-tools-for-jvm-gui.md)

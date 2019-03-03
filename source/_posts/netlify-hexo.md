@@ -63,3 +63,6 @@ date: 2018-12-05
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_https_enable.png?raw=true)
 
 完美，撒花花(〃'▽'〃)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/netlify-hexo.md)

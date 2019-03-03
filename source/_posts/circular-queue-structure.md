@@ -190,3 +190,6 @@ public String toString() {
 
 
 源代码在[这里](https://github.com/mstao/data-structures/blob/master/Queue/src/pers/mingshan/queue/CircularQueue.java)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/circular-queue-structure.md)

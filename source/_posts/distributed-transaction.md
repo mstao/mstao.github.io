@@ -58,3 +58,6 @@ Saga事务模型又叫做长时间运行的事务（Long-running-transaction）
 参考：
 
 - [聊聊分布式事务，再说说解决方案](https://www.cnblogs.com/savorboard/p/distributed-system-transaction-consistency.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/distributed-transaction.md)

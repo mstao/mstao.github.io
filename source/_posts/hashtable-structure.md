@@ -329,3 +329,6 @@ public V remove(K k) {
 [Hash table维基百科](https://en.wikipedia.org/wiki/Hash_table)<br />
 [散列表的基本原理与实现](https://www.cnblogs.com/absfree/p/5508570.html)<br />
 [浅谈HashMap中的hash算法](http://ibat.xyz/2017/02/16/%E6%B5%85%E8%81%8AHashMap%E4%B8%AD%E7%9A%84hash%E7%AE%97%E6%B3%95/)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/hashtable-structure.md)

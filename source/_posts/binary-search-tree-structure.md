@@ -405,10 +405,8 @@ protected static class TreePrinter {
 
 ### 源码地址
 
-本篇博客的代码地址：
+- [本篇博客的代码地址](https://github.com/mstao/data-structures/blob/master/Tree/src/pers/mingshan/tree/BinarySearchTree.java)
+- [测试代码地址如下](https://github.com/mstao/data-structures/blob/master/Tree/src/pers/mingshan/tree/TreeTest.java)
 
-https://github.com/mstao/data-structures/blob/master/Tree/src/pers/mingshan/tree/BinarySearchTree.java
 
-测试代码地址如下：
-
-https://github.com/mstao/data-structures/blob/master/Tree/src/pers/mingshan/tree/TreeTest.java
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/binary-search-tree-structure.md)

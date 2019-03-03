@@ -135,8 +135,7 @@ public void clear() {
 
 ```
 
-### 源码地址
+[本篇博客源码地址](https://github.com/mstao/data-structures/blob/master/Queue/src/pers/mingshan/queue/LinkQueue.java)
 
-本篇博客源码地址：
 
-https://github.com/mstao/data-structures/blob/master/Queue/src/pers/mingshan/queue/LinkQueue.java
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/link-queue-structure.md)

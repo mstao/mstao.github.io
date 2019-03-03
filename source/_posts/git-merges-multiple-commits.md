@@ -99,3 +99,5 @@ Date:   Mon Mar 26 20:59:13 2018 +0800
 
 接下来推送到git服务器就好了
 
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/git-merges-multiple-commits.md)

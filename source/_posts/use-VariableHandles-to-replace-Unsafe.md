@@ -111,3 +111,6 @@ public void test() {
 - 杨晓峰，AtomicInteger底层实现原理是什么？如何在自己的产品代码中应用CAS操作？
 - [内存屏障](http://ifeve.com/memory-barriers-or-fences/)
 - [memory_order](https://zh.cppreference.com/w/cpp/atomic/memory_order)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/use-VariableHandles-to-replace-Unsafe.md)

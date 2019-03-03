@@ -266,3 +266,6 @@ jdk11源码及jdk-10_linux-x64_bin_ri.tar.gz我已放在百度云上了，可以
 - [openjdk](http://hg.openjdk.java.net/jdk/jdk11)
 - [building.md](http://hg.openjdk.java.net/jdk/jdk11/file/1ddf9a99e4ad/doc/building.md)
 - [JVM-Ubuntu18.04.1下编译OpenJDK8](http://www.cnblogs.com/iou123lg/p/9696039.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/build-openjdk11.md)

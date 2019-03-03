@@ -114,3 +114,6 @@ public class SingletonDemo4 {
 }
 ```
 这里用到了volatile关键字，这里保证了不同线程对这个变量进行操作时的可见性。
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/design-pattern-singleton.md)

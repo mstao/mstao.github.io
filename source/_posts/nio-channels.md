@@ -270,3 +270,5 @@ client.close();
 - [深入浅出NIO之Channel、Buffer](https://www.jianshu.com/p/052035037297)
 - [Java进阶（五）Java I/O模型从BIO到NIO和Reactor模式 ](http://www.jasongj.com/java/nio_reactor/)
 
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/nio-channels.md)

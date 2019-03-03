@@ -232,3 +232,6 @@ VOLUME /tmp
 ADD spring-boot-docker-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 ```
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/build-springboot-by-jenkins-to-deploy-into-docker.md)

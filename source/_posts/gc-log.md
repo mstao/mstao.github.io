@@ -120,3 +120,6 @@ Java memory主要分heap memory 和 non-heap memory，如下图：
 
 1. 深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）
 2. https://segmentfault.com/a/1190000012577387
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/gc-log.md)

@@ -161,3 +161,6 @@ OK, 安装测试完毕，撒花✿✿ヽ(°▽°)ノ✿
 - [Hadoop快速入门](http://hadoop.apache.org/docs/r1.0.4/cn/quickstart.html)
 - [在Ubuntu系统上一步步搭建Hadoop（单机模式）](https://www.cnblogs.com/maybe2030/p/4591195.html)
 - [史上最详细的Hadoop环境搭建](https://blog.csdn.net/hliq5399/article/details/78193113)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/hadoop-glimpse.md)

@@ -77,3 +77,6 @@ public Trends findTrendsInfoById(int id) {
 }
 ```
 在findTrendsInfoById(int id)方法中，hql语句有些特别，它是将两个表的需要字段传入到Trends实体类的构造方法中，这样就可以直接利用getter方法进行取值了。
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/hibernate-query-multiple-tables.md)

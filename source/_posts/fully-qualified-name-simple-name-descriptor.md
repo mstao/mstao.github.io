@@ -128,3 +128,6 @@ public class me.mingshan.cglib.Test {
 - [jls](https://docs.oracle.com/javase/specs/jls/se10/html/jls-6.html#jls-6.7)
 - [JVM Descriptor](https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.3)
 - 深入理解Java虚拟机：JVM高级特性与最佳实践（第2版）
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/fully-qualified-name-simple-name-descriptor.md)

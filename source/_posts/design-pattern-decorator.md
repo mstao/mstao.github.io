@@ -174,3 +174,6 @@ public class Test {
 **代码参考：**
 
 https://github.com/mstao/java-explore/tree/master/DesignPattern/src/pers/han/decorator
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/design-pattern-decorator.md)

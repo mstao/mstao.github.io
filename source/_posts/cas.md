@@ -153,3 +153,6 @@ public class AtomicStampedReferenceDemo {
 - [JAVA CAS原理深度分析](https://www.cnblogs.com/kisty/p/5408264.html)
 - [JAVA中CAS-ABA的问题解决方案AtomicStampedReference](https://www.jianshu.com/p/8b227a8adbc1)
 - 杨晓峰，AtomicInteger底层实现原理是什么？如何在自己的产品代码中应用CAS操作？
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/cas.md)

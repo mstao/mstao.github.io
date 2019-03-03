@@ -675,3 +675,6 @@ public class ZookeeperOptimizedDistributedLock implements Watcher{
 
 ## 参考
 http://blog.csdn.net/desilting/article/details/41280869
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/distributed-lock-with-zookeeper.md)

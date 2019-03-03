@@ -82,3 +82,6 @@ Exception in thread "main" java.lang.invoke.WrongMethodTypeException: expected (
 - [JSR 292](https://jcp.org/en/jsr/detail?id=292)
 - [Invokedynamic：Java的秘密武器](https://zhuanlan.zhihu.com/p/28124632)
 - [Invokedynamic - Java’s Secret Weapon](https://www.infoq.com/articles/Invokedynamic-Javas-secret-weapon)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/use-MethodHandles-to-invoke.md)

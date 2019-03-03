@@ -621,3 +621,6 @@ public final class $Proxy0 extends Proxy implements Calculator {
 参考：<br/>
 [JDK动态代理详解](http://www.importnew.com/23168.html)<br/>
 [深度剖析JDK动态代理机制](https://www.cnblogs.com/MOBIN/p/5597215.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/jdk-dynamic-proxy-implementation.md)

@@ -221,3 +221,6 @@ compact()：和 clear() 一样的是，它们都是在准备往 Buffer 填充新
 
 - [Java NIO：Buffer、Channel 和 Selector](http://www.importnew.com/28007.html)
 - [NIO API](https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/nio-buffers.md)

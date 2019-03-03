@@ -129,3 +129,6 @@ Remote | 我们从服务器将上一次提交拉到本地的文件
 - [In a git merge conflict, what are the BACKUP, BASE, LOCAL, and REMOTE files that are generated?](https://stackoverflow.com/questions/20381677/in-a-git-merge-conflict-what-are-the-backup-base-local-and-remote-files-that/20382333)
 - [Which version of the git file will be finally used: LOCAL, BASE or REMOTE?](https://stackoverflow.com/questions/11133290/which-version-of-the-git-file-will-be-finally-used-local-base-or-remote)
 - [Git Branching - Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/mergetool.md)

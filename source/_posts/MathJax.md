@@ -81,3 +81,6 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 - [Mathjax与LaTex公式简介](https://www.cnblogs.com/linxd/p/4955530.html)
 - [常用数学符号的 LaTeX 表示方法](http://www.mohu.org/info/symbols/symbols.htm)
 - [一份不太简短的 LATEX2e 介绍](http://www.mohu.org/info/lshort-cn.pdf)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/MathJax.md)
