@@ -2,9 +2,10 @@
 
 Personal website and blog. 
 
-Main Category:
+## Main Categories:
 
 - [JUC](https://mingshan.fun/categories/java/juc/)
 - [JVM](https://mingshan.fun/categories/jvm/)
 - [Data Structure](https://mingshan.fun/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/)
 
+Powered by Netlify ❤
