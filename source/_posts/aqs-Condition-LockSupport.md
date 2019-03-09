@@ -279,7 +279,7 @@ protected final boolean isHeldExclusively() {
  */
 private void unlinkCancelledWaiters() {
     Node t = firstWaiter; // 获取头节点
-    Node trail = null;
+    Node trail = null;  // 表示当前节点的上一个节点
     while (t != null) { // 遍历队列
         Node next = t.nextWaiter; // 获取后继节点
         // 判断waitStatus是否为 Node.CONDITION
@@ -288,18 +288,25 @@ private void unlinkCancelledWaiters() {
             if (trail == null) 
                 firstWaiter = next; // 让当前节点的后继节点作为头结点
             else
-                trail.nextWaiter = next; // 
+                trail.nextWaiter = next; // 由于当前节点不符合要求，需要被踢出队列，只好用上一个节点来链接next节点
             if (next == null) // 判断后继节点是否为空
-                lastWaiter = trail; // 
+                // 如果next为空，代表当前节点没有后继节点，注意此时当前节点的waitStatus不等于 Node.CONDITION，
+                // 上面的操作已经被置空了，等待被垃圾回收，
+                // 就将上一个waitStatus是否为 Node.CONDITION的结点作为尾节点
+                lastWaiter = trail; 
         }
         else
-            trail = t;
-        t = next;
+            // 如果当前节点的waitStatus为Node.CONDITION，
+            // 那么将当前节点赋值给trail，相当于暂存一下
+            trail = t; 
+        t = next; // 继续向后遍历
     }
 }
 ```
 
-在`unlinkCancelledWaiters()`方法中，首先获取队列的头结点`t = firstWaiter`，
+在`unlinkCancelledWaiters()`方法中，首先获取队列的头结点`t = firstWaiter`，并且有一个变量为trail，初始化为null，表示当前节点的上一个节点，接下来的操作如果同学对单链表的移除节点操作熟悉的话，那么就没必要说了，只不过被移除的条件是`t.waitStatus != Node.CONDITION`，具体流程请参考上面的注释。总结来说，`unlinkCancelledWaiters()`方法是踢出队列中waitStatus不是`Node.CONDITION`的节点。
+
+让我们回到`addConditionWaiter()`方法
 
 References：
 
