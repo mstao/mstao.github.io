@@ -6,6 +6,7 @@ author: Mingshan
 date: 2019-3-4
 ---
 
+
 在[从生产者消费者模型窥探多线程并发](https://mingshan.fun/2019/02/25/producer-consumer/)这篇文章中我们使用了ReentrantLock结合Condition实现生产者消费者模型，但我们对于ReentrantLock和Condition的工作原理并不了解，其内部的结构和源码级别实现就更加不了解了。比如在使用await方法的时候，为什么一定要用while判断条件，用if为什么不行呢？使用Condition时，线程之间是如何通信的呢？与synchronized有什么区别？如果后续要用到BlockingQueue，其内部的实现是离不开ReentrantLock和Condition的，所以对于ReentrantLock和Condition源码级别的分析是十分有必要的。
 
 <!-- more -->
@@ -85,9 +86,9 @@ public class Buffer {
     private int size;
 
     private final Lock lock = new ReentrantLock();
-    // 读线程条件
+    // 读线程条件（消费者线程 条件队列）
     private final Condition notEmpty = lock.newCondition();
-    // 写线程条件
+    // 写线程条件（生产者线程 条件队列）
     private final Condition notNull = lock.newCondition();
 
     public Buffer() {
@@ -317,6 +318,8 @@ Node(int waitStatus) {
 
 接着判断尾节点t是否为空，如果为null，直接让首节点执行当前新构建的节点；如果不为null，让当前新构建的节点放到队尾，并且返回新创建的节点，方法结束。
 
+#### 完全释放锁
+
 让我们回到await()方法中，addConditionWaiter()方法执行完后，获得了一个新创建的节点node，接下来执行`fullyRelease(node)`方法，参数为刚才新创建的节点，源码如下：
 
 ```Java
@@ -375,6 +378,10 @@ protected final boolean tryRelease(int releases) {
 
 从上面的方法可以看出，如果tryRelease 返回 true，代表 state此时已经为0，锁已经被释放了；返回false，说明c不为0。也就是说，在fullyRelease方法中，主要是为了释放持有锁的线程。在release方法中抛出的任何异常，都会将当前节点的waitStatus设置为`Node.CANCELLED`。
 
+好了，我们回到fullyRelease方法中，可以看出，对于可重入锁，这个方法会直接导致state的值为0，也就是完全释放锁，返回值为释放锁之前的state的值。
+
+#### 挂起线程
+
 接着进入一个while循环，循环条件是：`!isOnSyncQueue(node)`，这个是什么意思？看其源码：
 
 ```Java
@@ -385,8 +392,12 @@ protected final boolean tryRelease(int releases) {
  * @return true if is reacquiring
  */
 final boolean isOnSyncQueue(Node node) {
+    // 如果节点的waitStatus是Node.CONDITION，那么说明当前节点在条件队列中
+    // 由于条件队列是单链表，那么节点的prev必然是空
     if (node.waitStatus == Node.CONDITION || node.prev == null)
         return false;
+    // 如果节点的next有值，我们知道next是CLH中的，条件队列中没有此值，
+    // 说明当前节点必然在CLH队列中
     if (node.next != null) // If has successor, it must be on queue
         return true;
     /*
@@ -397,11 +408,110 @@ final boolean isOnSyncQueue(Node node) {
      * unless the CAS failed (which is unlikely), it will be
      * there, so we hardly ever traverse much.
      */
+     
     return findNodeFromTail(node);
 }
 ```
 
-从上面的方法的注释来看，该方法的作用就是来判断传入的节点在不在CLH队列中，如果在，就返回true。
+从上面的方法的注释来看，该方法的作用就是来判断传入的节点在不在CLH队列中，如果在，就返回true；不在，返回false。
+
+分析isOnSyncQueue方法，如果节点的waitStatus是Node.CONDITION，那么说明当前节点在条件队列中，由于条件队列是单链表，那么节点的prev必然是空；如果节点的next有值，我们知道next是CLH中的，条件队列中没有此值，说明当前节点必然在CLH队列中。那么还有什么情况没有考虑到呢？就是`node.prev != null ` 并且 `node.next == null` 的情况，仿佛这种情况就在CLH队列里了，事实是这样吗？
+
+从上面的代码来看，显然不是。为啥呢？我们直接来看AQS独占模式下入队的addWaiter方法，代码如下。从addWaiter方法可以看出，`node.setPrevRelaxed(oldTail)`这一步是可以成功的，但下面的`compareAndSetTail(oldTail, node)` 是个CAS操作，可能会失败，此时节点尚未在CLH队列中。
+
+```Java
+/**
+ * Creates and enqueues node for current thread and given mode.
+ *
+ * @param mode Node.EXCLUSIVE for exclusive, Node.SHARED for shared
+ * @return the new node
+ */
+private Node addWaiter(Node mode) {
+    Node node = new Node(mode);
+
+    for (;;) {
+        Node oldTail = tail;
+        if (oldTail != null) {
+            node.setPrevRelaxed(oldTail);
+            if (compareAndSetTail(oldTail, node)) {
+                oldTail.next = node;
+                return node;
+            }
+        } else {
+            initializeSyncQueue();
+        }
+    }
+}
+```
+
+所以需要从阻塞队列的队尾往前遍历，如果找到，返回 true，下面是findNodeFromTail代码。
+
+```Java
+/**
+ * Returns true if node is on sync queue by searching backwards from tail.
+ * Called only when needed by isOnSyncQueue.
+ * @return true if present
+ */
+private boolean findNodeFromTail(Node node) {
+    // We check for node first, since it's likely to be at or near tail.
+    // tail is known to be non-null, so we could re-order to "save"
+    // one null check, but we leave it this way to help the VM.
+    for (Node p = tail;;) {
+        if (p == node)
+            return true;
+        if (p == null)
+            return false;
+        p = p.prev;
+    }
+}
+```
+
+回到await方法中，我们看了isOnSyncQueue方法的实现，isOnSyncQueue(node) 返回 false 的话，就会进入到while循环内部，执行`LockSupport.park(this);`挂起当前线程。await的代码等我们看了`signal()`方法再来看。
+
+### signal
+
+上面我们分析到在await方法中线程被挂起了，那么这个线程如何被唤醒呢？回到最上面的生产者消费者代码中put方法，当添加一个数据后，我们调用了`notEmpty.signal();`来通知消费者线程可以消费者数据了，我们可能想象到此时应该唤醒notEmpty条件队列中被阻塞的线程，下面我们来分析下源码。下面是`signal()`的源码：
+
+```
+/**
+ * Moves the longest-waiting thread, if one exists, from the
+ * wait queue for this condition to the wait queue for the
+ * owning lock.
+ *
+ * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
+ *         returns {@code false}
+ */
+public final void signal() {
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+    Node first = firstWaiter;
+    if (first != null)
+        doSignal(first);
+}
+```
+
+在`signal()`方法中，首先判断调用 signal 方法的线程必须持有当前的独占锁，如果不是，直接抛出IllegalMonitorStateException异常。
+
+接着获取条件队列的首节点，不为空的话，就调用`doSignal(first)`方法，下面是该方法的源码：
+
+```Java
+/**
+ * Removes and transfers nodes until hit non-cancelled one or
+ * null. Split out from signal in part to encourage compilers
+ * to inline the case of no waiters.
+ * @param first (non-null) the first node on condition queue
+ */
+private void doSignal(Node first) {
+    do {
+        if ( (firstWaiter = first.nextWaiter) == null)
+            lastWaiter = null;
+        first.nextWaiter = null;
+    } while (!transferForSignal(first) &&
+             (first = firstWaiter) != null);
+}
+```
+
+
 
 References：
 
