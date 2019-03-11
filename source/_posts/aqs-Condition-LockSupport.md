@@ -306,7 +306,102 @@ private void unlinkCancelledWaiters() {
 
 在`unlinkCancelledWaiters()`方法中，首先获取队列的头结点`t = firstWaiter`，并且有一个变量为trail，初始化为null，表示当前节点的上一个节点，接下来的操作如果同学对单链表的移除节点操作熟悉的话，那么就没必要说了，只不过被移除的条件是`t.waitStatus != Node.CONDITION`，具体流程请参考上面的注释。总结来说，`unlinkCancelledWaiters()`方法是踢出队列中waitStatus不是`Node.CONDITION`的节点。
 
-让我们回到`addConditionWaiter()`方法
+让我们回到`addConditionWaiter()`方法，由于在`unlinkCancelledWaiters()`方法，队列的尾节点会产生变化，所以在执行`unlinkCancelledWaiters()`方法后，需要再重新获取一下尾节点。接着构造一个新的节点node，注意此时的Condition队列的节点还是用的是CLH中的节点Node，这一点想必大家都熟悉了，此时传递一个`Node.CONDITION`参数，这一步操作是设置节点的waitStatus的值为`Node.CONDITION`。
+
+```Java
+Node(int waitStatus) {
+    WAITSTATUS.set(this, waitStatus);
+    THREAD.set(this, Thread.currentThread());
+}
+```
+
+接着判断尾节点t是否为空，如果为null，直接让首节点执行当前新构建的节点；如果不为null，让当前新构建的节点放到队尾，并且返回新创建的节点，方法结束。
+
+让我们回到await()方法中，addConditionWaiter()方法执行完后，获得了一个新创建的节点node，接下来执行`fullyRelease(node)`方法，参数为刚才新创建的节点，源码如下：
+
+```Java
+/**
+ * Invokes release with current state value; returns saved state.
+ * Cancels node and throws exception on failure.
+ * @param node the condition node for this wait
+ * @return previous sync state
+ */
+final int fullyRelease(Node node) {
+    try {
+        int savedState = getState();
+        if (release(savedState))
+            return savedState;
+        throw new IllegalMonitorStateException();
+    } catch (Throwable t) {
+        node.waitStatus = Node.CANCELLED;
+        throw t;
+    }
+}
+```
+
+看过AQS的独占模式的同学对release这个方法是比较熟悉的，关于release方法具体实现解析请参考：[AQS源码分析-独占模式#释放资源](https://mingshan.fun/2019/01/25/aqs-exclusive/#释放资源)。
+
+在fullyRelease方法内，首先会获取state的值，并将该值传给release方法，下面是release源码：
+
+```Java
+public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null && h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+```
+
+注意tryRelease这个方法是在AQS的子类中实现的，由于我们用的ReentrantLock，所以我们来看一眼这个方法的实现：
+
+```Java
+@ReservedStackAccess
+protected final boolean tryRelease(int releases) {
+    int c = getState() - releases;
+    if (Thread.currentThread() != getExclusiveOwnerThread())
+        throw new IllegalMonitorStateException();
+    boolean free = false;
+    if (c == 0) {
+        free = true;
+        setExclusiveOwnerThread(null);
+    }
+    setState(c);
+    return free;
+}
+```
+
+从上面的方法可以看出，如果tryRelease 返回 true，代表 state此时已经为0，锁已经被释放了；返回false，说明c不为0。也就是说，在fullyRelease方法中，主要是为了释放持有锁的线程。在release方法中抛出的任何异常，都会将当前节点的waitStatus设置为`Node.CANCELLED`。
+
+接着进入一个while循环，循环条件是：`!isOnSyncQueue(node)`，这个是什么意思？看其源码：
+
+```Java
+/**
+ * Returns true if a node, always one that was initially placed on
+ * a condition queue, is now waiting to reacquire on sync queue.
+ * @param node the node
+ * @return true if is reacquiring
+ */
+final boolean isOnSyncQueue(Node node) {
+    if (node.waitStatus == Node.CONDITION || node.prev == null)
+        return false;
+    if (node.next != null) // If has successor, it must be on queue
+        return true;
+    /*
+     * node.prev can be non-null, but not yet on queue because
+     * the CAS to place it on queue can fail. So we have to
+     * traverse from tail to make sure it actually made it.  It
+     * will always be near the tail in calls to this method, and
+     * unless the CAS failed (which is unlikely), it will be
+     * there, so we hardly ever traverse much.
+     */
+    return findNodeFromTail(node);
+}
+```
+
+从上面的方法的注释来看，该方法的作用就是来判断传入的节点在不在CLH队列中，如果在，就返回true。
 
 References：
 
@@ -314,6 +409,8 @@ References：
 - [操作系统-进程（6）管程](https://www.cnblogs.com/yangyuliufeng/p/9609419.html)
 - [管程 - 维基百科](https://zh.wikipedia.org/wiki/%E7%9B%A3%E8%A6%96%E5%99%A8_(%E7%A8%8B%E5%BA%8F%E5%90%8C%E6%AD%A5%E5%8C%96))
 - [condition实现原理](https://www.cnblogs.com/nevermorewang/p/9905939.html)
+- [java Condition源码分析](https://blog.csdn.net/coslay/article/details/45217069)
+- [一行一行源码分析清楚 AbstractQueuedSynchronizer (二)](https://javadoop.com/post/AbstractQueuedSynchronizer-2)
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/aqs-Condition-LockSupport.md)
