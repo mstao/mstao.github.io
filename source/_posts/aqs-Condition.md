@@ -6,7 +6,6 @@ author: Mingshan
 date: 2019-3-4
 ---
 
-
 在[从生产者消费者模型窥探多线程并发](https://mingshan.fun/2019/02/25/producer-consumer/)这篇文章中我们使用了ReentrantLock结合Condition实现生产者消费者模型，但我们对于ReentrantLock和Condition的工作原理并不了解，其内部的结构和源码级别实现就更加不了解了。比如在使用await方法的时候，为什么一定要用while判断条件，用if为什么不行呢？使用Condition时，线程之间是如何通信的呢？与synchronized有什么区别？如果后续要用到BlockingQueue，其内部的实现是离不开ReentrantLock和Condition的，所以对于ReentrantLock和Condition源码级别的分析是十分有必要的。
 
 <!-- more -->
@@ -511,16 +510,225 @@ private void doSignal(Node first) {
 }
 ```
 
+从上面的代码我们可以发现，方法内部是一个`do while`循环。在循环体内，首先调用`firstWaiter = first.nextWaiter`将条件队列的首节点的下一个节点赋值给首节点（firstWaiter），相当于将原来的首节点移除条件队列，然后判断新的首节点是否为空，如果为null，说明此时队列就已经空了，直接把尾节点赋值为空。然后将原来的首节点的nextWaiter赋值为空，等待垃圾回收该节点。
 
+#### 转移到CLH
+那么while的循环条件是什么呢？在while循环内，首先会调用transferForSignal(first)方法，注意此时的参数first还是原来的头节点，该方法代码如下：
+
+```Java
+/**
+ * Transfers a node from a condition queue onto sync queue.
+ * Returns true if successful.
+ * @param node the node
+ * @return true if successfully transferred (else the node was
+ * cancelled before signal)
+ *
+ * 当返回true时代表成功转移到CLH队列中
+ * 返回false代表在 signal 之前，当前节点已经取消了。
+ */
+final boolean transferForSignal(Node node) {
+    /*
+     * If cannot change waitStatus, the node has been cancelled.
+     */
+    if (!node.compareAndSetWaitStatus(Node.CONDITION, 0))
+        return false;
+
+    /*
+     * Splice onto queue and try to set waitStatus of predecessor to
+     * indicate that thread is (probably) waiting. If cancelled or
+     * attempt to set waitStatus fails, wake up to resync (in which
+     * case the waitStatus can be transiently and harmlessly wrong).
+     */
+    Node p = enq(node);
+    int ws = p.waitStatus;
+    if (ws > 0 || !p.compareAndSetWaitStatus(ws, Node.SIGNAL))
+        LockSupport.unpark(node.thread);
+    return true;
+}
+```
+
+在transferForSignal方法内，首先利用 CAS 将传入节点的waitStatus由`Node.CONDITION`设置为0
+
+- 如果失败，说明当前节点已经被取消了，不需要再转移到CLH队列，直接返回false；
+- 如果成功，接着将调用enq(node)方法，该方法会将传入的节点自旋进入CLH队列的队尾注意，这里的返回值 p 是 node 在阻塞队列的前驱节点（该方法不再进行分析）。
+
+接着获取p的waitStatus，下面会分两步判断：
+
+1. 当ws大于0时，代表当前节点在CLH队列中已经被取消了
+2. 如果`ws<=0`，接着会调用`p.compareAndSetWaitStatus(ws, Node.SIGNAL)`，利用CAS将p的waitStatus由原来的值设置为`Node.SIGNAL`，在CLH队列中，我们知道，如果当前节点想要被唤醒继续获取锁，那么该节点的前驱节点的waitStatus必须为`Node.SIGNAL`
+
+综合上面两步，如果当前节点的前驱节点被取消或者前驱节点CAS设置waitStatus为`Node.SIGNAL`失败，就会调用`LockSupport.unpark(node.thread);`唤醒当前节点的线程，唤醒之后如何操作呢？这时我们需要到await方法来看，这个稍后再说。
+
+综合以上，对于transferForSignal方法，我们可以知道：**当返回true时代表成功转移到CLH队列中；返回false代表在 signal 之前，当前节点已经取消了。**
+
+我们回到 doSignal 方法，while循环的条件是：`!transferForSignal(first)` 并且 `(first = firstWaiter) != null`，即当前节点已经取消，并且将当前条件队列的头节点赋值给first，且不为空。
+
+综合doSignal方法，我们可以知道：**如果 first 转移至CLH不成功，那么选择 first 后面的第一个节点进行转移，依此类推。**
+
+
+### 唤醒后检查中断状态
+
+这里我们先总结一下，什么情况下`LockSupport.park(this);`会继续向下执行？
+
+1. 当节点在signal后转移至CLH队列后，重新获取到独占锁
+2. 在CLH队列中，当前节点的前驱节点被取消或者前驱节点的waitStatus由原来的值设置为`Node.SIGNAL`CAS设置失败
+
+我们回到await方法，在while循环中，当线程获取到锁后，就会接着执行挂起之后的方法：
+
+```Java
+while (!isOnSyncQueue(node)) {
+    LockSupport.park(this);
+    if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
+        break;
+}
+```
+
+
+
+如上面代码所示，interruptMode代表什么意思呢？我们发现接着执行了`checkInterruptWhileWaiting(node)`方法，代码如下：
+
+```Java
+/**
+ * Checks for interrupt, returning THROW_IE if interrupted
+ * before signalled, REINTERRUPT if after signalled, or
+ * 0 if not interrupted.
+ */
+private int checkInterruptWhileWaiting(Node node) {
+    return Thread.interrupted() ?
+        (transferAfterCancelledWait(node) ? THROW_IE : REINTERRUPT) :
+        0;
+}
+```
+
+从注释来看，该方法用来检测当前节点的线程在wait过程中的中断状态，有三个值：
+
+- **THROW_IE(-1)**: 在被signalled之前，当前节点的线程被中断了
+- **REINTERRUPT(1)**: 在被signalled之后，当前节点的线程被中断了
+- **0**: 未发生中断
+
+在checkInterruptWhileWaiting方法内，首先判断`Thread.interrupted()`线程中断标识，如果返回true，就需要判断线程是在 signal 之前还是之后中断的，否则返回0。
+
+这里有个问题，怎样判断线程是在signal 之前还是之后中断的？接着就看transferAfterCancelledWait(node)方法，根据返回值可知，返回true， 代表在signal之前被中断了；返回false，代表在signal之后被中断了。源码如下：
+
+
+```
+/**
+ * Transfers node, if necessary, to sync queue after a cancelled wait.
+ * Returns true if thread was cancelled before being signalled.
+ *
+ * @param node the node
+ * @return true if cancelled before the node was signalled
+ */
+final boolean transferAfterCancelledWait(Node node) {
+    if (node.compareAndSetWaitStatus(Node.CONDITION, 0)) {
+        enq(node);
+        return true;
+    }
+    /*
+     * If we lost out to a signal(), then we can't proceed
+     * until it finishes its enq().  Cancelling during an
+     * incomplete transfer is both rare and transient, so just
+     * spin.
+     */
+    while (!isOnSyncQueue(node))
+        Thread.yield();
+    return false;
+}
+```
+
+在transferAfterCancelledWait方法内，首先利用CAS将node的waitStatus由`Node.CONDITION` 设置为0，注意这一步，在上面我们分析signal操作的transferForSignal方法时我们知道：当前节点的线程如果被signal的话，那么它的waitStatus已经由`Node.CONDITION`设置为0了。所以此时再进行此操作成功，说明该节点的线程在signal之前被中断了，此时调用enq(node)进入CLH队列，返回true；
+
+如果由`Node.CONDITION`设置为0失败，说明signal方法已经设置过了，注意在transferForSignal方法中，设置成功后，还要将当前节点转移到CLH队列中，这个阶段需要时间来完成，所以`while (!isOnSyncQueue(node))` 这里判断是否已经进入CLH成功，如果不成功，就让出CPU时间片，等待其完成。最后transferAfterCancelledWait返回false。这里注意一点，上面在中断检查时，如果在signal过程中发生了中断，节点依然会进入CLH队列
+
+此时我们再次回到await()的循环体内，从上面的分析可以看出，跳出循环的条件是：
+
+1. **signal的转移操作成功，节点已在CLH队列中**
+2. **节点的线程发生了中断**
+
+### 退出循环继续执行
+
+分析到这里，可以大家会有疑惑，下面我们来直接上代码DEBUG下，代码是上面的生产者消费者源码，在下面的第一个图，线程#11的状态已经被转移到CLH队列中了，看下面的参数列表可知，state为0，exclusiveOwnerThread为null，说明此时尚未获取到独占锁
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/condition/await-1.png?raw=true)
+
+由于已经在CLH队列中，会直接跳出while循环，接着执行下面这段代码：
+
+```Java
+if (acquireQueued(node, savedState) && interruptMode != THROW_IE)
+    interruptMode = REINTERRUPT;
+```
+
+在执行上面这段代码之前，我们来看一下DEBUG变量情况：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/condition/await-2.png?raw=true)
+
+通过上面图片可以发现state为0，exclusiveOwnerThread为null，说明在跳出while循环之前是没有获取到锁的。
+
+接着会继续执行上面那段代码，`acquireQueued(node, savedState)`是获取独占锁，并返回线程中断状态，true为被中断，所以上面的代码的语义为：获取独占锁，如果线程发生中断且不是在singal之前发生的，将interruptMode设置为REINTERRUPT。执行完上面的代码，我们来看看DEBUG变量情况：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/juc/condition/await-3.png?raw=true)
+
+从面的图可以看出，state的值已经为1（与savedState相等），并且exclusiveOwnerThread为线程#11，说明线程#11获取到了独占锁。
+
+接着继续下面的代码：
+
+```Java
+if (node.nextWaiter != null) // clean up if cancelled
+    unlinkCancelledWaiters();
+```
+
+上面的代码是判断当前节点的nextWaiter是否为null，我们阅读过singal的代码可以知道，如果当前节点转移至CLH队列中，那么当前节点的nextWaiter会被赋null，那么这是正常情况。如果在singal之前线程发生了中断，当前线程会在await的while循环跳出，执行上面的这段代码，这时`node.nextWaiter`并没有赋值为null，但当前节点会在while循环的中断检查时进入CLH队列（transferAfterCancelledWait方法中将waitStatus置为0），这时相当于成功转移了，但Condition队列中还保留当前节点的引用，这时需要清理一下，接着就会调用`unlinkCancelledWaiters()`方法，清除无用的节点。
+
+### 处理中断状态
+
+上面的interruptMode似乎代码中还没有做处理，接下来就是处理与中断相关的，`interruptMode != 0`说明发生了中断：
+
+```Java
+if (interruptMode != 0)
+    reportInterruptAfterWait(interruptMode);
+```
+
+这里重复一下，interruptMode会有下面三个值：
+
+- THROW_IE(-1): 在被signalled之前，当前节点的线程被中断了，代表 await 返回的时候，需要抛出 InterruptedException 异常代表
+- REINTERRUPT(1): 在被signalled之后，当前节点的线程被中断了，代表 await 返回的时候，需要重新设置中断状态
+- 0: 未发生中断
+
+接着执行`reportInterruptAfterWait(interruptMode)`方法，代码如下，逻辑就是上面的逻辑。
+
+```
+/**
+ * Throws InterruptedException, reinterrupts current thread, or
+ * does nothing, depending on mode.
+ */
+private void reportInterruptAfterWait(int interruptMode)
+    throws InterruptedException {
+    if (interruptMode == THROW_IE)
+        throw new InterruptedException();
+    else if (interruptMode == REINTERRUPT)
+        selfInterrupt();
+}
+```
+
+注意这里的`selfInterrupt()`是设置中断标志，代码如下：
+
+```Java
+static void selfInterrupt() {
+    Thread.currentThread().interrupt();
+}
+```
+
+### 总结
+
+这里画图总结各个流程。。。
 
 References：
 
 - [入门AQS锁 - Condition与LockSupport](https://www.jianshu.com/p/1add173ea703)
 - [操作系统-进程（6）管程](https://www.cnblogs.com/yangyuliufeng/p/9609419.html)
 - [管程 - 维基百科](https://zh.wikipedia.org/wiki/%E7%9B%A3%E8%A6%96%E5%99%A8_(%E7%A8%8B%E5%BA%8F%E5%90%8C%E6%AD%A5%E5%8C%96))
-- [condition实现原理](https://www.cnblogs.com/nevermorewang/p/9905939.html)
-- [java Condition源码分析](https://blog.csdn.net/coslay/article/details/45217069)
 - [一行一行源码分析清楚 AbstractQueuedSynchronizer (二)](https://javadoop.com/post/AbstractQueuedSynchronizer-2)
+- [浅谈Java并发编程系列（八）—— LockSupport原理剖析](https://segmentfault.com/a/1190000008420938)
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/aqs-Condition-LockSupport.md)
