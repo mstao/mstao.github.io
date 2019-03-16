@@ -1,5 +1,5 @@
 ---
-title: AQS源码分析-Condition与LockSupport
+title: AQS源码分析-Condition
 categories: [Java, JUC]
 tags: [java, JUC, AQS]
 author: Mingshan
