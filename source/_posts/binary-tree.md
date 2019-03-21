@@ -108,7 +108,7 @@ public static class Node<E extends Comparable<E>> {
 7. 输出6，左孩子为空，右孩子为空，3的左子树全部输出完了，接着输出3的右子树
 8. 输出7，7的左孩子为空，右孩子为空，此时整个树输出完毕
  
-递归代码比较简单，如下所示：
+**递归**代码比较简单，如下所示：
 
 ```java
 /**
@@ -133,9 +133,67 @@ public void preOrderRec(Node node) {
 }
 ```
 
-对于非递归的实现来说，其实就是模拟上面递归入栈出栈过程，这里主要有三个步骤：
+对于**非递归**的实现来说，其实就是模拟上面递归入栈出栈过程，在写代码之前，我们先牢记前序遍历的原则：**对于当前结点，先输出该结点，然后输出它的左孩子，最后输出它的右孩子**。所以对任意节点，我们都可以先把它看成父结点，输出该结点后，把它入栈，然后接着它的左孩子，此时这个左孩子又可以作为父结点，就这样一直遍历下去，直至当前结点的左孩子为空，上述过程用代码（**代码片段Ⅰ**）描述为：
 
-1. 对于任何结点node，如果该结点不为空，打印当前节点将自己压入栈内，然后将当前结点的左子结点赋值给node，直至node为null
+```Java
+while (node != null) {
+    System.out.println(node); // 先输出当前结点
+    stack.push(node);         // 当前结点入栈
+    node = node.left;         // 遍历左孩子
+}
+```
+
+
+此时会出现两种情况：
+
+1. 当前结点的左孩子为空，但右孩子不为空
+2. 当前结点的左右孩子都为空
+
+**情况1**如下图所示：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node1.png?raw=true)
+
+注意此时栈顶元素为下图中**栈顶节点**执行的结点，接着我们该如何进行呢？此时我们需要将栈顶元素出栈并赋值给node，接着我们就要访问当前节点的右孩子了（当前结点输出过了，左孩子为空），如果右孩子有左孩子，继续重复上面的步骤，代码（**代码片段Ⅱ**）如下：
+
+```Java
+node = stack.pop(); // 栈顶元素出栈
+node = node.right; // 继续访问其右孩子
+```
+
+**情况2**如下图所示：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node2.png?raw=true)
+
+
+对于情况2，同样此时栈顶元素为下图中**栈顶节点**执行的结点，此时我们需要将栈顶元素出栈并赋值给node，接着访问该结点的右孩子为空，此时相当于当前的所以我们就可以继续将栈顶元素出栈，继续访问当前栈顶元素的右孩子（左子树全部输出完毕），即：
+
+```Java
+node = stack.pop(); // 栈顶元素出栈
+node = node.right; // 继续访问其右孩子
+node = stack.pop(); // 右孩子为空， 继续出栈
+node = node.right; // 继续访问其右孩子
+```
+
+我们发现上面的代码其实重复的，只不过需要加个空值判断就可以了，那么这个空值判断加在什么地方呢？仔细看看前面的，我们发现空值判断在**代码片段Ⅰ**
+已经处理过了，只有在结点不为空时才能继续访问它的左孩子，所以，综合上面的分析，我们可以写出：
+
+
+```Java
+while (node != null || !stack.isEmpty()) {
+    while (node != null) {
+        System.out.println(node); // 先输出当前结点
+        stack.push(node);         // 当前结点入栈
+        node = node.left;         // 遍历左孩子
+    }
+
+    node = stack.pop();
+    node = node.right;
+}
+```
+
+好了，这里总结一下，主要有三个步骤：
+
+1. 对于任何结点node，如果该结点不为空，打印当前结点node后将自己压入栈内，然后将当前结点的左子结点赋值给node，直至node为null
 2. 若左子树为空，则栈顶元素出栈，并将当前node的右子结点赋值给node
 3. 重复1，2步操作，直至node为空，并且栈为空
 
@@ -195,7 +253,7 @@ public void preOrderNonRec(Node node) {
 9. 输出3，接着右孩子
 10. 输出7，7的左孩子为空，右孩子为空，此时整个树输出完毕
 
-递归代码：
+**递归**代码：
 
 
 ```Java
@@ -216,14 +274,74 @@ public void inOrderRec(Node node) {
 
 ```
 
-非递归逻辑就是用栈模拟上述递归调用的过程，考虑以下三点：
+**非递归**逻辑就是用栈模拟上述递归调用的过程，经过前序非递归实现的思考过程，相信我们对于中序遍历的非递归实现已经胸有成竹了，下面还是仔细分析一波。我们还是牢记中序遍历的原则：**对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印右子树。**
+
+对于任意节点都可以把它看成父结点，由于中序遍历是先输出结点的左子树，所以我们就可以遍历，将遍历的轨迹记录到栈内，直至结点为空，我们就可以写出如下代码（代码片段Ⅲ）：
+
+```Java
+while (node != null) { // 判断当前结点点是否为空
+    stack.push(node); // 当前结点入栈
+    node = node.left; // 访问其左孩子
+}
+```
+
+当遍历结束后，和前序遍历一样，也会出现两种情况：
+
+1. 当前结点的左孩子为空，但右孩子不为空
+2. 当前结点的左右孩子都为空
+
+**情况1**如下图所示：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node1.png?raw=true)
+
+从上面图中可以看出，此时node指向为空，我们需要将栈顶元素出栈并赋值为node，此时node的左孩子为空，我们无法输出，所以我们就输出当前节点node，然后访问当前节点的右孩子，如果右孩子有左孩子，继续重复上面的步骤，代码（代码片段Ⅳ）如下：
+
+```Java
+node = stack.pop(); // 栈顶结点出栈
+System.out.println(node); // 打印栈顶结点
+node = node.right; // 访问其右孩子
+```
+
+**情况2**如下图所示：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node2.png?raw=true)
+
+对于情况2，当访问的结点为空时，我们就和情况1一样将栈顶元素出栈并赋值给node，将其输出，接着我们访问当前节点node的右孩子，发现右孩子为空，此时该怎么办呢？有了前序遍历的经验，我们继续将栈顶元素出栈，并赋值给node，注意此时node的左子树输出完毕了，输出该节点，继续访问node的右孩子：
+
+```Java
+node = stack.pop(); // 栈顶结点出栈
+System.out.println(node); // 打印栈顶结点
+node = node.right; // 访问其右孩子
+node = stack.pop(); // 右孩子为空，栈顶元素继续出栈
+System.out.println(node); // 打印栈顶元素
+node = node.right; // 继续访问其右孩子
+```
+
+我檫，我们又发现重复，根据我们的经验，凡是重复的代码都不是最优代码，其实造成重复的原因是当前节点的右孩子为空，没法继续访问了，只能继续将栈顶结点出栈，此时的栈顶的结点的左子树已经输出完了，输出自己后，再访问其右孩子。这个判空在**代码片段Ⅲ**中。
+
+好了，不分析了，此时我们可以写出如下代码：
+
+```Java
+while (node != null || !stack.isEmpty()) {
+    while (node != null) {
+        stack.push(node);
+        node = node.left;
+    }
+    
+    node = stack.pop();
+    System.out.println(node);
+    node = node.right;
+}
+```
+
+
+总结一下，考虑以下三点：
 
 1. 对于任何结点node，如果该结点不为空，将当前结点的左子结点赋值给node，直至node为null
-2. 若左子结点为空，栈顶节点出栈，输出该结点后将该结点的右子结点置为node
+2. 若左子结点为空，栈顶结点出栈，输出该结点后将该结点的右子结点赋值给node
 3. 重复1，2操作
 
 代码如下：
-
 
 ```Java
 /**
@@ -263,6 +381,19 @@ public void inOrderNonRec(Node node) {
 
 后序遍历：对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。
 
+我们先以递归的方式来思考整个遍历过程：
+
+1. 从1开始，遍历节点的左子树，遍历到4，4的左孩子为空，右孩子为空
+2. 输出4， 接着寻找2的右子树，找到5
+3. 遍历5的左子树，遍历到8，8的的左孩子为空，右孩子为空
+4. 输出8，寻找5的右孩子，发现为空，接着父结点
+5. 输出5，接着5的父结点2，2的左右子树输出完毕
+6. 输出2，接着2的父结点，此时2的左子树输出完毕，接着2的右子树，找到3
+7. 遍历3的左子树，找到6，6的左孩子为空，右孩子为空
+8. 输出6，接着3的右孩子
+9. 输出7，接着7的父结点
+10. 输出3，接着3的父结点，此时1的左右子树输出完毕
+11. 输出1，此时整个树输出完毕
 
 ```Java
 /**
@@ -305,12 +436,10 @@ public void postOrderNonRec(Node node) {
     stack.push(node);
 
     while (!stack.isEmpty()) {
-
         node = stack.peek();
 
-        if ((node.left == null && node.right == null)
-                || (node.right == null && pre == pre.left)
-                || (pre == node.right)) {
+        if ((node.left == null && node.right == null) ||
+                (pre != null && (pre == node.left || pre == node.right))) {
             System.out.println(node);
             pre = node;
             stack.pop();
@@ -329,11 +458,14 @@ public void postOrderNonRec(Node node) {
 }
 ```
 
-
-
 ## References：
 
 - [二叉树基础（上）：什么样的二叉树适合用数组来存储？](https://time.geekbang.org/column/article/67856)
 - [二叉树的各种操作](https://subetter.com/algorithm/various-operations-of-the-binary-tree.html)
 - 严蔚敏，《数据结构（C语言）第二版》
 - [二叉树的后序遍历--非递归实现](https://www.cnblogs.com/rain-lei/p/3705680.html)
+- [二叉树前序、中序、后序遍历非递归写法的透彻解析](https://blog.csdn.net/zhangxiangdavaid/article/details/37115355)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/binary-tree.md)
+
