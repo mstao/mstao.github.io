@@ -19,9 +19,9 @@ date: 2019-03-17
 
 通过上面的二叉树定义我们知道，二叉树的每个结点最多有两个子结点，同时具有递归性质。递归在二叉树的一些操作中使用非常频繁，对此不熟悉的同学请参考：[递归、尾递归和使用Stream延迟计算优化尾递归](https://mingshan.fun/2019/01/20/tail-recursion/)。接下来我们来看看二叉树的一些概念：
 
-- 结点的高度：结点到叶子结点的最长路径（边数）
-- 结点的深度：根结点到这个节点所经历的的边的个数
-- 结点的层数：结点的深度 + 1
+- 结点的高度：结点到叶子结点的最长路径（边数） + 1
+- 结点的深度：根结点到这个节点所经历的的边的个数 + 1
+- 结点的层数：结点的深度
 - 结点的度：结点拥有的子树数量称为结点的度
 - 树的高度：根结点的高度
 
@@ -153,7 +153,7 @@ while (node != null) {
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node1.png?raw=true)
 
-注意此时栈顶元素为上图中**栈顶节点**执行的结点，接着我们该如何进行呢？此时我们需要将栈顶元素出栈并赋值给node，接着我们就要访问当前节点的右孩子了（当前结点输出过了，左孩子为空），如果右孩子有左孩子，继续重复上面的步骤，代码（**代码片段Ⅱ**）如下：
+注意此时栈顶元素为下图中**栈顶节点**执行的结点，接着我们该如何进行呢？此时我们需要将栈顶元素出栈并赋值给node，接着我们就要访问当前节点的右孩子了（当前结点输出过了，左孩子为空），如果右孩子有左孩子，继续重复上面的步骤，代码（**代码片段Ⅱ**）如下：
 
 ```Java
 node = stack.pop(); // 栈顶元素出栈
@@ -165,7 +165,7 @@ node = node.right; // 继续访问其右孩子
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree_node2.png?raw=true)
 
 
-对于情况2，同样此时栈顶元素为上图中**栈顶节点**执行的结点，此时我们需要将栈顶元素出栈并赋值给node，接着访问该结点的右孩子为空，此时相当于当前的所以我们就可以继续将栈顶元素出栈，继续访问当前栈顶元素的右孩子（左子树全部输出完毕），即：
+对于情况2，同样此时栈顶元素为下图中**栈顶节点**执行的结点，此时我们需要将栈顶元素出栈并赋值给node，接着访问该结点的右孩子为空，此时相当于当前的所以我们就可以继续将栈顶元素出栈，继续访问当前栈顶元素的右孩子（左子树全部输出完毕），即：
 
 ```Java
 node = stack.pop(); // 栈顶元素出栈
@@ -486,6 +486,120 @@ public void postOrderNonRec(Node node) {
         }
 
     }
+}
+```
+
+### 计算二叉树的深度
+
+现在我们知道二叉树结点的最大层次称为树的度，所以我们只需计算树中结点的层次最大值。根结点的深度为1，根结点的左孩子深度为2，右孩子深度也为2，注意此时左右孩子当有一个为空时，此时当前结点所在的层次以存在的结点为值，就这样一直向下遍历，计数递增，直至结点的左右孩子都为空。所以可以用递归求解：
+
+**递归公式如下：**
+
+```
+getDepth(node) = getDepth(node.left) > getDepth(node.right) ? getDepth(node.left) + 1 : getDepth(node.right) + 1
+```
+
+**递归终止条件：**
+
+```
+if (node == null) return 0;
+```
+
+**代码如下：**
+
+```Java
+/**
+ * 计算二叉树的深度
+ * @param node 当前结点点
+ * @return 二叉树的深度
+ */
+public int getDepth(Node node) {
+    if (node == null)
+        return 0;
+
+    int m = getDepth(node.left);
+    int n = getDepth(node.right);
+
+    return m > n ? m + 1 : n + 1;
+}
+```
+
+### 计算二叉树的结点数量
+
+在二叉树中，任意结点的总结点数量包括其左子树的节点的数量和右子树的节点情况和其自身，所以直接用递归求解：
+
+**递归公式如下：**
+
+```Java
+countNode(node) = countNode(node.left) + countNode(node.right) + 1
+```
+
+**递归终止条件：**
+
+```Java
+if (node == null) return 0;
+```
+
+**代码如下：**
+
+```Java
+/**
+ * 计算结点的数量
+ *
+ * @param node 当前结点
+ * @return 结点的数量
+ */
+public int countNode(Node node) {
+    if (node == null)
+        return 0;
+    return countNode(node.left) + countNode(node.right) + 1;
+}
+```
+
+### 计算二叉树的叶子结点数量
+
+所谓叶子结点，就是它的度是0，没有左子树和右子树，所以这是计算叶子结点的条件，也是表示叶子结点的关键。我们依然可以用递归来解：
+
+
+**递归公式：**
+
+```
+countLeafNode(node) = countLeafNode(node.left) + countLeafNode(node.right)
+```
+
+**终止条件有两个：**
+
+1. 当前结点为空，返回0；
+2. 当前结点的左孩子和右孩子都为空，代表是叶子结点，返回1。
+
+
+```Java
+if (node == null)
+    return 0;
+
+if (node.left == null && node.right == null) {
+    return 1;
+}
+```
+
+**代码如下：**
+
+```
+/**
+ * 计算叶子结点的数量
+ *
+ * @param node 当前结点
+ * @return 结点的数量
+ */
+public int countLeafNode(Node node) {
+    if (node == null)
+        return 0;
+
+    if (node.left == null && node.right == null) {
+        return 1;
+    }
+
+    return countLeafNode(node.left) + countLeafNode(node.right);
 }
 ```
 
