@@ -19,7 +19,7 @@ MathJax支持行内公式（inline）和陈列公式（displayed）。inline表�
 
 $$f(n)=2n^2+3n+1$$
 
-> 在MathJax中，displayed公式分隔符为 ```$$...$$``` ，inline公式分隔符为```$...$```。
+> 在MathJax中，displayed公式分隔符为 $$...$$ ，inline公式分隔符为$...$。
 
 ### 希腊字母
 
@@ -66,7 +66,7 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 
 分式的表示：
 
-- 第一种，使用`\frac ab` , \frac作用于其后的两个组a , b ，结果为ab。如果你的分子或分母不是单个字符，请使用{...}来分组。
+- 第一种，使用`\frac ab` , \frac作用于其后的两个组a , b ，结果为ab。如果你的分子或分母不是单个字符，请使用`{...}`来分组。
 - 第二种，使用`\over`来分隔一个组的前后两部分，如 `{a+1 \over b+1}`: ${a+1 \over b+1}$
 
 根式使用`\sqrt`表示，如：`\sqrt[4]{\frac xy}`: $\sqrt[4]{\frac xy}$
