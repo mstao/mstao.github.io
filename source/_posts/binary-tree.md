@@ -95,7 +95,7 @@ public static class Node<E extends Comparable<E>> {
 
 #### 前序
 
-前序遍历方式：**对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印右子树。**
+前序遍历方式：对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印右子树。
 
 我们先以递归的方式来思考整个遍历过程：
 
@@ -238,7 +238,7 @@ public void preOrderNonRec(Node node) {
 
 #### 中序
 
-中序遍历方式：**对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印右子树。**
+中序遍历方式：对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印右子树。
 
 我们先以递归的方式来思考整个遍历过程：
 
@@ -379,7 +379,7 @@ public void inOrderNonRec(Node node) {
 
 #### 后序
 
-后序遍历：**对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。**
+后序遍历：对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。
 
 我们先以递归的方式来思考整个遍历过程：
 
@@ -394,6 +394,9 @@ public void inOrderNonRec(Node node) {
 9. 输出7，接着7的父结点
 10. 输出3，接着3的父结点，此时1的左右子树输出完毕
 11. 输出1，此时整个树输出完毕
+
+
+**递归**代码非常简单，如下代码：
 
 ```Java
 /**
@@ -411,6 +414,34 @@ public void postOrderRec(Node node) {
     System.out.println(node);
 }
 ```
+
+ 非递归实现是比上面前中非递归遍历要复杂一点，现在还是考虑后序遍历的原则：**对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。**
+
+对于任意结点，总是先遍历其左孩子，再遍历右孩子，最后再遍历父结点，仔细思考这个过程和前中遍历有什么不同呢？对于**前序遍历**，父结点首先被访问到；对于**中序遍历**，当访问完左孩子，就可以访问父结点了；对于**后序遍历**，访问完左孩子，要去访问右孩子，注意，此时这个右孩子如果还有左孩子，那么还要继续遍历下去。说到这里我们就知道问题了，最初左孩子的父结点啥时候访问呢？就是最初的右孩子的左右子树都访问完了，再访问这个右孩子，最后才会访问到这个父结点。
+
+所以根据以上分析，我们需要**判断上次访问的结点是位于左子树，还是右子树**。如果是左子树，那么需要跳过父结点，去访问右孩子；如果上次是访问的右孩子，我们就可以访问父结点了。
+
+总结来说，**对于任意结点，只有它既没有左孩子也没有右孩子或者它有孩子但是它的孩子已经被输出，才会输出这个结点**，所以我们可以整一个变量（pre）来记录上次访问的是哪一个结点。若非上述两种情况，则将该结点的右孩子和左孩子依次入栈，这样就保证了每次取栈顶元素的时候, 先依次遍历左子树和右子树。代码如下：
+
+```Java
+if ((node.left == null && node.right == null) ||
+    (node.right == null && pre == node.left) || (pre == node.right)) {
+    System.out.println(node);
+    pre = node;
+    stack.pop();
+} else {
+    // 右孩子先入栈，才会先访问结点的左孩子
+    if (node.right != null) {
+        stack.push(node.right);
+    }
+
+    if (node.left != null) {
+        stack.push(node.left);
+    }
+}
+```
+
+总结以上，pre首先赋初值为二叉树的根结点，栈初始值也为二叉树的根结点，所以在栈不为空的情况下，进行以上判断操作。所以完整代码如下：
 
 ```Java
 /**
@@ -432,14 +463,14 @@ public void postOrderNonRec(Node node) {
     }
 
     Stack<Node> stack = new Stack<>();
-    Node pre = null;
+    Node pre = root;
     stack.push(node);
 
     while (!stack.isEmpty()) {
         node = stack.peek();
 
         if ((node.left == null && node.right == null) ||
-                (pre != null && (pre == node.left || pre == node.right))) {
+            (node.right == null && pre == node.left) || (pre == node.right)) {
             System.out.println(node);
             pre = node;
             stack.pop();
