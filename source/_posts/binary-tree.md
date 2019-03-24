@@ -33,6 +33,7 @@ date: 2019-03-17
 
 - 性质1：在二叉树的第i层上最多有$2^{i-1}$个结点（i>=1）
 - 性质2：深度为k的二叉树至多有$2^k-1$个结点
+- 性质3：具有n个结点的完全二叉树的深度为$[log_2n] + 1$
 
 二叉树既可以用数组来存储，又可以用链式结构来存储。
 
@@ -43,6 +44,31 @@ date: 2019-03-17
 对于用数组存储来说，我们需要将数组的第一位空出来，把根结点存储在下标为1的位置，对于任意一个结点，它在数组的存储位置为i，那么它的左结点存储的位置为`2i`，右结点为`2i + 1`。这样就可以将整个二叉树存储在数组中了。不过从上面的逻辑来看，用数组来存储二叉树会有空间的浪费，因为同一层有些结点有子结点，有些没有，这样就会浪费空间。
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree-array.png?raw=true)
+
+### 满二叉树和完全二叉树
+
+从上面二叉树的性质来看，二叉树完全是多种多样，变化多端，有没有一些比较特殊的二叉树呢？下面我们来了解下**满二叉树**和**完全二叉树**。
+
+**满二叉树：** 
+深度为k且含有$2^k-1$个结点的二叉树。
+
+直白点就是叶子节点全都在最底层，除了叶子节点之外，每个节点都有左右两个孩子，下面是一个满二叉树的示例：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/Full-BinaryTree.png?raw=true)
+
+**完全二叉树：**
+深度为k的，有n个结点的二叉树，当且仅当其每一个结点都与深度为k的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树。
+
+上面的定义我们听着完全云里雾里，不知所云，我们简单总结下，就是完全二叉树有以下特性：
+
+1. 除了最后一层，其他层必须是满二叉树
+2. 叶子结点只可能在层次最大的两层上出现
+3. 最后一层的叶子节点靠左排列
+4. 对任一结点，若其右分支下的子孙的最大层次为$l$，则其左分支下的子孙的最大层次为$l$ 或 $l + 1$
+
+下图中左边的是完全二叉树，右边的则不是：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/Complete-BinaryTree.png?raw=true)
 
 ## 二叉树操作
 
@@ -93,7 +119,7 @@ public static class Node<E extends Comparable<E>> {
 }
 ```
 
-#### 前序
+#### 前序遍历
 
 前序遍历方式：对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印右子树。
 
@@ -236,7 +262,7 @@ public void preOrderNonRec(Node node) {
 }
 ```
 
-#### 中序
+#### 中序遍历
 
 中序遍历方式：对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印右子树。
 
@@ -377,7 +403,7 @@ public void inOrderNonRec(Node node) {
 }
 ```
 
-#### 后序
+#### 后序遍历
 
 后序遍历：对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。
 
@@ -489,9 +515,13 @@ public void postOrderNonRec(Node node) {
 }
 ```
 
+### 层次遍历
+
+
+
 ### 计算二叉树的深度
 
-现在我们知道二叉树结点的最大层次称为树的度，所以我们只需计算树中结点的层次最大值。根结点的深度为1，根结点的左孩子深度为2，右孩子深度也为2，注意此时左右孩子当有一个为空时，此时当前结点所在的层次以存在的结点为值，就这样一直向下遍历，计数递增，直至结点的左右孩子都为空。所以可以用递归求解：
+现在我们知道二叉树结点的最大层次称为树的深度，所以我们只需计算树中结点的层次最大值。根结点的深度为1，根结点的左孩子深度为2，右孩子深度也为2，注意此时左右孩子当有一个为空时，此时当前结点所在的层次以存在的结点为值，就这样一直向下遍历，计数递增，直至结点的左右孩子都为空。所以可以用递归求解：
 
 **递归公式如下：**
 
@@ -572,7 +602,6 @@ countLeafNode(node) = countLeafNode(node.left) + countLeafNode(node.right)
 1. 当前结点为空，返回0；
 2. 当前结点的左孩子和右孩子都为空，代表是叶子结点，返回1。
 
-
 ```Java
 if (node == null)
     return 0;
@@ -600,6 +629,104 @@ public int countLeafNode(Node node) {
     }
 
     return countLeafNode(node.left) + countLeafNode(node.right);
+}
+```
+
+### 计算二叉树第k层结点的数量
+
+对于二叉树，我们怎么样知道处于某一层的结点的总数量呢？举个例子，就拿上面我们使用的二叉树来说，想知道第三层结点的总数量，我们只要知道第二层所有结点的左右孩子数量之和，这个值不就是第三层结点的数量吗？（我真是太聪明了），依次类推，直至到根结点，为第一层，结点数量为1。所以我们可以用递归来解决：
+
+**递归公式：**
+
+```Java
+countKLevelNode(node, k) = countKLevelNode(node.left, k - 1) + countKLevelNode(node, k - 1)
+```
+
+**终止条件：**
+当为第一层时，只有一个根结点，返回1。
+
+```Java
+if (k == 1) {
+    return 1;
+}
+```
+
+**代码如下：**
+
+```Java
+/**
+ * 获取二叉树第k层结点的数量
+ *
+ * @param node 根结点
+ * @param k 第k层
+ * @return 结点的数量
+ */
+public int countKLevelNode(Node node, int k) {
+    if (node == null || k <= 0) {
+        return 0;
+    }
+
+    if (k == 1) {
+        return 1;
+    }
+
+    return countKLevelNode(node.left, k - 1) + countKLevelNode(node.right, k - 1);
+}
+```
+
+### 计算二叉树第k层叶子结点的数量
+
+
+
+### 判断一个结点是否在二叉树内
+
+对于一个给定的二叉树，如何判断一个结点是否在二叉树内，相对来说比较简单，因为对于二叉树的任意结点，都可以把其当做父结点，先判断结点是否与该结点相同，如果不同，再判断其左右孩子，依次类推，所以我们又可以用递归了。
+
+**递归公式：**
+
+```
+isNodeInTree(root, node) = (root != node) -> (!isNodeInTree(root.left, node)) -> (isNodeInTree(root.right, node)) : 
+```
+
+**终止条件有两个：**
+
+1. 检测的结点与父结点相等
+2. 检测的结点与左孩子或者右孩子相等
+
+```Java
+if (root.item == node.item) {
+    return true;
+}
+
+if (isNodeInTree(root.left, node) || isNodeInTree(root.right, node)) {
+    return true;
+}
+```
+
+**递归代码：**
+
+```Java
+/**
+ * 判断一个结点是否在二叉树内
+ *
+ * @param root 根结点
+ * @param node 要检测的结点
+ * @return 返回{@code true}，在；返回{@code false}，不在
+ */
+public boolean isNodeInTree(Node root, Node node) {
+    if (root == null || node == null) {
+        return false;
+    }
+
+    if (root.item == node.item) {
+        return true;
+    }
+
+    if (isNodeInTree(root.left, node) || isNodeInTree(root.right, node)) {
+        return true;
+    }
+
+    return false;
 }
 ```
 
