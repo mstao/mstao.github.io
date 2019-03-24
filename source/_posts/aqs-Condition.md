@@ -722,7 +722,7 @@ static void selfInterrupt() {
 
 这里画图总结各个流程。。。
 
-References：
+## References：
 
 - [入门AQS锁 - Condition与LockSupport](https://www.jianshu.com/p/1add173ea703)
 - [操作系统-进程（6）管程](https://www.cnblogs.com/yangyuliufeng/p/9609419.html)
