@@ -6,6 +6,7 @@ categories: [数据结构, 二叉树]
 date: 2019-03-17
 ---
 
+
 ## 二叉树定义
 
 **二叉树**（Binary Tree）是n（n >= 0）个结点所构成的集合，它或为空树（n=0）；或为非空树，对于非空树$T$：
@@ -515,8 +516,38 @@ public void postOrderNonRec(Node node) {
 }
 ```
 
-### 层次遍历
+#### 层次遍历
 
+所谓层次遍历就是按照二叉树中的层的概念一层一层地从左往右遍历，比如就拿我们最初给出的二叉树例子，首先访问1，接着访问第二层，输出2,3，接着访问第三层，输出4，5，6，7，最后输出8。我们仔细观察发现，它们是依次入队的，所以我们可以利用队列来实现层次遍历，比较简单，就不分析了，下面是代码：
+
+```Java
+/**
+ * 层次遍历
+ *
+ * @param node 根结点
+ */
+public void levelTraverse(Node node) throws InterruptedException {
+    if(node == null) {
+        return;
+    }
+
+    BlockingQueue<Node> queue = new LinkedBlockingQueue<>();
+    queue.add(node);
+
+    while (!queue.isEmpty()) {
+        Node item = queue.take();
+        System.out.println(item);
+
+        if (item.left != null) {
+            queue.add(item.left);
+        }
+
+        if (item.right != null) {
+            queue.add(item.right);
+        }
+    }
+}
+```
 
 
 ### 计算二叉树的深度
@@ -613,7 +644,7 @@ if (node.left == null && node.right == null) {
 
 **代码如下：**
 
-```
+```Java
 /**
  * 计算叶子结点的数量
  *
@@ -685,7 +716,7 @@ public int countKLevelNode(Node node, int k) {
 **递归公式：**
 
 ```
-isNodeInTree(root, node) = (root != node) -> (!isNodeInTree(root.left, node)) -> (isNodeInTree(root.right, node)) : 
+isNodeInTree(root, node) = (root != node) -> (!isNodeInTree(root.left, node)) -> (isNodeInTree(root.right, node))
 ```
 
 **终止条件有两个：**
@@ -732,9 +763,9 @@ public boolean isNodeInTree(Node root, Node node) {
 
 ## References：
 
+- 严蔚敏，《数据结构（C语言）第二版》
 - [二叉树基础（上）：什么样的二叉树适合用数组来存储？](https://time.geekbang.org/column/article/67856)
 - [二叉树的各种操作](https://subetter.com/algorithm/various-operations-of-the-binary-tree.html)
-- 严蔚敏，《数据结构（C语言）第二版》
 - [二叉树的后序遍历--非递归实现](https://www.cnblogs.com/rain-lei/p/3705680.html)
 - [二叉树前序、中序、后序遍历非递归写法的透彻解析](https://blog.csdn.net/zhangxiangdavaid/article/details/37115355)
 
