@@ -761,6 +761,55 @@ public boolean isNodeInTree(Node root, Node node) {
 }
 ```
 
+### 获取一个结点的父结点
+
+对于一个任意二叉树，如果结点中没有记录当前结点的父结点，我们就无非直接知道一个结点的父结点了，所以我们需要采取遍历的方式来查找：
+
+```Java
+/**
+ * 获取给定结点的父结点
+ *
+ * @param root 根结点
+ * @param curr 给定结点
+ * @return 给定结点的父结点
+ */
+public Node getParent(Node root, Node curr) {
+    if (root == null || curr == null) {
+        return null;
+    }
+
+    if (root == curr) {
+        return null;
+    }
+
+    Stack<Node> stack = new Stack<>();
+    stack.push(root);
+    root = root.left;
+
+    while (root != null || !stack.isEmpty()) {
+
+        while (root != null) {
+            if (root.left.item == curr.item || root.right.item == curr.item) {
+                return root;
+            }
+            stack.push(root);         // 入栈
+            root = root.left;         // 遍历左孩子
+        }
+
+        root = stack.pop();
+        root = root.right;
+    }
+
+    return null;
+}
+```
+
+### 求二叉树镜像
+
+### 求两个结点的最低公共祖先结点
+
+最低公共祖先，即LCA(Lowest Common Ancestor），
+
 ## References：
 
 - 严蔚敏，《数据结构（C语言）第二版》
