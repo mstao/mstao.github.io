@@ -6,7 +6,6 @@ categories: [数据结构, 二叉树]
 date: 2019-03-17
 ---
 
-
 ## 二叉树定义
 
 **二叉树**（Binary Tree）是n（n >= 0）个结点所构成的集合，它或为空树（n=0）；或为非空树，对于非空树$T$：
@@ -442,7 +441,7 @@ public void postOrderRec(Node node) {
 }
 ```
 
- 非递归实现是比上面前中非递归遍历要复杂一点，现在还是考虑后序遍历的原则：**对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。**
+** 非递归**实现是比上面前中非递归遍历要复杂一点，现在还是考虑后序遍历的原则：**对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。**
 
 对于任意结点，总是先遍历其左孩子，再遍历右孩子，最后再遍历父结点，仔细思考这个过程和前中遍历有什么不同呢？对于**前序遍历**，父结点首先被访问到；对于**中序遍历**，当访问完左孩子，就可以访问父结点了；对于**后序遍历**，访问完左孩子，要去访问右孩子，注意，此时这个右孩子如果还有左孩子，那么还要继续遍历下去。说到这里我们就知道问题了，最初左孩子的父结点啥时候访问呢？就是最初的右孩子的左右子树都访问完了，再访问这个右孩子，最后才会访问到这个父结点。
 
@@ -806,6 +805,94 @@ public Node getParent(Node root, Node curr) {
 
 ### 求二叉树镜像
 
+对于二叉树的任意结点，如果我们让它们的左右孩子交换，最终得出的新二叉树就是原二叉树的镜像。下面是个例子：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree-mirror.png?raw=true)
+
+这个比较简单，因为我们前面说过，对于任意结点，都可以看成父结点，所以我们用递归解决即可：
+
+**递归公式：**
+
+```
+mirror(node) = (node.left = node.right) -> (node.right = node.left) -> mirror(node.left) -> mirror(node.right)
+```
+
+**终止条件：**
+
+```
+if (node == null) return;
+```
+
+**递归代码：**
+
+
+```
+/**
+ * 二叉树的镜像 - 递归
+ *
+ * @param node 根结点
+ */
+public void mirrorRec(Node node) {
+    if (node == null) {
+        return;
+    }
+
+    // 交换左右子树
+    Node temp = node.left;
+    node.left = node.right;
+    node.right = temp;
+
+    // 对交换后的左右子树继续进行镜像处理
+    mirrorRec(node.left);
+    mirrorRec(node.right);
+}
+```
+
+对于非递归来求解，也是十分简单的，只要前面我们学会如何使用非递归遍历二叉树，这里直接拿到用就可以了，下面采用先序遍历来获取二叉树的镜像：
+
+
+```
+/**
+ * 二叉树的镜像 - 非递归，采用先序遍历
+ *
+ * @param node 根结点
+ */
+public void mirrorNonRec(Node node) {
+    if (node == null) {
+        return;
+    }
+
+    // 交换左右子树
+    swap(node);
+
+
+    Stack<Node> stack = new Stack<>();
+    stack.push(node);
+    node = node.left;
+
+    while (node != null || !stack.isEmpty()) {
+
+        while (node != null) {
+            // 交换左右子树
+            swap(node);
+
+            stack.push(node);         // 入栈
+            node = node.left;         // 遍历左孩子
+        }
+
+        node = stack.pop();
+        node = node.right;
+    }
+}
+
+private void swap(Node node) {
+    // 交换左右子树
+    Node temp = node.left;
+    node.left = node.right;
+    node.right = temp;
+}
+```
+
 ### 求两个结点的最低公共祖先结点
 
 最低公共祖先，即LCA(Lowest Common Ancestor），
@@ -817,6 +904,7 @@ public Node getParent(Node root, Node curr) {
 - [二叉树的各种操作](https://subetter.com/algorithm/various-operations-of-the-binary-tree.html)
 - [二叉树的后序遍历--非递归实现](https://www.cnblogs.com/rain-lei/p/3705680.html)
 - [二叉树前序、中序、后序遍历非递归写法的透彻解析](https://blog.csdn.net/zhangxiangdavaid/article/details/37115355)
+- [二叉树系列 - 求两节点的最低公共祖先](https://www.cnblogs.com/felixfang/p/3828915.html)
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/binary-tree.md)
