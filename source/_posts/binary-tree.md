@@ -848,7 +848,7 @@ public void mirrorRec(Node node) {
 }
 ```
 
-对于非递归来求解，也是十分简单的，只要前面我们学会如何使用非递归遍历二叉树，这里直接拿到用就可以了，下面采用先序遍历来获取二叉树的镜像：
+**对于非递归**来求解，也是十分简单的，只要前面我们学会如何使用非递归遍历二叉树，这里直接拿到用就可以了，下面采用先序遍历来获取二叉树的镜像：
 
 
 ```
@@ -895,7 +895,115 @@ private void swap(Node node) {
 
 ### 求两个结点的最低公共祖先结点
 
-最低公共祖先，即LCA(Lowest Common Ancestor），
+最低公共祖先，即LCA(Lowest Common Ancestor），依下面的图为例，4和8的LCA为2，4和7的LCA为1：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/BinaryTree-demo.png?raw=true)
+
+**常规二叉树**
+
+对于常见的二叉树来说，假设**二叉树的结点没有保存父结点的引用**，即给定一个结点不能直接直到它的父结点是谁，这时我们需要从根结点开始找起。对于任意二叉树，两个结点的最低公共祖先结点有以下特性：
+
+- 如果一个结点为根结点，它们的最低公共祖先为根结点；
+- 如果一个结点在（根结点来说）左树，另一个结点在右树，那么它的最低公共祖先一定是根节点；
+- 如果两个结点都在左树，在左树查找；
+- 如果两个结点都在右树，在右树查找。
+
+**递归公式：**
+
+```Java
+findLCA(root, node1, node2) = findLCA(root.left, node1, node2) == null => findLCA(root.right, node1, node2)
+```
+
+**终止条件：**
+
+```Java
+if (root == null) {
+    return null;
+}
+
+if (node1 == root || node2 == root) {
+    return root;
+}
+```
+
+**代码：**
+
+```Java
+/**
+ * 最低公共祖先，即LCA(Lowest Common Ancestor）,此种情况假设节点没有父结点的指针
+ *
+ *
+ * @param root 根结点
+ * @param node1 节点1
+ * @param node2 节点2
+ * @return 最低公共祖先
+ */
+public Node findLCA(Node root, Node node1, Node node2) {
+    if (root == null) {
+        return null;
+    }
+
+    // 判断两个节点有没有与根结点相等
+    if (node1 == root || node2 == root) {
+        return root;
+    }
+
+    Node temp1 = findLCA(root.left, node1, node2); // 左子树
+    Node temp2 = findLCA(root.right, node1, node2); // 右子树
+    if (temp1 != null && temp2 != null) { // 左右子树都不为空，那么它的最低公共祖先一定是根节点
+        return root;
+    }
+
+    return temp1 != null ? temp1 : temp2; // 判断在左子树还是右子树
+}
+```
+
+**二叉树的结点保存父结点的引用**
+
+现在假设二叉树的任何结点都保存有父结点的引用，此时我们就不必再从根结点开始进行查找了，我们可以通过当前结点来获取该结点的父结点，存入到链表中，一直遍历到根结点为止，对于另一个结点也是如此操作，这样就形成了两个链表，接下来我们只需寻找这两个链表第一个相同的元素即可，该值就是LCA。代码如下：
+
+```Java
+/**
+ * 最低公共祖先，即LCA(Lowest Common Ancestor）,此种情况假设节点拥有父结点的指针
+ *
+ *
+ * @param root 根结点
+ * @param node1 节点1
+ * @param node2 节点2
+ * @return 最低公共祖先
+ */
+public Node findLCA2(Node root, Node node1, Node node2) {
+    if (root == null) {
+        return null;
+    }
+
+    if (node1 == root || node2 == root) {
+        return root;
+    }
+
+    List<Node> queue1 = new LinkedList<>();
+    while (node1.parent != null) {
+        node1 = node1.parent;
+        queue1.add(node1);
+    }
+
+    List<Node> queue2 = new LinkedList<>();
+    while (node2.parent != null) {
+        node2 = node2.parent;
+        queue2.add(node2);
+    }
+
+    for (int i = 0; i < queue1.size(); i++) {
+        for (int j = 0; j < queue1.size(); j++) {
+            if (queue1.get(i) == queue2.get(j)) {
+                return queue1.get(i);
+            }
+        }
+    }
+
+    return null;
+}
+```
 
 ## References：
 
@@ -905,6 +1013,8 @@ private void swap(Node node) {
 - [二叉树的后序遍历--非递归实现](https://www.cnblogs.com/rain-lei/p/3705680.html)
 - [二叉树前序、中序、后序遍历非递归写法的透彻解析](https://blog.csdn.net/zhangxiangdavaid/article/details/37115355)
 - [二叉树系列 - 求两节点的最低公共祖先](https://www.cnblogs.com/felixfang/p/3828915.html)
+- [关于快慢指针的若干应用详解](http://www.cnblogs.com/hxsyl/p/4395794.html)
+
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/binary-tree.md)
