@@ -704,8 +704,117 @@ public int countKLevelNode(Node node, int k) {
 }
 ```
 
+对于**非递归算法**，我们可以采用层次遍历的方式来遍历二叉树，只不过有一个问题需要解决，就是如何标识每一层呢？就是在代码中，我们如何知道队列中的元素正好是某一层的结点呢？所以我们需要有一个计数器，来记录当前层结点的数目，对于层次遍历而言，由于层次遍历就是一层一层依次入队的，我们只要保证在计算层次之前，当前队列里的结点是该层的全部结点即可。代码如下：
+
+```Java
+/**
+ * 获取二叉树第k层结点的数量 - 非递归
+ *
+ * @param node 根结点
+ * @param k 第k层
+ * @return 结点的数量
+ */
+public int countKLevelNodeNonRec(Node node, int k) throws InterruptedException {
+    if(node == null) {
+        return 0;
+    }
+
+    int level = 0;    // 当前层计数器
+    int cntNode = 0;  // 当前层节点数计数器
+    int curLevelNodesTotal = 0; // 当前层节点总数
+
+    BlockingQueue<Node> queue = new LinkedBlockingQueue<>();
+    queue.add(node);
+
+    while (!queue.isEmpty()) {
+        ++level;
+        cntNode = 0; // 当前层节点数计数器归0
+        curLevelNodesTotal = queue.size();// 当前层的节点总数
+
+        if (level == k)// 如果层数已等于指定层数，则退出
+            break;
+
+        while (cntNode < curLevelNodesTotal) {
+
+            ++cntNode;// 记录当前层的节点数
+            node = queue.take();
+
+            // 将当前层节点的左右结点均入队，即将下一层节点入队
+            if(node.left != null)
+                queue.add(node.left);
+            if(node.right != null)
+                queue.add(node.right);
+        }
+    }
+
+    while(!queue.isEmpty())
+        queue.clear();//清空队列
+    if(level == k)
+        return curLevelNodesTotal;
+
+    return 0;
+}
+```
+
+
 ### 计算二叉树第k层叶子结点的数量
 
+上面为什么要用非递归算法来计算二叉树第k层结点的数量 呢？费了老大劲，主要是为计算二叉树第k层叶子结点的数量提供思路。正如前面所说，我们可以提供一个计算器来统计该层结点的数量，如果可以精确到具体层的具体结点，那么这个计算过程就没有难度了，在到达当前层时，只需要将该层遍历，将叶子结点筛选出来（所谓叶子结点就是没有左右子树的结点），统计下其数量即可，这个算法和非递归算法来计算二叉树第k层结点的数量算法只是增加了统计指定层叶子结点的过程，无须赘述。
+
+```Java
+/**
+ * 获取二叉树第k层叶子结点的个数
+ *
+ * @param node 根结点
+ * @param k 第k层
+ * @return 结点的数量
+ */
+public int countKLevelLeafNode(Node node, int k) throws InterruptedException {
+    if(node == null) {
+        return 0;
+    }
+
+    int level = 0;    //当前层计数器
+    int cntNode = 0;  //当前层节点数计数器
+    int curLevelNodesTotal = 0; //当前层节点总数
+
+    BlockingQueue<Node> queue = new LinkedBlockingQueue<>();
+    queue.add(node);
+
+    while (!queue.isEmpty()) {
+        ++level;
+        cntNode = 0; //当前层节点数计数器归0
+        curLevelNodesTotal = queue.size();//当前层的节点总数
+
+        // 如果层数等于指定层数，遍历该层的结点，判断叶子结点
+        if(level == k) {
+            int leafCount = 0;
+            while(!queue.isEmpty()) {
+                node = queue.take();
+                if (node.left == null && node.right == null) {
+                    ++leafCount;
+                }
+            }
+
+            return leafCount;
+        }
+
+        while (cntNode < curLevelNodesTotal) {
+
+            ++cntNode;//记录当前层的节点数
+            node = queue.take();
+
+            //将当前层节点的左右结点均入队，即将下一层节点入队
+            if(node.left != null)
+                queue.add(node.left);
+            if(node.right != null)
+                queue.add(node.right);
+        }
+    }
+
+    return 0;
+}
+```
 
 
 ### 判断一个结点是否在二叉树内
@@ -826,7 +935,7 @@ if (node == null) return;
 **递归代码：**
 
 
-```
+```Java
 /**
  * 二叉树的镜像 - 递归
  *
@@ -851,7 +960,7 @@ public void mirrorRec(Node node) {
 **对于非递归**来求解，也是十分简单的，只要前面我们学会如何使用非递归遍历二叉树，这里直接拿到用就可以了，下面采用先序遍历来获取二叉树的镜像：
 
 
-```
+```Java
 /**
  * 二叉树的镜像 - 非递归，采用先序遍历
  *
@@ -1014,7 +1123,7 @@ public Node findLCA2(Node root, Node node1, Node node2) {
 - [二叉树前序、中序、后序遍历非递归写法的透彻解析](https://blog.csdn.net/zhangxiangdavaid/article/details/37115355)
 - [二叉树系列 - 求两节点的最低公共祖先](https://www.cnblogs.com/felixfang/p/3828915.html)
 - [关于快慢指针的若干应用详解](http://www.cnblogs.com/hxsyl/p/4395794.html)
-
+- [二叉树的层次遍历+每一层单行输出](https://blog.csdn.net/friendbkf/article/details/50316209)
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/binary-tree.md)
