@@ -107,7 +107,7 @@ persons
     });
 ```
 
-在上述代码中，我们首先引入了stream，这个就没必要在说了，接着`collect(partitioningBy(Person::isState))`看着比较陌生，partitioningBy的作用是分区，所谓分区，就是根据传入的条件将集合一份分为二，key为true和true，所以上面的操作就是将集合中的元素根据state一份为二，我们只需对state为true的元素处理就可以了，接着我们遍历上面分区产生的map，只处理state为true的情况，然后再遍历其内部集合，将state全部设置为false，然后再将最后一个设置为true，最后将处理过后的数据放入到新集合中即可。
+在上述代码中，我们首先引入了stream，这个就没必要再说了，接着`collect(partitioningBy(Person::isState))`看着比较陌生，partitioningBy的作用是分区，所谓分区，就是根据传入的条件将集合一份分为二，key为true和false，所以上面的操作就是将集合中的元素根据state一份为二，我们只需对state为true的元素处理就可以了，接着我们遍历上面分区产生的map，只处理state为true的情况，然后再遍历其内部集合，将state全部设置为false，然后再将最后一个设置为true，最后将处理过后的数据放入到新集合中即可。
 
 
 上面的操作很简单，也很好想，毕竟遍历好多次list，效率其实是比较低的。试想一下，有么有一种比较简便的方法，只遍历list一次实现上述操作呢？答案是可以的，不过需要引入一个指针来指向上次state为true的元素，随着遍历的进行，依次将元素state为true的改为false，并且将指针指向上一个元素，直至遍历到最后一个state为true的元素，并将上一个记录的元素的state改为false即可，这样最多只遍历一次，符合我们的预期，代码如下：
