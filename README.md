@@ -1,4 +1,4 @@
-# 明月逐人归
+# 明月逐人归  [![Netlify Status](https://api.netlify.com/api/v1/badges/403bd302-ed50-4f86-90ee-d0217e738b29/deploy-status)](https://app.netlify.com/sites/mingshan/deploys)
 
 Personal website and blog. 
 
