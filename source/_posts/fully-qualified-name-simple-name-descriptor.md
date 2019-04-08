@@ -2,7 +2,7 @@
 title: 全限定名、简单名称和描述符是什么东西？
 author: Mingshan
 tags: JVM
-categories: JVM
+categories: [JVM, Bytecode]
 date: 2018-9-18
 ---
 
