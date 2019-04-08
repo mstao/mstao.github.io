@@ -2,7 +2,7 @@
 title: Java虚拟机的监控及诊断工具（GUI）
 date: 2018-11-22
 tags: JVM
-categories: JVM
+categories: [JVM, Tools]
 ---
 
 前面我们总结了[Java虚拟机的监控及诊断工具(命令行)](https://mingshan.fun/2018/10/21/monitoring-diagnostic-tools-for-jvm-cmd/)相关命令的使用，用命令行虽然说比较方便，但不够直观，要是有图形显示JVM运行的一些情况就好了。`eclipse MAT` 和 ` Java Mission Control` 是两个使用比较广泛的GUI虚拟机的监控及诊断工具，下面让我们来用用吧。
