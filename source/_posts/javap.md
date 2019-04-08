@@ -2,7 +2,7 @@
 title: javap - 查阅 Java 字节码
 author: Mingshan
 tags: JVM
-categories: JVM
+categories: [JVM, Bytecode]
 date: 2019-1-5
 ---
 
