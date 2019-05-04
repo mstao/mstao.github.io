@@ -129,8 +129,6 @@ public class Client {
 
 ```
 
-
-
 ### 对象适配器模式
 
 对象适配器是通过类的关联关系来进行的，是为了解决类适配器模式的问题而出现的，它比类适配器模式灵活，扩展性强，实际运用的比较多。
@@ -166,6 +164,57 @@ public class Adapter implements Target {
 
 ```
 
+### JDK中用到适配器的地方
+
+在阅读JDK并发相关的源码时，发现FutureTask 的构造函数既可以传Runnable，又可以传Callable，如下：
+
+```Java
+FutureTask(Runnable runnable, V result)
+FutureTask(Callable<V> callable) 
+```
+
+我们知道Callable 是带返回值的，并且是在JDK1.5引入的，而Runnable很早就有了，且无返回值，那么FutureTask是如何支持这两个接口的呢？
+
+其实在FutureTask的内部，实际运行的Callable，调用的也是Callable的call方法。所以我们就可以猜想到，应该是在内部将Runnable转为Callable了，事实就是如此，我们来看下构造器代码：
+
+```Java
+public FutureTask(Runnable runnable, V result) {
+    this.callable = Executors.callable(runnable, result);
+    this.state = NEW;       // ensure visibility of callable
+}
+```
+
+发现调用了`Executors.callable`来将Runnable转成了callable，代码如下
+
+```Java
+public static <T> Callable<T> callable(Runnable task, T result) {
+    if (task == null)
+        throw new NullPointerException();
+    return new RunnableAdapter<T>(task, result);
+}
+```
+
+上面代码所示，是返回了一个RunnableAdapter对象，该类源码如下：
+
+```Java
+/**
+ * A callable that runs given task and returns given result
+ */
+static final class RunnableAdapter<T> implements Callable<T> {
+    final Runnable task;
+    final T result;
+    RunnableAdapter(Runnable task, T result) {
+        this.task = task;
+        this.result = result;
+    }
+    public T call() {
+        task.run();
+        return result;
+    }
+}
+```
+
+RunnableAdapter其实是实现了Callable接口，在call方法内部其实是调用Runnable的run方法来调用的，返回传入的result。
 
 
 ### 代码参考
