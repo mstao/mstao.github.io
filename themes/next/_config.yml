@@ -381,7 +381,7 @@ valine:
   enable: true
   appid: GTNaw6V4PVq5Q9zMVf2jjnDq-gzGzoHsz
   appkey: 4JAz8SGjTq8opeLn7h6lVQvx
-  notify: false # mail notifier , https://github.com/xCss/Valine/wiki
+  notify: true # mail notifier , https://github.com/xCss/Valine/wiki
   verify: false # Verification code
   placeholder: (>﹏<) Just show your thinking~ # comment box placeholder
   avatar: monsterid # gravatar style
