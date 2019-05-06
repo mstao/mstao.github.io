@@ -19,7 +19,7 @@ date: 2018-12-05
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_new_site.png?raw=true)
 
 
-这里选择你自己github上的项目，然后进入到设置部署选项的页面，分支选择hexo源码的分支，命令为`hexo g`，让netlify帮我们自动编译和部署项目，部署目录输入`public/`，这是因为hexo 编译后输出的静态页面在这个目录，如下图所示：
+这里选择你自己github上的项目，然后进入到设置部署选项的页面，分支选择hexo源码(你自己hexo源码分支)的分支，命令为`hexo g`，让netlify帮我们自动编译和部署项目，部署目录输入`public/`，这是因为hexo 编译后输出的静态页面在这个目录，如下图所示：
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_deploy_setting.png?raw=true)
 
@@ -27,7 +27,7 @@ date: 2018-12-05
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_site_overview.png?raw=true)
 
-这时，我们选择站点设置按钮，进入到站点设置界面，在左边的栏目列表中选择`Domain & deploy` 此时界面如下：
+这时，我们选择站点设置按钮，进入到站点设置界面，在左边的栏目列表中选择`Domain management` 此时界面如下：
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_site_management.png?raw=true)
 
@@ -63,6 +63,8 @@ date: 2018-12-05
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/Netlify/Netlify_https_enable.png?raw=true)
 
 完美，撒花花(〃'▽'〃)
+
+详情部署步骤请参阅：https://www.netlify.com/docs/custom-domains/
 
 
 [<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/netlify-hexo.md)
