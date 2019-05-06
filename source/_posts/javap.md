@@ -384,7 +384,7 @@ LineNumberTable:
         line 22: 40
 ```
 
-异常表下面显示的**本地变量表**（LocalVariableTable），注意如果要显示局部变量表的信息，需要用`javac -g`编译java文件。上面我们分析了`this`关键字，在这里我们看到了该关键字的踪迹。start+length表示这个变量在字节码中的偏移位置（this生命周期从头0到结尾41），slot就是这个变量在局部变量表中的槽位（槽位可复用），name就是变量名称，Signatur为局部变量描述符。
+异常表下面显示的**本地变量表**（LocalVariableTable），注意如果要显示局部变量表的信息，需要用`javac -g`编译java文件。上面我们分析了`this`关键字，在这里我们看到了该关键字的踪迹。start+length表示这个变量在字节码中的偏移位置（this生命周期从头0到结尾41），slot就是这个变量在局部变量表中的槽位（槽位可复用），name就是变量名称，Signature为局部变量描述符。
 
 ```
 LocalVariableTable:
