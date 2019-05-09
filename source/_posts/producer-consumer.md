@@ -150,7 +150,7 @@ public class Buffer {
     // 读线程条件
     private final Condition notEmpty = lock.newCondition();
     // 写线程条件
-    private final Condition notNull = lock.newCondition();
+    private final Condition notFull = lock.newCondition();
 
     public Buffer() {
         this(10);
@@ -191,7 +191,7 @@ public class Buffer {
             queue.remove(queue.size() - 1);
             System.out.println("[Take] Current thread " + Thread.currentThread().getName()
                     + " remove 1 item, current count: " + queue.size());
-            notNull.signal();
+            notFull.signal();
         } finally {
             lock.unlock();
         }
@@ -200,11 +200,14 @@ public class Buffer {
 }
 ```
 
-上面代码中，首先List类型queue字段，来存储数据；size代表存储数据的最大数值；用ReentrantLock来代替sychronized，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为notNull，代表线程写数据条件。
+上面代码中，首先List类型queue字段，来存储数据；size代表存储数据的最大数值；用ReentrantLock来代替sychronized，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为
 
-在put方法中，首先会判断queue的数量有没有满，这里用while循环主要是防止过早或者意外的通知，只有符合条件才能够退出循环。如果满了，就调用 `notNull.await()`来挂起写线程，让写线程进入等待状态；当不满足while条件时，就可以向queue中写入数据，同时调用`notEmpty.signal()`来通知读线程可以读数据了。
 
-在take方法中，首先判断queue是否有数据，这里也用while循环，也是考虑到防止过早或者意外的通知，只有符合条件才能够退出循环。如果队列有数据，就可以从queue中拿数据了，同时调用`notNull.signal()`通知写线程可以写数据了。
+，代表线程写数据条件。
+
+在put方法中，首先会判断queue的数量有没有满，这里用while循环主要是防止过早或者意外的通知，只有符合条件才能够退出循环。如果满了，就调用 `notFull.await()`来挂起写线程，让写线程进入等待状态；当不满足while条件时，就可以向queue中写入数据，同时调用`notEmpty.signal()`来通知读线程可以读数据了。
+
+在take方法中，首先判断queue是否有数据，这里也用while循环，也是考虑到防止过早或者意外的通知，只有符合条件才能够退出循环。如果队列有数据，就可以从queue中拿数据了，同时调用`notFull.signal()`通知写线程可以写数据了。
 
 下面是生产者代码，将Buffer实例传入到Producer中，在run方法里调用Buffer的put方法：
 
