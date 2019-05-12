@@ -30,30 +30,31 @@ date: 2019-05-12
 # 代码实例   
 位运算符在日常开发中也是 有许多应用场景的，具体场景将在下边代码中展示：    
 
-**按位与 &**    
-```Java
- /**
-  *  & 按位与 同一得1
-  * 判断一个整数n是不是2的x次幂
-  * 若n&(n-1)=0 则说明n是2的x次幂
-  * 也可以这样说：循环结束后当ans=1时，说明n时2的x幂
-  * 按位与 & : 同一得一，可用于清零操作
-  * @param n 
-  * @return ans  表示n转化成二进制数之后，1的个数
-  */
- public static int test1(int n) {
-     int ans = 0;
-     while (n != 0) {
-         ans++;
-         n &= (n-1);
-         System.out.println(n);
-     }
-     return ans;
- }
+**按位与 &**
 
+```Java
+/**
+ *  & 按位与 同一得1
+ * 判断一个整数n是不是2的x次幂
+ * 若n&(n-1)=0 则说明n是2的x次幂
+ * 也可以这样说：循环结束后当ans=1时，说明n时2的x幂
+ * 按位与 & : 同一得一，可用于清零操作
+ * @param n 
+ * @return ans  表示n转化成二进制数之后，1的个数
+ */
+public static int test1(int n) {
+    int ans = 0;
+    while (n != 0) {
+        ans++;
+        n &= (n-1);
+        System.out.println(n);
+    }
+    return ans;
+}
 ```  
 
-**按位或 |**   
+**按位或 |**
+
 ```Java
 /**
  * | 按位或 有一得1
@@ -73,6 +74,7 @@ public static int  test2(int m ,int n) {
 ``` 
 
 **异或 ^** 
+
 ```Java
 /**
  * ^ 异或 相同得0
