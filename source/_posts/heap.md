@@ -211,18 +211,13 @@ private void heapDown(int n, int i) {
         int maxPos = i;
         int left = left(i);
         int right = right(i);
-        if (left <= n
-                && this.data[left].compareTo(this.data[maxPos]) > 0) {
+        if (left <= n && this.data[i].compareTo(this.data[left]) < 0)
             maxPos = left;
-        } else if (right <= n
-                && this.data[right].compareTo(this.data[maxPos]) > 0) {
+        if (right <= n && this.data[maxPos].compareTo(this.data[right]) < 0)
             maxPos = right;
-        }
-
-        if (maxPos == i) {
+        if (maxPos == i)
             break;
-        }
-        swap(maxPos, i);
+        swap(i, maxPos);
         i = maxPos;
     }
 }
@@ -236,3 +231,6 @@ private void heapDown(int n, int i) {
 - [二叉堆(三)之 Java的实现](http://www.cnblogs.com/skywang12345/p/3610390.html)
 - [堆、堆排序和优先队列的那些事](https://www.cnblogs.com/geyouneihan/p/9703629.html)
 - [堆和堆的应用：堆排序和优先队列](http://blog.jobbole.com/113552/)
+
+
+[<font size=3 color="#409EFF">向本文提出修改或勘误建议</font>](https://github.com/mstao/mstao.github.io/blob/hexo/source/_posts/heap.md)
