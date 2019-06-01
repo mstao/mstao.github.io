@@ -6,10 +6,9 @@ date: 2019-06-01
 top: true
 ---
 
+## <center>道别</center>
+
 <center>
-
-## 道别
-
 *佚名*
 
 我对蝉说：
@@ -20,11 +19,12 @@ top: true
 蝉对我说：
 
 他日重逢，要等来生
-
+</center>
 <!-- more -->
 
-## 光
+## <center>光</center>
 
+<center>
 *姜二嫚 | 六岁*
 
 晚上
@@ -34,6 +34,4 @@ top: true
 累了就拿它当拐杖
 
 我拄着一束光
-
-
 </center>
