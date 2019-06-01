@@ -200,10 +200,7 @@ public class Buffer {
 }
 ```
 
-上面代码中，首先List类型queue字段，来存储数据；size代表存储数据的最大数值；用ReentrantLock来代替sychronized，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为
-
-
-，代表线程写数据条件。
+上面代码中，首先List类型queue字段，来存储数据；size代表存储数据的最大数值；用ReentrantLock来代替sychronized，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为notFull，代表线程写数据条件。
 
 在put方法中，首先会判断queue的数量有没有满，这里用while循环主要是防止过早或者意外的通知，只有符合条件才能够退出循环。如果满了，就调用 `notFull.await()`来挂起写线程，让写线程进入等待状态；当不满足while条件时，就可以向queue中写入数据，同时调用`notEmpty.signal()`来通知读线程可以读数据了。
 

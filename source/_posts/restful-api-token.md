@@ -419,7 +419,7 @@ public class JWTUtil {
 ### 完整代码
 
 本博客的完整代码在这里，可以参考一下：
-https://github.com/mstao/LightBlog/tree/master/light-blog-web
+https://github.com/mstao/hnote/tree/master/hnote-bk
 
 ### 参考
 
