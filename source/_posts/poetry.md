@@ -8,9 +8,9 @@ top: true
 
 ## <center>道别</center>
 
-<center>
-*佚名*
+*<center>佚名</center>*
 
+<center>
 我对蝉说：
 
 他日再见，要等来年
@@ -24,9 +24,9 @@ top: true
 
 ## <center>光</center>
 
-<center>
-*姜二嫚 | 六岁*
+*<center>姜二嫚 | 六岁</center>*
 
+<center>
 晚上
 
 我打着手电筒散步
