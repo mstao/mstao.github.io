@@ -20,6 +20,7 @@ top: true
 
 他日重逢，要等来生
 </center>
+
 <!-- more -->
 
 ## <center>光</center>
