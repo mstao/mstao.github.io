@@ -3,7 +3,6 @@ title: 一些小诗
 author: Mingshan
 categories: 书籍
 date: 2019-06-01
-top: true
 ---
 
 ## <center>道别</center>
