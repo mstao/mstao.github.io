@@ -12,6 +12,13 @@ date: 2017-06-23 18:52:47
 
 博客背景来自 微博用户 [琳也咩咩](https://weibo.com/u/5348329819)的[图片](http://photo.weibo.com/5348329819/talbum/detail/photo_id/4373399665404669)，thx。
 
+我的联系方式：
+
+- WeChat: mingliangberry
+- QQ: 499445428
+- Github: https://github.com/mstao
+- Douban: https://book.douban.com/people/walkerhan/
+
 在每个寂静的夜晚，静静的思考，是一种很美妙的感觉，如果思而有所得，那么就更加有趣了(￣▽￣)／，比较喜欢的一首词：
 
 > 瑶草一何碧，春入武陵溪。溪上桃花无数，花上有黄鹂。我欲穿花寻路，直入白云深处，浩气展虹霓。只恐花深里，红露湿人衣。
