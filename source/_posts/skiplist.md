@@ -170,7 +170,12 @@ public T search(int searchKey) {
 
 ## 高效插入和索引动态更新
 
-插入操作比较复杂一点，因为要涉及到更新索引链表的问题，当我们用上面的查找算法查找当前待插入元素的合适位置时，
+插入操作比较复杂一点，因为要涉及到更新索引链表的问题。当我们用上面的查找算法查找当前待插入元素的合适位置时（记录在每一层搜索时前一个结点信息），先将其插入到原始链表中（最下层），然后调用随机函数生成随机level，接着逐层更新。算法插入过程如下图所示：
+
+![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/skiplist/Skip_list_add_element-en.gif?raw=true)
+
+
+代码如下：
 
 ```Java
 public void insert(int searchKey, T newValue) {
@@ -179,7 +184,7 @@ public void insert(int searchKey, T newValue) {
     Node<T> curNode = listHead;
 
     // record every level largest value which smaller than insert value in update[]
-    // 在update中纪录每一层中 小于value值的最大节点
+    // 在update中纪录每一层中小于searchKey值的最大节点
     for (int i = listLevel - 1; i >= 0; i--) {
         while (curNode.forward[i].key < searchKey) {
             curNode = curNode.forward[i];
@@ -220,6 +225,7 @@ public void insert(int searchKey, T newValue) {
 
 ## 删除
 
+删除操作和插入操作类型，也是先利用查找算法查找当前待插入元素的合适位置时（记录在每一层搜索时前一个结点信息），然后再逐层删除，只不过需要判断下最高层结点在删完还有没有，没有的话，level需要自减，代码如下：
 
 ```Java
 public void delete(int searchKey) {
@@ -236,6 +242,7 @@ public void delete(int searchKey) {
 
     curNode = curNode.forward[0];
 
+    // 逐层删除与普通链表删除一样
     if (curNode.key == searchKey) {
         for (int i = 0; i < listLevel; i++) {
             if (update[i].forward[i] != curNode) {
@@ -244,6 +251,7 @@ public void delete(int searchKey) {
             update[i].forward[i] = curNode.forward[i];
         }
 
+        // 如果删除的节点是最高层的节点，则level--
         while (listLevel > 0 && listHead.forward[listLevel - 1] == NIL) {
             listLevel--;
         }
