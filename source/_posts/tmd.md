@@ -1,5 +1,5 @@
 ---
-title: 他妈的
+title: 我读《兄弟》
 tags: [随笔]
 author: Mingshan
 categories: [随笔]
