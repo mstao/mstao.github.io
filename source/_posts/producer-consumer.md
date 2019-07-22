@@ -139,7 +139,7 @@ public class Consumer implements Runnable {
 
 了解了利用synchronized、wait、notify来实现生产者消费者模型，在JDK1.5之后，引入了Java并发包，其中提供了ReentrantLock、Condition来实现与synchronized、wait、notify类似的功能，只不过是基于AQS实现的。了解ReentrantLock、Condition对于了解多线程并发是十分有帮助的，可以让你更加细致地了解到多线程并发的内部实现方式和原理，更加深入可能会了解AQS的设计思想，各种同步器实现方式以及应用场景。当然，这些需要根据多线程的应用场景来分析就最好不过了。这里我们用ReentrantLock与Condition来模拟实现生产者消费者模型。
 
-和上面抽象的一样，我们首先来创建一个Buffer类，也提供了put和take方法，只不过我们这里不用synchronized了，改用ReentrantLock，同时调用lock的newCondition方法，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为notNull，代表线程写数据条件。具体使用方式如下代码所示：
+和上面抽象的一样，我们首先来创建一个Buffer类，也提供了put和take方法，只不过我们这里不用synchronized了，改用ReentrantLock，同时调用lock的newCondition方法，新建两个Condition，一个为 notEmpty， 代表线程读数据条件；一个为notFull，代表线程写数据条件。具体使用方式如下代码所示：
 
 ```Java
 public class Buffer {
