@@ -7,5 +7,6 @@ Personal website and blog.
 - [JUC](https://mingshan.fun/categories/java/juc/)
 - [JVM](https://mingshan.fun/categories/jvm/)
 - [Data Structure](https://mingshan.fun/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/)
+- [Reading](https://mingshan.fun/categories/%E4%B9%A6%E7%B1%8D/)
 
 Powered by Netlify ❤
