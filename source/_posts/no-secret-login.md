@@ -6,16 +6,16 @@ categories: [Linux]
 date: 2019-9-12
 ---
 
-# Linux免密Shell登录
-
 现在假设有两台机器 A 和 B，正常情况下在A机器中通过shell登录B机器，输入以下命令：
 
 ```
-ssh iwms@172.17.10.232
+ssh walker@xx.yy.zz.cc
 ```
 
 此时会提示输入密码。当我们通过脚本执行相关命令时，需要用到免密登录。
+
 <!-- more -->
+
 ## 步骤如下：
 
 ### 生成ssh key
@@ -79,7 +79,7 @@ chmod 600 .ssh/authorized_keys
 直接在A机器输入
 
 ```
-ssh iwms@172.17.10.232
+ssh walker@xx.yy.zz.cc
 ```
 
 此时没有密码提示，直接进入到B机器，说明没有问题
