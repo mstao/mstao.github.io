@@ -3,7 +3,7 @@ title: Linux免密Shell登录
 tags: [Linux]
 author: Mingshan
 categories: [Linux]
-date: 2019-9-12
+date: 2018-9-12
 ---
 
 现在假设有两台机器 A 和 B，正常情况下在A机器中通过shell登录B机器，输入以下命令：
