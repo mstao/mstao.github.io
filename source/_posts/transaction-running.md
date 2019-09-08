@@ -10,6 +10,151 @@ INFORMATION_SCHEMA提供对数据库元数据的访问、关于MySQL服务器的
 
 <!-- more -->
 
+## 事务基本要素（ACID）及并发问题
+
+### ACID
+
+[ACID](https://en.wikipedia.org/wiki/ACID)，是指数据库管理系统（DBMS）在写入或更新资料的过程中，为保证事务（transaction）是正确可靠的，所必须具备的四个特性：原子性（atomicity，或称不可分割性）、一致性（consistency）、隔离性（isolation，又称独立性）、持久性（durability）:
+
+- Atomicity（原子性）：一个事务（transaction）中的所有操作，或者全部完成，或者全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。即，事务不可分割、不可约简。
+- Consistency（一致性）：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设约束、触发器、级联回滚等。
+- Isolation（隔离性）：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括未提交读（Read uncommitted）、提交读（read committed）、可重复读（repeatable read）和串行化（Serializable）。
+- Durability（持久性）：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。
+
+
+事务是恢复和并发控制的基本单位，上面ACID被破坏的可能因素有：
+
+- 多个事务并行运行时，不同事务的操作交叉执行
+- 事务在运行过程中强行终止
+
+### 并发问题
+
+如果事务是串行执行的，即每个时刻都只有一个事务在运行，那么很明显事务之间没有交叉，没有抢夺共享资源，我们平时遇到的数据库并发问题将统统不存在，但在实际应用中，为了充分利用系统资源，多个事务并行执行是非常有必要的，但为了保证事务的隔离性和一致性，数据库肯定会有一些必要的牺牲来支撑并发调度，下面我们来了解下并发带来的问题。
+
+```
+ 事务串行执行                            事务并发执行
+
+     |                              T1      T2       T3
+     | T1                           T1  | ⟶   
+     |                                      T2 |
+     | T2                           T1  | ⟵ 
+     |                                    ⟶   ⟶    T3|
+     | T3
+     | 
+
+```
+
+#### 丢失修改/丢失更新(lose update)
+
+两个事务T1和T2读入统一数据并修改，T2的提交结果破坏了T1的提交结果，导致T1的修改被丢失。
+
+
+#### 不可重复读(non-repeatable read)
+
+不可重复度是指事务T1读取数据后，事务T2执行更新操作，使事务T1无法再现前一次读取结果。分三种情况：
+
+1. 事务T1读取某一数据后，事务T2对其进行了修改，当事务T1再次读取该数据时，得到的值与前一次不同；
+2. 事务T1按照某一条件读取某些数据后，事务T2删除了其中部分记录，当事务T1再次以相同条件读取数据时，发现某些记录神秘消失了；
+3. 事务T1按照某一条件读取某些数据后，事务T2在符合该条件下插入了部分记录，当事务T1再次以相同条件读取数据时，发现多了一些记录。
+
+第二条和第三条好像发生幻觉一样，数据莫名其妙多了或者少了，有时也被称为**幻影(phantom row)** 或者 **幻读**，其注重插入和删除操作，而第一种注重修改操作。所以对于第一种，对象是一条记录或者多条记录，解决此问题需要**锁行**(row locks)，其他的记录不用关心；而对于幻读，操作对象是整个表，所以需要锁表(table locks)。
+
+#### 脏读(dirty read)
+
+脏读是指事务T1读取了事务T2更新后的数据(已写入磁盘)，然后T2回滚操作，那么T1读取到的数据是脏数据。
+
+
+## 数据库封锁协议
+
+产生上面三种数据不一致的主要原因是破坏了事务的隔离性。如果我们学过数据库相关理论，那么可能对封锁这个概念有所了解。封锁是数据库实现并发控制的一个非常重要的技术。基本的封锁类型有两种：`排它锁（exclusive locks 简称X锁）` 和 `共享锁（share locks 简称S锁）`。
+
+`排它锁又称写锁`。若事务T对数据对象A加上X锁，则只允许T读取和修改A，其他任何事务都不能再对A加任何类型的锁，直到事务T释放A上的锁为止。
+
+`共享锁又称读锁`。如事务T对数据对象A加上S锁，则事务T可以读A但不能修改A，其他事务只能再对A家S锁，而不能再加X锁，直至T释放A上的S锁为止。
+
+排它锁和共享锁控制方式用如下表格显示(Y: 相容；N: 不相容)：
+
+
+\  | X | S | - 
+---|---|---|---
+X  | N | N | Y 
+S  | N | Y | Y
+-  | Y | Y | Y
+
+了解了排它锁和共享锁，那么何时申请X锁或S锁、持续时间、何时释放等。这些规则被称为封锁协议，下面介绍下是三种封锁协议。
+
+### 一级封锁协议
+
+一级封锁协议是指，事务T在修改数据R之前必须先对其加X锁，直到事务结束才释放。事务结束包括正常结束（COMMIT）和 非正常结束（ROLLBACK）。一级封锁协议可防止丢失修改，并保证事务是可恢复的，但对于仅仅是读数据是不需要加锁的，所以不能保证可重复读和不读脏数据。
+
+### 二级封锁协议
+
+二级封锁协议是指，在一级封锁协议基础上增加事务T在读取数据R之前必须先对其加上S锁，读完后即可释放S锁。它除防止了丢失修改，还可进一步防止读脏数据。由于读完即可释放S锁，所以不可保证重复读。
+
+### 三级封锁协议
+
+三级封锁协议是指，在一级封锁协议基础上增加事务T在读取数据R之前必须先对其加S锁，直到事务结束后才释放。它除防止了丢失修改和读脏数据，还可防止重复读。
+
+## 活锁和死锁
+
+上面的封锁协议有可能导致活锁或死锁问题。
+
+### 活锁
+
+如果事务T1封锁了事务R，事务T2又请求封锁R，于是T2等待；T3也要封锁数据R，T3也要等待；当事务T1释放了R上的封锁之后，首先批准了T3的请求，T2依然等待。。。就这样每次都把T2给忽略了，这样T2可能一直等待，这就是**活锁**的情形。
+
+如果我们有了解Java的可重复锁，对这种情形是比较熟悉的，可重复锁分两种模式，公平锁和不公平锁，不公平锁对应的是活锁的情形，但至于具体的数据库是如何处理的，那么就不能一概而论了。
+
+### 死锁
+
+如果事务T1封锁了R1，事务T2封锁了R2，然后T1又请求封锁T2，因为R2已经被T2封锁了，所以事务T1只能等待T2释放R2上的锁；接着事务T2又请求封锁R1，R1此时已经被T1封锁了，T2只能等待T1释放R1上的锁。**这就形成了T1在等待T2，而T2又在等待T1的局面，形成了死锁**。
+
+判断是否可能发生死锁，可以用等待图检测。事务等待图是一个有向图$G=(T, U)$，T为结点的集合，每个结点表示正在运行的事务；U为边的集合，每个边表示事务等待情况。如T1等待T2，那么在T1和T2之间画一条有向边，由T1指向T2，如下图所示：
+
+```
+graph LR;
+  T1-->T2
+```
+
+对于死锁情况来说，如果两个结点之间出现回路，那么系统就是出现了死锁，如下图所示：
+
+```
+graph LR;
+  T1-->T2
+  T2-->T1
+```
+
+对于多个事务的检测也是如此：
+
+```
+graph LR;
+  T1-->T2
+  T2-->T3
+  T3-->T2
+  T3-->T4
+  T4-->T1
+```
+
+
+## MySQL的InnoDB四种事务隔离级别
+
+上面的封锁协议是在数据库概论级别阐述的，但对于具体的数据库，实现封锁协议可能有所不同，现在以MySQL为例，了解MySQL的四种事务隔离级别。
+
+InnoDB引擎的四种事务隔离级别分别是`READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, and `SERIALIZABLE`。InnoDB引擎默认隔离级别是 `REPEATABLE READ `。
+
+### REPEATABLE READ
+
+
+### READ COMMITTED
+
+### READ UNCOMMITTED
+
+### SERIALIZABLE
+
+## InnoDB Locking
+
+。。
+
 ## INFORMATION_SCHEMA中与事务和锁相关的表
 
 INFORMATION_SCHEMA中与事务和锁相关的表有如下几个：
@@ -112,37 +257,6 @@ events_statements_current表包含当前语句的事件。表为每个线程存�
 
 threads表为每一个服务线程创建一条记录。每一行包含关于线程的信息，并指示是否为线程启用监视和历史事件日志记录。具体字段请参考：[The threads Table](https://dev.mysql.com/doc/refman/5.7/en/threads-table.html)
 
-
-## 数据库封锁协议
-
-如果我们学过数据库相关理论，那么可能对封锁这个概念有所了解。封锁是数据库实现并发控制的一个非常重要的技术。基本的封锁类型有两种：`排它锁（exclusive locks 简称X锁）` 和 `共享锁（share locks 简称S锁）`。
-
-`排它锁又称写锁`。若事务T对数据对象A加上X锁，则只允许T读取和修改A，其他任何事务都不能再对A加任何类型的锁，直到事务T释放A上的锁为止。
-
-`共享锁又称读锁`。如事务T对数据对象A加上S锁，则事务T可以读A但不能修改A，其他事务只能再对A家S锁，而不能再加X锁，直至T释放A上的S锁为止。
-
-排它锁和共享锁控制方式用如下表格显示(Y: 相容；N: 不相容)：
-
-
-\  | X | S | - 
----|---|---|---
-X  | N | N | Y 
-S  | N | Y | Y
--  | Y | Y | Y
-
-了解了排它锁和共享锁，那么何时申请X锁或S锁、持续时间、何时释放等。这些规则被称为封锁协议，下面介绍下是三种封锁协议。
-
-### 一级封锁协议
-
-一级封锁协议是指，事务T在修改数据R之前必须先对其加X锁，直到事务结束才释放。事务结束包括正常结束（COMMIT）和 非正常结束（ROLLBACK）。一级封锁协议可防止丢失修改，并保证事务是可恢复的，但对于仅仅是读数据是不需要加锁的，所以不能保证可重复读和不读脏数据。
-
-### 二级封锁协议
-
-二级封锁协议是指，在一级封锁协议基础上增加事务T在读取数据R之前必须先对其加上S锁，读完后即可释放S锁。它除防止了丢失修改，还可进一步防止读脏数据。由于读完即可释放S锁，所以不可保证重复读。
-
-### 三级封锁协议
-
-三级封锁协议是指，在一级封锁协议基础上增加事务T在读取数据R之前必须先对其加S锁，直到事务结束后才释放。它除防止了丢失修改和读脏数据，还可防止重复读。
 
 ## 定位事务一直处于RUNNING状态
 
@@ -267,3 +381,12 @@ cat /usr/software/mysql/data/mysql/db2.log | grep 4121
 - [The threads Table](https://dev.mysql.com/doc/refman/5.7/en/threads-table.html)
 - [The events_statements_current Table](https://dev.mysql.com/doc/refman/5.7/en/events-statements-current-table.html)
 - [MySQL开启general_log查看执行的SQL语句](https://majing.io/posts/10000005371184)
+- [SET TRANSACTION Syntax](https://dev.mysql.com/doc/refman/8.0/en/set-transaction.html)
+- [Transaction Isolation Levels](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html)
+- [MySQL的四种事务隔离级别](https://www.cnblogs.com/huanongying/p/7021555.html)
+- [READ-COMMITED 与 REPEATABLE-READ](https://segmentfault.com/a/1190000008677275)
+- [Getting “Lock wait timeout exceeded; try restarting transaction” even though I'm not using a transaction](https://stackoverflow.com/questions/5836623/getting-lock-wait-timeout-exceeded-try-restarting-transaction-even-though-im?r=SearchResults)
+- [How to debug Lock wait timeout exceeded on MySQL?](https://stackoverflow.com/questions/6000336/how-to-debug-lock-wait-timeout-exceeded-on-mysql?r=SearchResults)
+- [InnoDB and the ACID Model](https://dev.mysql.com/doc/refman/5.7/en/mysql-acid.html)
+- [ACID - 维基百科](https://en.wikipedia.org/wiki/ACID)
+- [InnoDB Locking](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html)
