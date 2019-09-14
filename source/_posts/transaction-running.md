@@ -144,16 +144,31 @@ InnoDB引擎的四种事务隔离级别分别是`READ UNCOMMITTED`, `READ COMMIT
 
 ### REPEATABLE READ
 
+这是InnoDB的默认隔离级别。在数据库系统对`REPEATABLE READ`的说明中，禁止脏读和不可重复读，但可能会出现幻读。InnoDB存储引擎与标准SQL有所不同，使用Next-Key 和 Gap-Key 锁的算法，避免幻读的产生。简单来说，可以分为以下几方面：
+
+1. 对于普通的(非锁定的)SELECT语句，不会加锁（S锁也不加），而是读取数据的快照（read the snapshot）
+2. 对于锁定读取(选择with For UPDATE或For SHARE)、UPDATE和DELETE语句，锁定取决于该语句是使用具有唯一搜索条件的惟一索引，还是使用范围类型搜索条件。
+    1. 对于具有唯一搜索条件的唯一索引，InnoDB只锁定找到的索引记录，而不锁定它之前的空白。
+    2. 对于其他搜索条件，InnoDB锁定扫描的索引范围，使用gap-lock锁或next-key锁来阻止其他会话插入到范围覆盖的间隙中
 
 ### READ COMMITTED
 
+在`READ COMMITTED`级别下，除了唯一性的约束检查(duplicate-key checking)和外键约束检查(foreign-key constraint checking)需要使用gap lock，InnoDB不会使用此算法。所以由于gap lock算法禁用，该级别下是会出现幻读的。
+
+只读提交隔离级别仅支持基于行的二进制日志记录。如果使用`read committed with binlog_format=mixed`，服务器将自动使用基于行的日志记录。
+
+
+1. 对于update或delete语句，innodb只对其更新或删除的行持有锁。在mysql评估where条件之后，将释放非匹配行的记录锁。这大大降低了死锁的可能性，但它们仍然可能发生。
+2. 对于update语句，如果一行已经被锁定，innodb执行“semi-consistent”读取，将最新提交的版本返回给mysql，这样mysql就可以确定该行是否与更新的where条件匹配。如果行匹配（必须更新），mysql会再次读取行，这次innodb要么锁定它，要么等待对它的锁定。
+
+
 ### READ UNCOMMITTED
+
+可以读取未提交记录。没有解决脏读问题，不建议使用。
 
 ### SERIALIZABLE
 
-## InnoDB Locking
-
-。。
+解决上面说的所有事务并发问题，但事务是串行执行的。
 
 ## INFORMATION_SCHEMA中与事务和锁相关的表
 
@@ -367,9 +382,7 @@ where THREAD_ID in (select THREAD_ID from performance_schema.threads where PROCE
 cat /usr/software/mysql/data/mysql/db2.log | grep 4121
 ```
 
-## 模拟（Using InnoDB Transaction and Locking Information）
-
-请参考：[Using InnoDB Transaction and Locking Information](https://dev.mysql.com/doc/refman/5.7/en/innodb-information-schema-examples.html)
+如果以上根据SQL分析不出来问题，我们需要从我们系统来进行定位，此时需要保存“案发现场”，数据库中处于RUNNING的事务先不要结束掉，然后根据上面定位的进程对应的项目来跟踪线程的执行情况，可以利用jconsole或者jmc来跟踪线程的执行活动，或者用jstack来跟踪。
 
 ## References：
 
@@ -390,3 +403,5 @@ cat /usr/software/mysql/data/mysql/db2.log | grep 4121
 - [InnoDB and the ACID Model](https://dev.mysql.com/doc/refman/5.7/en/mysql-acid.html)
 - [ACID - 维基百科](https://en.wikipedia.org/wiki/ACID)
 - [InnoDB Locking](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html)
+- [Mysql加锁过程详解（1）-基本知识](https://www.cnblogs.com/crazylqy/p/7611069.html)
+- [Isolation_(database_systems) - 维基百科](https://en.wikipedia.org/wiki/Isolation_(database_systems))
