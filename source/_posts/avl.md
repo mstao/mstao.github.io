@@ -22,21 +22,93 @@ date: 2019-08-20
 
 ## AVL树旋转
 
-如果一棵树不符合AVL的性质，我们该怎么办呢？这就需要动态地调整二叉树，称之为旋转，通过旋转最小失衡树来调整。主要有以下旋转方式：LL，RR，LR，RL。
+如果一棵树不符合AVL的性质，我们该怎么办呢？这就需要动态地调整二叉树，称之为旋转，通过旋转最小失衡树来调整。在新插入的结点向上查找，以第一个平衡因子的绝对值超过1的结点为根的子树称为最小不平衡子树。对于AVL树来说，失衡的情况可以分如下几种：LL，RR，LR，RL。
 
 ### LL
 
+对于任意节点，如果左子树的高度与右子树的高度差大于1，并且子树没有失衡的情况，这种被称为LL型，如下图所示：
+
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/avl/ll.png?raw=true)
+
+此时需要进行一次右旋操作：
+
+1. 以当前根结点(3)的左子树根结点(2)作为根结点；
+2. 将原来的根结点(3)作为现在根结点(2)的右子树根结点；
+3. 将原来左子树根结点(2)的右子树作为原来根结点的左子树
+
+上面转移的规则其实很好理解，由于左子树较高，所以需要向右侧转移，达到平衡效果，由于AVL树拥有二叉搜索树的特性，左子树的值比右子树的值小，所以当前根结点(3)必大于2的右子树根结点(这里为NIL)，所以3作为2的左子树根结点，那么2的右子树根结点就只能作为3的左子结点了。下面的都是这种规则，不再进行分析了。旋转代码如下：
+
+
+```Java
+/**
+ * 右旋，失衡情况对应LL
+ *
+ * @param node 当前子树根结点
+ * @return 旋转后的根结点
+ */
+public AVLNode<E> rotateRight(AVLNode<E> node) {
+    Objects.requireNonNull(node, "node must be not null");
+
+    // 暂存当前节点
+    AVLNode<E> originNode = node;
+    // 当前节点的左子节点
+    AVLNode<E> leftNode = node.left;
+    if (leftNode == null)
+        return node;
+    originNode.left = leftNode.right;
+    // 替换根结点
+    node = leftNode;
+    node.right = originNode;
+
+    return node;
+}
+```
+
 
 ### RR
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/avl/rr.png?raw=true)
+
+此时需要进行一次左旋操作：
+1. 以当前根节点(1)的右子树根结点(2)作为根结点；
+2. 将原来的根结点(1)作为现在根结点(2)的左子树根结点；
+3. 将原来右子树根结点(2)的左子树作为原来根结点的右子树
+
+
+```Java
+/**
+ * 左旋，失衡情况对应RR
+ *
+ * @param node 当前子树根结点
+ * @return 旋转后的根结点
+ */
+public AVLNode<E> rotateLeft(@NotNull AVLNode<E> node) {
+    Objects.requireNonNull(node, "node must be not null");
+
+    // 暂存当前节点
+    AVLNode<E> originNode = node;
+    // 当前节点的右子结点
+    AVLNode<E> rightNode = node.right;
+    if (rightNode == null)
+        return node;
+    // 以当前根节点的右子树根结点作为根结点
+    originNode.right = rightNode.left;
+    // 替换根结点
+    node = rightNode;
+    node.left = originNode;
+
+    return node;
+}
+```
+
 
 ### LR
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/avl/lr-1.png?raw=true)
 
 ![image](https://github.com/ZZULI-TECH/interview/blob/master/images/data-structure/avl/lr-2.png?raw=true)
+
+LL 和 RR在进行一次旋转操作之后，就达到了平衡，
 
 ### RL
 
