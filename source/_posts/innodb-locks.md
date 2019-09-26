@@ -1,5 +1,5 @@
 ---
-title: Optional使用姿势
+title: InnoDB Locking
 tags: [Database, InnoDB]
 author: Mingshan
 categories: [Database, InnoDB]
