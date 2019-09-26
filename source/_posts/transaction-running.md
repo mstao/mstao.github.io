@@ -1,7 +1,7 @@
 ---
 title: 定位INFORMATION_SCHEMA INNODB_TRX事务长时间处于RUNNING状态
-categories: Database
-tags: [Database]
+categories: [Database, InnoDB]
+tags: [Database, InnoDB]
 author: Mingshan
 date: 2019-9-1
 ---
