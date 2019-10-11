@@ -44,6 +44,11 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         {% include '_partials/footer.swig' %}
+        <div align="center">
+          <a href="https://www.netlify.com" target="_blank">
+            <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg" width="82px" alt="netlify logo">
+          </a>
+        </div>
         {% include '_third-party/analytics/analytics-with-widget.swig' %}
         {% block footer %}{% endblock %}
       </div>
