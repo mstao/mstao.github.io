@@ -52,8 +52,8 @@
 #}</div>
 {% endif %}
 
-<div style="padding: 0px 24px 24px; text-align: center;">
-  <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg" width="82px" alt="netlify logo">
-  </a>
+<div align="center">
+   <a href="https://www.netlify.com" target="_blank">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"/>
+   </a>
 </div>
