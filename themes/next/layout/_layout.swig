@@ -47,7 +47,7 @@
         {% include '_third-party/analytics/analytics-with-widget.swig' %}
         {% block footer %}{% endblock %}
       </div>
-      <div align="center">
+      <div align="center" style="margin-top: -10px; margin-bottom: 10px;">
         <a href="https://www.netlify.com" target="_blank">
           <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg" width="82px" alt="netlify logo">
         </a>
