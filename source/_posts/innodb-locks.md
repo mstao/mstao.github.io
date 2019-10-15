@@ -55,8 +55,8 @@ InnoDB支持多粒度锁定(multiple granularity locking)，允许行锁和表�
 
 表级锁（**Table-level lock**）的类型兼容性总结如下（Compatible可共存，Conflict不可共存）：
 
-| \ | X	 | IX | S |	IS
----|---|---|---|---
+\  |  X	| IX | S | IS
+---| ---| ---|---|---
 X  |	Conflict  |	Conflict   | 	Conflict   |	Conflict
 IX |	Conflict  |	Compatible |	Conflict   |	Compatible
 S  |	Conflict  |	Conflict   |	Compatible |	Compatible
