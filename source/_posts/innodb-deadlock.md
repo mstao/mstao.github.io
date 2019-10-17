@@ -18,6 +18,52 @@ date: 2019-10-12
 
 简单概括，死锁是两个或两个以上的事务在执行过程中，因争夺资源而造成的一种互相等待的现象。
 
+**查看MySQL错误日志位置：**
+
+```
+show variables like 'log_error';
+```
+
+**在Windows下**，会显示相对路径：
+
+```
+mysql> show variables like 'log_error';
++---------------+--------------------+
+| Variable_name | Value              |
++---------------+--------------------+
+| log_error     | .\HANJUNTAO-PC.err |
++---------------+--------------------+
+```
+
+我们发现是相对路径，这个是相对哪个路径呢？我们找到MySQL的服务，查看属性，如下图所示：
+
+![image](https://github.com/mstao/db-readings/blob/master/img/mysql_errorlog_win.png?raw=true)
+
+找到**可执行文件的路径：**
+
+```
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --defaults-file="C:\ProgramData\MySQL\MySQL Server 8.0\my.ini" MySQL80
+```
+
+其中有`--defaults-file`参数，错误日志就在路径`C:\ProgramData\MySQL\MySQL Server 8.0\Data`下，仔细查看下就可以找到。
+
+**在Linux下**，直接查就好了，如下所示：
+
+```
+mysql> show variables like 'log_error';
++---------------+---------------------------------------------+
+| Variable_name | Value                                       |
++---------------+---------------------------------------------+
+| log_error     | /usr/software/mysql/data/mysql/rds.iwms.err |
++---------------+---------------------------------------------+
+```
+
+**开启死锁日志记录，将死锁日志记录到错误日志里面：**
+
+```
+set global innodb_print_all_deadlocks = 1;
+```
+
 ## 模拟死锁
 
 首先创建一个表，初始化一条数据：
