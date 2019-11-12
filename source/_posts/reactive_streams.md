@@ -16,6 +16,13 @@ date: 2019-11-10
 
 由于Reactive Streams这个概念不好定义，维基百科说的太空洞了，大家又都想用，想自己实现一套，所以一些大佬专门为在JVM上实现Reactive Streams定义一套规范，名字就叫[Reactive Streams Specification for the JVM](https://github.com/reactive-streams/reactive-streams-jvm)，放在了github，README就是规范的主体。这个规范的核心是：`asynchronous stream processing with non-blocking backpressure`。我们仔细看这个规范，其实定义了一套接口，没有参考实现。光有接口不行，为了保证其他人实现的Reactive Streams能够正确地跑起来，还提供了一个兼容性测试套件（TCK），来做技术兼容测试。
 
+总之，Reactive Streams实现库应该具有以下特点：
+
+- process a potentially unbounded number of elements // 可以处理任意数量元素
+- in sequence, // 有一定顺序
+- asynchronously passing elements between components, // 组件之间异步传递元素
+- with mandatory non-blocking backpressure. // 非阻塞背压
+
 ## Reactive Streams接口
 
 上面提到Reactive Streams规范定义了一套接口，具体如下：
@@ -88,6 +95,99 @@ Subscription在发布订阅过程中充当什么作用呢？当发布者与订�
 public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {
 }
 ```
+
+**Backpressure**
+
+上面提到Reactive Streams实现库需要有非阻塞背压（Backpressure）功能，这是个什么东西呢？由于Reactive streams 采用的是生产者/消费者模式，如果生产者产生的数据量太大，消费者没有能力去及时消费，会出现什么情况呢？大量的数据没被处理，而生产者感知不到，系统就崩了。所以在Reactive streams规范中，消费者通过`Subscription.request(long n)`来告诉生产者，一次可以消费多少数据。这种订阅者能够向上游反馈流量需求的机制被称为背压（Backpressure）。后面分析具体实现的时候再仔细分析。
+
+## Flow相关实现
+
+上面Reactive Streams规范只是定义了接口，对于开发者来说，有没有生产级别的实现呢？在JDK9中引入了Flow这个类，里面copy了上面Reactive Streams规范的四个接口，放在[java.util.concurrent.Flow](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Flow.html)这个类里面，同时提供了一个SubmissionPublisher发布者参考实现。下面我们体验下SubmissionPublisher。
+
+首先我们新建一个订阅者，实现Flow.Subscriber接口，代码如下：
+
+
+```Java
+public class MySubscriber implements Flow.Subscriber<Employee> {
+  private Flow.Subscription subscription;
+
+  private int counter = 0;
+
+  @Override
+  public void onSubscribe(Flow.Subscription subscription) {
+    System.out.println("Subscribed");
+    this.subscription = subscription;
+    subscription.request(1);
+    System.out.println("onSubscribe requested 1 item");
+  }
+
+  @Override
+  public void onNext(Employee item) {
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    System.out.println("Processing Employee "+item);
+    counter++;
+    this.subscription.request(1);
+  }
+
+  @Override
+  public void onError(Throwable e) {
+    System.out.println("Some error happened");
+    e.printStackTrace();
+  }
+
+  @Override
+  public void onComplete() {
+    System.out.println("All Processing Done");
+  }
+
+  public int getCounter() {
+    return counter;
+  }
+
+}
+```
+
+在`MySubscriber`中，实现了接口的四个方法，在`onSubscribe`方法里面，我们调用`subscription.request(1)`来向上游请求一个数据。在`onNext`方法里面，我们写具体的处理逻辑，数据处理完，依然调用`subscription.request(1)`来向上游请求一个数据，上游就会源源不断地发送数据。
+
+接下来我们下一个单元测试，利用SubmissionPublisher来实现，如下：
+
+```Java
+  /**
+   * 发布订阅模式
+   *
+   * @throws InterruptedException
+   */
+  @Test
+  public void PsTest() throws InterruptedException {
+    SubmissionPublisher<Employee> publisher = new SubmissionPublisher<>();
+    MySubscriber subscriber = new MySubscriber();
+    MySubscriber subscriber2 = new MySubscriber();
+    publisher.subscribe(subscriber);
+    publisher.subscribe(subscriber2);
+    List<Employee> emps = generateEmps();
+    // Publish items
+    System.out.println("Publishing Items to Subscriber");
+    emps.forEach(publisher::submit);
+
+    // logic to wait till processing of all messages are over
+    while (emps.size() != subscriber.getCounter()) {
+      Thread.sleep(10);
+    }
+    // close the Publisher
+    publisher.close();
+
+    System.out.println("Exited");
+  }
+```
+
+上面代码中，我们创建了SubmissionPublisher实例，并且创建了两个订阅者。调用
+SubmissionPublisher的subscribe方法让发布者与订阅者关联，在其内部是维护了节点为BufferedSubscription的链表，接着调用SubmissionPublisher的submit方法来发送数据，当订阅者处理完数据后，就可以调用close 方法关闭发布者了。
+
+上面使用体验相对于Reactor框架来说，没有Reactor框架方便，因为Reactor框架比较完整实现了Reactive Streams，而且是流式编程方式，使用SubmissionPublisher相对来说不是那么方便，这个也是OPENJDK为Reactive Streams提供的参考实现吧，真正的生产环境使用Reactor比较稳。
 
 ## References：
 
