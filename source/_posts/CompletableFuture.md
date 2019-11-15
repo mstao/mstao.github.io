@@ -40,15 +40,15 @@ doFun(() -> task1)
 
 函数式接口	  |   函数描述符  |  功能
 ---|---|---
-Predicate<T>     |	  (T)  -> boolean    | `boolean test( T)` 接收一个参数，返回布尔值
-Consumer<T>	     |    (T)  -> void       | `void accept(T)` 接收一个参数，无返回值
-Function< T, R > |	  (T)  -> R          |  `R apply(T)` 接收一个参数，返回指定类型的数据
-Supplier<T>	     |    ( )  -> T          | `T get()` 不接收参数，返回指定类型的数据
-UnaryOperator<T>  |	  (T)  ->  T         | Function子接口：`T apply(T)` 接受一个参数为类型T,返回值类型也为T
-BinaryOperator<T> |  (T, T) -> T         | BiFunction子接口：`T apply(T t, T u)` 接受两个输入参数的，返回一个结果
-BiPredicate<L, R> |	  (L, R)  -> boolean | `boolean test(T t, U u)` 接收两个参数，返回布尔值 
-BiConsumer<T, U>  |	  (T, U)  -> void    | `void accept(T t, U u)` 接收两个参数，无返回值
-BiFunction<T, U, R> |	  (T, U)  -> R   | `R apply(T t, U u)` 接受两个输入参数的，返回一个结果
+==Predicate<T>==     |	  (T)  -> boolean    | `boolean test( T)` 接收一个参数，返回布尔值
+==Consumer<T>==	     |    (T)  -> void       | `void accept(T)` 接收一个参数，无返回值
+==Function<T, R>== |	  (T)  -> R          |  `R apply(T)` 接收一个参数，返回指定类型的数据
+==Supplier<T>==	     |    ( )  -> T          | `T get()` 不接收参数，返回指定类型的数据
+==UnaryOperator<T>==  |	  (T)  ->  T         | Function子接口：`T apply(T)` 接受一个参数为类型T,返回值类型也为T
+==BinaryOperator<T>== |  (T, T) -> T         | BiFunction子接口：`T apply(T t, T u)` 接受两个输入参数的，返回一个结果
+==BiPredicate<L, R>== |	  (L, R)  -> boolean | `boolean test(T t, U u)` 接收两个参数，返回布尔值 
+==BiConsumer<T, U>==  |	  (T, U)  -> void    | `void accept(T t, U u)` 接收两个参数，无返回值
+==BiFunction<T, U, R>== |	  (T, U)  -> R   | `R apply(T t, U u)`
 
 ## CompletionStage接口
 
