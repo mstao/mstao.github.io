@@ -230,8 +230,153 @@ CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
 
 首先我们异步拼接字符串 `Hello World`，然后我们想将另一个独立的异步任务计算结果与刚才的异步任务结果整合一下，这一点和`thenCompose`是不一样，`thenCompose`是拿到上一阶段的计算结果，`thenCombine`直接传入一个异步任务，第二个参数是BiFunction，函数描述符为`(T, U) -> R`，即将两个异步任务的结果整合。
 
-### duoge 
-上述`thenCompose \ thenCombine`是针对两个异步任务情况而言的，试想下有没有这样的场景，先获取用户的信息，然后同时获取与用户相关联的数据，比如权限，喜好列表等，彼此独立，可以并发获取。这样的该怎么写呢？
+### 整合多个任务结果
+
+上述`thenCompose \ thenCombine`是针对两个异步任务情况而言的，试想下有没有这样的场景，并发地执行若干个任务，当所有任务完执行之后，整合其计算结果；执行若干个任务，只返回执行最快的，其他未执行完的，全部终止。这两种场景我们平时开发遇到的比较多，CompletableFuture也为我们提供了`allOf / anyOf`来实现上述功能，我们可以来试下，下面是两者的函数声明：
+
+```Java
+CompletableFuture<Void> allOf(CompletableFuture<?>... cfs)
+CompletableFuture<Object> anyOf(CompletableFuture<?>... cfs)
+```
+
+**allOf**
+
+官方对该方法的介绍如下：
+> Returns a new CompletableFuture that is completed when all of the given CompletableFutures complete.
+
+从描述看出，当给定的所有CompletableFuture正常完成，当前阶段的计算任务就完成了。但看这个方法的返回值为`CompletableFuture<Void>`，居然什么都没有，那么该如何整合所有的计算结果呢？
+
+现在我们有很多网页的URL，现在希望并发地将所有的URL对应页面全部通过爬虫下载下来，这个时候我们就可以用`allOf`来实现了，`downloadWebPage`是将给定的URL页面下载下来，代码如下：
+
+```Java
+private CompletableFuture<String> downloadWebPage(String webPageLink) {
+  return CompletableFuture.supplyAsync(() -> {
+    Random random = new Random();
+    int i = random.nextInt(10) + 1;
+    System.out.println(webPageLink + " - " + i);
+    try {
+      Thread.sleep(i * 1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    System.out.println(webPageLink + " - done." );
+    return webPageLink + " - http://www.baidu.com";
+  });
+}
+```
+
+由于不同的页面下载时间不一致，这里我们随机数来让线程进行等待。接着我们就要利用`allOf`来进行并发下载了，为了能更清晰地了解处理流程，加了些输出信息，代码如下：
+
+```Java
+long startTime = System.currentTimeMillis();
+List<String> webPageLinks = Arrays.asList("1", "2", "3", "4", "5");
+
+// ①
+List<CompletableFuture<String>> futures = webPageLinks.stream()
+  .map(this::downloadWebPage).collect(Collectors.toList());
+
+System.out.println("下载中1");
+
+// ②
+// 注意这里返回泛型的是空
+CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
+
+System.out.println("下载中2");
+
+// ③
+CompletableFuture<List<String>> allFuture = allOf.thenApply(v -> {
+  return futures.stream()
+    .map(CompletableFuture::join)
+    .collect(Collectors.toList());
+});
+
+System.out.println("下载中3");
+
+// ④
+List<String> strings = allFuture.join();
+
+long endTime = System.currentTimeMillis();
+System.out.println("总耗时长：" + (endTime - startTime) / 1000);
+
+strings.forEach(System.out::println);
+```
+
+上面代码主要分四步：
+
+- ①：将URL列表转化为CompletableFuture列表，注意此时并没有执行下载操作；
+- ②：将CompletableFuture列表转为数组，然后交给`CompletableFuture.allOf`执行；
+- ③：由于第二步得到的是空的CompletableFuture，无法直接拿到这么多计算任务的结果，所以我们只能自己去拿，通过调用CompletableFuture的join方法，拿到所有的计算结果，注意这一步不会组塞，因为allOf会确保所有的计算任务完成；
+- ④：等待所有的任务执行完，并返回整合的结果。
+
+为了印证上面的步骤无误，打印结果如下：
+
+```
+下载中1
+下载中2
+下载中3
+3 - 8
+1 - 2
+2 - 9
+1 - done.
+4 - 3
+4 - done.
+5 - 1
+5 - done.
+3 - done.
+2 - done.
+总耗时长：9
+1 - http://www.baidu.com
+2 - http://www.baidu.com
+3 - http://www.baidu.com
+4 - http://www.baidu.com
+5 - http://www.baidu.com
+```
+
+从上面的打印结果来看，我们可以总结如下几点：
+
+1. 整个计算任务的耗时与任务列表中所耗最大时常有关，比如总耗时为9，其中第二个任务耗时为9，也是任务列表中耗时最大的；
+2. 整个计算任务为异步计算，当程序运行到第四步时，当前主线程会等待所有计算任务执行完成；
+3. allOf可以继续执行下一阶段计算任务，拿到allOf计算结果，而且不会阻塞这个地方。
+
+**anyOf**
+
+下面是`anyOf`的官方介绍：
+
+> Returns a new CompletableFuture that is completed when any of the given CompletableFutures complete, with the same result. 
+
+就是只要给定的计算任务只要有一个完成了，整个计算任务就会完成，并且返回那个完成任务的计算结果。下面还是用上面的例子，只不过这次改用`anyOf`，代码如下：
+
+
+```Java
+long startTime = System.currentTimeMillis();
+List<String> webPageLinks = Arrays.asList("1", "2", "3", "4", "5");
+
+List<CompletableFuture<String>> futures = webPageLinks.stream()
+  .map(this::downloadWebPage).collect(Collectors.toList());
+
+// 注意这里返回结果
+CompletableFuture<Object> anyOf = CompletableFuture.anyOf(futures.toArray(new CompletableFuture[futures.size()]));
+
+Object result = anyOf.join();
+
+System.out.println(result);
+long endTime = System.currentTimeMillis();
+System.out.println("总耗时长：" + (endTime - startTime) / 1000);
+```
+
+由于有返回值，我们直接用join来获取计算结果，下面是打印结果：
+
+```
+1 - 1
+2 - 10
+3 - 8
+1 - done.
+1 - http://www.baidu.com
+4 - 9
+总耗时长：1
+```
+
+从打印结果来看，第一个计算任务耗时为1秒，然后直接返回任务1的执行结果，其他的任务全部取消。
 
 ## CompletableFuture源码分析
 
