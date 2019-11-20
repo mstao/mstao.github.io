@@ -95,7 +95,143 @@ public <U> CompletionStage<U> thenApplyAsync
 
 ## CompletableFuture使用
 
-上面了解了
+上面从不同维度了解了CompletionStage接口的设计，从宏观角度简单理解异步编程遇到的问题以及解决方案。下面我们来看看JDK为CompletionStage接口提供的实现类CompletableFuture，该类是JDK8提供的。
+
+### 直接执行异步计算
+
+CompletableFuture提供最基本的功能就是直接执行一个任务，且没有返回值，使用方式如下：
+
+```Java
+CompletableFuture<Void> CompletableFuture.runAsync(Runnable runnable)
+```
+
+下面是一个例子，在`runAsync`方法里面可以写自己的异步逻辑，返回一个CompletableFuture，暗示我们可以进行执行异步任务
+
+```Java
+CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+  try {
+    TimeUnit.SECONDS.sleep(1);
+  } catch (InterruptedException e) {
+    e.printStackTrace();
+  }
+  System.out.println(Thread.currentThread().getName());
+});
+```
+
+如果想让异步任务**有返回值**，这个时候就用到了产出型函数接口**Supplier**，如下所示：
+
+```Java
+CompletableFuture<U> CompletableFuture.supplyAsync(Supplier<U> supplier)
+```
+
+下面是一个例子，执行一个异步任务，返回一个执行结果，我们可以通过`get()`方法直接拿到计算结果，当然也可以进行下一阶段的计算
+
+```Java
+CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+  return Thread.currentThread().getName();
+});
+
+System.out.println(future.get());
+```
+
+### 处理上一阶段计算结果
+
+当我们使用`supplyAsync`计算出结果，想传递给下一阶段的计算任务，该使用哪个方法呢？结合前面对CompletionStage接口的分析，从宏观角度来看，主要有**消费不产出**和**消费并产出**这两种类型，所以CompletableFuture提供了`thenApply / thenApplyAsync`来处理消费并产出型，用`thenAccept / thenAcceptAsync`来处理消费不产出型。下面是使用方式：
+
+```Java
+CompletableFuture<U> thenApply(Function<? super T,? extends U> fn)
+CompletableFuture<Void> thenAccept(Consumer<? super T> action)
+```
+
+对于**消费并产出型**，我们可以在当前阶段获取上一阶段的计算结果，然后将当前阶段的计算结果传递给下一阶段，这样可以一直传递下去，如下代码所示：
+
+```Java
+CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+  return Thread.currentThread().getName();
+}).thenApplyAsync(item -> {
+  return item + "-111111-" + Thread.currentThread().getName();
+}).thenApplyAsync(item -> {
+  return item + "-222222-" + Thread.currentThread().getName();
+});
+
+System.out.println(future.get());
+```
+
+对于**消费不产出型**，我们可以在当前阶段获取上一阶段的计算结果，内部处理完后不会再向下一阶段传递值，如下所示:
+
+
+```Java
+CompletableFuture.supplyAsync(() -> {
+  return Thread.currentThread().getName();
+}).thenAccept(System.out::println);
+```
+
+### 整合两个计算结果
+
+熟悉了上面几个方法，我们已经可以用链式编程来写代码了，但上面的方法参数都是函数式接口，如有我现在有两个方法，方法的返回值是`CompletableFuture<T>`，怎么讲两者的计算结果整合起来呢？CompletableFuture为我们提供了两个方法：`thenCompose \ thenCombine`，下面是这两个接口的使用方式：
+
+```Java
+CompletableFuture<U> thenCompose(Function<? super T, ? extends CompletionStage<U>> fn)
+CompletableFuture<V> thenCombine(CompletionStage<? extends U> other,
+        BiFunction<? super T,? super U,? extends V> fn)
+```
+
+**thenCompose**
+
+考虑如下场景，我们有一个方法，根据用户id获取用户信息，还有一个方法，根据用户id拿到该用户的权限，最终将该权限信息填充到User实体，返回User。下面是这两个函数的简单实现：
+
+```Java
+private CompletableFuture<User> getUser(String userId) {
+  return CompletableFuture.supplyAsync(() -> {
+    // DO ANYTHING
+    return new User();
+  });
+}
+
+private CompletableFuture<User> fillRes(User user) {
+  return CompletableFuture.supplyAsync(() -> {
+    // 获取权限信息，填充到用户信息里面
+    return user;
+  });
+}
+```
+
+注意上述两者都返回`CompletableFuture<User>`，我们依稀记得`thenApply`属于消费并产出型。下面用thenApply将两者连接起来，如下：
+
+```Java
+CompletableFuture<CompletableFuture<User>> future = getUser(userId).thenApply(this::fillRes);
+```
+看起来有些不太妙，返回的结果出现了复合的CompletableFuture，这是因为`thenApply`的产出是一个`CompletableFuture<User>`，所以就出现了复合的情况。针对以上场景，JDK为我们提供了`thenCompose`，下面用`thenCompose`改写下：
+
+```Java
+// 利用 thenCompose() 组合两个独立的CompletableFuture
+CompletableFuture<User> result = getUser(userId)
+  .thenCompose(user -> fillRes(user));
+```
+
+真是妙啊，真是我们想要的效果。由此可见，`thenCompose`的作用是组合两个独立的CompletableFuture。
+
+**thenCombine**
+
+上面提到还有一个`thenCombine`，也是组合计算结果的，下面是一个例子：
+
+```Java
+CompletableFuture<String> walker = CompletableFuture.supplyAsync(() -> {
+  return ", Walker";
+});
+
+CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+  return "Hello";
+}).thenApply(s -> s + " World")
+  .thenCombine(walker, (s1, s2) -> {
+    return s1 + s2;
+  });
+```
+
+首先我们异步拼接字符串 `Hello World`，然后我们想将另一个独立的异步任务计算结果与刚才的异步任务结果整合一下，这一点和`thenCompose`是不一样，`thenCompose`是拿到上一阶段的计算结果，`thenCombine`直接传入一个异步任务，第二个参数是BiFunction，函数描述符为`(T, U) -> R`，即将两个异步任务的结果整合。
+
+### duoge 
+上述`thenCompose \ thenCombine`是针对两个异步任务情况而言的，试想下有没有这样的场景，先获取用户的信息，然后同时获取与用户相关联的数据，比如权限，喜好列表等，彼此独立，可以并发获取。这样的该怎么写呢？
 
 ## CompletableFuture源码分析
 
