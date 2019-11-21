@@ -89,7 +89,7 @@ public <U> CompletionStage<U> thenApplyAsync
 如果在计算过程中，发生了异常，会出现什么情况？整个计算都终止吗？比如我上个计算任务失败了，但我还想继续执行下一个计算任务进行处理，而下一个计算任务最好能够感知到上一个计算任务发生了什么，以做出不同的处理。在平时处理异常时，基本用`try...catch...finally`，CompletionStage接口也为异步计算异常处理提供了相应支持。如下有三个方法
 
 - **handle(BiFunction<? super T, Throwable, ? extends U> fn)** 两个参数，一个代表上一阶段计算结果，一个代表上一阶段异常，支持返回值
-- **whenComplete(BiConsumer<? super T, ? super Throwable> action)**  类似于 try{}finally{} 中的 finally{}，不支持返回结果
+- **whenComplete(BiConsumer<? super T, ? super Throwable> action)**  两个参数，一个代表上一阶段计算结果，一个代表上一阶段异常，没有返回值，类似finally
 - **exceptionally(Function<Throwable, ? extends T> fn)**  类似于 try{}catch{} 中的 catch{}，支持返回结果
 
 
@@ -377,6 +377,158 @@ System.out.println("总耗时长：" + (endTime - startTime) / 1000);
 ```
 
 从打印结果来看，第一个计算任务耗时为1秒，然后直接返回任务1的执行结果，其他的任务全部取消。
+
+
+### 异常处理
+
+上面的这些方法都还没有提到异常，如果在执行计算任务出异常了该如何处理呢？直接在最外面catch住异常似乎不太好，分析CompletionStage接口的时候提到了三个方法，CompletableFuture同样也实现了这三个方法：
+
+- handle(BiFunction<? super T, Throwable, ? extends U> fn) 两个参数，一个代表上一阶段计算结果，一个代表上一阶段异常，支持返回值
+- whenComplete(BiConsumer<? super T, ? super Throwable> action) 两个参数，一个代表上一阶段计算结果，一个代表上一阶段异常，没有返回值，类似finally
+- exceptionally(Function<Throwable, ? extends T> fn) 类似于 try{}catch{} 中的 catch{}，支持返回结果
+
+
+**exceptionally**
+
+如果上一阶段产生了异常，下一阶段想捕获这个异常，自己进行处理，而不至使整个计算任务失败，这个时候就可以使用`exceptionally`，该方法声明如下：
+
+```Java
+CompletableFuture<T> exceptionally(Function<Throwable, ? extends T> fn)
+```
+
+由于参数是Function，所以该方法既有消费又有产出，下面是一个例子：
+
+```Java
+int age = -1;
+
+CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+  if (age < 0) {
+    throw new IllegalArgumentException("Age can not be negative");
+  }
+  if (age > 18) {
+    return "Adult";
+  } else {
+    return "Child";
+  }
+}).exceptionally(ex -> {
+  System.out.println(ex.getMessage());
+  return "Unknown!";
+}).thenAccept((r) -> {
+  System.out.println("result = " + r);
+  System.out.println("Done.");
+});
+
+future.join();
+```
+
+执行结果为：
+
+```
+java.lang.IllegalArgumentException: Age can not be negative
+result = Unknown!
+Done.
+```
+
+可见该方法的参数就是异常信息，这样我们就可以知道上一阶段的错误信息了，我们发现最后一步的thenAccept也执行了，说明异常被catch住。
+
+
+**whenComplete**
+
+当上一阶段完成时，有可能是正常完成，也有可能抛出了异常，我想在下一阶段不处理这个异常，仅仅是想对上一阶段运行的结果记录一下，可能在下下阶段用`exceptionally`再去处理，这个时候就可以用`whenComplete`了，该方法的声明如下：
+
+```Java
+CompletionStage<T> whenComplete(BiConsumer<? super T, ? super Throwable> action)
+```
+
+注意参数是`BiConsumer<? super T, ? super Throwable>`，说明函数式表达式第一个参数为上一阶段的计算结果，第二个参数是上一阶段的异常信息，这两个参数不可能同时都有值。 
+
+例子如下：
+
+```Java
+int age = -1;
+
+CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+  if (age < 0) {
+    throw new IllegalArgumentException("Age can not be negative");
+  }
+  if (age > 18) {
+    return "Adult";
+  } else {
+    return "Child";
+  }
+}).whenComplete((res, ex) -> {
+  if (ex != null) {
+    System.out.println("Oops! We have an exception - " + ex);
+  }
+
+  System.out.println(res);
+}).thenRun(() -> {
+  System.out.println("Done.");
+});
+
+future.join();
+```
+
+上述代码在执行完whenComplete后，就会因为异常而退出，不会再继续进行执行了，如果想继续执行，可以继续使用`exceptionally`，如下：
+
+```
+// ...
+.whenComplete((res, ex) -> {
+  if (ex == null) {
+    System.out.println(res);
+  } else {
+    throw new RuntimeException(ex);
+  }
+}).exceptionally(e -> {
+  System.out.println(e.getMessage());
+  return "hello world";
+});
+```
+
+**handle**
+
+上面的`whenComplete`是不对结果进行处理，仅做记录。如果我们想直接处理上一阶段的结果或者异常，该怎么办呢？这时就用到了`handle`方法，该方法的声明如下：
+
+```Java
+CompletionStage<U> handle(BiFunction<? super T, Throwable, ? extends U> fn)
+```
+
+可以看到参数是`BiFunction`，说明既有消费，又有产出，函数式表达式第一个参数为上一阶段的计算结果，第二个参数是上一阶段的异常信息。例子如下：
+
+
+```
+int age = -1;
+
+CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+  if (age < 0) {
+    throw new IllegalArgumentException("Age can not be negative");
+  }
+  if (age > 18) {
+    return "Adult";
+  } else {
+    return "Child";
+  }
+}).handle((res, ex) -> {
+  if(ex != null) {
+    System.out.println("Oops! We have an exception - " + ex.getMessage());
+    return "Unknown!";
+  }
+  return res;
+}).thenAccept((r) -> {
+  System.out.println(r);
+  System.out.println("Done.");
+});
+
+future.join();
+```
+
+运行结果为：
+
+```
+Oops! We have an exception - java.lang.IllegalArgumentException: Age can not be negative
+Unknown!
+Done.
+```
 
 ## CompletableFuture源码分析
 
