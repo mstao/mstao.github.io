@@ -43,3 +43,8 @@ HTTP协议可以升级为WebSocket来支持全双工通信，这个RSocket也支
 ![image](https://github.com/mstao/static/blob/master/reactive/a3.jpg?raw=true)
 
 ![image](https://github.com/mstao/static/blob/master/reactive/a2.jpg?raw=true)
+
+下面是两张PPT:
+
+- [rsocket-mesh-stream-iot-meetup](https://github.com/mstao/static/blob/master/reactive/1_rsocket-mesh-stream-iot-meetup.pdf)
+- [SpencerGibb.RSocket.SpringCloudGateway](https://github.com/mstao/static/blob/master/reactive/SpencerGibb.RSocket.SpringCloudGateway.pdf)
