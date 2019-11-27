@@ -46,9 +46,11 @@ static final class AltResult { // See above
 }
 ```
 
-**stack**
+## stack
 
-**supplyAsync源码分析**
+CompletableFuture内部使用了`Treiber stack`，Treiber stack算法是属于无锁并发栈，内部使用CAS(compare-and-swap)来实现无锁并发算法。详情请看：[Treiber stack设计](https://mingshan.fun/2019/11/25/treiber-stack/)
+
+## supplyAsync源码
 
 测试代码如下：
 
