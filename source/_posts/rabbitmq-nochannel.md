@@ -1,5 +1,5 @@
 ---
-title: Spring-AQMP出现No available channels错误
+title: Spring-AMQP出现No available channels错误
 tags: [RabbitMQ]
 author: Mingshan
 categories: RabbitMQ
