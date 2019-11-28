@@ -80,7 +80,7 @@ key是`Connection`，value是`Semaphore`。`Semaphore`的功能是相当于一�
 
 ![image](https://github.com/mstao/static/blob/master/mq/rabbitmq_channel1.png?raw=true)
 
-在Spring-AQMP中，利用`Semaphore`来限制每个`Connection`最大Channel数，该值默认是25，如下所示：
+在Spring-AMQP中，利用`Semaphore`来限制每个`Connection`最大Channel数，该值默认是25，如下所示：
 
 ```Java
 private static final int DEFAULT_CHANNEL_CACHE_SIZE = 25;
