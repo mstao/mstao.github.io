@@ -27,10 +27,9 @@ date: 2019-05-12
 
 ~的优先级最高，其次是<<、>>和>>>，再次是＆，然后是^，优先级最低的是|。 
 
-# 代码实例   
 位运算符在日常开发中也是 有许多应用场景的，具体场景将在下边代码中展示：    
 
-**按位与 &**
+### 按位与 &
 
 ```Java
 /**
@@ -54,7 +53,7 @@ public static int test1(int n) {
 ```  
 
 
-**按位或 &#124;**
+### 按位或 |
 
 
 ```Java
@@ -76,7 +75,7 @@ public static int  test2(int m ,int n) {
 ``` 
 
 
-**异或 ^** 
+### 异或 ^ 
 
 
 ```Java
@@ -95,7 +94,7 @@ public static void test3(int a, int b) {
 }
 ```
 
-**按位取反~**
+### 按位取反~
 
 ```Java
  /**
@@ -113,7 +112,7 @@ public static void test3(int a, int b) {
  }
 ```
 
-**左移 <<**
+### 左移 <<
 
 ```Java
 /**
@@ -128,7 +127,7 @@ public static void test5() {
 }
 ```
 
-**右移 >>**
+### 右移 >>
 
 ```Java
 /**
@@ -143,7 +142,7 @@ public static void test6() {
 }
 ```
 
-**无符号右移 >>>**
+### 无符号右移 >>>
 
 ```Java
 /**
