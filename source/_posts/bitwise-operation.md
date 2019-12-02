@@ -53,7 +53,9 @@ public static int test1(int n) {
 }
 ```  
 
-**按位或 |**
+
+**按位或 &#124;**
+
 
 ```Java
 /**
@@ -73,7 +75,9 @@ public static int  test2(int m ,int n) {
 }
 ``` 
 
+
 **异或 ^** 
+
 
 ```Java
 /**
