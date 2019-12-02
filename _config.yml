@@ -124,3 +124,9 @@ sitemap:
   path: sitemap.xml
 baidusitemap: 
   path: baidusitemap.xml
+  
+# Algolia Search API Key
+algolia:
+  applicationID: 2PDJL9Z1FB
+  apiKey: d46d3615cff874e47beb39860a663265
+  indexName: blog
