@@ -593,7 +593,7 @@ calendar:
 
 # Algolia Search
 algolia_search:
-  enable: false
+  enable: true
   hits:
     per_page: 10
   labels:
@@ -761,7 +761,9 @@ vendors:
 
   # Internal version: 1
   # https://www.algolia.com
-  algolia_instant_js:
+  
+  
+  _instant_js:
   algolia_instant_css:
 
   # Internal version: 1.0.2
