@@ -39,7 +39,7 @@
         {{ partial('_partials/footer.swig', {}, {cache: theme.cache.enable}) }}
         {{ partial('_third-party/statistics/index.swig', {}, {cache: theme.cache.enable}) }}
       </div>
-      <div align="center" style="margin-top: -10px; margin-bottom: 10px;">
+      <div align="center" style="margin-top: 10px; margin-bottom: 10px;">
         <a href="https://www.netlify.com" target="_blank">
           <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg" width="82px" alt="netlify logo">
         </a>
