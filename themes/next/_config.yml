@@ -57,7 +57,7 @@ footer:
     # `heart` is recommended with animation in red (#ff0000).
     name: heart
     # If you want to animate the icon, set it to true.
-    animated: false
+    animated: true
     # Change the color of icon, using Hex Code.
     color: "#ff0000"
 
@@ -296,7 +296,7 @@ related_posts:
 # Dependencies: https://github.com/hexojs/hexo-deployer-git
 post_edit:
   enable: true
-  url: https://github.com/mstao/mstao.github.io/tree/hexo/source/_posts # Link for view source
+  url: https://github.com/mstao/mstao.github.io/tree/hexo/source # Link for view source
   #url: https://github.com/user-name/repo-name/edit/branch-name/subdirectory-name # Link for fork & edit
 
 # Show previous post and next post in post footer if exists
@@ -364,7 +364,7 @@ codeblock:
     # Show text copy result.
     show_result: false
     # Available values: default | flat | mac
-    style: mac
+    style: flat
 
 back2top:
   enable: true
@@ -375,7 +375,7 @@ back2top:
 
 # Reading progress bar
 reading_progress:
-  enable: top
+  enable: false
   # Available values: top | bottom
   position: top
   color: "#37c6c0"
