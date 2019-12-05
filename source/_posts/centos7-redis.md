@@ -58,7 +58,7 @@ cp /usr/local/services/redis/redis-4.0.2/redis.conf /usr/local/services/redis/re
 
 拷贝完后的文件夹结构如下：
 
-![image](/images/redisroot-folder.png)
+![image](https://github.com/mstao/static/blob/master/blog/redisroot-folder.png?raw=true)
 
 ## 编辑配置文件
 
@@ -163,7 +163,7 @@ service redis start
 ```
 编辑后的配置文件如下：
 
-![image](/images/service-redis-start.png)
+![image](https://github.com/mstao/static/blob/master/blog/service-redis-start.png?raw=true)
 
 ### 设置权限
 
@@ -227,7 +227,7 @@ ln -s /usr/local/services/redis/redisroot/redis-cli /usr/bin/redis
 
 最后可以直接进行测试了
 
-![image](/images/redis-test.png)
+![image](https://github.com/mstao/static/blob/master/blog/redis-test.png?raw=true)
 
 OK, 大功告成。
 

@@ -14,7 +14,7 @@ WebMagic是一个开源的Java垂直爬虫框架，目标是简化爬虫的开�
 
 WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件，并由Spider将它们彼此组织起来。这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能。WebMagic的总体架构图如下：
 
-![image](/images/webmagic.jpg)
+![image](https://github.com/mstao/static/blob/master/blog/webmagic.jpg?raw=true)
 
 从上面的架构图中可以看出，我们在下载完页面后需要自己定义规则来抽取信息和发现链接，同时控制爬虫爬取深度，所以需要自定义PageProcessor来进行以上操作。而通过定制Pipeline，我们还可以实现保存结果到文件、数据库等一系列功能，所以我们可以根据自己的需求来自定义Pipeline。
 
@@ -32,7 +32,7 @@ http://www.zzuli.edu.cn/s/12/t/1006/p/22/i/13/list.htm
 ```
 其中i后面的13是可变的，根据上一页和下一页的切换来改变这一个数字，页面如下：
 
-![image](/images/spide-list-page.png)
+![image](https://github.com/mstao/static/blob/master/blog/spide-list-page.png?raw=true)
 
 #### 详细页
 
@@ -46,7 +46,7 @@ http://www.zzuli.edu.cn/s/12/t/1006/e5/65/info189797.htm
 通过观察这两个url，可以发现1006后面的都是可以变的，所以可以根据这个来写正则抽取链接。
 
 详细页页面如下：
-![image](/images/spide-detail-page.png)
+![image](https://github.com/mstao/static/blob/master/blog/spide-detail-page.png?raw=true)
 
 ### 发现通知URL
 

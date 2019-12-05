@@ -38,4 +38,4 @@ date: 2018-5-5
 
 下面是所有步骤运行截图：
 
-![image](/images/update_mysql_password.png)
+![image](https://github.com/mstao/static/blob/master/blog/update_mysql_password.png?raw=true)

@@ -22,11 +22,11 @@ date: 2018-06-22
 
 放两张照片吧，以此纪念我的大学。
 
-![image](/images/0731.JPG)
+![image](https://github.com/mstao/static/blob/master/blog/0731.JPG?raw=true)
 
-![image](/images/0984.JPG)
+![image](https://github.com/mstao/static/blob/master/blog/0984.JPG?raw=true)
 
-![image](/images/0932.JPG)
+![image](https://github.com/mstao/static/blob/master/blog/0932.JPG?raw=true)
 
 
 记于2018/6/22

@@ -10,7 +10,7 @@ date: 2017-12-17
 
 双向链表也叫双链表，它的每个数据结点都有两个指针，分别指向前驱结点和后继节点，同时有一个数据域来保存数据，双向链表的图示如下：
 
-![image](/images/DoubleLinkedList.png)
+![image](https://github.com/mstao/static/blob/master/blog/DoubleLinkedList.png?raw=true)
 
 从图片可以看出，双链表的头结点的前驱结点和尾结点的后继结点为空，这一点要注意，对双链表的操作要检查这两种情况。
 
@@ -252,7 +252,7 @@ if (next == null) {
     c.next = null;
 }
 ```
-老铁们看的懂吗(￣▽￣)／，其实和我上面的代码效果是一样的，只是把一般情况合并了，也很好理解。
+老铁们整明白了吗(￣▽￣)／，其实和我上面的代码效果是一样的，只是把一般情况合并了，也很好理解。
 
 ### set方法
 
@@ -324,7 +324,7 @@ public E get(int index) {
 反转双链表，这里我采用是遍历双链表，逐个链接点进行反转。原理是：使用p和q两个指针配合工作，使得两个节点间的指向反向，同时用r记录剩下的链表。
 图示如下：
 
-![image](/images/DoubleLinkedList-reverse.png)
+![image](https://github.com/mstao/static/blob/master/blog/DoubleLinkedList-reverse.png?raw=true)
 
 具体代码和步骤参考如下代码：
 ```java

@@ -50,13 +50,13 @@ firewall-cmd --list-all
 http://ip:port
 ```
 
-![image](/images/nexus3-dashboard.png)
+![image](https://github.com/mstao/static/blob/master/blog/nexus3-dashboard.png?raw=true)
 
 ## 配置阿里云仓库
 
 启动Nexus后，需要将中央仓库配置为阿里云仓库，提高国内的访问速度。Nexus的仓库如下：
 
-![image](/images/nexus3-repository.png)
+![image](https://github.com/mstao/static/blob/master/blog/nexus3-repository.png?raw=true)
 
 
 由上图看出，Nexus的仓库分为这么几类：
@@ -67,7 +67,7 @@ http://ip:port
 
 示意图如下：
 
-![image](/images/nexus3-repository-desc.png)
+![image](https://github.com/mstao/static/blob/master/blog/nexus3-repository-desc.png?raw=true)
 
 现在点击“Create Repository”按钮，来添加阿里云仓库，Recipe选择`maven2(proxy)`，在具体配置页面取名aliyun-repository，这里建议用a开头(估计按字母排序将它排第一位)，URL输入：`http://maven.aliyun.com/nexus/content/groups/public/`，其他默认值即可。
 
@@ -126,7 +126,7 @@ mvn clean deploy
 
 上传效果如下图所示：
 
-![image](/images/nexus3-upload.png)
+![image](https://github.com/mstao/static/blob/master/blog/nexus3-upload.png?raw=true)
 
 
 ## 参考

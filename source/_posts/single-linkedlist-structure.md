@@ -8,7 +8,7 @@ date: 2017-12-12
 ### 单链表描述
 单链表又为单向链表，由数据域(Data)和结点域(Node)组成，数据域代表该结点所存储的元素，结点域指向下一个节点，单链表的图示如下：
 
-![image](/images/SingleLinkedList.png)
+![image](https://github.com/mstao/static/blob/master/blog/SingleLinkedList.png?raw=true)
 
 ### 单链表结构
 我们先定义一下单链表一个结点的结构，一个Node类：
@@ -120,6 +120,7 @@ public interface LinkedList<E> {
 这么多方法，先实现哪个呢？由于我们做了很多的增删改查，那么就从增加新结点开始吧(￣▽￣)／
 
 ### add方法
+
 我们首先实现***add(E data)***，代码如下：
 
 ```java
@@ -299,7 +300,7 @@ public E get(int index) {
 
 反转单链表，这里我采用是遍历单链表，逐个链接点进行反转。原理是：使用p和q两个指针配合工作，使得两个节点间的指向反向，同时用r记录剩下的链表。流程如下图：
 
-![image](/images/SingleLinkedList-reverse.png)
+![image](https://github.com/mstao/static/blob/master/blog/SingleLinkedList-reverse.png?raw=true)
 
 
 具体代码和步骤参考如下代码：

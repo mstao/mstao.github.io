@@ -25,7 +25,7 @@ new FilterReader(Reader in);
 
 装饰模式的通用类图如下图所示：
 
-![image](/images/decorator.png)
+![image](https://github.com/mstao/static/blob/master/blog/decorator.png?raw=true)
 
 在类图中，有四个角色需要说明：
 

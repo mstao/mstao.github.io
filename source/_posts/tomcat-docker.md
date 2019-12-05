@@ -10,7 +10,7 @@ date: 2018-7-28
 
 <!-- more -->
 
-![image](/images/docker.png)
+![image](https://github.com/mstao/static/blob/master/blog/docker.png?raw=true)
 
 ## CentOS7 Docker 安装
 
@@ -51,7 +51,7 @@ jdk-8u172-linux-x64.tar.gz
 
 创建`Dockerfile`和`run.sh`两个文件，最终`/usr/docker-tomcat`文件夹内容如下图所示：
 
-![image](/images/docker-tomcat-folder.png)
+![image](https://github.com/mstao/static/blob/master/blog/docker-tomcat-folder.png?raw=true)
 
 编辑`Dockerfile`文件
 
@@ -178,7 +178,7 @@ docker run -d -p 11001:8080 tomcat:test
 
 然后使用 `docker ps` 命令查看正在运行的容器，如下图所示：
 
-![image](/images/docker-tomcat-ps.png)
+![image](https://github.com/mstao/static/blob/master/blog/docker-tomcat-ps.png?raw=true)
 
 ### 开启端口
 
@@ -196,7 +196,7 @@ firewall-cmd --list-all
 
 接下来就可在浏览器中看到Tomcat界面了，大功告成！
 
-![image](/images/docke-tomcat-showpage.png)
+![image](https://github.com/mstao/static/blob/master/blog/docke-tomcat-showpage.png?raw=true)
 
 ### 镜像保存为本地离线文件
 

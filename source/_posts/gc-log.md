@@ -106,7 +106,7 @@ Heap
 Java memory主要分heap memory 和 non-heap memory，如下图：
 
 
-![image](/images/java-memory.jpg)
+![image](https://github.com/mstao/static/blob/master/blog/java-memory.jpg?raw=true)
 
 
 第一行为新生代的大小，大小为38400K。而新生代又分为三个区域分别叫Eden，和俩个Survivor spaces。Eden用来存放新的对象，Survivor spaces用于 新对象 升级到 Tenured area时的 拷贝。默认的，Edem : from : to = 8 : 1 : 1 ( 可以通过参数 –XX:SurvivorRatio 来设定 )，即： Eden = 8/10 的新生代空间大小，from = to = 1/10 的新生代空间大小。

@@ -72,7 +72,7 @@ public Class ConnectionManager {
 
 ThreadLocal有如下成员变量和方法，如下图所示
 
-![image](/images/threadlocal.png)
+![image](https://github.com/mstao/static/blob/master/blog/threadlocal.png?raw=true)
 
 其中经常用到的是以下几个方法：
 
@@ -294,7 +294,7 @@ tab[i] = new Entry(key, value);
 
 看了好多博客，里面提到ThreadLocal会有内存泄露问题，因为从ThreadLocalMap的设计来看，如下图，key被设计成弱引用，一旦JVM进行GC时，这个key就没了，那么与key对应的value还存在ThreadLocalMap，ThreadLocalMap与Entry存在着强引用，GC无法回收，造成内存泄露。
 
-![image](/images/threadlocal_weak.png)
+![image](https://github.com/mstao/static/blob/master/blog/threadlocal_weak.png?raw=true)
 
 当然，这些都是分析出来的，既然我们考虑到了，那么Josh Bloch 和 Doug Lea肯定也为我们考虑过了，所以这个问题在源码中已经解决了，下面来看看相关源码
 

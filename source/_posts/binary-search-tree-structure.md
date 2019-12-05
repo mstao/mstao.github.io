@@ -15,7 +15,7 @@ date: 2017-12-24
 
 下面是一个二叉查找树的示例：
 
-![image](/images/BinarySearchTree.png)
+![image](https://github.com/mstao/static/blob/master/blog/BinarySearchTree.png?raw=true)
 
 <!-- more -->
 
@@ -202,7 +202,7 @@ private Node<E> addNode(E value) {
 
 下面这幅图代表这几种操作示例：
 
-![image](/images/BinarySearchTree_remove.png)
+![image](https://github.com/mstao/static/blob/master/blog/BinarySearchTree_remove.png?raw=true)
 
 其中第一幅图代表要删除的结点只有右子结点(树)，只需将该结点的父结点指向该结点的右子结点，但要判断当前结点是其父结点的子左结点还是右子结点，然后对应指向当前结点的子结点即可；图二代表要删除的结点只有左子结点(树)，原理是一样的；图三是代表要删除的结点左右结点(树)都有，此时需要找出其右子树中的最小值代替该节点上的值，然后删除其右子树上的最小值。代码如下：
 
@@ -352,7 +352,7 @@ private Node<E> findMinNode(Node<E> nodeToRemoved) {
 
 我们需要将二叉树打印到控制台上，便于查看二叉树的结构，效果如下：
 
-![image](/images/BinarySearchTree_print.png)
+![image](https://github.com/mstao/static/blob/master/blog/BinarySearchTree_print.png?raw=true)
 
 打印代码如下：
 

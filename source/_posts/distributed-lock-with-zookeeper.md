@@ -16,7 +16,7 @@ date: 2017-10-08
 
 在ZooKeeper中，有一个被称为ZNode的节点，在该节点可以存储同步相关的数据，并且多个ZNode节点可以形成类似下图的结构。
 
-![image](/images/zookeeper.png)
+![image](https://github.com/mstao/static/blob/master/blog/zookeeper.png?raw=true)
 
 ### 基本命令：
 

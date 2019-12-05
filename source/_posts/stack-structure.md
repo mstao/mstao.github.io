@@ -9,7 +9,7 @@ date: 2017-12-17
 ### 栈介绍
 栈是一种仅在表头进行插入和删除操作的线性表，并且属于后进先出（last-in，first-out，LIFO）原则，下面是栈的入栈和出栈的图示：
 
-![image](/images/Stack.png)
+![image](https://github.com/mstao/static/blob/master/blog/Stack.png?raw=true)
 
 ### 主要操作
 

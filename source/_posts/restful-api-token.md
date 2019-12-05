@@ -36,7 +36,7 @@ xxxxx.yyyyy.zzzzz
 ```
 真实的JWT长这样：
 
-![image](/images/encoded-jwt3.png)
+![image](https://github.com/mstao/static/blob/master/blog/encoded-jwt3.png?raw=true)
 
 那么header，Payload和Signature分别代表什么呢？
 #### header
@@ -86,7 +86,7 @@ HMACSHA256(
 
 首先是流程，借用JWT官网上的一幅图
 
-![image](/images/jwt-diagram.png)
+![image](https://github.com/mstao/static/blob/master/blog/jwt-diagram.png?raw=true)
 
 从图中我们可以总结如下（以Client和Server端为例）：
 

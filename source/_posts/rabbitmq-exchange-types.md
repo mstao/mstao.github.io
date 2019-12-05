@@ -95,7 +95,7 @@ RabbitMQ常用的Exchange Type有fanout、direct、topic、headers这四种
 ### fanout
 fanout类型的Exchange路由规则非常简单，它会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中。
 
-![image](/images/mq_fanout.png)
+![image](https://github.com/mstao/static/blob/master/blog/mq_fanout.png?raw=true)
 
 上图中，生产者（P）发送到Exchange（X）的所有消息都会路由到图中的两个Queue，并最终被两个消费者（C1与C2）消费。
 
@@ -173,7 +173,7 @@ public class ConsumerA {
 ### direct
 direct类型的Exchange路由规则也比较简单，它会把消息路由到那些binding key与routing key完全匹配的Queue中。
 
-![image](/images/mq_direct.png)
+![image](https://github.com/mstao/static/blob/master/blog/mq_direct.png?raw=true)
 
 以上图为例，假设我们在生产者配置的routingKey为error，那么两个消费者都可以收到消息，如果是info，那么c2可以接收到消息，c2便接收不到消息了。
 
@@ -268,7 +268,7 @@ public class ConsumerA {
 -  "*" 可以代替一个字。
 - "#" 可以代替零个或多个单词。
 
-![image](/images/mq_topic.png)
+![image](https://github.com/mstao/static/blob/master/blog/mq_topic.png?raw=true)
 
 **生产者代码：**
 
