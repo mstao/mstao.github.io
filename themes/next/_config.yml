@@ -574,7 +574,7 @@ comments:
   style: tabs
   # Choose a comment system to be displayed by default.
   # Available values: changyan | disqus | disqusjs | gitalk | livere | valine
-  active:
+  active: valine
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Modify texts or order for any navs, here are some examples.
@@ -619,8 +619,8 @@ changyan:
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
   enable: true
-  appid: GTNaw6V4PVq5Q9zMVf2jjnDq-gzGzoHsz# Your leancloud application appid
-  appkey: 4JAz8SGjTq8opeLn7h6lVQvx# Your leancloud application appkey
+  appid: GTNaw6V4PVq5Q9zMVf2jjnDq-gzGzoHsz
+  appkey: 4JAz8SGjTq8opeLn7h6lVQvx
   notify: true # Mail notifier
   verify: false # Verification code
   placeholder: (>﹏<) Just show your thinking~ # Comment box placeholder
