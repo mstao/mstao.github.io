@@ -40,8 +40,8 @@ custom_file_path:
 # ---------------------------------------------------------------
 
 favicon:
-  small: /favicon.ico
-  medium: /favicon.ico
+  small: /favicon-16.ico
+  medium: /favicon-32.ico
   apple_touch_icon: /favicon.ico
   safari_pinned_tab: /favicon.ico
   #android_manifest: /images/manifest.json
