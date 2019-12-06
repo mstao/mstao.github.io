@@ -625,7 +625,7 @@ valine:
   notify: true # Mail notifier
   verify: false # Verification code
   placeholder: (>﹏<) Just show your thinking~ # Comment box placeholder
-  avatar: mm # Gravatar style
+  avatar: monsterid # Gravatar style
   guest_info: nick,mail,link # Custom comment header
   pageSize: 10 # Pagination size
   language: # Language, available values: en, zh-cn
