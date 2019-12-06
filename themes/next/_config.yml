@@ -42,8 +42,8 @@ custom_file_path:
 favicon:
   small: /favicon-16.ico
   medium: /favicon-32.ico
-  apple_touch_icon: /favicon.ico
-  safari_pinned_tab: /favicon.ico
+  apple_touch_icon: /favicon-32.ico
+  safari_pinned_tab: /favicon-32.ico
   #android_manifest: /images/manifest.json
   #ms_browserconfig: /images/browserconfig.xml
 
