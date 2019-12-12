@@ -5,6 +5,8 @@ author: Mingshan
 categories: Linux
 date: 2017-08-01
 ---
+
+
 ## 目录操作：
 
 - 创建目录：
@@ -57,12 +59,14 @@ rm -rf /var/tmp/testFolder
 
 **使用 ls 命令查看 /etc
  目录下所有文件和文件夹**
-
+ 
 
 ```
 ls /etc
 ```
+
 <!-- more -->
+
 ## 文件操作
 
 - 创建文件
@@ -94,6 +98,22 @@ rm ~/testFile
 ```
 cat ~/.bash_history
 ```
+
+## 查看服务状态
+
+**top命令查看服务器状态**
+
+```
+top
+```
+
+**查看剩余磁盘空间**
+
+```
+[iwms@master-node bin]$ df -hl
+文件系统                 容量  已用  可用 已用% 挂载点
+```
+
 ## 过滤, 管道与重定向
 
 - 过滤
@@ -136,9 +156,12 @@ ls /etc | grep 'ssh'
 ```
 echo 'Hello World' > ~/test.txt
 ```
+
+## 
+
 ## 运维常用命令
 
-- ping 命令
+- **ping 命令**
 
 **对 cloud.tencent.com 发送 4 个 ping 包, 检查与其是否联通**
 
@@ -146,7 +169,7 @@ echo 'Hello World' > ~/test.txt
 ```
 ping -c 4 cloud.tencent.com
 ```
-- netstat 命令
+- **netstat 命令**
 
 netstat 命令用于显示各种网络相关信息，如网络连接, 路由表, 接口状态等等
 
@@ -163,7 +186,21 @@ netstat -lt
 ```
 netstat -tulpn
 ```
-- ps 命令
+
+**查看某一端口的信息**
+
+```
+netstat -tunlp |grep 8000
+```
+
+- -t (tcp) 仅显示tcp相关选项
+- -u (udp)仅显示udp相关选项
+- -n 拒绝显示别名，能显示数字的全部转化为数字
+- -l 仅列出在Listen(监听)的服务状态
+- -p 显示建立相关链接的程序名
+
+
+- **ps 命令**
 
 **过滤得到当前系统中的 ssh 进程信息**
 
@@ -171,3 +208,33 @@ netstat -tulpn
 ```
 ps -aux | grep 'ssh
 ```
+
+**查看某一项服务的状态**
+
+```
+ps -ef | grep reids
+```
+
+**根据关键字过滤**
+
+精确匹配
+
+```
+find / -type f -name redis.conf
+```
+
+模糊匹配
+
+```
+find / -type f -name *redis*.conf
+```
+
+**查出500M以上的文件**
+
+print0和xargs -0配合使用，用来解决文件名中有空格或特殊字符问题。du -m是查看这些文件的大小，并以m为单位显示。最后sort -nr是按照数字反向排序（大的文件在前）
+
+```
+find / -size +500M -print0|xargs -0 du -m|sort -nr
+```
+
+
