@@ -4,6 +4,7 @@ tags: [数据结构, 树状数组]
 author: Mingshan
 categories: [数据结构, 树状数组]
 date: 2019-11-29
+mathjax: true
 ---
 
 
