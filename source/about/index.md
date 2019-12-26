@@ -23,4 +23,5 @@ date: 2017-06-23 18:52:47
 - WeChat: mingliangberry
 - QQ: 499445428
 - Github: [@mstao](https://github.com/mstao)
+- LeetCode：[@mingshan](https://leetcode-cn.com/u/mingshan/)
 - Douban: [@walkerhan](https://book.douban.com/people/walkerhan/)
