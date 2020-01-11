@@ -4,6 +4,7 @@ tags: [数据结构, 二叉树]
 author: Mingshan
 categories: [数据结构, 二叉树]
 date: 2019-03-17
+mathjax: true
 ---
 
 ## 二叉树定义
