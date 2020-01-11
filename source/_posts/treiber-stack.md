@@ -124,8 +124,8 @@ boolean tryPush(node) {
 
 对于出栈，要做的工作就是将原来的栈顶节点移除，等待垃圾回收；新栈顶元素CAS为第一个子元素。伪代码：
 
-```
-String pop() {
+```Java
+E pop() {
     Node<E> oldTop = top;
     // 判断栈是否为空，为空直接返回
     if (oldTop == null) 
