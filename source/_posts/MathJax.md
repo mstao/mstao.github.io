@@ -73,18 +73,16 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 
 ### 常用符号
 
-\lt \gt \le \leq \leqq \leqslant \ge \geq \geqq \geqslant \neq <>≤≤≦⩽≥≥≧⩾≠. You can use \not to put a slash through almost anything: \not\lt ≮ but it often looks bad.
-\times \div \pm \mp ×÷±∓. \cdot is a centered dot: x⋅y
-\cup \cap \setminus \subset \subseteq \subsetneq \supset \in \notin \emptyset \varnothing ∪∩∖⊂⊆⊊⊃∈∉∅∅
-{n+1 \choose 2k} or \binom{n+1}{2k} (n+12k)
-\to \rightarrow \leftarrow \Rightarrow \Leftarrow \mapsto →→←⇒⇐↦
-\land \lor \lnot \forall \exists \top \bot \vdash \vDash ∧∨¬∀∃⊤⊥⊢⊨
-\star \ast \oplus \circ \bullet ⋆∗⊕∘∙
-\approx \sim \simeq \cong \equiv \prec \lhd \therefore ≈∼≃≅≡≺⊲∴
-\infty \aleph_0 ∞ℵ0 \nabla \partial ∇∂ \Im \Re IR
-For modular equivalence, use \pmod like this: a\equiv b\pmod n a≡b(modn).
-\ldots is the dots in a1,a2,…,an \cdots is the dots in a1+a2+⋯+an
-Some Greek letters have variant forms: \epsilon \varepsilon ϵε, \phi \varphi ϕφ, and others. Script lowercase l is \ell ℓ.
+- `\lt \gt \le \leq \leqq \leqslant \ge \geq \geqq \geqslant \neq \not\lt` $\lt \gt \le \leq \leqq \leqslant \ge \geq \geqq \geqslant \neq \not\lt$
+- `\times \div \pm \mp` $\times \div \pm \mp$ `\cdot ` $x⋅y$
+- `\cup \cap \setminus \subset \subseteq \subsetneq \supset \in \notin \emptyset \varnothing`  $\cup \cap \setminus \subset \subseteq \subsetneq \supset \in \notin \emptyset \varnothing$
+- `{n+1 \choose 2k}` or `\binom{n+1}{2k} (n+12k)` ${n+1 \choose 2k}$
+- `\to \rightarrow \leftarrow \Rightarrow \Leftarrow \mapsto` $\to \rightarrow \leftarrow \Rightarrow \Leftarrow \mapsto$
+- `\land \lor \lnot \forall \exists \top \bot \vdash \vDash` $\land \lor \lnot \forall \exists \top \bot \vdash \vDash$
+- `\star \ast \oplus \circ \bullet` $\star \ast \oplus \circ \bullet$
+- `\approx \sim \simeq \cong \equiv \prec \lhd \therefore` $\approx \sim \simeq \cong \equiv \prec \lhd \therefore$
+- `\infty \aleph_0 \nabla \partial \Im \Re` $\infty \aleph_0 \nabla \partial \Im \Re$
+- `\ldots \cdots` $\ldots \cdots$
 
 还有其他许多复杂的符号，我就不贴到这个地方了。详细的语法请参考下方的链接，你可以通过在线渲染的[地址](https://www.mathjax.org/#demo)来验证你写的数学公式是否正确。
 
