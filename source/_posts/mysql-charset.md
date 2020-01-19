@@ -64,14 +64,92 @@ mysql> show variables like 'character%';
 
 `character_sets_dir`为字符集安装的目录。
 
-
 ## 字符集转换过程
 
+我们发现MySQL有这么多字符集配置，试想一下，从一个客户端连接到MySQL服务器，到MySQL返回数据给客户端，中间的字符集是如何转化的？在《High Performance MySQL》一书中，有一节讲到了客户端与服务端通信时字符集的转换过程，如下图所示：
+
 ![image](https://github.com/mstao/static/blob/master/images/msyql/mysql_character_set_t.png?raw=true)
+
+从上图的文字描述及图示我们可以得知，一个Statement 到 Result 是要经过一系列的字符转换过程。主要有以下过程：
+
+1. MySQL服务器收到客户端的请求后，将编码由`character_set_client`转至`character_set_connection`；
+2. 进行内部操作前将请求数据从`character_set_connection`转换为内部操作字符集，其确定方法如下：
+    1. 使用每个数据字段的`CHARACTER SET`设定值；
+    2. 若上述值不存在，则使用对应数据表的`DEFAULT CHARACTER SET`设定值(MySQL扩展，非SQL标准)；
+    3. 若上述值不存在，则使用对应数据库的`DEFAULT CHARACTER SET`设定值；
+    4. 若上述值不存在，则使用`character_set_server`设定值。
+3. 将操作结果从内部操作字符集转换为`character_set_results`。
 
 
 ## 配置字符集
 
+上面了解了MYSQL编码的基本概念，那么我们该怎么样设置呢？
+
+
+**更改MySQL的配置文件**
+
+在`Windows`平台上，配置文件名称为：`my.ini`，下面是在Windows平台MySQL相关的文件路径：
+
+File Name |	Purpose
+---|---
+%WINDIR%\my.ini, %WINDIR%\my.cnf |	Global options
+C:\my.ini, C:\my.cnf |	Global options
+BASEDIR\my.ini, BASEDIR\my.cnf |	Global options
+defaults-extra-file	 | The file specified with --defaults-extra-file, if any
+%APPDATA%\MySQL\.mylogin.cnf |	Login path options (clients only)
+
+通过找**服务 -> MySQLX -> 属性 -> 可执行文件的路径**来找到MySQL配置文件的路径，下面是我的路径：
+
+```
+C:\ProgramData\MySQL\MySQL Server 8.0\my.ini
+```
+
+在`Linux`平台，配置文件名称为：`my.cnf`，路径一般为`/etc/mysql/my.cnf`，下面是在Unix和类Unix平台MySQL相关的文件路径：
+
+File Name |	Purpose
+---|---
+/etc/my.cnf	| Global options
+/etc/mysql/my.cnf   | Global options
+SYSCONFDIR/my.cnf	| Global options
+$MYSQL_HOME/my.cnf	| Server-specific options (server only)
+defaults-extra-file	| The file specified with --defaults-extra-file, if any
+~/.my.cnf	| User-specific options
+~/.mylogin.cnf |User-specific login path options (clients only)
+
+如下所示：
+
+```
+root@f07cbb42905f:/etc/mysql# ls
+conf.d  my.cnf  my.cnf.fallback  mysql.cnf  mysql.conf.d
+```
+
+下面以`my.cnf`配置为例，配置字符集为`utf8mb4`，也是我们最常用的。在`my.cnf`添加如下内容： 
+
+```
+[client] 
+default-character-set = utf8mb4 
+[mysql] 
+default-character-set = utf8mb4 
+[mysqld] 
+character-set-client-handshake = FALSE 
+character-set-server = utf8mb4 
+collation-server = utf8mb4_unicode_ci 
+init_connect='SET NAMES utf8mb4'
+```
+
+**更新数据库或表字符集**
+
+更新指定数据库的字符集：
+
+```sql
+ALTER DATABASE test CHARACTER SET `utf8mb4` COLLATE `utf8mb4_general_ci`;
+```
+
+更新指定表的字符集：
+
+```sql
+ALTER TABLE `TABLE_NAME` CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_general_ci`; 
+```
 
 最后附上MySQL支持的字符集：
 
@@ -128,3 +206,4 @@ mysql> SHOW CHARACTER SET;
 - [Server System Variables](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html)
 - [更改MySQL数据库的编码为utf8mb4](https://www.jianshu.com/p/f7d7609de6b0)
 - [深入Mysql字符集设置](http://www.laruence.com/2008/01/05/12.html)
+- 《High Performance MySQL》
