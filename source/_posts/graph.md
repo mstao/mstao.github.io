@@ -78,7 +78,35 @@ $$
     \end{bmatrix}
 $$
 
-### 邻接表
+从上面的几个邻接矩阵来看，用邻接矩阵来表示图还是很方便的，虽然简单，但却有很大问题，假设现在图G有n个顶点，需要开辟$n^2$个空间，并且很多空间都没有存储值，白白被浪费掉了。所以用邻接矩阵来表示图还是需要考虑考虑的。
+
+用邻接矩阵来表示图代码也很简单，我们需要声明一个二维数组：
+
+```Java
+  // 邻接矩阵
+  private int[][] adjacencyMatrix;
+```
+
+接下来要做的一个操作是添加边，首先要知道起始顶点的位置和目标顶点的位置，无向图两个位置都要赋值为1，代码如下：
+
+```
+  /**
+   * 添加边
+   *
+   * @param start 起始节点位置
+   * @param end   结束节点位置
+   */
+  public void addEdge(int start, int end) {
+    checkPosition(start);
+    checkPosition(end);
+
+    this.adjacencyMatrix[start][end] = 1;
+    this.adjacencyMatrix[end][start] = 1;
+    this.edgeSize++;
+  }
+```
+
+下面是完整代码：
 
 ```Java
 /**
@@ -179,6 +207,92 @@ public class AMUndiGraph implements Graph {
 }
 ```
 
+### 邻接表
+
+用邻接矩阵表示图代码很简单，计算也很方便，如果边比较密集，还是可以考虑的。可以不可以不要二维数组只要一维数组表示图呢？知道散列表的拉链法的同学比较清楚当一个key出现哈希冲突时，会存到链表里面，邻接表与这个类似，我们需要一个一维数组来保存所有的顶点，每一个顶点对应一个链表，存储所以与该顶点存在边的顶点。当我们需要判断一个顶点与另一个顶点是否存在边时，我们可以定位到这个顶点，然后遍历其链表看看有没有另一个顶点即可。如下图所示：
+
+![image](https://github.com/mstao/static/blob/master/images/graph/adjacency-list.png?raw=true)
+
+
+首先我们声明邻接表：
+
+```Java
+// 邻接表
+private LinkedList<Integer>[] adj;
+```
+
+接着需要添加边，对于无向图，我们只需要将目标顶点放入到顶点对应的链表中就行了，代码如下：
+
+```Java
+public void addEdge(int start, int end) {
+  checkPosition(start);
+  checkPosition(end);
+  adj[start].add(end);
+  adj[end].add(start);
+  this.edgeSize++;
+}
+```
+
+完整代码如下：
+
+```
+/**
+ * 无向图 - 基于邻接表(adjacency list)
+ *
+ * @author hanjuntao
+ */
+public class AJUndiGraph implements Graph {
+  // 邻接表
+  private LinkedList<Integer>[] adj;
+  // 边数量
+  private int edgeSize;
+
+  public AJUndiGraph(int arrSize) {
+    if (arrSize <= 0) {
+      throw new IllegalArgumentException("The arrSize [" + arrSize + "] is not valid number");
+    }
+
+    adj = new LinkedList[arrSize];
+    for (int i = 0; i < arrSize; i++) {
+      adj[i] = new LinkedList<>();
+    }
+  }
+
+  public void addEdge(int start, int end) {
+    checkPosition(start);
+    checkPosition(end);
+
+    adj[start].add(end);
+    adj[end].add(start);
+    this.edgeSize++;
+  }
+
+  private void checkPosition(int index) {
+    if (index < 0 || index >= adj.length) {
+      throw new IllegalArgumentException("The index [" + index + "] is not valid number");
+    }
+  }
+
+  @Override
+  public int getNodeSize() {
+    return adj.length;
+  }
+
+  @Override
+  public int getEdgeSize() {
+    return this.edgeSize;
+  }
+
+  @Override
+  public String toString() {
+    return "AJUndiGraph{" +
+        "adj=" + Arrays.deepToString(adj) +
+        ", nodeSize=" + getNodeSize() +
+        ", edgeSize=" + edgeSize +
+        '}';
+  }
+}
+```
 
 ## References：
 
