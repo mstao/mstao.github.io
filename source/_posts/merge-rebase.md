@@ -244,7 +244,7 @@ $ git log --graph --pretty=oneline --abbrev-commit
 
 有没有发现我们的`My Update4 1.md` 的提交的祖先变了，不再基于`d7160d5 Create 2.md`, 而是基于 `71a0090 (origin/master) Create 3.md` , 并且commit id也变了，即Git把我们本地的提交“挪动”了位置，现在是一条干净的直线。
 
-好了，到这里我们就知道了rebase是干嘛的了，它的作用将一个分支的提交历史，在当前分支的基础上应用一次，即将提交到某一分支上的所有修改都移至另一分支上，并且可能修改当前分支的提交信息（commit id）。
+好了，到这里我们就知道了rebase是干嘛的了，**它的作用将一个分支的提交历史，在当前分支的基础上应用一次，即将提交到某一分支上的所有修改都移至另一分支上，并且可能修改当前分支的提交信息（commit id）。**
 
 ### Golden Rule of Rebase
 
