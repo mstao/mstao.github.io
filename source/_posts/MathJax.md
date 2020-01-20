@@ -78,13 +78,11 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 矩阵的表示格式为：`\begin{matrix}…\end{matrix}`， 以`\begin`表示矩阵开始，以`\end`表示矩阵结束， 矩阵的每一行以`\\`结束, 矩阵的每一个元素之间以`&`分隔。下面是一个示例，语法如下：
 
 ```
-$$
-    \begin{matrix}
-    1 & x & x^2 \\
-    1 & y & y^2 \\
-    1 & z & z^2 \\
-    \end{matrix}
-$$
+\begin{matrix}
+1 & x & x^2 \\
+1 & y & y^2 \\
+1 & z & z^2 \\
+\end{matrix}
 ```
 效果为：
 
@@ -144,6 +142,7 @@ $$
     1 & z \\
     \end{Vmatrix}
 $$
+
 
 ### 常用符号
 
