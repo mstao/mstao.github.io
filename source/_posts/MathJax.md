@@ -81,6 +81,7 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 1 & y & y^2 \\
 1 & z & z^2 \\
 \end{matrix}
+
 效果为：
 
 $$
