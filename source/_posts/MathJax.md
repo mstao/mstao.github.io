@@ -75,8 +75,75 @@ omega    |    Ω   |   \Omega  |     ω    | \omega
 
 **表示格式**
 
-矩阵的表示格式为：`$$\begin{matrix}…\end{matrix}$$`， 以`\begin`表示矩阵开始，以`\end`表示矩阵结束， 矩阵的每一行以`\\`结束, 矩阵的每一个元素之间以`&`分隔。下面是一个示例，语法如下：
+矩阵的表示格式为：`\begin{matrix}…\end{matrix}`， 以`\begin`表示矩阵开始，以`\end`表示矩阵结束， 矩阵的每一行以`\\`结束, 矩阵的每一个元素之间以`&`分隔。下面是一个示例，语法如下：
 
+```
+$$
+    \begin{matrix}
+    1 & x & x^2 \\
+    1 & y & y^2 \\
+    1 & z & z^2 \\
+    \end{matrix}
+$$
+```
+效果为：
+
+$$
+    \begin{matrix}
+    1 & x & x^2 \\
+    1 & y & y^2 \\
+    1 & z & z^2 \\
+    \end{matrix}
+$$
+
+**括号种类**
+
+我们知道矩阵外面的括号有很多种类，主要有以下几种：
+
+`pmatrix`
+$$
+    \begin{pmatrix}
+    1 & x \\
+    1 & y \\
+    1 & z \\
+    \end{pmatrix}
+$$
+
+`bmatrix`
+$$
+    \begin{bmatrix}
+    1 & x \\
+    1 & y \\
+    1 & z \\
+    \end{bmatrix}
+$$
+
+`Bmatrix`
+$$
+    \begin{Bmatrix}
+    1 & x \\
+    1 & y \\
+    1 & z \\
+    \end{Bmatrix}
+$$
+
+`vmatrix`
+$$
+    \begin{vmatrix}
+    1 & x \\
+    1 & y \\
+    1 & z \\
+    \end{vmatrix}
+$$
+
+`Vmatrix`
+$$
+    \begin{Vmatrix}
+    1 & x \\
+    1 & y \\
+    1 & z \\
+    \end{Vmatrix}
+$$
 
 ### 常用符号
 
