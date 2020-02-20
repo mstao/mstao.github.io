@@ -235,7 +235,7 @@ public void addEdge(int start, int end) {
 
 完整代码如下：
 
-```Java
+```
 /**
  * 无向图 - 基于邻接表(adjacency list)
  *
@@ -293,6 +293,71 @@ public class AJUndiGraph implements Graph {
   }
 }
 ```
+
+## 广度和深度优先搜索
+
+### 广度优先搜索
+
+广度优先搜索（Breadth-First-Search）被称为**bfs**，是一种比较好理解的图搜索方式，从图的一个顶点开始，向外一层一层地搜索。对于这种搜索，我们需要记录当前的节点是否被访问过，以及标识层次访问的情形。所以我们用一个**数组**记录节点是否被访问过，用一个**队列**来记录每一层的顶点。下面提供一个无向图，我们想要搜索到值为7的节点，如下图所示：
+
+![image](https://github.com/mstao/static/blob/master/images/graph/bfs_1.png?raw=true)
+
+首先我们访问值为1的节点，我们需要先将1节点入队。节点1相当于下一层的顶点，该层只有1这个节点，接下来将1节点出队，访问1的第二层的节点。接着访问该层的所有节点，包括2,3,4，并依次入队。
+
+![image](https://github.com/mstao/static/blob/master/images/graph/bfs_2.png?raw=true)
+
+第二层
+
+![image](https://github.com/mstao/static/blob/master/images/graph/bfs_3.png?raw=true)
+
+
+
+
+![image](https://github.com/mstao/static/blob/master/images/graph/bfs_4.png?raw=true)
+
+
+
+```Java
+  /**
+   * 广度优先搜索 Breadth-First-Search
+   *
+   * 打印最短路径
+   *
+   * @param s 起始顶点
+   * @param t 终止顶点
+   */
+  public void bfs(int s, int t) {
+    int len = adj.length;
+    // 记录节点是否被访问过
+    boolean[] visited = new boolean[len];
+    int[] prev = new int[len];
+
+    // 存储每一层的顶点
+    Queue<Integer> queue = new LinkedList<>();
+    visited[s] = true;
+    queue.add(s);
+
+    while (!queue.isEmpty()) {
+      Integer vertex = queue.poll();
+      for (int i = 0; i < adj[vertex].size(); i++) {
+        Integer curr = adj[vertex].get(i);
+        if (!visited[curr]) {
+          prev[curr] = vertex;
+
+          // 如果访问结束，直接返回
+          if (curr == t) {
+            print(prev, s, t);
+            return;
+          }
+
+          visited[curr] = true;
+          queue.add(curr);
+        }
+      }
+    }
+  }
+```
+
 
 ## References：
 
