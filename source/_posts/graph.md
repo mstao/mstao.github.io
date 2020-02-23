@@ -306,31 +306,34 @@ public class AJUndiGraph implements Graph {
 
 ![image](https://github.com/mstao/static/blob/master/images/graph/bfs_2.png?raw=true)
 
-第二层
+第二层访问完毕，接下来我们要访问第三层。先从队列中取出2节点，访问2节点的下一层节点，图中只有5节点，该节点没有被访问过，将节点5加入到队列中。接着分别访问3节点和4节点的下一层节点，操作同上。
 
 ![image](https://github.com/mstao/static/blob/master/images/graph/bfs_3.png?raw=true)
 
 
-
+第三层节点访问完毕，接下来访问第四层节点，从队列中取出节点5，访问其下一层节点7，发现是我们要搜索的，搜索结束。
 
 ![image](https://github.com/mstao/static/blob/master/images/graph/bfs_4.png?raw=true)
 
+通过上面的图片演示，我们已经对bfs有一个大致的印象，下面我们来详细总结下bfs的搜索过程：
 
+1. 初始一个队列用来记录待访问节点的顶点，初始一个数据用来节点是否被访问过；将起始节点入队；
+2. 将队列中的队首元素出队，访问其连接的下一层节点，并将访问过的节点入队；
+3. 重复第二步，直至搜索到终止节点。
+
+下面我们通过用领接表来表示无向图实现bfs，代码很容易读，至于如何利用广度优先搜索寻找起始节点和终止节点的最短路径，下一篇文章再系统讨论。bfs代码如下：
 
 ```Java
   /**
    * 广度优先搜索 Breadth-First-Search
    *
-   * 打印最短路径
-   *
    * @param s 起始顶点
    * @param t 终止顶点
    */
-  public void bfs(int s, int t) {
+  public void bfs2(int s, int t) {
     int len = adj.length;
     // 记录节点是否被访问过
     boolean[] visited = new boolean[len];
-    int[] prev = new int[len];
 
     // 存储每一层的顶点
     Queue<Integer> queue = new LinkedList<>();
@@ -342,15 +345,13 @@ public class AJUndiGraph implements Graph {
       for (int i = 0; i < adj[vertex].size(); i++) {
         Integer curr = adj[vertex].get(i);
         if (!visited[curr]) {
-          prev[curr] = vertex;
+          visited[curr] = true;
+          System.out.println("当前顶点：" + vertex + "，当前节点：" + curr);
 
-          // 如果访问结束，直接返回
           if (curr == t) {
-            print(prev, s, t);
             return;
           }
 
-          visited[curr] = true;
           queue.add(curr);
         }
       }
@@ -358,8 +359,12 @@ public class AJUndiGraph implements Graph {
   }
 ```
 
+### 深度优先搜索
+
+
 
 ## References：
 
 - https://zh.wikipedia.org/wiki/%E5%9B%BE_(%E6%95%B0%E5%AD%A6)
 - https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+- https://time.geekbang.org/column/article/70891
