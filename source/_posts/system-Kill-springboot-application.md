@@ -6,7 +6,7 @@ categories: Java
 date: 2018-8-25
 ---
 
-SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linxus内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：
+SpringBoot在启动的时候，有默认的JVM启动参数，在部署到Linux服务器上时，如果Linux内存不够时，会导致应用被操作系统kill掉，导致部署的服务莫名其妙的挂掉，就我遇到的项目而言，记录SpringBoot的log如下：
 
 <!-- more -->
 
