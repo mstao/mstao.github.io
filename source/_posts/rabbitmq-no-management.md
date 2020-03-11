@@ -3,7 +3,7 @@ title: Windows下安装RabbitMQ无法启用管理界面
 tags: [RabbitMQ]
 author: Mingshan
 categories: [RabbitMQ]
-date: 2020-02-0
+date: 2020-02-10
 ---
 
 很久没有用现在的笔记本连过RabbitMQ，今天在Windows上装了一下RabbitMQ，然后启用管理界面，发现怎么都启用不了，一直提示：`Plugin configuration unchanged.`，查看服务发现MQ的服务都关闭了，为什么会自动关闭服务呢？我们来查看下MQ的日志，路径是：`C:\Users\明山\AppData\Roaming\RabbitMQ\log\rabbit@DESKTOP-Q1D3TT5.log`，在文件末尾，发现有下面的错误：
