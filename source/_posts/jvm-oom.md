@@ -142,9 +142,10 @@ java.lang.OutOfMemoryError: PermGen space
 
 从JDK1.8之后，移除了方法区，同时添加了元空间(Metaspace)，由于元空间并不在虚拟机中，而是使用本地内存，因此，默认情况下，元空间的大小仅受本地内存限制，但可以控制JVM相关参数来控制：
 
-> -XX:MetaspaceSize，初始空间大小
->
-> -XX:MaxMetaspaceSize，最大空间
+```
+-XX:MetaspaceSize 初始空间大小
+-XX:MaxMetaspaceSize 最大空间
+```
 
 我们可以控制元空间的最大值来模拟OOM，利用CGLIB不断动态生成代理类，注意在JDK8以后版本运行。
 
