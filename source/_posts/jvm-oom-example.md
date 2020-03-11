@@ -6,7 +6,7 @@ categories: JVM
 date: 2020-03-11
 ---
 
-在线上应用对JVM参数设置不合理的情况下，有可能发生OOM(Out of Memory Error)，不过OOM也分很多种，可以参考，下面就以我遇到的堆OOM来分析下相关日志信息。
+在线上应用对JVM参数设置不合理的情况下，有可能发生OOM(Out of Memory Error)，不过OOM也分很多种，可以参考：[OutOfMemoryError详细介绍](https://mingshan.fun/2020/03/11/jvm-oom/)，下面就以我遇到的堆OOM来分析下相关日志信息。
 
 通常OOM时会触发 Linux 内核里的 Out of Memory (OOM) killer，OOM killer会杀掉某个进程以腾出内存留给系统用，不致于让系统立刻崩溃。详细原因分析参考：[linux 终端报错 Out of memory: Kill process[PID] [process name] score问题分析](http://www.111com.net/sys/CentOS/84755.htm)，在应用启动之前，需要打印GC日志以及保存JVM错误日志，设置以下JVM参数：
 
