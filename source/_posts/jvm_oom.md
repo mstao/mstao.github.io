@@ -1,5 +1,5 @@
 ---
-title: JVM报Out of Memory Error
+title: OutOfMemoryError详细介绍
 author: Mingshan
 tags: JVM
 categories: JVM
