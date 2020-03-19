@@ -93,3 +93,6 @@ private static final int DEFAULT_CHANNEL_CACHE_SIZE = 25;
 spring.rabbitmq.cache.channel.checkout-timeout=0
 spring.rabbitmq.cache.channel.size=25
 ```
+References:
+
+- https://github.com/spring-projects/spring-amqp/issues/999
