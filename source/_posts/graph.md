@@ -361,6 +361,65 @@ public class AJUndiGraph implements Graph {
 
 ### 深度优先搜索
 
+深度优先搜索（Depth-First-Search）被称为**dfs**，和广度优先搜索是截然不同的搜索算法，在深度优先搜索中，假设沿着某条路径可以找到想要的节点，那么就一直走下去，如果目标不存在，那么就返回上一个节点，重复以上步骤，直至匹配到目标或遍历整个图。
+
+从上面的描述来看，很明显是用到了递归，这里的递归终止条件有两个：
+
+1. 匹配到目标，遍历结束
+2. 遍历整个图，遍历结束
+
+bfs伪代码（图的存储结构采用邻接表）如下：
+
+```
+visited[]; 
+
+dfs = (s, t) {
+    visited[s] = true;
+    if (match) {
+        return;
+    }
+    
+    for i : adj[s]
+        if (!visited[i]) {
+            visited[i] = true;
+            dfs(i, t)
+        }
+}
+```
+
+
+同广度优先搜索类似，我们也需要一个数组记录图中的节点是否被访问过，如果被访问过，那么就需要跳过，感觉有点点回溯法的味道，这里确实用到了回溯的思想。
+
+```
+  /**
+   * 深度优先搜索 Depth-First-Search
+   *
+   * 打印走过的路径
+   *
+   * @param s 起始顶点
+   * @param t 终止顶点
+   */
+  public void dfs(int s, int t) {
+    int len = adj.length;
+    boolean[] visited = new boolean[len];
+    recurDfs(s, t, visited);
+  }
+
+  private void recurDfs(int vertex, int t, boolean[] visited) {
+    visited[vertex] = true;
+    if (vertex == t) {
+      return;
+    }
+
+    for (int i = 0; i < adj[vertex].size(); ++i) {
+      int curr = adj[vertex].get(i);
+      if (!visited[curr]) {
+        System.out.println("当前顶点：" + vertex + "，当前节点：" + curr);
+        recurDfs(curr, t, visited);
+      }
+    }
+  }
+```
 
 
 ## References：
