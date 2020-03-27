@@ -31,7 +31,7 @@ doFun(() -> task1)
 
 >A stage of a possibly asynchronous computation, that performs an action or computes a value when another CompletionStage completes. A stage completes upon termination of its computation, but this may in turn trigger other dependent stages.
 
-这个接口的方法多大几十个，功能相当丰富。同时提供了这个接口的实现[CompletableFuture](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html)，这个是我们要讨论的主角。CompletionStage接口的方法参数大部分支持函数式，根据不同的函数式接口做不同的事情，下面简单介绍下函数式接口。
+这个接口的方法多达几十个，功能相当丰富。同时提供了这个接口的实现[CompletableFuture](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html)，这个是我们要讨论的主角。CompletionStage接口的方法参数大部分支持函数式，根据不同的函数式接口做不同的事情，下面简单介绍下函数式接口。
 
 ## 函数式接口
 
