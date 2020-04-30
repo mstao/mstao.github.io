@@ -107,7 +107,7 @@ log_throttle_queries_not_using_indexes|0    |
 
 默认是0，代表没有限制。
 
-# 二进制文件
+# 二进制日志
 
 查看binlog是否开启：
 
