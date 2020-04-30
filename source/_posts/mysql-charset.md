@@ -1,8 +1,8 @@
 ---
 title: 理解MySQL字符集
-tags: [Database, InnoDB]
+tags: [Database, MySQL]
 author: Mingshan
-categories: [Database, InnoDB]
+categories: [Database, MySQL]
 date: 2020-1-7
 ---
 
