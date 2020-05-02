@@ -9,25 +9,25 @@ date: 2020-04-30
 MySQL常见的日志类型包括：
 
 - 错误日志（error log）
-- 二进制日志（binlog）
+- 二进制日志（binary log）
 - 慢查询日志（slow query log）
-- 查询日志（log）
+- 查询日志（general query log）
 
-# 错误日志
+# [错误日志](https://dev.mysql.com/doc/refman/5.7/en/error-log.html)
 
 错误日志文件对MySQL的启动、运行、关闭过程进行了记录。MySQL DBA在遇到问题时应该首先查看该文件以便定位问题。该文件不仅记录了所有的错误信息，也记录一些警告信息或正确的信息。通过`SHOW VARIABLES LIKE '%log_error%'`来查看错误的路径：如下所示：
 
 Variable_name      |Value              |
--------------------|-------------------|
+-------------------|-------------------
 binlog_error_action|ABORT_SERVER       |
 log_error          |/var/log/mysqld.log|
 log_error_verbosity|3                  |
 
 <!-- more -->
 
-# 慢查询日志
+# [慢查询日志](https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html)
 
-https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html
+如果MySQL有语句查询比较慢，在数据库层面有没有办法直接去定位这些SQL呢？MySQL提供了记录慢查询的文件，该文件会记录查询时间超过**long_query_time**的SQL语句，默认是关闭的。
 
 查看慢查询的日志是否开启，以及日志文件位置：
 
@@ -36,7 +36,7 @@ SHOW VARIABLES LIKE '%slow_query_log%'
 ```
 
 Variable_name      |Value                            |
--------------------|---------------------------------|
+-------------------|---------------------------------
 slow_query_log     |OFF                              |
 slow_query_log_file|/var/lib/mysql/localhost-slow.log|
 
@@ -54,7 +54,7 @@ SHOW VARIABLES LIKE '%long_query_time%'
 ```
 
 Variable_name  |Value    |
----------------|---------|
+---------------|---------
 long_query_time|10.000000|
 
 long_query_time单位是秒，默认十秒，可以通过以下命令进行设置：
@@ -86,7 +86,7 @@ SHOW VARIABLES LIKE '%log_queries_not_using_indexes%'
 ```
 
 Variable_name                |Value|
------------------------------|-----|
+-----------------------------|-----
 log_queries_not_using_indexes|OFF  |
 
 `log_queries_not_using_indexes`参数默认是关闭的，我们可以将其打开，
@@ -102,21 +102,29 @@ SHOW VARIABLES LIKE '%log_throttle_queries_not_using_indexes%'
 ```
 
 Variable_name                         |Value|
---------------------------------------|-----|
+--------------------------------------|-----
 log_throttle_queries_not_using_indexes|0    |
 
 默认是0，代表没有限制。
 
-# 二进制日志
+# [二进制日志](https://dev.mysql.com/doc/refman/5.7/en/binary-log.html)
+
+二进制日志包含描述数据库更改的“事件”，如表创建操作或表数据更改。除非使用基于行的日志记录，否则它还包含可能已进行更改的语句的事件(例如，不匹配任何行的DELETE)。二进制日志还包含关于每个语句花费多长时间更新数据的信息。二进制日志有以下几个的用途:
+
+- 恢复（recovery）：某些数据的恢复需要二进制日志，例如，在一个数据库全备文件恢复后，用户可以通过二进制日志进行point-in-time的恢复。
+- 复制（replication）：其原理与恢复类似，通过复制和执行二进制日志使一台远程的MySQL数据库（一般称为slave或standby）与一台MySQL数据库（一般称为master或primary）进行实时同步。
+- 审计（audit）：用户可以通过二进制日志中的信息来进行审计，判断是否有对数据库进行注入的攻击。
+
+二进制文件默认是关闭的，开启后官方说会稍微影响性能。
 
 查看binlog是否开启：
 
 ```
-show variables like 'log_bin';
+SHOW VARIABLES LIKE 'log_bin';
 ```
 
 Variable_name|Value|
--------------|-----|
+-------------|-----
 log_bin      |OFF  |
 
 默认是关闭的，我们先查询下MySQL数据是在哪个目录进行存储的，输入如下命令：
@@ -126,7 +134,7 @@ SHOW VARIABLES LIKE '%datadir%'
 ```
 
 Variable_name|Value          |
--------------|---------------|
+-------------|---------------
 datadir      |/var/lib/mysql/|
 
 接着将binlog开启，需要更改MySQL的配置文件，输入命令`vim /etc/my.cnf`，然后添加如下配置：
@@ -175,130 +183,106 @@ drwxr-x---. 2 mysql mysql 8.0K Apr 29 04:00 performance_schema
 drwxr-x---. 2 mysql mysql 8.0K Apr 29 04:00 sys
 ```
 
-https://dev.mysql.com/doc/refman/5.7/en/mysqlbinlog-row-events.html
+其中**mysql-bin.index**是一个文本文件，该文件内记录真实二进制文件的位置，如下所示：
+
+```
+[root@localhost mysql]# vim mysql-bin.index 
+
+/var/lib/mysql/mysql-bin.000001
+```
+
+**mysql-bin.000001**就是真实的二进制文件，这里只有一个，关于如何解读二进制文件及如何利用二进制文件进行恢复数据，后面再写。
+
+二进制日志有格式的概念，参数为：**binlog_format**，该参数可设的值有STATEMENT、ROW和MIXED。输入如下明细：
+
+```
+SHOW VARIABLES LIKE '%binlog_format%'
+```
+
+Variable_name|Value|
+-------------|-----
+binlog_format|ROW  |
+
+可以看到，MySQL默认的**binlog_format**的值为**ROW**。
+
+MySQL的**binlog_format**有三个选项，分别是**STATEMENT**、**ROW**和**MIXED**。
+
+- STATEMENT格式和之前的MySQL版本一样，二进制日志文件记录的是日志的逻辑SQL语句。
+- 在ROW格式下，二进制日志记录的不再是简单的SQL语句了，而是记录表的行更改情况。基于ROW格式的复制类似于Oracle的物理Standby（当然，还是有些区别）。同时，对上述提及的Statement格式下复制的问题予以解决。从MySQL 5.1版本开始，如果设置了binlog_format为ROW，可以将InnoDB的事务隔离基本设为READCOMMITTED，以获得更好的并发性。
+- 在MIXED格式下，MySQL默认采用STATEMENT格式进行二进制日志文件的记录，但是在一些情况下会使用ROW格式，可能的情况有：
+  1. 表的存储引擎为NDB，这时对表的DML操作都会以ROW格式记录。
+  2. 使用了UUID（）、USER（）、CURRENT_USER（）、FOUND_ROWS（）、ROW_COUNT（）等不确定函数。
+  3. 使用了INSERT DELAY语句。
+  4. 使用了用户定义函数（UDF）。
+  5. 使用了临时表（temporary table）。
+
+# [查询日志](https://dev.mysql.com/doc/refman/5.7/en/query-log.html)
+
+general log会记录下发送给MySQL服务器的所有SQL记录，因为SQL的量大，默认是不开启的。如果一个问题反复出现（经常出现事务不结束），这个时候需要把general log打开，事务没有提交，一样会写到general_log，这样来定位出现问题的SQL。
+
+MySQL有三个参数用于设置general log：
+
+- general_log：用于开启general log。ON表示开启，OFF表示关闭。
+- log_output：日志输出的模式。FILE表示输出到文件，TABLE表示输出到mysq库的general_log表，NONE表示不记录general_log。
+- general_log_file：日记输出文件的路径，这是log_output=FILE时才会输出到此文件。
+
+**查看general_log有没有开启**
+
+```SQL
+show variables like '%general%';
+```
+默认general_log是OFF的，general_log_file是日志输出路径：
+
+```
+mysql> show variables like '%general%';
++------------------+---------------------+
+| Variable_name    | Value               |
++------------------+---------------------+
+| general_log      | OFF                 |
+| general_log_file | DESKTOP-Q1D3TT5.log |
++------------------+---------------------+
+```
+
+如果general_log是关闭的，执行下面SQL，开启之：
+
+```
+set global general_log=1;
+或
+set global general_log=ON;
+```
+
+**查看日志输出模式**
 
 
 ```
-- 创建表
-CREATE TABLE test.test1 (
-	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(30) NOT NULL,
-	date DATA NULL,
-	PRIMARY KEY (`id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_general_ci;
-
-- 开启事务，执行sql
-START TRANSACTION;
-INSERT INTO test.test1 VALUES(1, 'apple', NULL);
-UPDATE test.test1 SET name = 'pear', date = '2009-01-01' WHERE id = 1;
-DELETE FROM test.test1 WHERE id = 1;
-COMMIT;
+show variables where Variable_name="log_output";
 ```
 
+默认是FILE，如下：
+
 ```
-/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
-/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
-DELIMITER /*!*/;
-# at 4
-#200429  9:11:16 server id 1  end_log_pos 123 CRC32 0xaaafe6c0 	Start: binlog v 4, server v 5.7.30-log created 200429  9:11:16 at startup
-# Warning: this binlog is either in use or was not closed properly.
-ROLLBACK/*!*/;
-BINLOG '
-9HypXg8BAAAAdwAAAHsAAAABAAQANS43LjMwLWxvZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAD0fKleEzgNAAgAEgAEBAQEEgAAXwAEGggAAAAICAgCAAAACgoKKioAEjQA
-AcDmr6o=
-'/*!*/;
-# at 123
-#200429  9:11:16 server id 1  end_log_pos 154 CRC32 0xfed7364e 	Previous-GTIDs
-# [empty]
-# at 154
-#200429 10:08:11 server id 1  end_log_pos 219 CRC32 0xb45e4cec 	Anonymous_GTID	last_committed=0	sequence_number=1	rbr_only=no
-SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
-# at 219
-#200429 10:08:11 server id 1  end_log_pos 421 CRC32 0x0ea7428a 	Query	thread_id=3	exec_time=0	error_code=0
-SET TIMESTAMP=1588169291/*!*/;
-SET @@session.pseudo_thread_id=3/*!*/;
-SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;
-SET @@session.sql_mode=1436549152/*!*/;
-SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;
-/*!\C utf8 *//*!*/;
-SET @@session.character_set_client=33,@@session.collation_connection=33,@@session.collation_server=33/*!*/;
-SET @@session.lc_time_names=0/*!*/;
-SET @@session.collation_database=DEFAULT/*!*/;
-/* ApplicationName=DBeaver 6.1.5 - Main */ CREATE SCHEMA `test`
-DEFAULT CHARACTER SET utf8mb4
-DEFAULT COLLATE utf8mb4_general_ci
-/*!*/;
-# at 421
-#200429 10:12:23 server id 1  end_log_pos 486 CRC32 0x08527478 	Anonymous_GTID	last_committed=1	sequence_number=2	rbr_only=no
-SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
-# at 486
-#200429 10:12:23 server id 1  end_log_pos 779 CRC32 0xe1082ae6 	Query	thread_id=3	exec_time=0	error_code=0
-SET TIMESTAMP=1588169543/*!*/;
-/* ApplicationName=DBeaver 6.1.5 - Main */ CREATE TABLE test.test1 (
-	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(30) NOT NULL,
-	PRIMARY KEY (`id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_general_ci
-/*!*/;
-# at 779
-#200429 11:15:02 server id 1  end_log_pos 844 CRC32 0xd80b70b0 	Anonymous_GTID	last_committed=2	sequence_number=3	rbr_only=no
-SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
-# at 844
-#200429 11:15:02 server id 1  end_log_pos 1000 CRC32 0xf218a9f6 	Query	thread_id=3	exec_time=0	error_code=0
-SET TIMESTAMP=1588173302/*!*/;
-/* ApplicationName=DBeaver 6.1.5 - Main */ ALTER TABLE test.test1 ADD `date` DATE NULL
-/*!*/;
-# at 1000
-#200429 11:16:06 server id 1  end_log_pos 1065 CRC32 0xc1887469 	Anonymous_GTID	last_committed=3	sequence_number=4	rbr_only=yes
-/*!50718 SET TRANSACTION ISOLATION LEVEL READ COMMITTED*//*!*/;
-SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
-# at 1065
-#200429 11:16:06 server id 1  end_log_pos 1133 CRC32 0x2fa0666d 	Query	thread_id=3	exec_time=0	error_code=0
-SET TIMESTAMP=1588173366/*!*/;
-BEGIN
-/*!*/;
-# at 1133
-#200429 11:16:06 server id 1  end_log_pos 1185 CRC32 0xe3ff3dea 	Table_map: `test`.`test1` mapped to number 101
-# at 1185
-#200429 11:16:06 server id 1  end_log_pos 1231 CRC32 0xd342352b 	Write_rows: table id 101 flags: STMT_END_F
-
-BINLOG '
-NpqpXhMBAAAANAAAAKEEAAAAAGUAAAAAAAEABHRlc3QABXRlc3QxAAMDDwoCeAAE6j3/4w==
-NpqpXh4BAAAALgAAAM8EAAAAAGUAAAAAAAEAAgAD//wBAAAABWFwcGxlKzVC0w==
-'/*!*/;
-# at 1231
-#200429 11:16:06 server id 1  end_log_pos 1283 CRC32 0x0e85e500 	Table_map: `test`.`test1` mapped to number 101
-# at 1283
-#200429 11:16:06 server id 1  end_log_pos 1343 CRC32 0x503c42f3 	Update_rows: table id 101 flags: STMT_END_F
-
-BINLOG '
-NpqpXhMBAAAANAAAAAMFAAAAAGUAAAAAAAEABHRlc3QABXRlc3QxAAMDDwoCeAAEAOWFDg==
-NpqpXh8BAAAAPAAAAD8FAAAAAGUAAAAAAAEAAgAD///8AQAAAAVhcHBsZfgBAAAABHBlYXIhsg/z
-QjxQ
-'/*!*/;
-# at 1343
-#200429 11:16:06 server id 1  end_log_pos 1395 CRC32 0x3a133eb0 	Table_map: `test`.`test1` mapped to number 101
-# at 1395
-#200429 11:16:06 server id 1  end_log_pos 1443 CRC32 0xfb4ca372 	Delete_rows: table id 101 flags: STMT_END_F
-
-BINLOG '
-NpqpXhMBAAAANAAAAHMFAAAAAGUAAAAAAAEABHRlc3QABXRlc3QxAAMDDwoCeAAEsD4TOg==
-NpqpXiABAAAAMAAAAKMFAAAAAGUAAAAAAAEAAgAD//gBAAAABHBlYXIhsg9yo0z7
-'/*!*/;
-# at 1443
-#200429 11:16:06 server id 1  end_log_pos 1474 CRC32 0x6d6703d1 	Xid = 93
-COMMIT/*!*/;
-SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;
-DELIMITER ;
-# End of log file
-/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
-/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
+mysql> show variables where Variable_name="log_output";
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log_output    | FILE  |
++---------------+-------+
 ```
+
+**关闭general log**
+
+大多数情况是临时开启general log，需要记得关闭，并把日志的输出模式恢复为FILE。
+
+```
+set global general_log=OFF;
+set global log_output='FILE'
+```
+
+# References：
+
+- https://dev.mysql.com/doc/refman/5.7/en/error-log.html
+- https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html
+- https://dev.mysql.com/doc/refman/5.7/en/binary-log.html
+- 姜承尧 《MySQL技术内幕:InnoDB存储引擎(第二版)》
+
 
