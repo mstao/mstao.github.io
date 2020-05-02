@@ -17,11 +17,11 @@ MySQL常见的日志类型包括：
 
 错误日志文件对MySQL的启动、运行、关闭过程进行了记录。MySQL DBA在遇到问题时应该首先查看该文件以便定位问题。该文件不仅记录了所有的错误信息，也记录一些警告信息或正确的信息。通过`SHOW VARIABLES LIKE '%log_error%'`来查看错误的路径：如下所示：
 
-Variable_name      |Value              |
+Variable_name      |Value              
 -------------------|-------------------
-binlog_error_action|ABORT_SERVER       |
-log_error          |/var/log/mysqld.log|
-log_error_verbosity|3                  |
+binlog_error_action|ABORT_SERVER       
+log_error          |/var/log/mysqld.log
+log_error_verbosity|3                  
 
 <!-- more -->
 
@@ -35,10 +35,10 @@ log_error_verbosity|3                  |
 SHOW VARIABLES LIKE '%slow_query_log%'
 ```
 
-Variable_name      |Value                            |
+Variable_name      |Value                            
 -------------------|---------------------------------
-slow_query_log     |OFF                              |
-slow_query_log_file|/var/lib/mysql/localhost-slow.log|
+slow_query_log     |OFF                              
+slow_query_log_file|/var/lib/mysql/localhost-slow.log
 
 
 慢查询日志默认是关闭的，通过如下命令将其开启：
@@ -53,9 +53,9 @@ SET GLOBAL slow_query_log=ON
 SHOW VARIABLES LIKE '%long_query_time%'
 ```
 
-Variable_name  |Value    |
+Variable_name  |Value    
 ---------------|---------
-long_query_time|10.000000|
+long_query_time|10.000000
 
 long_query_time单位是秒，默认十秒，可以通过以下命令进行设置：
 
@@ -85,9 +85,9 @@ LIMIT 61;
 SHOW VARIABLES LIKE '%log_queries_not_using_indexes%'
 ```
 
-Variable_name                |Value|
+Variable_name                |Value
 -----------------------------|-----
-log_queries_not_using_indexes|OFF  |
+log_queries_not_using_indexes|OFF  
 
 `log_queries_not_using_indexes`参数默认是关闭的，我们可以将其打开，
 
@@ -101,9 +101,9 @@ SET GLOBAL log_queries_not_using_indexes=ON
 SHOW VARIABLES LIKE '%log_throttle_queries_not_using_indexes%'
 ```
 
-Variable_name                         |Value|
+Variable_name                         |Value
 --------------------------------------|-----
-log_throttle_queries_not_using_indexes|0    |
+log_throttle_queries_not_using_indexes|0    
 
 默认是0，代表没有限制。
 
@@ -123,9 +123,9 @@ log_throttle_queries_not_using_indexes|0    |
 SHOW VARIABLES LIKE 'log_bin';
 ```
 
-Variable_name|Value|
+Variable_name|Value
 -------------|-----
-log_bin      |OFF  |
+log_bin      |OFF  
 
 默认是关闭的，我们先查询下MySQL数据是在哪个目录进行存储的，输入如下命令：
 
@@ -133,9 +133,9 @@ log_bin      |OFF  |
 SHOW VARIABLES LIKE '%datadir%'
 ```
 
-Variable_name|Value          |
+Variable_name|Value          
 -------------|---------------
-datadir      |/var/lib/mysql/|
+datadir      |/var/lib/mysql/
 
 接着将binlog开启，需要更改MySQL的配置文件，输入命令`vim /etc/my.cnf`，然后添加如下配置：
 
@@ -199,9 +199,9 @@ drwxr-x---. 2 mysql mysql 8.0K Apr 29 04:00 sys
 SHOW VARIABLES LIKE '%binlog_format%'
 ```
 
-Variable_name|Value|
+Variable_name|Value
 -------------|-----
-binlog_format|ROW  |
+binlog_format|ROW  
 
 可以看到，MySQL默认的**binlog_format**的值为**ROW**。
 
@@ -284,5 +284,6 @@ set global log_output='FILE'
 - https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html
 - https://dev.mysql.com/doc/refman/5.7/en/binary-log.html
 - 姜承尧 《MySQL技术内幕:InnoDB存储引擎(第二版)》
+
 
 
