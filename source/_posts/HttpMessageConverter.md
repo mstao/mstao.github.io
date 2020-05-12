@@ -19,28 +19,28 @@ public interface HttpMessageConverter<T> {
     /**
      * 根据mediaType判断clazz是否可读
      */
-	boolean canRead(Class<?> clazz, @Nullable MediaType mediaType);
+    boolean canRead(Class<?> clazz, @Nullable MediaType mediaType);
 
     /**
      * 根据mediaType判断clazz是否可写
      */
-	boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType);
+    boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType);
 
     /**
      * 获取受支持的mediaType
      */
-	List<MediaType> getSupportedMediaTypes();
+    List<MediaType> getSupportedMediaTypes();
 
     /**
      * 将HttpInputMessage流中的数据绑定到clazz中
      */
-	T read(Class<? extends T> clazz, HttpInputMessage inputMessage)
+    T read(Class<? extends T> clazz, HttpInputMessage inputMessage)
 			throws IOException, HttpMessageNotReadableException;
 
     /**
      * 将t对象写入到HttpOutputMessage流中
      */
-	void write(T t, @Nullable MediaType contentType, HttpOutputMessage流中 outputMessage)
+    void write(T t, @Nullable MediaType contentType, HttpOutputMessage流中 outputMessage)
 			throws IOException, HttpMessageNotWritableException;
 
 }
