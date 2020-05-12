@@ -102,7 +102,7 @@ protected void writeInternal(String str, HttpOutputMessage outputMessage) throws
 
 另一个需要关注的实现类是`MappingJackson2HttpMessageConverter`，我们知道Spring默认使用Jackson来做序列化与反序列化的，比如我们想格式化响应实体的时间格式，以及忽略值为空的字段等，我们可以利用`MappingJackson2HttpMessageConverter`来完成我们自定义需求，下面是一个示例：
 
-```
+```Java
 @Bean
 public MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
     MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
