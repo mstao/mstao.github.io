@@ -14,7 +14,7 @@ date: 2020-05-12
 
 SpringMVC的请求与响应涉及HTTP协议，而HTTP请求和响应的传输是字节流，所以用Java编写的服务器必然涉及解析转换字节流的过程，当然这个过程Spring已经帮我们屏蔽了，我们接收请求时加一个注解`@RequestBody`，响应时我们直接返回实体，十分方便。这个过程需要`HttpMessageConverter`参与，`HttpMessageConverter`是一个接口，定义了几个方法，如下所示：
 
-```
+```Java
 public interface HttpMessageConverter<T> {
     /**
      * 根据mediaType判断clazz是否可读
@@ -40,13 +40,11 @@ public interface HttpMessageConverter<T> {
     /**
      * 将t对象写入到HttpOutputMessage流中
      */
-    void write(T t, @Nullable MediaType contentType, HttpOutputMessage流中 outputMessage)
+    void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException;
 
 }
-
 ```
-
 
 熟悉IO编程的同学对`read/write`模式应该非常熟悉，这个也正是对应将数据从流中读取出来和将数据写入到流中，`MediaType`在HTTP中对应`Content-Type`，是从HTTP的header里面取的，这个也无需多说，详情可以参考RFC文档：https://tools.ietf.org/html/rfc7231#section-3.1.1.1。
 
