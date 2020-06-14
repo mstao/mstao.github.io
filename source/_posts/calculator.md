@@ -1,8 +1,8 @@
 ---
 title: 利用栈结构对中缀表达式进行求值运算
-tags: [数据结构, 中缀表达式]
+tags: [算法,中缀表达式]
 author: Mingshan
-categories: [数据结构]
+categories: [算法]
 date: 2020-06-14
 ---
 
