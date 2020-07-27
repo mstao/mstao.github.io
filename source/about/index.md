@@ -20,7 +20,7 @@ date: 2017-06-23 18:52:47
 
 我的联系方式：
 
-- WeChat: mingliangberry
+- WeChat: walkerhan_
 - QQ: 499445428
 - Github: [@mstao](https://github.com/mstao)
 - LeetCode：[@mingshan](https://leetcode-cn.com/u/mingshan/)
