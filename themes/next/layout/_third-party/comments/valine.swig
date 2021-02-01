@@ -27,7 +27,7 @@ NexT.utils.getScript('{{ valine_uri }}', () => {
 </script>
 
 <style> 
-#vcomments textarea {
+#comments textarea {
   box-sizing: border-box;
   background: url("http://www.luckyzmj.cn/medias/comment_bg.png") 100% 100% no-repeat; 
 } 
