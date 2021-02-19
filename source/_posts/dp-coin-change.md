@@ -90,7 +90,7 @@ f(x) = min{ f(x-2) + 1, f(x-5)+1, f(x-7)+1 }
 
 如果上面的分析理解了，代码是很简单的，不过有一个问题需要注意下，如果`f(i-1)` 为`Integer.MAX_VALUE`，那么`f(i-1) + 1` 结果就是负数，会导致计算错误，所以需要先判断`f(i-1)`是否为`Integer.MAX_VALUE`，然后再进行比较，代码如下：
 
-```
+```Java
   public static int solution3(int[] coins, int amount) {
     // f(x) 代表x面额最少用多少枚硬币拼出
     int[] f = new int[amount + 1];
