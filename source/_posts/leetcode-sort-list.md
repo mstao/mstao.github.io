@@ -3,7 +3,7 @@ title: 合并有序数组,链表,二叉树
 tags: [算法,LeetCode,链表,分而治之]
 author: Mingshan
 categories: [算法,LeetCode,链表]
-date: 2021-05-03
+date: 2021-05-11
 ---
 
 LeetCode一道对链表排序的题：[148.排序链表](https://leetcode-cn.com/problems/sort-list/)，原题如下：
