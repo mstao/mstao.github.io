@@ -1,5 +1,5 @@
 ---
-title: 合并有序数组,链表,二叉树
+title: 排序链表
 tags: [算法,LeetCode,链表,分而治之]
 author: Mingshan
 categories: [算法,LeetCode,链表]
