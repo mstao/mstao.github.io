@@ -3,7 +3,7 @@ title: 关于线程你问我答
 categories: [Java, Thread]
 tags: [java, Thread]
 author: Mingshan
-date: 2020-05-16
+date: 2021-05-16
 ---
 
 跟同学讨论了几个关于线程的基础知识，真的非常基础O.O，这里记录一下，供小伙伴参考，如果问题就可以直接评论交流。
