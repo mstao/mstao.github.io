@@ -201,3 +201,8 @@ public class Buffer {
 ```
 
 从上面伪代码来看，其实无论者还是消费者处理逻辑基本一致，这正是JUC包中Condition要解决的问题。这里就不再继续谈JUC相关的知识了，后面有空继续接着这个谈。
+
+
+参考：
+
+https://mingshan.fun/2019/02/25/producer-consumer/
