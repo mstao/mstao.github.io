@@ -232,35 +232,33 @@ while (node != null || !stack.isEmpty()) {
  *
  * <ul>
  *  <li>1. 对于任何结点node，如果该结点不为空，打印当前节点将自己压入栈内，然后将当前结点的左子结点赋值给node，直至node为null</li>
-*   <li>2. 若左子树为空，则栈顶元素出栈，并将当前node的右子结点赋值给node</li>
-*   <li>3. 重复1，2步操作，直至node为空，并且栈为空</li>
+ *   <li>2. 若左子树为空，则栈顶元素出栈，并将当前node的右子结点赋值给node</li>
+ *   <li>3. 重复1，2步操作，直至node为空，并且栈为空</li>
  * <ul/>
  *
  * @param node
  */
-public void preOrderNonRec(Node node) {
+  public void preOrderNonRec(Node<E> node) {
     if (node == null) {
-        return;
+      return;
     }
 
-    System.out.println(node); // 先输出当前结点
-
-    Stack<Node> stack = new Stack<>();
+    Stack<Node<E>> stack = new Stack<>();
     stack.push(node);
-    node = node.left;
 
-    while (node != null || !stack.isEmpty()) {
+    while (!stack.isEmpty()) {
+      Node<E> eNode = stack.pop();
+      System.out.println(eNode);
 
-        while (node != null) {
-            System.out.println(node); // 先输出当前结点
-            stack.push(node);         // 入栈
-            node = node.left;         // 输出左孩子
-        }                             // 循环结束，节点左子树全部输出
+      if (eNode.getRight() != null) {
+        stack.push(eNode.getRight());
+      }
 
-        node = stack.pop(); // 依次出栈
-        node = node.right;  // 输出右孩子
+      if (eNode.getLeft() != null) {
+        stack.push(eNode.getLeft());
+      }
     }
-}
+  }
 ```
 
 #### 中序遍历
