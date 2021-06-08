@@ -16,7 +16,7 @@ Java虚拟机定义了程序执行期间使用的各种运行时数据区域。�
 
 对内存区域发生OOM的情况分四个部分简单介绍：
 
-**Java堆溢出**
+## Java堆溢出
 
 >  If a computation requires more heap than can be made available by the automatic storage management system, the Java Virtual Machine throws an OutOfMemoryError.
 
@@ -58,7 +58,7 @@ public class HeapOOM {
 java.lang.OutOfMemoryError: Java heap space
 ```
 
-**虚拟机栈和本地方法栈溢出**
+## 虚拟机栈和本地方法栈溢出
 
 > - If the computation in a thread requires a larger Java Virtual Machine stack than is permitted, the Java Virtual Machine throws a **StackOverflowError**.
 > - If Java Virtual Machine stacks can be dynamically expanded, and expansion is attempted but insufficient memory can be made available to effect the expansion, or if insufficient memory can be made available to create the initial Java Virtual Machine stack for a new thread, the Java Virtual Machine throws an **OutOfMemoryError**.
@@ -101,7 +101,8 @@ public class JavaVMStackSOF {
 ```
 
 
-**方法区和运行时常量池溢出**
+## 方法区和运行时常量池溢出
+
 >  If memory in the method area cannot be made available to satisfy an allocation request, the Java Virtual Machine throws an OutOfMemoryError.
 
 在JDK8之前，方法区是所有线程共享的一块内存区域，用于存储已被虚拟机加载的类信息、常量、静态变量等信息。
@@ -138,7 +139,7 @@ public class RuntimeConstantPoolOOM {
 java.lang.OutOfMemoryError: PermGen space
 ```
 
-**元空间内存溢出**
+## 元空间内存溢出
 
 从JDK1.8之后，移除了永久代(Perm Gen)，同时添加了元空间(Metaspace)，由于元空间并不在虚拟机中，而是使用本地内存，因此，默认情况下，元空间的大小仅受本地内存限制，但可以控制JVM相关参数来控制：
 
@@ -184,7 +185,7 @@ public class JavaMethodAreaOOM {
 java.lang.OutOfMemoryError: Metaspace
 ```
 
-**本机直接内存溢出**
+## 本机直接内存溢出
 
 直接内存并不虚拟机运行时内存区域的一部分，虽然不受Java虚拟机控制，但是还是受本地总内存的限制（包括RAM及SWAP等），也会出现OOM。
 
