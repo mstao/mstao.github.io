@@ -61,7 +61,7 @@ Possibly consider using a shorter maxLifetime value.
    }
 ```
 从上面代码可以看出，在校验连接是否存活时发生了异常，我们打断点跟踪下，可以看到会发生如下异常：No operations allowed after connection closed
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/189999/1625215708969-33448e13-a530-49bc-8e8e-7b3a37b2fa08.png#align=left&display=inline&height=625&margin=%5Bobject%20Object%5D&name=image.png&originHeight=625&originWidth=1430&size=217472&status=done&style=none&width=1430)
+![image.png](https://github.com/mstao/static/blob/master/images/msyql/hikari-validate-connection-fail.png?raw=true)
 
 
 从上面的堆栈信息来看，在设置连接的超时时间发生了异常：
