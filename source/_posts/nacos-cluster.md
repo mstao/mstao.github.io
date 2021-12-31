@@ -2,7 +2,7 @@
 title: Nacos2.0.3集群搭建踩坑
 tags: [Nacos]
 author: Mingshan
-categories: [java,Nacos]
+categories: [Java,Nacos]
 date: 2021-10-31
 ---
 
