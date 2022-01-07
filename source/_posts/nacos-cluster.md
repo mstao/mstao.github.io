@@ -84,10 +84,19 @@ http {
 ## 遇到的问题
 
 
-1. **应用启动报：UNAVAILABLE: Network closed for unknown reason**
+1. 应用启动报：`UNAVAILABLE: Network closed for unknown reason`
 
 报这个错是由于没有转发9848端口，转发9848端口即可
 
 2. **Nacos服务是2.0.3，客户端是1.x版本，是否可以使用？**
 
 Nacos服务端可以兼容1.x版本的客户端，只不过不会走gRPC模式，建议生产环境服务端与客户端一致
+
+3. 启动报错：`java.util.concurrent.TimeoutException: Waited 3000 milliseconds (plus 14 milliseconds, 330400 nanoseconds delay) `
+
+出现这个错误，一般都是Nacos 服务端服务不可用了，此时直接去Nacos的日志目录里面查看 `nacos.log`，这里出现了`OutOfMemoryError`，导致grpc不可用，报错信息如下：
+
+```
+java.lang.OutOfMemoryError: Java heap space
+2022 -01 07 07:59:22,782 WARN An exception was thrown by io.grpc.netty.shaded.io.netty.bootstrap.ServerBootstrapsServerBootstrapAcceptor$2.operat ionComplete()
+```
