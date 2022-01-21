@@ -37,4 +37,13 @@ date: 2022-01-21
 
 大概是这样，我选用有域名添加一条DNS解析这种操作，十分快捷。DNS解析规则如下：
 
-![Uploading image.png…]()
+![image](https://user-images.githubusercontent.com/23411433/150467006-bef1f0f2-42a5-4cc5-b982-7009f2d46b75.png)
+
+上面的操作完，等issue的状态变为**已解决**时，会收到一条评论：
+
+![image](https://user-images.githubusercontent.com/23411433/150467080-02c034c3-56de-43bb-88c8-3ee15e130085.png)
+
+我们接下来就可以将包发送到中央仓库了。
+
+# 发送步骤
+
