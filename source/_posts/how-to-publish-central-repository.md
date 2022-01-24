@@ -264,6 +264,14 @@ Close 完之后，我们就可以进行Release了。点击**Release**按钮，�
 
 至此，流程已经走完了。同步到中央仓库的时间比较漫长，耐心等待即可。
 
+## 加图标
+
+另外，我们看到很多仓库都有很多图标，比如编译状态，中央仓库版本等，类似下面这种：
+
+![image](https://user-images.githubusercontent.com/23411433/150764773-fc017c59-444b-451b-bbb2-de221a35874e.png)
+
+我们可以使用：https://shields.io/ 这个网站来生成，选择对应的项目生成就可以了。
+
 ## 参考
 
 - https://central.sonatype.org/publish/publish-maven/
