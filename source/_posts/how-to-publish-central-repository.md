@@ -167,7 +167,7 @@ date: 2022-01-21
 
 增加distributionManagement：
 
-```
+```xml
   <distributionManagement>
     <snapshotRepository>
       <id>oss</id>
