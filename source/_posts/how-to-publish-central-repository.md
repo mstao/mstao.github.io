@@ -45,8 +45,6 @@ date: 2022-01-21
 
 我们接下来就可以将包发送到中央仓库了。
 
-# 发送步骤
-
 ## 更新pom.xml文件
 
 增加开源协议，坐着，SCM信息等，具体信息可以参考：
@@ -222,18 +220,50 @@ gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 公钥ID
 
 查询公钥是否发布成功
 
+```
 gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 公钥ID
 gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 公钥ID
+```
 
+使用 `gpg --list-keys` 命令查询配置好的公私钥信息
 
 ![image](https://user-images.githubusercontent.com/23411433/150723548-66173f98-6990-46c2-8be5-959467301513.png)
 
+
+## 打包推送
+
+使用`mvn clean deploy`进行编译部署，会将当前SNAPSHOT包推送到OSS 里面，注意这一步需要用到**Passphase**。
+
+## 发布RELEASE
+
+大致流程：
+
+```
+Maven发布 -> Sonatype Close  -> Sonatype Release
+```
+
+### Maven发布
+关于如何利用maven进行发布的操作，这里就不详细介绍了，可以参考另一篇文档: [Maven发布RELEASE包到云效私有仓库并打TAG](https://mingshan.fun/2019/11/13/maven-release/)
+
+主要有两步操作：`mvn release:prepare` 和 `mvn release:perform`。
+
+### Sonatype Close
+
+发布完正式RELEASE 后，此时会将正式包推送到 **staging Repositories**，进入[oss.sonatype](https://s01.oss.sonatype.org/#stagingRepositories)，选择你刚才发布的包，然后点击**Close** 按钮，会弹出确认框，如下所示：
+
 ![image](https://user-images.githubusercontent.com/23411433/150745859-598a7d06-f59e-478b-815d-18c5fef48062.png)
+
+### Sonatype Release
+
+Close 完之后，我们就可以进行Release了。点击**Release**按钮，需要等待一会，可以点击下边的Activity选项卡中查看状态。等待一会，会收到邮件，告诉你已经同步中央仓库了。
 
 ![image](https://user-images.githubusercontent.com/23411433/150746724-2631ecf4-2b4b-41dd-84a4-548c8d516de5.png)
 
+![image](https://user-images.githubusercontent.com/23411433/150762858-305b1b13-b532-40c2-a25a-293e52880d8a.png)
 
-https://s01.oss.sonatype.org/
+
+至此，流程已经走完了。同步到中央仓库的时间比较漫长，耐心等待即可。
+
 # 参考
 
 - https://central.sonatype.org/publish/publish-maven/
