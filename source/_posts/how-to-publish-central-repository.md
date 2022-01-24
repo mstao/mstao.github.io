@@ -47,6 +47,154 @@ date: 2022-01-21
 
 # 发送步骤
 
+## 更新pom.xml文件
+
+增加开源协议，坐着，SCM信息等，具体信息可以参考：
+
+```xml
+  <groupId>fun.mingshan</groupId>
+  <artifactId>markdown4j</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>markdown4j</name>
+  <description>To solve the problem of not quickly generating Markdown files at the Java level, using builder mode, very simple to use.</description>
+  <url>https://github.com/mstao/markdown4j</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Walker Han</name>
+      <email>walkerhan@126.com</email>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>Github Issue</system>
+    <url>https://github.com/mstao/markdown4j/issues</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/mstao/markdown4j.git</connection>
+    <developerConnection>scm:git:https://github.com/mstao/markdown4j.git</developerConnection>
+    <url>https://github.com/mstao/markdown4j</url>
+    <tag>${project.version}</tag>
+  </scm>
+
+  <inceptionYear>2022</inceptionYear>
+```
+
+增加插件：
+
+```xml
+ <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+      <!-- Javadoc -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Gpg Signature -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+```
+
+增加distributionManagement：
+
+```
+  <distributionManagement>
+    <snapshotRepository>
+      <id>oss</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>oss</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+```
+
+## 更新maven settings.xml文件
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>ossrh</id>
+      <username>your-jira-id</username>
+      <password>your-jira-pwd</password>
+    </server>
+  </servers>
+</settings>
+```
+
 # 参考
 
 - https://central.sonatype.org/publish/publish-maven/
+- https://www.cnblogs.com/songyz/p/11387978.html
