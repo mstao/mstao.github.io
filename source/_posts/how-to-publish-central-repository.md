@@ -93,15 +93,15 @@ date: 2022-01-21
 增加插件：
 
 ```xml
- <build>
+<build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <encoding>UTF-8</encoding>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -145,6 +145,13 @@ date: 2022-01-21
             </goals>
           </execution>
         </executions>
+
+        <configuration>
+          <!-- jdk1.8要加上，1.7要去掉，否则会报错 -->
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
+          </additionalJOptions>
+        </configuration>
       </plugin>
       <!-- Gpg Signature -->
       <plugin>
@@ -170,12 +177,12 @@ date: 2022-01-21
 ```xml
   <distributionManagement>
     <snapshotRepository>
-      <id>oss</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>oss</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 ```
@@ -195,6 +202,10 @@ date: 2022-01-21
 ```
 
 ## 配置PGP公匙信息
+
+Windows下使用gpg4win来进行配置。下载地址 https://www.gpg4win.org/get-gpg4win.html。
+
+下载安装完后，打开命令行执行：``
 
 ![image](https://user-images.githubusercontent.com/23411433/150723396-aa5cea1f-3135-4635-a251-937846ab6151.png)
 
