@@ -205,9 +205,26 @@ date: 2022-01-21
 
 Windows下使用gpg4win来进行配置。下载地址 https://www.gpg4win.org/get-gpg4win.html。
 
-下载安装完后，打开命令行执行：``
+下载安装完后，打开命令行执行：`gpg --gen-key`，来生成公匙信息，注意此步需要输入sonatype 网站上的用户名，邮箱信息，必须保持一致。如下所示：
+
+![image](https://user-images.githubusercontent.com/23411433/150752069-e67c6dd9-4ffb-460b-892b-65b8e795b2e0.png)
+
+生成的过程中，会有个弹框要求输入**Passphase**信息，这个是密钥的密码，同样需要记牢。十分重要，后续在进行发布包的时候要用到的，如下：
 
 ![image](https://user-images.githubusercontent.com/23411433/150723396-aa5cea1f-3135-4635-a251-937846ab6151.png)
+
+上面操作完之后，会生成公匙，需要将公钥发布到 PGP 密钥服务器，两个密钥服务器都发布一下：
+
+```
+gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 公钥ID
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 公钥ID
+```
+
+查询公钥是否发布成功
+
+gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 公钥ID
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 公钥ID
+
 
 ![image](https://user-images.githubusercontent.com/23411433/150723548-66173f98-6990-46c2-8be5-959467301513.png)
 
@@ -215,6 +232,8 @@ Windows下使用gpg4win来进行配置。下载地址 https://www.gpg4win.org/ge
 
 ![image](https://user-images.githubusercontent.com/23411433/150746724-2631ecf4-2b4b-41dd-84a4-548c8d516de5.png)
 
+
+https://s01.oss.sonatype.org/
 # 参考
 
 - https://central.sonatype.org/publish/publish-maven/
