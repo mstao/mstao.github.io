@@ -194,6 +194,13 @@ date: 2022-01-21
 </settings>
 ```
 
+## 配置PGP公匙信息
+
+![image](https://user-images.githubusercontent.com/23411433/150723396-aa5cea1f-3135-4635-a251-937846ab6151.png)
+
+![image](https://user-images.githubusercontent.com/23411433/150723548-66173f98-6990-46c2-8be5-959467301513.png)
+
+
 # 参考
 
 - https://central.sonatype.org/publish/publish-maven/
