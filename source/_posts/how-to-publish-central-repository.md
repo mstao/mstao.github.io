@@ -47,3 +47,6 @@ date: 2022-01-21
 
 # 发送步骤
 
+# 参考
+
+- https://central.sonatype.org/publish/publish-maven/
